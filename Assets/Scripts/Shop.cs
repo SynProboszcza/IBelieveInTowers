@@ -32,6 +32,7 @@ public class Shop : MonoBehaviour
 
     private void OnMouseDown()
     {
+        Debug.Log("Opening non-existent shop interface");
         Destroy(gameObject);
     }
 }
