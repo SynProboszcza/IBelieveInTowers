@@ -40,8 +40,8 @@ public class MainGameLoop : MonoBehaviour
     private void GenerateAndConfigureNodeMesh(Vector2 topleft, Vector2 bottomright)
     {
         if (nodePrefab != null) { 
-            Vector2 distance = topleft.Abs() - bottomright.Abs();
-            distance = distance.Abs();
+            Vector2 distance = (new Vector2(Mathf.Abs(topleft.x), Mathf.Abs(topleft.y))) - new Vector2(Mathf.Abs(bottomright.x), Mathf.Abs(bottomright.y));
+            distance = new Vector2(Mathf.Abs(distance.x), Mathf.Abs(distance.y));
             for (int x = 0; x <= distance.x; x++)
             {
                 for (int y = 0; y <= distance.y; y++)
