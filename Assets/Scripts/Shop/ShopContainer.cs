@@ -43,7 +43,7 @@ public class ShopContainer : MonoBehaviour
         //Destroy(gameObject);
     }
 
-    private void CloseShop()
+    public void CloseShop()
     {
         sr.enabled = false;
         gameObject.transform.GetChild(0).gameObject.SetActive(false);
