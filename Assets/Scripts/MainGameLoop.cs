@@ -64,6 +64,7 @@ public class MainGameLoop : MonoBehaviour
                     nodes.Add(singleNode);
                 }
             }
+            //remove nodes from obstacles
             foreach (GameObject node in nodes)
             {
                 foreach (Transform obstacle in obstacles)
@@ -76,12 +77,45 @@ public class MainGameLoop : MonoBehaviour
                     }
                 }
             }
+            //remove nodes from path
+            //for (int i = 0; i < waypoints.Length - 2; i++)
+            //{
+            //    if (waypoints[i].transform.position.x == waypoints[i + 1].transform.position.x)
+            //    {
+            //        //delete line from this waypoint to next
+            //        foreach(GameObject node in nodes)
+            //        {
+            //            if (waypoints[i + 1].transform.position.y < node.transform.position.y && node.transform.position.y < waypoints[i].transform.position.y)
+            //            {
+            //                Destroy (node.gameObject);
+            //                nodesDestroyed++;
+            //                Debug.Log("Destroyed x");
+            //            }
+            //        }
+            //    } else if (waypoints[i].transform.position.y == waypoints[i + 1].transform.position.y)
+            //    {
+            //        //delete line from this waypoint to next
+            //        foreach (GameObject node in nodes)
+            //        {
+            //            if (waypoints[i + 1].transform.position.x < node.transform.position.x && node.transform.position.x < waypoints[i].transform.position.x)
+            //            {
+            //                Destroy(node.gameObject);
+            //                nodesDestroyed++;
+            //                Debug.Log("Destroyed y");
+            //            }
+            //        }
+            //    }
+            //    else
+            //    {
+            //        Debug.Log("Could not find straight line inbetween waypoints, maybe position isnt int?");
+            //    }
+            //}
         } 
         else
         {
             Debug.Log("nie mamy nodes");
         }
-        Debug.Log("function ended, instantiated: " + nodesInstantiated);
+        Debug.Log("function ended, instantiated: " + nodesInstantiated + ", destroyed: " + nodesDestroyed);
     }
 
     private void GetPlayArenaCorners()

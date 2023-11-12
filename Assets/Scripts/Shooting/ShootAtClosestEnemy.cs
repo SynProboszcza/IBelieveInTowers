@@ -14,7 +14,7 @@ public class ShootAtClosestEnemy : MonoBehaviour
     public float speed = 0.1f;
     public float damage = 13;
     public float angle = 0;
-    [Tooltip("Amount of time in seconds inbetween shots")]
+    [Tooltip("Amount of time in seconds inbetween shots")] 
     public float fireRate = 1;
     public float timeSinceLastShot;
     [Tooltip("Distance after which muzzle effects disappear")]
