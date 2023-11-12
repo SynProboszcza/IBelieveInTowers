@@ -25,6 +25,8 @@ public class MainGameLoop : MonoBehaviour
     public int nodesDestroyed = 0;
     public int playerMoney = 0;
     public float playerHealth;
+    [Tooltip("Specifies an offset on a Z axis. 0 is default map, camera is -15, positive will be hidden. This is mainly for colliders to work properly")]
+    public float shopNodesZOffset = -2;
     public bool isDebugging = false;
     public bool isShopOpen = false;
     // Start is called before the first frame update
@@ -75,7 +77,7 @@ public class MainGameLoop : MonoBehaviour
                 {
                     //it would be better to check if node is on
                     //forbidden tile, then skip that tile
-                    GameObject singleNode = Instantiate(nodePrefab, new Vector3(topleft.x + x, bottomright.y + y, 0), Quaternion.identity);
+                    GameObject singleNode = Instantiate(nodePrefab, new Vector3(topleft.x + x, bottomright.y + y, shopNodesZOffset), Quaternion.identity);
                     //configure node right here and right now
                     //reduce number of nodes - we cant place them on:
                     //paths, obstacles, spawners, despawners,

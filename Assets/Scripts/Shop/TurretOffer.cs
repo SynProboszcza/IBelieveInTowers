@@ -20,7 +20,7 @@ public class TurretOffer : MonoBehaviour
     private void OnMouseDown()
     {
         Instantiate(turret, new Vector3(transform.parent.transform.parent.position.x, transform.parent.transform.parent.position.y, 0), Quaternion.identity);
-        transform.parent.transform.parent.GetComponent<ShopContainer>().CloseShop();
+        transform.parent.transform.parent.GetComponent<ShopContainer>().CloseNode();
         //Destroy(gameObject);
     }
 }

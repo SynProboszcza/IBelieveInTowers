@@ -48,10 +48,16 @@ public class ShopContainer : MonoBehaviour
         sr.enabled = false;
         gameObject.transform.GetChild(0).gameObject.SetActive(false);
         mainGame.GetComponent<MainGameLoop>().isShopOpen = false;
-        Debug.Log("mouse:" + mouseWorldPos);
-        Debug.Log("shop:" + gameObject.transform.GetChild(0).transform.position);
-        Debug.Log("distance:" + Vector2.Distance(Input.mousePosition, gameObject.transform.GetChild(0).transform.position));
+        //Debug.Log("mouse:" + mouseWorldPos);
+        //Debug.Log("shop:" + gameObject.transform.GetChild(0).transform.position);
+        //Debug.Log("distance:" + Vector2.Distance(Input.mousePosition, gameObject.transform.GetChild(0).transform.position));
 
+    }
+
+    public void CloseNode()
+    {
+        CloseShop();
+        Destroy(gameObject);
     }
 
     // Turn background texture on when mouse drags over
