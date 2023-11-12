@@ -26,6 +26,7 @@ public class MainGameLoop : MonoBehaviour
     public int playerMoney = 0;
     public float playerHealth;
     public bool isDebugging = false;
+    public bool isShopOpen = false;
     // Start is called before the first frame update
     void Start()
     {

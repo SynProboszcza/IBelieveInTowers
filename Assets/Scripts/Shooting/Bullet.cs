@@ -46,7 +46,8 @@ public class Bullet : MonoBehaviour
             //do nothing
         } else
         {
-            Destroy(collision.gameObject);
+            //do nothing because it can destroy other objects
+            //Destroy(collision.gameObject);
         }
     }
 
