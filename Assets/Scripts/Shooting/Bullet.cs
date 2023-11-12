@@ -37,9 +37,9 @@ public class Bullet : MonoBehaviour
         {
             Destroy(collision.gameObject);
             Destroy(gameObject);
-        } else if(collision.gameObject.GetComponent<Health>() != null)
+        } else if(collision.gameObject.GetComponent<Enemy>() != null)
         {
-            collision.gameObject.GetComponent<Health>().takeDamage(damage);
+            collision.gameObject.GetComponent<Enemy>().TakeDamage(damage);
             Destroy(gameObject);
         } else if (collision.gameObject.tag == "Bullet")
         {

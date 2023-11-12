@@ -5,15 +5,17 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
+    public GameObject mainGame;
     public Transform[] waypoints;
-    public GameObject playerHealth;
     public float speed = 2f;
+    public float currentHealth;
     public int damage = 0;
     public int waypointIndex = 0;
     public int moneyReward = 50;
     // Start is called before the first frame update
     void Start()
     {
+        mainGame = GameObject.FindWithTag("SingleTagForMainGameLoop");
         transform.position = waypoints[waypointIndex].position;
     }
 
@@ -21,23 +23,11 @@ public class Enemy : MonoBehaviour
     void Update()
     {
         Move();
+        if(currentHealth < 0)
+        {
+            Die();
+        }
     }
-
-    public void SetSpeed(float speed)
-    {
-        this.speed = speed;
-    }
-
-    public void SetDamage(int damage)
-    {
-        this.damage = damage;
-    }
-
-    public void SetWaypoints(Transform[] waypoints)
-    {
-        this.waypoints = waypoints;
-    }
-
     private void Move()
     {
         if (waypointIndex <= waypoints.Length - 1)
@@ -58,9 +48,42 @@ public class Enemy : MonoBehaviour
         }
     }
 
+    public void Die()
+    {
+        //maybe add some effects to death, idk particles or
+        //animated text of how much money it gave
+        mainGame.GetComponent<MainGameLoop>().AddPlayerMoney(moneyReward);
+        Destroy(gameObject);
+    }
+
+    public void SetSpeed(float speed)
+    {
+        this.speed = speed;
+    }
+
+    public void SetDamage(int damage)
+    {
+        this.damage = damage;
+    }
+
+    public void SetWaypoints(Transform[] waypoints)
+    {
+        this.waypoints = waypoints;
+    }
+
     public void SetHealth(float health)
     {
-        gameObject.GetComponent<Health>().setHealth(health);
+        this.currentHealth = health;
+    }
+
+    public void SetMoneyReward(int moneyReward)
+    {
+        this.moneyReward = moneyReward;
+    }
+
+    public float GetSpeed()
+    {
+        return this.speed;
     }
 
     public int GetDamage()
@@ -68,14 +91,23 @@ public class Enemy : MonoBehaviour
         return this.damage;
     }
 
-    public void SetMoneyReward(int moneyReward)
+    public Transform[] GetWaypoints()
     {
-        this.moneyReward = moneyReward;
+        return this.waypoints;
     }
-    
+
+    public float GetHealth()
+    {
+        return this.currentHealth;
+    }
+
     public int GetMoneyReward()
     {
         return this.moneyReward;
     }
 
+    public void TakeDamage(float damage)
+    {
+        this.currentHealth -= damage;   
+    }
 }

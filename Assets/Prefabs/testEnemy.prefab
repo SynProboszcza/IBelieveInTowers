@@ -47,7 +47,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1800778710029251882}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 70269d9d3013b184db8e493e6f18395a, type: 3}
   m_Name: 
@@ -218,11 +218,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 917c637aae9341744b450a5c3b20be47, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mainGame: {fileID: 0}
   waypoints: []
-  playerHealth: {fileID: 0}
   speed: 2
+  currentHealth: 0
   damage: 0
   waypointIndex: 0
+  moneyReward: 50
 --- !u!60 &5124225124800193262
 PolygonCollider2D:
   m_ObjectHideFlags: 0
