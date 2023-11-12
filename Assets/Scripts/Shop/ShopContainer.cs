@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Shop : MonoBehaviour
+public class ShopContainer : MonoBehaviour
 {
     private SpriteRenderer sr;
     public GameObject mainGame;
@@ -13,9 +13,10 @@ public class Shop : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        mainGame = GameObject.FindWithTag("SingleTagForMainGameLoop");
+        gameObject.transform.GetChild(0).gameObject.SetActive(false);
         sr = GetComponent<SpriteRenderer>();
         sr.enabled = false;
+        mainGame = GameObject.FindWithTag("SingleTagForMainGameLoop");
         mainGame.GetComponent<MainGameLoop>().isShopOpen = false;
     }
 
