@@ -74,7 +74,7 @@ public class MainGameLoop : MonoBehaviour
                 {
                     //it would be better to check if node is on
                     //forbidden tile, then skip that tile
-                    GameObject singleNode = Instantiate(nodePrefab, new Vector3(topleft.x + x, bottomright.y + y, -1f), Quaternion.identity);
+                    GameObject singleNode = Instantiate(nodePrefab, new Vector3(topleft.x + x, bottomright.y + y, 0), Quaternion.identity);
                     //configure node right here and right now
                     //reduce number of nodes - we cant place them on:
                     //paths, obstacles, spawners, despawners,
