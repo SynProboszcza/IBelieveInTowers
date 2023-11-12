@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -14,12 +15,16 @@ public class MainGameLoop : MonoBehaviour
     public Transform playArenaCorners;
     public Transform[] waypoints;
     public Transform[] obstacles;
+    public TMP_Text playerHealthTextField;
+    public TMP_Text playerMoneyTextField;
     public Vector2 topLeft;
     public Vector2 topRight;
     public Vector2 bottomLeft;
     public Vector2 bottomRight;
     public int nodesInstantiated = 0;
     public int nodesDestroyed = 0;
+    public int playerMoney = 0;
+    public float playerHealth;
     public bool isDebugging = false;
     // Start is called before the first frame update
     void Start()
@@ -34,12 +39,27 @@ public class MainGameLoop : MonoBehaviour
     void Update()
     {
         //update player health
+        string playerHealthTextTemplate = "Zdrowie: " + playerHealth;
+        playerHealthTextField.text = playerHealthTextTemplate;
         //update their money
+        string playerMoneyTextTemplate = "Gold: " + playerMoney;
+        playerMoneyTextField.text = playerMoneyTextTemplate;
+
         //synchronize with host/client
         //maybe cheats?
         //wait for escape menu
         //maybe listen for quitting? or add button for it
 
+    }
+
+    public void TakePlayerDamage(float damage)
+    {
+        playerHealth -= damage;
+    }
+
+    public void AddPlayerMoney(int money)
+    {
+        playerMoney += money;
     }
 
     private void GenerateAndConfigureNodeMesh(Vector2 topleft, Vector2 bottomright)
@@ -78,6 +98,7 @@ public class MainGameLoop : MonoBehaviour
                 }
             }
             //remove nodes from path
+
             //for (int i = 0; i < waypoints.Length - 2; i++)
             //{
             //    if (waypoints[i].transform.position.x == waypoints[i + 1].transform.position.x)

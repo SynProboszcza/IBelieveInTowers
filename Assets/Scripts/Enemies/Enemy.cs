@@ -10,6 +10,7 @@ public class Enemy : MonoBehaviour
     public float speed = 2f;
     public int damage = 0;
     public int waypointIndex = 0;
+    public int moneyReward = 50;
     // Start is called before the first frame update
     void Start()
     {
@@ -22,17 +23,17 @@ public class Enemy : MonoBehaviour
         Move();
     }
 
-    public void setSpeed(float speed)
+    public void SetSpeed(float speed)
     {
         this.speed = speed;
     }
 
-    public void setDamage(int damage)
+    public void SetDamage(int damage)
     {
         this.damage = damage;
     }
 
-    public void setWaypoints(Transform[] waypoints)
+    public void SetWaypoints(Transform[] waypoints)
     {
         this.waypoints = waypoints;
     }
@@ -57,14 +58,24 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    public void setHealth(float health)
+    public void SetHealth(float health)
     {
         gameObject.GetComponent<Health>().setHealth(health);
     }
 
-    public int getDamage()
+    public int GetDamage()
     {
         return this.damage;
+    }
+
+    public void SetMoneyReward(int moneyReward)
+    {
+        this.moneyReward = moneyReward;
+    }
+    
+    public int GetMoneyReward()
+    {
+        return this.moneyReward;
     }
 
 }
