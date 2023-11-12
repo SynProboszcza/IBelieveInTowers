@@ -11731,7 +11731,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8224584258733623558, guid: 1ef347df26a6726419c5edfff1465da8, type: 3}
       propertyPath: enemySpeed
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 8224584258733623558, guid: 1ef347df26a6726419c5edfff1465da8, type: 3}
       propertyPath: spawnCountMax

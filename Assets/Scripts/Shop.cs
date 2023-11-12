@@ -5,6 +5,14 @@ using UnityEngine;
 public class Shop : MonoBehaviour
 {
     private SpriteRenderer sr;
+    public Sprite shopBackground;
+    public Sprite shopFirstTurret;
+    public Sprite shopSecondTurret;
+    public Sprite shopThirdTurret;
+    public Sprite shopFourthTurret;
+    public Sprite shopFifthTurret;
+    public Sprite shopSixthTurret;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -33,6 +41,7 @@ public class Shop : MonoBehaviour
     private void OnMouseDown()
     {
         Debug.Log("Opening non-existent shop interface");
+
         Destroy(gameObject);
     }
 }
