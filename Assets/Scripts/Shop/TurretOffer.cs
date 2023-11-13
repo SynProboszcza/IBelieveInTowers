@@ -33,7 +33,7 @@ public class TurretOffer : MonoBehaviour
         if (mainGame.GetComponent<MainGameLoop>().CanBuyTurret(cost))
         {
             Instantiate(turret, new Vector3(transform.parent.transform.parent.position.x, transform.parent.transform.parent.position.y, 0), Quaternion.identity);
-            CloseShop();
+            CloseNode();
         } else
         {
             //show some error; money is tight
@@ -45,5 +45,10 @@ public class TurretOffer : MonoBehaviour
     public void CloseShop()
     {
         transform.parent.transform.parent.GetComponent<ShopContainer>().CloseShop();
+    }
+    
+    public void CloseNode()
+    {
+        transform.parent.transform.parent.GetComponent<ShopContainer>().CloseNode();
     }
 }
