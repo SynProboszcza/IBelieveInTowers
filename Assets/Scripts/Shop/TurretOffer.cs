@@ -11,6 +11,10 @@ public class TurretOffer : MonoBehaviour
     void Start()
     {
         mainGame = GameObject.FindWithTag("SingleTagForMainGameLoop");
+        // Set turret base sprite
+        gameObject.GetComponent<SpriteRenderer>().sprite = turretPrefab.GetComponent<SpriteRenderer>().sprite;
+        // Set turret weapon sprite
+        gameObject.transform.GetChild(0).GetComponent<SpriteRenderer>().sprite = turretPrefab.transform.GetChild(0).GetComponent<SpriteRenderer>().sprite;
     }
 
     // Update is called once per frame

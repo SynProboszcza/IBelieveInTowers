@@ -1277,7 +1277,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 438745455}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 70269d9d3013b184db8e493e6f18395a, type: 3}
   m_Name: 
@@ -1290,7 +1290,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 438745455}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 70b58c2a89ee60749a0c9c460611b388, type: 3}
   m_Name: 
@@ -1789,7 +1789,7 @@ MonoBehaviour:
   bottomRight: {x: 0, y: 0}
   nodesInstantiated: 0
   nodesDestroyed: 0
-  playerMoney: 50
+  playerMoney: 1000
   playerHealth: 200
   shopNodesZOffset: -2
   isDebugging: 0
@@ -2168,7 +2168,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 930919964}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 70b58c2a89ee60749a0c9c460611b388, type: 3}
   m_Name: 
@@ -2180,7 +2180,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 930919964}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 70269d9d3013b184db8e493e6f18395a, type: 3}
   m_Name: 
