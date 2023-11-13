@@ -32,7 +32,7 @@ public class Bullet : MonoBehaviour
         transform.Translate(new Vector3(speed*0.001f, 0f));
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
         if (ohk)
         {

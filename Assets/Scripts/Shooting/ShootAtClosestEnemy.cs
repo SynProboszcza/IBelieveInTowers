@@ -10,13 +10,13 @@ public class ShootAtClosestEnemy : MonoBehaviour
     public GameObject muzzleEffects;
     public GameObject Target;
     private GameObject bulletInstance;
-    public int layerIndex = 0;
+    //public int layerIndex = 0;
     public float speed = 0.1f;
     public float damage = 13;
-    public float angle = 0;
+    //private float angle = 0;
     [Tooltip("Amount of time in seconds inbetween shots")] 
     public float fireRate = 1;
-    public float timeSinceLastShot;
+    private float timeSinceLastShot;
     [Tooltip("Distance after which muzzle effects disappear")]
     public float distanceToShutoffMuzzleEffects = 0.5f;
     [Tooltip("Distance after which bullets disappear")]

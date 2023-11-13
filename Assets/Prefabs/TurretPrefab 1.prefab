@@ -135,7 +135,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 2
+  m_Radius: 3
 --- !u!50 &1308187787354350592
 Rigidbody2D:
   serializedVersion: 4
@@ -174,13 +174,11 @@ MonoBehaviour:
   Gun: {fileID: 1308187788945217784}
   muzzleEffects: {fileID: 1308187788526392636}
   Target: {fileID: 0}
-  layerIndex: 0
   speed: 30
   damage: 13
-  angle: 0
   fireRate: 0.5
-  timeSinceLastShot: 0
   distanceToShutoffMuzzleEffects: 0.5
+  bulletRange: 5
   ohk: 0
   isEnemyClose: 0
   ShootThisFrame: 0
@@ -301,7 +299,7 @@ GameObject:
   - component: {fileID: 1308187788945217786}
   - component: {fileID: 1308187788945217787}
   m_Layer: 0
-  m_Name: 2h_rocket
+  m_Name: Gun
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
