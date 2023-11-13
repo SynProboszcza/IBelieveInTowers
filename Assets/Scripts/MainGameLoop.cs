@@ -55,6 +55,18 @@ public class MainGameLoop : MonoBehaviour
 
     }
 
+    public bool CanBuyTurret(int cost)
+    {
+        if(playerMoney >= cost)
+        {
+            playerMoney -= cost;
+            return true;
+        } else
+        {
+            return false;
+        }
+    }
+
     public void TakePlayerDamage(float damage)
     {
         playerHealth -= damage;
