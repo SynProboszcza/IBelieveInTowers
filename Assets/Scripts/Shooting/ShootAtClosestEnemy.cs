@@ -33,15 +33,22 @@ public class ShootAtClosestEnemy : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(bulletInstance != null)
+        // If there is no bullet (it hit sth)
+        // disable muzzle effects
+        if (bulletInstance == null)
         {
-            //calculate distance from bulletinstance to shootspawnpoint
+            muzzleEffects.SetActive(false);
+        } else if (bulletInstance != null)
+        {
+            // If bullet exists, check its distance
+            // and remove it when it gets away
             float distance = Vector3.Distance(bulletInstance.transform.position, shootSpawnPoint.transform.position);
             if(distance > distanceToShutoffMuzzleEffects)
             {
                 muzzleEffects.SetActive(false);
             }
         }
+
         if (isEnemyClose && Target != null)
         {
             TargetPosition = Target.transform.position;
@@ -62,7 +69,7 @@ public class ShootAtClosestEnemy : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.tag == "Enemy")
+        if(collision.CompareTag("Enemy"))
         {
             Target = collision.gameObject;
             isEnemyClose = true;
@@ -76,7 +83,7 @@ public class ShootAtClosestEnemy : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (collision.tag == "Enemy")
+        if (collision.CompareTag("Enemy"))
         {
             Target = collision.gameObject;
             isEnemyClose = true;

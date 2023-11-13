@@ -17,12 +17,6 @@ public class TurretOffer : MonoBehaviour
         gameObject.transform.GetChild(0).GetComponent<SpriteRenderer>().sprite = turretPrefab.transform.GetChild(0).GetComponent<SpriteRenderer>().sprite;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     private void OnMouseDown()
     {
         BuyTurret(turretPrefab, turretCost);
@@ -42,12 +36,12 @@ public class TurretOffer : MonoBehaviour
         }
     }
 
-    public void CloseShop()
+    private void CloseShop()
     {
         transform.parent.transform.parent.GetComponent<ShopContainer>().CloseShop();
     }
     
-    public void CloseNode()
+    private void CloseNode()
     {
         transform.parent.transform.parent.GetComponent<ShopContainer>().CloseNode();
     }

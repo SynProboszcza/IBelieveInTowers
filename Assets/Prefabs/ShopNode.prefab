@@ -1156,7 +1156,7 @@ GameObject:
   - component: {fileID: 5003845570486195182}
   m_Layer: 7
   m_Name: ShopNode
-  m_TagString: Untagged
+  m_TagString: ShopNode
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

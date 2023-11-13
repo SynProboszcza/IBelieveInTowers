@@ -17,11 +17,6 @@ public class Spawner : MonoBehaviour
     private int spawnCount = 0;
     public int moneyRewardPerEnemy = 0;
     public bool isSpawnAllowed = true;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
     // Update is called once per frame
     void Update()

@@ -6,24 +6,11 @@ using UnityEngine;
 public class Despawn : MonoBehaviour
 {
     public GameObject mainGame;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
         mainGame.GetComponent<MainGameLoop>().TakePlayerDamage(collision.gameObject.GetComponent<Enemy>().GetDamage());
-
-        mainGame.GetComponent<MainGameLoop>().AddPlayerMoney(collision.gameObject.GetComponent<Enemy>().GetMoneyReward());
-
+        //mainGame.GetComponent<MainGameLoop>().AddPlayerMoney(collision.gameObject.GetComponent<Enemy>().GetMoneyReward());
         Destroy(collision.gameObject);
     }
 }
