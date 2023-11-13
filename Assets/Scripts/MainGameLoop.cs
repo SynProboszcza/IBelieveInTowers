@@ -77,19 +77,25 @@ public class MainGameLoop : MonoBehaviour
         playerMoney += money;
     }
 
+    private void DestroyNode(GameObject node)
+    {
+        Destroy(node);
+        nodesDestroyed++;
+    }
+
     private void GenerateAndConfigureNodeMesh(Vector2 topleft, Vector2 bottomright)
     {
         nodesInstantiated = 0;
         if (nodePrefab != null) {
             Vector2 distance = (new Vector2(Mathf.Abs(topleft.x), Mathf.Abs(topleft.y))) - new Vector2(Mathf.Abs(bottomright.x), Mathf.Abs(bottomright.y));
             distance = new Vector2(Mathf.Abs(distance.x), Mathf.Abs(distance.y));
-            for (int x = 0; x <= distance.x; x++)
+            for (float x = topleft.x; x <= distance.x + topleft.x; x++)
             {
-                for (int y = 0; y <= distance.y; y++)
+                for (float y = bottomright.y; y <= bottomright.y + distance.y; y++)
                 {
                     //it would be better to check if node is on
                     //forbidden tile, then skip that tile
-                    GameObject singleNode = Instantiate(nodePrefab, new Vector3(topleft.x + x, bottomright.y + y, shopNodesZOffset), Quaternion.identity);
+                    GameObject singleNode = Instantiate(nodePrefab, new Vector3(x, y, shopNodesZOffset), Quaternion.identity);
                     //configure node right here and right now
                     //reduce number of nodes - we cant place them on:
                     //paths, obstacles, spawners, despawners,
@@ -107,12 +113,53 @@ public class MainGameLoop : MonoBehaviour
                     //if(node.transform.position == obstacle.transform.position)
                     if(Mathf.Approximately(node.transform.position.x, obstacle.transform.position.x) && Mathf.Approximately(node.transform.position.y, obstacle.transform.position.y))
                     {
-                        Destroy(node.gameObject);
-                        nodesDestroyed++;
+                        DestroyNode(node);
                     }
                 }
             }
             //remove nodes from path
+            //for every pair
+                //find out if it is vertical or horizontal
+                    //go ++ and destroy in approxx position
+            //for(int i = 0; i <= waypoints.Length - 2; i++)
+            //{
+            //    if (Mathf.Approximately(waypoints[i].position.x, waypoints[i//+1].position.x))
+            //    {
+            //        // x = x, means its on the same vertical axis
+            //        // so we iterate for ys
+            //        for(float y = waypoints[i].position.y; y <= waypoints[i//+1].position.y ; y++)
+            //        {
+            //            //do stuff
+            //            foreach(GameObject node in nodes)
+            //            {
+            //                if (Mathf.Approximately(waypoints[i].position.x, waypoints/[i/+1].position.x)
+            //                    && Mathf.Approximately(waypoints[i].position.y, /waypoints/[i + 1].position.y)
+            //                    )
+            //                {
+            //                    DestroyNode(node);
+            //                }
+            //            }
+            //        }
+            //    } else if (Mathf.Approximately(waypoints[i].position.y, waypoints[i /+ /1].position.y))
+            //    {
+            //        // y = y, means its on the same horizontal axis
+            //        // so we iterate for xs
+            //        for (float x = waypoints[i].position.x; x <= waypoints[i /+ /1].position.x; x++)
+            //        {
+            //            //do stuff
+            //            foreach (GameObject node in nodes)
+            //            {
+            //                if (Mathf.Approximately(waypoints[i].position.x, waypoints/[i /+ 1].position.x)
+            //                    && Mathf.Approximately(waypoints[i].position.y, /waypoints/[i + 1].position.y)
+            //                    )
+            //                {
+            //                    DestroyNode(node);
+            //                }
+            //            }
+            //        }
+            //    }
+            //}
+
 
             //for (int i = 0; i < waypoints.Length - 2; i++)
             //{

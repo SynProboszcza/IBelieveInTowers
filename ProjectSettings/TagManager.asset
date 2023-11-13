@@ -16,6 +16,10 @@ TagManager:
   - GunSight
   - SmokeTrail
   - SingleTagForMainGameLoop
+  - Turret
+  - Spawner
+  - ShopNode
+  - Despawner
   layers:
   - Default
   - TransparentFX

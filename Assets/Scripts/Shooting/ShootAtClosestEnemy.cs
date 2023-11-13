@@ -19,6 +19,8 @@ public class ShootAtClosestEnemy : MonoBehaviour
     public float timeSinceLastShot;
     [Tooltip("Distance after which muzzle effects disappear")]
     public float distanceToShutoffMuzzleEffects = 0.5f;
+    [Tooltip("Distance after which bullets disappear")]
+    public float bulletRange = 5f;
     [Tooltip("OneHitKill")]
     public bool ohk = false;
     public bool isEnemyClose = false;
@@ -47,6 +49,10 @@ public class ShootAtClosestEnemy : MonoBehaviour
             {
                 muzzleEffects.SetActive(false);
             }
+            //if(distance > bulletRange) 
+            //{ 
+            //    DestroyBullet(bulletInstance);
+            //}
         }
 
         if (isEnemyClose && Target != null)
@@ -60,11 +66,17 @@ public class ShootAtClosestEnemy : MonoBehaviour
 
             if ((Time.time > fireRate + timeSinceLastShot) || ShootThisFrame)
             {
-                bulletInstance =  ShootAtTarget(Bullet, shootSpawnPoint.transform.position, rotation, speed, damage, ohk);
+                bulletInstance = ShootAtTarget(Bullet, shootSpawnPoint.transform.position, rotation, speed, damage, ohk);
                 timeSinceLastShot = Time.time;
             } 
             
         }
+    }
+
+    private void DestroyBullet(GameObject bullet)
+    {
+        //maybe add effects
+        Destroy(bullet);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -95,6 +107,7 @@ public class ShootAtClosestEnemy : MonoBehaviour
         GameObject round = (GameObject)Instantiate(bullet, position, rotation);
         round.GetComponent<Bullet>().SetSpeed(bulletSpeed);
         round.GetComponent<Bullet>().SetDamage(bulletDamage);
+        round.GetComponent<Bullet>().SetDistanceToLive(bulletRange);
         round.GetComponent<Bullet>().Setohk(oneHitKill);
         muzzleEffects.SetActive(true);
         return round;

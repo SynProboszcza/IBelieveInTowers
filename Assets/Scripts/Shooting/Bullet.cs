@@ -23,6 +23,7 @@ public class Bullet : MonoBehaviour
     {
         if(distanceToLive < distanceFromShot)
         {
+            //maybe add effects
             Destroy(gameObject);
         } else
         {
@@ -64,5 +65,10 @@ public class Bullet : MonoBehaviour
     public void Setohk(bool ohk)
     {
         this.ohk = ohk;
+    }
+
+    public void SetDistanceToLive(float distanceToLive)
+    {
+        this.distanceToLive = distanceToLive;
     }
 }
