@@ -63,7 +63,7 @@
     <Compile Include="Assets\Scripts\MenuButtons\NewGame.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextSelector_A.cs" />
     <Compile Include="Assets\Scripts\Health\UpdatePlayerHealth.cs" />
-    <Compile Include="Assets\Scripts\Shooting\ShootAtClosestEnemy.cs" />
+    <Compile Include="Assets\Scripts\Shooting\MainTurret.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexShakeA.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark04.cs" />
     <Compile Include="Assets\Scripts\Shop\TurretOffer.cs" />
