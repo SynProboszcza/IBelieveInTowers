@@ -10,11 +10,11 @@ GameObject:
   m_Component:
   - component: {fileID: 1513483495957633694}
   - component: {fileID: 1471422252598555755}
-  - component: {fileID: 6978816487568175619}
+  - component: {fileID: 7566625854154903731}
   - component: {fileID: 3200402235546972120}
   - component: {fileID: 219389324956672151}
   m_Layer: 0
-  m_Name: ShotgunPellet
+  m_Name: BoltBullet
   m_TagString: Bullet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -76,7 +76,7 @@ SpriteRenderer:
   m_SortingLayerID: -1404148799
   m_SortingLayer: 7
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: bb19438accb43184c97ade28d8ac3ac5, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 5009a4887e619b84eb4a976bc82f3040, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -87,7 +87,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!60 &6978816487568175619
+--- !u!60 &7566625854154903731
 PolygonCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -97,14 +97,14 @@ PolygonCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.1, y: 0.1}
+    oldSize: {x: 0.3, y: 0.1}
     newSize: {x: 1, y: 0.5}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -112,13 +112,16 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: 0.064314365, y: 0.023896217}
-      - {x: 0.03479719, y: 0.05472541}
-      - {x: -0.035016775, y: 0.05487287}
-      - {x: -0.065476894, y: 0.025188446}
-      - {x: -0.06520724, y: 0.0055861473}
-      - {x: 0.000121593475, y: -0.05588174}
-      - {x: 0.06471944, y: 0.005569577}
+    - - {x: 0.1100171, y: 0.050006565}
+      - {x: 0.09999136, y: 0.05000132}
+      - {x: 0.100000136, y: 0.030000107}
+      - {x: -0.14001942, y: 0.03000388}
+      - {x: -0.13999774, y: -0.029982561}
+      - {x: 0.100019865, y: -0.030001588}
+      - {x: 0.10001634, y: -0.050022375}
+      - {x: 0.11000381, y: -0.049999997}
+      - {x: 0.14999999, y: -0.010002654}
+      - {x: 0.15000042, y: 0.0099990275}
 --- !u!50 &3200402235546972120
 Rigidbody2D:
   serializedVersion: 4

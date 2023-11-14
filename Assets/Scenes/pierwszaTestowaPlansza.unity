@@ -2055,7 +2055,7 @@ TilemapRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: fca25c90b54d7b8419487784c80529d6, type: 2}
+  - {fileID: 2100000, guid: e6ed622efd30c96409ae8f0cbadd3425, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -9282,7 +9282,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8224584258733623558, guid: 1ef347df26a6726419c5edfff1465da8, type: 3}
       propertyPath: enemyHealth
-      value: 100
+      value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 8224584258733623558, guid: 1ef347df26a6726419c5edfff1465da8, type: 3}
       propertyPath: spawnCountMax

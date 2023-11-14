@@ -10,11 +10,11 @@ GameObject:
   m_Component:
   - component: {fileID: 1513483495957633694}
   - component: {fileID: 1471422252598555755}
-  - component: {fileID: 6978816487568175619}
+  - component: {fileID: 1628163306667543345}
   - component: {fileID: 3200402235546972120}
   - component: {fileID: 219389324956672151}
   m_Layer: 0
-  m_Name: BulletPrefabToCopy
+  m_Name: ShotgunPellet
   m_TagString: Bullet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -76,7 +76,7 @@ SpriteRenderer:
   m_SortingLayerID: -1404148799
   m_SortingLayer: 7
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: bd59bf2e866ed4529ae645637eb9c11d, type: 3}
+  m_Sprite: {fileID: 21300000, guid: bb19438accb43184c97ade28d8ac3ac5, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -87,8 +87,8 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!60 &6978816487568175619
-PolygonCollider2D:
+--- !u!58 &1628163306667543345
+CircleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -97,28 +97,12 @@ PolygonCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.15, y: 0.13}
-    newSize: {x: 1, y: 0.5}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  m_Points:
-    m_Paths:
-    - - {x: 0.064314365, y: 0.023896217}
-      - {x: 0.03479719, y: 0.05472541}
-      - {x: -0.035016775, y: 0.05487287}
-      - {x: -0.065476894, y: 0.025188446}
-      - {x: -0.06520724, y: 0.0055861473}
-      - {x: 0.000121593475, y: -0.05588174}
-      - {x: 0.06471944, y: 0.005569577}
+  serializedVersion: 2
+  m_Radius: 0.05
 --- !u!50 &3200402235546972120
 Rigidbody2D:
   serializedVersion: 4

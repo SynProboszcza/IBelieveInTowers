@@ -7,6 +7,7 @@ public class Spawner : MonoBehaviour
 {
     public GameObject enemy;
     public Transform[] Waypoints;
+    [Tooltip("Time inbetween spawns")]
     public float spawnRate = 1.0f;
     public float enemySpeed = 2f;
     public float enemyHealth = 200f;
@@ -21,7 +22,7 @@ public class Spawner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (isSpawnAllowed //for disabling spawning for debugging
+        if (isSpawnAllowed // Disabling spawning for debugging
             && enemy != null 
             && Waypoints != null 
             && (Time.time > spawnRate + timeSinceLastRespawn)
