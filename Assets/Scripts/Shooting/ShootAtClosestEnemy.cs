@@ -73,31 +73,26 @@ public class ShootAtClosestEnemy : MonoBehaviour
                 if (isShotgun)
                 {
                     // We're going from i = 1 because we multiply shotgunSpread by it,
-                    // so zero would not suffice
+                    // so zero would be the same rotation as shooting straight
                     for (int i = 1; i <= shotgunPelletsToTheSides; i++)
                     {
                         // Bullet to the left
                         Quaternion _rotation = Quaternion.Euler(0, 0, Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg + 180f - shotgunSpreadInDegrees * i);
-                        bulletInstance = ShootAtTarget(Bullet, shootSpawnPoint.transform.position, _rotation, speed, damage, ohk);
+                        bulletInstance = ShootAtTarget(Bullet, shootSpawnPoint.transform.position, _rotation, speed, damage, bulletRange, ohk);
                         
                         // Bullet centered
-                        bulletInstance = ShootAtTarget(Bullet, shootSpawnPoint.transform.position, rotation, speed, damage, ohk);
+                        bulletInstance = ShootAtTarget(Bullet, shootSpawnPoint.transform.position, rotation, speed, damage, bulletRange, ohk);
                         
                         // Bullet to the right
                         _rotation = Quaternion.Euler(0, 0, Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg + 180f + shotgunSpreadInDegrees * i);
-                        bulletInstance = ShootAtTarget(Bullet, shootSpawnPoint.transform.position, _rotation, speed, damage, ohk);
+                        bulletInstance = ShootAtTarget(Bullet, shootSpawnPoint.transform.position, _rotation, speed, damage, bulletRange, ohk);
                         
                         timeSinceLastShot = Time.time;
                     }
-
-                    // We're adding two bullets 15 degrees to left and to right
-                    //Quaternion rotationToLeft = Quaternion.Euler(0, 0, Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg + 180f - 15f);
-                    //Quaternion rotationToRight = Quaternion.Euler(0, 0, Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg + 180f + 15f);
-                    //bulletInstance = ShootAtTarget(Bullet, shootSpawnPoint.transform.position, rotationToRight, speed, damage, ohk);
-
                 } else
                 {
-                    bulletInstance = ShootAtTarget(Bullet, shootSpawnPoint.transform.position, rotation, speed, damage, ohk);
+                    // This is main shooting
+                    bulletInstance = ShootAtTarget(Bullet, shootSpawnPoint.transform.position, rotation, speed, damage, bulletRange, ohk);
                     timeSinceLastShot = Time.time;
                 }
             } 
@@ -134,14 +129,14 @@ public class ShootAtClosestEnemy : MonoBehaviour
         }
     }
 
-    private GameObject ShootAtTarget(GameObject bullet, Vector3 position, Quaternion rotation, float bulletSpeed, float bulletDamage, bool oneHitKill)
+    private GameObject ShootAtTarget(GameObject bullet, Vector3 position, Quaternion rotation, float bulletSpeed, float bulletDamage, float bulletRange, bool oneHitKill)
     {
-        GameObject round = (GameObject)Instantiate(bullet, position, rotation);
-        round.GetComponent<Bullet>().SetSpeed(bulletSpeed);
-        round.GetComponent<Bullet>().SetDamage(bulletDamage);
-        round.GetComponent<Bullet>().SetDistanceToLive(bulletRange);
-        round.GetComponent<Bullet>().Setohk(oneHitKill);
+        GameObject _bullet = (GameObject)Instantiate(bullet, position, rotation);
+        _bullet.GetComponent<Bullet>().SetSpeed(bulletSpeed);
+        _bullet.GetComponent<Bullet>().SetDamage(bulletDamage);
+        _bullet.GetComponent<Bullet>().SetDistanceToLive(bulletRange);
+        _bullet.GetComponent<Bullet>().Setohk(oneHitKill);
         muzzleEffects.SetActive(true);
-        return round;
+        return _bullet;
     }
 }
