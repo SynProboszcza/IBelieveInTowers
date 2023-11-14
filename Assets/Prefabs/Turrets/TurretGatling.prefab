@@ -182,6 +182,9 @@ MonoBehaviour:
   ohk: 0
   isEnemyClose: 0
   ShootThisFrame: 0
+  isShotgun: 0
+  shotgunSpreadInDegrees: 15
+  shotgunPelletsToTheSides: 1
   TargetPosition: {x: 0, y: 0}
 --- !u!1 &1308187788526392636
 GameObject:

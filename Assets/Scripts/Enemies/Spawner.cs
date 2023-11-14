@@ -5,26 +5,30 @@ using UnityEngine;
 
 public class Spawner : MonoBehaviour
 {
-    public GameObject enemy;
-    public Transform[] Waypoints;
+    public GameObject enemy1;
+    public GameObject[] enemies;
+    public Transform[] waypoints;
     [Tooltip("Time inbetween spawns")]
     public float spawnRate = 1.0f;
     public float enemySpeed = 2f;
     public float enemyHealth = 200f;
-    public float timeSinceLastRespawn = 0;
+    private float timeSinceLastRespawn = 0;
     public int enemyDamage = 0;
-    [ReadOnly(true)]
     public int spawnCountMax = 3;
+    [Range(0, 4)]
+    public int whichEnemyToSpawnIndex = 2;
     private int spawnCount = 0;
+    //public int waveAmount = 5;
     public int moneyRewardPerEnemy = 0;
+    //public bool simpleMode = true;
     public bool isSpawnAllowed = true;
 
     // Update is called once per frame
     void Update()
     {
         if (isSpawnAllowed // Disabling spawning for debugging
-            && enemy != null 
-            && Waypoints != null 
+            && enemies[whichEnemyToSpawnIndex] != null 
+            && waypoints != null 
             && (Time.time > spawnRate + timeSinceLastRespawn)
             && spawnCount < spawnCountMax)
         {
@@ -35,12 +39,12 @@ public class Spawner : MonoBehaviour
 
     private void Spawn()
     {
-        GameObject foe = Instantiate(enemy);
-        foe.GetComponent<Enemy>().SetDamage(enemyDamage);
-        foe.GetComponent<Enemy>().SetSpeed(enemySpeed);
-        foe.GetComponent<Enemy>().SetWaypoints(Waypoints);
-        foe.GetComponent<Enemy>().SetHealth(enemyHealth);
-        foe.GetComponent<Enemy>().SetMoneyReward(moneyRewardPerEnemy);
+        GameObject _enemy = Instantiate(enemies[whichEnemyToSpawnIndex]);
+        _enemy.GetComponent<Enemy>().SetDamage(enemyDamage);
+        _enemy.GetComponent<Enemy>().SetSpeed(enemySpeed);
+        _enemy.GetComponent<Enemy>().SetWaypoints(waypoints);
+        _enemy.GetComponent<Enemy>().SetHealth(enemyHealth);
+        _enemy.GetComponent<Enemy>().SetMoneyReward(moneyRewardPerEnemy);
         spawnCount++;
     }
 }
