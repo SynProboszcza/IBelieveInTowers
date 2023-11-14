@@ -4,6 +4,7 @@ using System.ComponentModel;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using static UnityEngine.UI.Image;
 
 public class MainGameLoop : MonoBehaviour
 {
@@ -105,6 +106,21 @@ public class MainGameLoop : MonoBehaviour
                     nodes.Add(singleNode);
                 }
             }
+            // It would be easier to change array to List
+            // Add obstacles on path
+            //for (int i = 0; i < waypoints.Length - 1; i++)
+            //{
+            //    if (waypoints[i].position.y == waypoints[i + 1].position.y)
+            //    {
+            //        // y = y, go horizontal
+            //        for (float y = waypoints[i].position.y + 1; y <= waypoints[i /+ /1].position.y; y++)
+            //        {
+            //           Transform _obstacle = Instantiate(obstacles[0], new Vector3//(waypoints[i].position.x, y, 0), Quaternion.identity);
+            //            //_obstacle.transform.parent = obstacles.;
+            //        }
+            //    }
+            //}
+
             //remove nodes from obstacles
             foreach (GameObject node in nodes)
             {

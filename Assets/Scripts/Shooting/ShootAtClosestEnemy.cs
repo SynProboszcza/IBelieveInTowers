@@ -25,6 +25,10 @@ public class ShootAtClosestEnemy : MonoBehaviour
     public bool ohk = false;
     public bool isEnemyClose = false;
     public bool ShootThisFrame = false;
+    public bool isShotgun = false;
+    public float shotgunSpreadInDegrees = 15f;
+    [Tooltip("Amount of pellets added to the left and to the right")]
+    public int shotgunPelletsToTheSides = 1;
     public Vector2 TargetPosition;
     // Start is called before the first frame update
     void Start()
@@ -66,8 +70,36 @@ public class ShootAtClosestEnemy : MonoBehaviour
 
             if ((Time.time > fireRate + timeSinceLastShot) || ShootThisFrame)
             {
-                bulletInstance = ShootAtTarget(Bullet, shootSpawnPoint.transform.position, rotation, speed, damage, ohk);
-                timeSinceLastShot = Time.time;
+                if (isShotgun)
+                {
+                    // We're going from i = 1 because we multiply shotgunSpread by it,
+                    // so zero would not suffice
+                    for (int i = 1; i <= shotgunPelletsToTheSides; i++)
+                    {
+                        // Bullet to the left
+                        Quaternion _rotation = Quaternion.Euler(0, 0, Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg + 180f - shotgunSpreadInDegrees * i);
+                        bulletInstance = ShootAtTarget(Bullet, shootSpawnPoint.transform.position, _rotation, speed, damage, ohk);
+                        
+                        // Bullet centered
+                        bulletInstance = ShootAtTarget(Bullet, shootSpawnPoint.transform.position, rotation, speed, damage, ohk);
+                        
+                        // Bullet to the right
+                        _rotation = Quaternion.Euler(0, 0, Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg + 180f + shotgunSpreadInDegrees * i);
+                        bulletInstance = ShootAtTarget(Bullet, shootSpawnPoint.transform.position, _rotation, speed, damage, ohk);
+                        
+                        timeSinceLastShot = Time.time;
+                    }
+
+                    // We're adding two bullets 15 degrees to left and to right
+                    //Quaternion rotationToLeft = Quaternion.Euler(0, 0, Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg + 180f - 15f);
+                    //Quaternion rotationToRight = Quaternion.Euler(0, 0, Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg + 180f + 15f);
+                    //bulletInstance = ShootAtTarget(Bullet, shootSpawnPoint.transform.position, rotationToRight, speed, damage, ohk);
+
+                } else
+                {
+                    bulletInstance = ShootAtTarget(Bullet, shootSpawnPoint.transform.position, rotation, speed, damage, ohk);
+                    timeSinceLastShot = Time.time;
+                }
             } 
             
         }
