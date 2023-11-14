@@ -7,6 +7,7 @@ public class Spawner : MonoBehaviour
 {
     public GameObject enemy;
     public Transform[] Waypoints;
+    [Tooltip("Time inbetween spawns")]
     public float spawnRate = 1.0f;
     public float enemySpeed = 2f;
     public float enemyHealth = 200f;
@@ -15,17 +16,13 @@ public class Spawner : MonoBehaviour
     [ReadOnly(true)]
     public int spawnCountMax = 3;
     private int spawnCount = 0;
+    public int moneyRewardPerEnemy = 0;
     public bool isSpawnAllowed = true;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
     // Update is called once per frame
     void Update()
     {
-        if (isSpawnAllowed //for disabling spawning for debugging
+        if (isSpawnAllowed // Disabling spawning for debugging
             && enemy != null 
             && Waypoints != null 
             && (Time.time > spawnRate + timeSinceLastRespawn)
@@ -39,10 +36,11 @@ public class Spawner : MonoBehaviour
     private void Spawn()
     {
         GameObject foe = Instantiate(enemy);
-        foe.GetComponent<Enemy>().setDamage(enemyDamage);
-        foe.GetComponent<Enemy>().setSpeed(enemySpeed);
-        foe.GetComponent<Enemy>().setWaypoints(Waypoints);
-        foe.GetComponent<Enemy>().setHealth(enemyHealth);
+        foe.GetComponent<Enemy>().SetDamage(enemyDamage);
+        foe.GetComponent<Enemy>().SetSpeed(enemySpeed);
+        foe.GetComponent<Enemy>().SetWaypoints(Waypoints);
+        foe.GetComponent<Enemy>().SetHealth(enemyHealth);
+        foe.GetComponent<Enemy>().SetMoneyReward(moneyRewardPerEnemy);
         spawnCount++;
     }
 }

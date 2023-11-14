@@ -15,6 +15,11 @@ TagManager:
   - Wall
   - GunSight
   - SmokeTrail
+  - SingleTagForMainGameLoop
+  - Turret
+  - Spawner
+  - ShopNode
+  - Despawner
   layers:
   - Default
   - TransparentFX
@@ -24,8 +29,8 @@ TagManager:
   - UI
   - Enemies
   - ShopNode
-  - 
-  - 
+  - ShopBackground
+  - ShopOffers
   - 
   - 
   - 
@@ -78,4 +83,10 @@ TagManager:
     locked: 0
   - name: ShopNode
     uniqueID: 2065941807
+    locked: 0
+  - name: ShopBackground
+    uniqueID: 3878366489
+    locked: 0
+  - name: ShopOffers
+    uniqueID: 4222315497
     locked: 0
