@@ -181,7 +181,7 @@ MonoBehaviour:
   shootSpawnPoint: {fileID: 1308187787142432023}
   target: {fileID: 0}
   upgradeLevel: 0
-  speed: 45
+  speed: 150
   damage: 3
   fireRate: 1
   distanceToShutoffMuzzleEffects: 0.5
