@@ -139,7 +139,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gunSprites: []
   muzzleEffectsSprites: []
-  bullets: []
+  bullets:
+  - {fileID: 6643630402151057952, guid: 15f2ae40bd733d842985fecd9275ef4e, type: 3}
+  - {fileID: 6643630402151057952, guid: 5a047b0c6832bfd489df2871630be4dd, type: 3}
+  - {fileID: 6643630402151057952, guid: 3e4b651e7a4f07e4ebff4f3accb38c2a, type: 3}
+  - {fileID: 6643630402151057952, guid: 116a823518bfa8747bab8d55939bc99a, type: 3}
   muzzleEffects: {fileID: 1308187788526392636}
   gun: {fileID: 1308187788945217784}
   shootSpawnPoint: {fileID: 1308187787142432023}
