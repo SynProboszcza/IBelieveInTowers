@@ -22,18 +22,22 @@ public class Spawner : MonoBehaviour
     public int moneyRewardPerEnemy = 0;
     //public bool simpleMode = true;
     public bool isSpawnAllowed = true;
+    public bool isSpawningConstantly = false;
 
     // Update is called once per frame
     void Update()
     {
-        if (isSpawnAllowed // Disabling spawning for debugging
+        if (
+            (isSpawnAllowed // Disabling spawning for debugging
             && enemies[whichEnemyToSpawnIndex] != null 
             && waypoints != null 
             && (Time.time > spawnRate + timeSinceLastRespawn)
             && spawnCount < spawnCountMax)
+            || isSpawningConstantly // Forcing to spawn all the time to playtest
+            && (Time.time > spawnRate + timeSinceLastRespawn)
+            )
         {
             Spawn();
-            timeSinceLastRespawn = Time.time;
         }
     }
 
@@ -45,6 +49,7 @@ public class Spawner : MonoBehaviour
         _enemy.GetComponent<Enemy>().SetWaypoints(waypoints);
         _enemy.GetComponent<Enemy>().SetHealth(enemyHealth);
         _enemy.GetComponent<Enemy>().SetMoneyReward(moneyRewardPerEnemy);
+        timeSinceLastRespawn = Time.time;
         spawnCount++;
     }
 }
