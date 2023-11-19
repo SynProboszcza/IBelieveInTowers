@@ -30,6 +30,18 @@ public class MainGameLoop : MonoBehaviour
     public float shopNodesZOffset = -2;
     public bool isDebugging = false;
     public bool isShopOpen = false;
+
+    void Awake()
+    {
+        // Doing this because difference in framerate between Editor and 
+        // an application causes differences in projectile speed
+        //
+        // This should be copied inside MainMenuLoop and MainGameLoop
+        // (i think(?)(and maybe every scene?))
+        QualitySettings.vSyncCount = 0;  // VSync must be disabled
+        Application.targetFrameRate = 60;
+    }
+
     // Start is called before the first frame update
     void Start()
     {
