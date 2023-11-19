@@ -169,11 +169,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99512d57b42bce94f875d5a05b9ad28e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Bullet: {fileID: 6643630402151057952, guid: 116a823518bfa8747bab8d55939bc99a, type: 3}
-  shootSpawnPoint: {fileID: 1308187787142432023}
-  Gun: {fileID: 1308187788945217784}
+  gunSprites: []
+  muzzleEffectsSprites: []
+  bullets:
+  - {fileID: 6643630402151057952, guid: 116a823518bfa8747bab8d55939bc99a, type: 3}
+  - {fileID: 6643630402151057952, guid: 5a047b0c6832bfd489df2871630be4dd, type: 3}
+  - {fileID: 6643630402151057952, guid: 15f2ae40bd733d842985fecd9275ef4e, type: 3}
+  - {fileID: 6643630402151057952, guid: 3e4b651e7a4f07e4ebff4f3accb38c2a, type: 3}
   muzzleEffects: {fileID: 1308187788526392636}
-  Target: {fileID: 0}
+  gun: {fileID: 1308187788945217784}
+  shootSpawnPoint: {fileID: 1308187787142432023}
+  target: {fileID: 0}
+  upgradeLevel: 0
   speed: 30
   damage: 13
   fireRate: 0.5
@@ -181,8 +188,14 @@ MonoBehaviour:
   bulletRange: 5
   ohk: 0
   isEnemyClose: 0
-  ShootThisFrame: 0
-  TargetPosition: {x: 0, y: 0}
+  shootThisFrame: 0
+  isShotgun: 0
+  shotgunSpreadInDegrees: 15
+  shotgunPelletsToTheSides: 1
+  targetPosition: {x: 0, y: 0}
+  srBase: {fileID: 0}
+  srGun: {fileID: 0}
+  srMuzzleEffects: {fileID: 0}
 --- !u!1 &1308187788526392636
 GameObject:
   m_ObjectHideFlags: 0

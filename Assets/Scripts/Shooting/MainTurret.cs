@@ -2,14 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ShootAtClosestEnemy : MonoBehaviour
+public class MainTurret : MonoBehaviour
 {
-    public GameObject Bullet;
-    public GameObject shootSpawnPoint;
-    public GameObject Gun;
+    public Sprite[] gunSprites;
+    public Sprite[] muzzleEffectsSprites;
+    public GameObject[] bullets;
     public GameObject muzzleEffects;
-    public GameObject Target;
+    public GameObject gun;
+    public GameObject shootSpawnPoint;
+    public GameObject target;
     private GameObject bulletInstance;
+    [Range(0, 3)]
+    public int upgradeLevel = 0;
     //public int layerIndex = 0;
     public float speed = 0.1f;
     public float damage = 13;
@@ -24,15 +28,21 @@ public class ShootAtClosestEnemy : MonoBehaviour
     [Tooltip("OneHitKill")]
     public bool ohk = false;
     public bool isEnemyClose = false;
-    public bool ShootThisFrame = false;
+    public bool shootThisFrame = false;
     public bool isShotgun = false;
     public float shotgunSpreadInDegrees = 15f;
     [Tooltip("Amount of pellets added to the left and to the right")]
     public int shotgunPelletsToTheSides = 1;
-    public Vector2 TargetPosition;
+    public Vector2 targetPosition;
+    public SpriteRenderer srBase;
+    public SpriteRenderer srGun;
+    public SpriteRenderer srMuzzleEffects;
     // Start is called before the first frame update
     void Start()
     {
+        srBase = GetComponent<SpriteRenderer>();
+        srGun = transform.GetChild(0).GetComponent<SpriteRenderer>();
+        srMuzzleEffects = transform.GetChild(0).transform.GetChild(0).transform.GetChild(0).GetComponent<SpriteRenderer>();
         muzzleEffects.SetActive(false);
     }
 
@@ -59,16 +69,16 @@ public class ShootAtClosestEnemy : MonoBehaviour
             //}
         }
 
-        if (isEnemyClose && Target != null)
+        if (isEnemyClose && target != null)
         {
-            TargetPosition = Target.transform.position;
-            Vector2 direction = new Vector2(shootSpawnPoint.transform.position.x, shootSpawnPoint.transform.position.y) - TargetPosition;
+            targetPosition = target.transform.position;
+            Vector2 direction = new Vector2(shootSpawnPoint.transform.position.x, shootSpawnPoint.transform.position.y) - targetPosition;
             direction.Normalize();
             Quaternion rotation = Quaternion.Euler(0, 0, Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg + 180f);
             
-            Gun.transform.rotation = rotation;
+            gun.transform.rotation = rotation;
 
-            if ((Time.time > fireRate + timeSinceLastShot) || ShootThisFrame)
+            if ((Time.time > fireRate + timeSinceLastShot) || shootThisFrame)
             {
                 if (isShotgun)
                 {
@@ -78,21 +88,21 @@ public class ShootAtClosestEnemy : MonoBehaviour
                     {
                         // Bullet to the left
                         Quaternion _rotation = Quaternion.Euler(0, 0, Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg + 180f - shotgunSpreadInDegrees * i);
-                        bulletInstance = ShootAtTarget(Bullet, shootSpawnPoint.transform.position, _rotation, speed, damage, bulletRange, ohk);
+                        bulletInstance = ShootAtTarget(bullets[upgradeLevel], shootSpawnPoint.transform.position, _rotation, speed, damage, bulletRange, ohk);
                         
                         // Bullet centered
-                        bulletInstance = ShootAtTarget(Bullet, shootSpawnPoint.transform.position, rotation, speed, damage, bulletRange, ohk);
+                        bulletInstance = ShootAtTarget(bullets[upgradeLevel], shootSpawnPoint.transform.position, rotation, speed, damage, bulletRange, ohk);
                         
                         // Bullet to the right
                         _rotation = Quaternion.Euler(0, 0, Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg + 180f + shotgunSpreadInDegrees * i);
-                        bulletInstance = ShootAtTarget(Bullet, shootSpawnPoint.transform.position, _rotation, speed, damage, bulletRange, ohk);
+                        bulletInstance = ShootAtTarget(bullets[upgradeLevel], shootSpawnPoint.transform.position, _rotation, speed, damage, bulletRange, ohk);
                         
                         timeSinceLastShot = Time.time;
                     }
                 } else
                 {
                     // This is main shooting
-                    bulletInstance = ShootAtTarget(Bullet, shootSpawnPoint.transform.position, rotation, speed, damage, bulletRange, ohk);
+                    bulletInstance = ShootAtTarget(bullets[upgradeLevel], shootSpawnPoint.transform.position, rotation, speed, damage, bulletRange, ohk);
                     timeSinceLastShot = Time.time;
                 }
             } 
@@ -110,7 +120,7 @@ public class ShootAtClosestEnemy : MonoBehaviour
     {
         if(collision.CompareTag("Enemy"))
         {
-            Target = collision.gameObject;
+            target = collision.gameObject;
             isEnemyClose = true;
         }
     }
@@ -124,7 +134,7 @@ public class ShootAtClosestEnemy : MonoBehaviour
     {
         if (collision.CompareTag("Enemy"))
         {
-            Target = collision.gameObject;
+            target = collision.gameObject;
             isEnemyClose = true;
         }
     }
@@ -138,5 +148,23 @@ public class ShootAtClosestEnemy : MonoBehaviour
         _bullet.GetComponent<Bullet>().Setohk(oneHitKill);
         muzzleEffects.SetActive(true);
         return _bullet;
+    }
+
+    private bool LevelUp()
+    {
+        if(upgradeLevel < 3)
+        {
+            // Update sprites
+
+            // Cost money
+            // Upgrade speed
+            // Upgrade damage
+            // Upgrade bulletRange
+            upgradeLevel++;
+            return true;
+        } else
+        {
+            return false;
+        }
     }
 }

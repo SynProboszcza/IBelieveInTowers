@@ -45,30 +45,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d223efecb0297549aab0056f4c38384, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemy: {fileID: 1800778710029251882, guid: 5952b40b45f223840898b39f4ee03c69, type: 3}
-  Waypoints:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  enemy1: {fileID: 0}
+  enemies:
+  - {fileID: 1800778710029251882, guid: 63c38e858056ae44f85267a4c27c3641, type: 3}
+  - {fileID: 1800778710029251882, guid: 8eb211a25e662cc45bab080028be16b8, type: 3}
+  - {fileID: 1800778710029251882, guid: 1aa4dabccfe8de2409ef83e4d873edf0, type: 3}
+  - {fileID: 1800778710029251882, guid: 6fb70ba20ab76e34f9bedc6ccdfd3712, type: 3}
+  - {fileID: 1800778710029251882, guid: a88eeb599fba4034985be61950d1f8a3, type: 3}
+  waypoints: []
   spawnRate: 0.5
   enemySpeed: 2
   enemyHealth: 50
-  timeSinceLastRespawn: 0
   enemyDamage: 7
   spawnCountMax: 30
+  whichEnemyToSpawnIndex: 0
   moneyRewardPerEnemy: 0
   isSpawnAllowed: 1
 --- !u!212 &8224584258733623559
