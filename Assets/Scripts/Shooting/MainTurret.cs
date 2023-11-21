@@ -172,12 +172,15 @@ public class MainTurret : MonoBehaviour
     {
         if(upgradeLevel < 3)
         {
-            // Update sprites
-       
             // Money cost is handled by UpgradeTurret.cs
             // Upgrade speed
+            speed *= 1.2f;
             // Upgrade damage
+            damage *= 1.2f;
             // Upgrade bulletRange
+            bulletRange *= 1.2f;
+            // Potentially upgrade sell cost
+
             upgradeLevel++;
             return true;
         } else
