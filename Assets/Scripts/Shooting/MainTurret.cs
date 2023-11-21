@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class MainTurret : MonoBehaviour
 {
-    public Sprite[] gunSprites;
+    public Sprite[] baseSprites;
     public Sprite[] muzzleEffectsSprites;
     public GameObject[] bullets;
     public GameObject muzzleEffects;
@@ -35,40 +35,41 @@ public class MainTurret : MonoBehaviour
     public int shotgunPelletsToTheSides = 1;
     public Vector2 targetPosition;
     public SpriteRenderer srBase;
-    public SpriteRenderer srGun;
+    public SpriteRenderer srGun; // For now gun does not need changing with upgrades
     public SpriteRenderer srMuzzleEffects;
     // Start is called before the first frame update
     void Start()
     {
         srBase = GetComponent<SpriteRenderer>();
-        srGun = transform.GetChild(0).GetComponent<SpriteRenderer>();
-        srMuzzleEffects = transform.GetChild(0).transform.GetChild(0).transform.GetChild(0).GetComponent<SpriteRenderer>();
+        srGun = transform.GetChild(0).GetComponent<SpriteRenderer>(); // For now gun does not need changing with upgrades
+        //srMuzzleEffects = transform.GetChild(0).transform.GetChild(0).transform.GetChild(0).GetComponent<SpriteRenderer>();
+        srMuzzleEffects = transform.Find("Gun").transform.Find("Muzzle").transform.Find("MuzzleEffects").GetComponent<SpriteRenderer>();
         muzzleEffects.SetActive(false);
     }
 
     // Update is called once per frame
     void Update()
     {
-        // If there is no bullet (it hit sth)
-        // disable muzzle effects
+        // -----------------------------------------------------------------------------
+        // Check for existing bullets, and if they're far enough to disable muzzle effects
+        // -----------------------------------------------------------------------------
         if (bulletInstance == null)
         {
             muzzleEffects.SetActive(false);
         } else if (bulletInstance != null)
         {
-            // If bullet exists, check its distance
-            // and remove it when it gets away
             float distance = Vector3.Distance(bulletInstance.transform.position, shootSpawnPoint.transform.position);
             if(distance > distanceToShutoffMuzzleEffects)
             {
                 muzzleEffects.SetActive(false);
             }
-            //if(distance > bulletRange) 
-            //{ 
-            //    DestroyBullet(bulletInstance);
-            //}
         }
-
+        // -----------------------------------------------------------------------------
+        // Handle shooting:
+        //  calculate angle, instantiate and configure correct bullets,
+        //  rotate the gun pointing at enemy, handle fire rate,
+        //  handle shotgun shooting.
+        // -----------------------------------------------------------------------------
         if (isEnemyClose && target != null)
         {
             targetPosition = target.transform.position;
@@ -108,6 +109,10 @@ public class MainTurret : MonoBehaviour
             } 
             
         }
+        // -----------------------------------------------------------------------------
+        // We need to update it every frame, so it does not lag behind shooting.
+        // -----------------------------------------------------------------------------
+        UpdateBaseSprite();
     }
 
     private void DestroyBullet(GameObject bullet)
@@ -146,17 +151,30 @@ public class MainTurret : MonoBehaviour
         _bullet.GetComponent<Bullet>().SetDamage(bulletDamage);
         _bullet.GetComponent<Bullet>().SetDistanceToLive(bulletRange);
         _bullet.GetComponent<Bullet>().Setohk(oneHitKill);
+        UpdateMuzzleEffects();
         muzzleEffects.SetActive(true);
         return _bullet;
     }
 
-    private bool LevelUp()
+    public void UpdateMuzzleEffects()
+    {
+        // Exposed so other objects can update it
+        // We dont need to include it in Update method, just every shot
+        srMuzzleEffects.sprite = muzzleEffectsSprites[upgradeLevel];
+    }
+
+    public void UpdateBaseSprite()
+    {
+        srBase.sprite = baseSprites[upgradeLevel];
+    }
+
+    public bool LevelUp()
     {
         if(upgradeLevel < 3)
         {
             // Update sprites
-
-            // Cost money
+       
+            // Money cost is handled by UpgradeTurret.cs
             // Upgrade speed
             // Upgrade damage
             // Upgrade bulletRange

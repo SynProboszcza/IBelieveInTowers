@@ -24,7 +24,7 @@ public class TurretOffer : MonoBehaviour
 
     public void BuyTurret(GameObject turret, int cost)
     {
-        if (mainGame.GetComponent<MainGameLoop>().CanBuyTurret(cost))
+        if (mainGame.GetComponent<MainGameLoop>().CanBuyTurretOrUpgrade(cost))
         {
             Instantiate(turret, new Vector3(transform.parent.transform.parent.position.x, transform.parent.transform.parent.position.y, 0), Quaternion.identity);
             CloseNode();
