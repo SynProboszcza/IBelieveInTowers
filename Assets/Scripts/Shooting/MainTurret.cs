@@ -209,6 +209,11 @@ public class MainTurret : MonoBehaviour
         srBase.sprite = baseSprites[upgradeLevel];
     }
 
+    public int GetUpgradeLevel()
+    {
+        return upgradeLevel;
+    }
+
     public bool LevelUp()
     {
         if(upgradeLevel < 3)
