@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 1308187787354350592}
   - component: {fileID: 1308187787354350593}
   m_Layer: 0
-  m_Name: WIPtestingLevelingUp
+  m_Name: Shotgun
   m_TagString: Turret
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -104,7 +104,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 3
+  m_Radius: 2.5
 --- !u!50 &1308187787354350592
 Rigidbody2D:
   serializedVersion: 4
@@ -144,25 +144,25 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 374966464cee1b147b5f4e8b06e4e3db, type: 3}
   - {fileID: 21300000, guid: 41af84dc600e15c469eccab8dc8d5b08, type: 3}
   muzzleEffectsSprites:
-  - {fileID: 21300000, guid: 71eb20b78fec67648878c5dd729ca6e1, type: 3}
-  - {fileID: 21300000, guid: fa2b07c7b29ab9c498f59ee758719244, type: 3}
-  - {fileID: 21300000, guid: 1b323b2a771651e47979b425fce74abd, type: 3}
-  - {fileID: 21300000, guid: 3f67c261bf476194ab71d2dbc416ffd2, type: 3}
+  - {fileID: 21300000, guid: 7c0fab05188e36242bc638bf09824a70, type: 3}
+  - {fileID: 21300000, guid: 63d727767388d2e46906e0a088acfb87, type: 3}
+  - {fileID: 21300000, guid: 672407ee07ca79847a3553858de6e33b, type: 3}
+  - {fileID: 21300000, guid: 11b52a119b3f0864dbbca9d2cce7c3e6, type: 3}
   bullets:
-  - {fileID: 6643630402151057952, guid: 4eb6a482f82c4234ba839a6c29339301, type: 3}
-  - {fileID: 6643630402151057952, guid: 15f2ae40bd733d842985fecd9275ef4e, type: 3}
   - {fileID: 6643630402151057952, guid: 3e4b651e7a4f07e4ebff4f3accb38c2a, type: 3}
+  - {fileID: 6643630402151057952, guid: 15f2ae40bd733d842985fecd9275ef4e, type: 3}
+  - {fileID: 6643630402151057952, guid: 4eb6a482f82c4234ba839a6c29339301, type: 3}
   - {fileID: 6643630402151057952, guid: 5a047b0c6832bfd489df2871630be4dd, type: 3}
   muzzleEffects: {fileID: 1308187788526392636}
   gun: {fileID: 1308187788945217784}
   shootSpawnPoint: {fileID: 1308187787142432023}
   upgradeLevel: 0
   bulletSpeed: 100
-  bulletDamage: 13
-  fireRate: 0.1
-  bulletRange: 3
-  distanceToShutoffMuzzleEffects: 0.4
-  upgradeCost: 100
+  bulletDamage: 4
+  fireRate: 1
+  bulletRange: 5
+  distanceToShutoffMuzzleEffects: 0.5
+  upgradeCost: 150
   damageMultipliers:
   - 1
   - 1.2
@@ -186,9 +186,9 @@ MonoBehaviour:
   ohk: 0
   isEnemyClose: 0
   shootThisFrame: 0
-  isShotgun: 0
-  shotgunSpreadInDegrees: 15
-  shotgunPelletsToTheSides: 1
+  isShotgun: 1
+  shotgunSpreadInDegrees: 5
+  shotgunPelletsToTheSides: 3
   targetPosition: {x: 0, y: 0}
   srBase: {fileID: 0}
   srMuzzleEffects: {fileID: 0}
@@ -292,9 +292,25 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1308187787354350621}
     m_Modifications:
+    - target: {fileID: 1241370380374467516, guid: 005d6e2d8bad12f41aa8ab98fbd6104b, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 8106851fa14714291a7e612710e58fb6, type: 3}
     - target: {fileID: 1241370380374467517, guid: 005d6e2d8bad12f41aa8ab98fbd6104b, type: 3}
       propertyPath: m_RootOrder
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1241370380374467517, guid: 005d6e2d8bad12f41aa8ab98fbd6104b, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1241370380374467517, guid: 005d6e2d8bad12f41aa8ab98fbd6104b, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1241370380374467517, guid: 005d6e2d8bad12f41aa8ab98fbd6104b, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1241370380374467517, guid: 005d6e2d8bad12f41aa8ab98fbd6104b, type: 3}
       propertyPath: m_LocalPosition.x
@@ -342,7 +358,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1241370380818267729, guid: 005d6e2d8bad12f41aa8ab98fbd6104b, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.296
+      value: 0.201
+      objectReference: {fileID: 0}
+    - target: {fileID: 1241370380818267729, guid: 005d6e2d8bad12f41aa8ab98fbd6104b, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.011
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 005d6e2d8bad12f41aa8ab98fbd6104b, type: 3}

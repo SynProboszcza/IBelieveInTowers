@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 1308187787354350592}
   - component: {fileID: 1308187787354350593}
   m_Layer: 0
-  m_Name: WIPtestingLevelingUp
+  m_Name: SMG
   m_TagString: Turret
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -158,16 +158,16 @@ MonoBehaviour:
   shootSpawnPoint: {fileID: 1308187787142432023}
   upgradeLevel: 0
   bulletSpeed: 100
-  bulletDamage: 13
-  fireRate: 0.1
-  bulletRange: 3
-  distanceToShutoffMuzzleEffects: 0.4
-  upgradeCost: 100
+  bulletDamage: 5
+  fireRate: 0.2
+  bulletRange: 2
+  distanceToShutoffMuzzleEffects: 0.2
+  upgradeCost: 30
   damageMultipliers:
   - 1
-  - 1.2
-  - 1.4
-  - 1.6
+  - 1.5
+  - 2
+  - 3
   speedMultipliers:
   - 1
   - 1.2
@@ -175,14 +175,14 @@ MonoBehaviour:
   - 1.6
   fireRateMultipliers:
   - 1
-  - 0.9
   - 0.8
-  - 0.7
+  - 0.6
+  - 0.4
   bulletRangeMultipliers:
   - 1
-  - 1.2
-  - 1.4
-  - 1.6
+  - 2
+  - 3
+  - 4
   ohk: 0
   isEnemyClose: 0
   shootThisFrame: 0
@@ -292,9 +292,25 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1308187787354350621}
     m_Modifications:
+    - target: {fileID: 1241370380374467516, guid: 005d6e2d8bad12f41aa8ab98fbd6104b, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 5853bdfefb7ea4dc1ab236afe076eea9, type: 3}
     - target: {fileID: 1241370380374467517, guid: 005d6e2d8bad12f41aa8ab98fbd6104b, type: 3}
       propertyPath: m_RootOrder
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1241370380374467517, guid: 005d6e2d8bad12f41aa8ab98fbd6104b, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1241370380374467517, guid: 005d6e2d8bad12f41aa8ab98fbd6104b, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1241370380374467517, guid: 005d6e2d8bad12f41aa8ab98fbd6104b, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1241370380374467517, guid: 005d6e2d8bad12f41aa8ab98fbd6104b, type: 3}
       propertyPath: m_LocalPosition.x
@@ -342,7 +358,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1241370380818267729, guid: 005d6e2d8bad12f41aa8ab98fbd6104b, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.296
+      value: 0.143
+      objectReference: {fileID: 0}
+    - target: {fileID: 1241370380818267729, guid: 005d6e2d8bad12f41aa8ab98fbd6104b, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.009
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 005d6e2d8bad12f41aa8ab98fbd6104b, type: 3}

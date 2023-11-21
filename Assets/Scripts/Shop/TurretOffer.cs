@@ -5,7 +5,7 @@ using UnityEngine;
 public class TurretOffer : MonoBehaviour
 {
     public GameObject turretPrefab;
-    public GameObject mainGame;
+    private GameObject mainGame;
     public int turretCost = 50;
     // Start is called before the first frame update
     void Start()

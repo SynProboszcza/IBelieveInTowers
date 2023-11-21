@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 1308187787354350592}
   - component: {fileID: 1308187787354350593}
   m_Layer: 0
-  m_Name: WIPtestingLevelingUp
+  m_Name: RocketLauncher
   m_TagString: Turret
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -158,11 +158,11 @@ MonoBehaviour:
   shootSpawnPoint: {fileID: 1308187787142432023}
   upgradeLevel: 0
   bulletSpeed: 100
-  bulletDamage: 13
-  fireRate: 0.1
-  bulletRange: 3
+  bulletDamage: 200
+  fireRate: 2
+  bulletRange: 5
   distanceToShutoffMuzzleEffects: 0.4
-  upgradeCost: 100
+  upgradeCost: 200
   damageMultipliers:
   - 1
   - 1.2
@@ -292,6 +292,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1308187787354350621}
     m_Modifications:
+    - target: {fileID: 1241370379988151928, guid: 005d6e2d8bad12f41aa8ab98fbd6104b, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.109
+      objectReference: {fileID: 0}
+    - target: {fileID: 1241370379988151928, guid: 005d6e2d8bad12f41aa8ab98fbd6104b, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.029
+      objectReference: {fileID: 0}
+    - target: {fileID: 1241370380374467516, guid: 005d6e2d8bad12f41aa8ab98fbd6104b, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 74b5f8e4cb8c54311b7fe144a9009818, type: 3}
     - target: {fileID: 1241370380374467517, guid: 005d6e2d8bad12f41aa8ab98fbd6104b, type: 3}
       propertyPath: m_RootOrder
       value: 1

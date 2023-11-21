@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 1308187787354350592}
   - component: {fileID: 1308187787354350593}
   m_Layer: 0
-  m_Name: WIPtestingLevelingUp
+  m_Name: Boltgun
   m_TagString: Turret
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -157,22 +157,22 @@ MonoBehaviour:
   gun: {fileID: 1308187788945217784}
   shootSpawnPoint: {fileID: 1308187787142432023}
   upgradeLevel: 0
-  bulletSpeed: 100
-  bulletDamage: 13
-  fireRate: 0.1
-  bulletRange: 3
-  distanceToShutoffMuzzleEffects: 0.4
-  upgradeCost: 100
+  bulletSpeed: 150
+  bulletDamage: 25
+  fireRate: 1
+  bulletRange: 5
+  distanceToShutoffMuzzleEffects: 0.5
+  upgradeCost: 150
   damageMultipliers:
   - 1
-  - 1.2
-  - 1.4
-  - 1.6
+  - 2
+  - 3
+  - 4
   speedMultipliers:
   - 1
-  - 1.2
-  - 1.4
-  - 1.6
+  - 1.5
+  - 2
+  - 2.5
   fireRateMultipliers:
   - 1
   - 0.9
@@ -180,9 +180,9 @@ MonoBehaviour:
   - 0.7
   bulletRangeMultipliers:
   - 1
-  - 1.2
-  - 1.4
-  - 1.6
+  - 2
+  - 3
+  - 4
   ohk: 0
   isEnemyClose: 0
   shootThisFrame: 0
@@ -292,6 +292,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1308187787354350621}
     m_Modifications:
+    - target: {fileID: 1241370380374467516, guid: 005d6e2d8bad12f41aa8ab98fbd6104b, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 6e6c6d9456a04428c834cc6c9c5742cc, type: 3}
     - target: {fileID: 1241370380374467517, guid: 005d6e2d8bad12f41aa8ab98fbd6104b, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -342,7 +346,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1241370380818267729, guid: 005d6e2d8bad12f41aa8ab98fbd6104b, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.296
+      value: 0.27
+      objectReference: {fileID: 0}
+    - target: {fileID: 1241370380818267729, guid: 005d6e2d8bad12f41aa8ab98fbd6104b, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.011
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 005d6e2d8bad12f41aa8ab98fbd6104b, type: 3}

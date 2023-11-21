@@ -5,7 +5,7 @@ using UnityEngine;
 public class UpgradeTurret : MonoBehaviour
 {
     private GameObject mainGame;
-    public int upgradeCost = 100;
+    private int upgradeCost = 100;
     // Start is called before the first frame update
     void Start()
     {
@@ -39,5 +39,10 @@ public class UpgradeTurret : MonoBehaviour
                 Debug.Log("We checked and player could afford, and then not");
             }
         }
+    }
+
+    public void SetUpgradeCost(int cost)
+    {
+        this.upgradeCost = cost;
     }
 }
