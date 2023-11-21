@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 1308187787354350592}
   - component: {fileID: 1308187787354350593}
   m_Layer: 0
-  m_Name: WIPtestingLevelingUp
+  m_Name: WIPtestingLevelingUp 1
   m_TagString: Turret
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

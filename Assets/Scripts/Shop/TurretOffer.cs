@@ -14,7 +14,8 @@ public class TurretOffer : MonoBehaviour
         // Set turret base sprite
         gameObject.GetComponent<SpriteRenderer>().sprite = turretPrefab.GetComponent<SpriteRenderer>().sprite;
         // Set turret weapon sprite
-        gameObject.transform.GetChild(0).GetComponent<SpriteRenderer>().sprite = turretPrefab.transform.GetChild(0).GetComponent<SpriteRenderer>().sprite;
+        gameObject.transform.Find("WeaponSprite").GetComponent<SpriteRenderer>().sprite = turretPrefab.transform.Find("Gun").GetComponent<SpriteRenderer>().sprite;
+
     }
 
     private void OnMouseDown()
@@ -24,7 +25,7 @@ public class TurretOffer : MonoBehaviour
 
     public void BuyTurret(GameObject turret, int cost)
     {
-        if (mainGame.GetComponent<MainGameLoop>().CanBuyTurretOrUpgrade(cost))
+        if (mainGame.GetComponent<MainGameLoop>().CanBuyTurret(cost))
         {
             Instantiate(turret, new Vector3(transform.parent.transform.parent.position.x, transform.parent.transform.parent.position.y, 0), Quaternion.identity);
             CloseNode();

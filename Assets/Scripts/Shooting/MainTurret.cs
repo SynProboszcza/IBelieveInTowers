@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class MainTurret : MonoBehaviour
 {
+    // Base references to modify and access
+    // ----------------------------------------------------------------------
     public Sprite[] baseSprites;
     public Sprite[] muzzleEffectsSprites;
     public GameObject[] bullets;
@@ -12,37 +14,62 @@ public class MainTurret : MonoBehaviour
     public GameObject shootSpawnPoint;
     public GameObject target;
     private GameObject bulletInstance;
+    // Upgrade slider
+    // ----------------------------------------------------------------------
     [Range(0, 3)]
     public int upgradeLevel = 0;
-    //public int layerIndex = 0;
-    public float speed = 0.1f;
-    public float damage = 13;
-    //private float angle = 0;
+    // Base bullet attributes
+    // ----------------------------------------------------------------------
+    public float bulletSpeed = 100f; 
+    public float bulletDamage = 13;
     [Tooltip("Amount of time in seconds inbetween shots")] 
     public float fireRate = 1;
-    private float timeSinceLastShot;
-    [Tooltip("Distance after which muzzle effects disappear")]
-    public float distanceToShutoffMuzzleEffects = 0.5f;
     [Tooltip("Distance after which bullets disappear")]
     public float bulletRange = 5f;
+    // Fire rate  
+    // ----------------------------------------------------------------------
+    private float timeSinceLastShot;
+    // Distance to disable muzzle effects
+    // ----------------------------------------------------------------------
+    [Tooltip("Distance after which muzzle effects disappear")]
+    public float distanceToShutoffMuzzleEffects = 0.5f;
+    // Multipliers of upgrades
+    // ----------------------------------------------------------------------
+    [Tooltip("Array of bullet damage bonuses for upgrading")]
+    public float[] damageMultiplier;
+    [Tooltip("Array of bullet speed bonuses for upgrading")]
+    public float[] speedMultiplier;
+    [Tooltip("Array of fire rate bonuses for upgrading")]
+    public float[] fireRateMultiplier;
+    [Tooltip("Array of bullet range bonuses for upgrading")]
+    public float[] bulletRangeMultiplier;
+    // OneHitKill mechanic, potential upgrade
+    // -----------------------------------------------------------------------
     [Tooltip("OneHitKill")]
     public bool ohk = false;
+    // Shooting helpers
+    // -----------------------------------------------------------------------
     public bool isEnemyClose = false;
     public bool shootThisFrame = false;
+    // Settings for a shotgun mode
+    // -----------------------------------------------------------------------
     public bool isShotgun = false;
     public float shotgunSpreadInDegrees = 15f;
     [Tooltip("Amount of pellets added to the left and to the right")]
     public int shotgunPelletsToTheSides = 1;
+    // Current target location
+    // -----------------------------------------------------------------------
     public Vector2 targetPosition;
+    // SpriteRenderers of gameObjects we want to update sprites of
+    // -----------------------------------------------------------------------
     public SpriteRenderer srBase;
     public SpriteRenderer srGun; // For now gun does not need changing with upgrades
     public SpriteRenderer srMuzzleEffects;
-    // Start is called before the first frame update
+
     void Start()
     {
         srBase = GetComponent<SpriteRenderer>();
         srGun = transform.GetChild(0).GetComponent<SpriteRenderer>(); // For now gun does not need changing with upgrades
-        //srMuzzleEffects = transform.GetChild(0).transform.GetChild(0).transform.GetChild(0).GetComponent<SpriteRenderer>();
         srMuzzleEffects = transform.Find("Gun").transform.Find("Muzzle").transform.Find("MuzzleEffects").GetComponent<SpriteRenderer>();
         muzzleEffects.SetActive(false);
     }
@@ -79,6 +106,10 @@ public class MainTurret : MonoBehaviour
             
             gun.transform.rotation = rotation;
 
+            // -----------------------------------------------------------------
+            // Fire rate handling has a backdoor to debug from Editor
+            // (shootThisFrame can be checked/unchecked to see what happens)
+            // -----------------------------------------------------------------
             if ((Time.time > fireRate + timeSinceLastShot) || shootThisFrame)
             {
                 if (isShotgun)
@@ -87,30 +118,32 @@ public class MainTurret : MonoBehaviour
                     // so zero would be the same rotation as shooting straight
                     for (int i = 1; i <= shotgunPelletsToTheSides; i++)
                     {
-                        // Bullet to the left
+                        // Bullet to the side
                         Quaternion _rotation = Quaternion.Euler(0, 0, Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg + 180f - shotgunSpreadInDegrees * i);
-                        bulletInstance = ShootAtTarget(bullets[upgradeLevel], shootSpawnPoint.transform.position, _rotation, speed, damage, bulletRange, ohk);
+                        bulletInstance = ShootAtTarget(bullets[upgradeLevel], shootSpawnPoint.transform.position, _rotation, bulletSpeed, bulletDamage, bulletRange, ohk);
                         
                         // Bullet centered
-                        bulletInstance = ShootAtTarget(bullets[upgradeLevel], shootSpawnPoint.transform.position, rotation, speed, damage, bulletRange, ohk);
+                        bulletInstance = ShootAtTarget(bullets[upgradeLevel], shootSpawnPoint.transform.position, rotation, bulletSpeed, bulletDamage, bulletRange, ohk);
                         
-                        // Bullet to the right
+                        // Bullet to the other side
                         _rotation = Quaternion.Euler(0, 0, Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg + 180f + shotgunSpreadInDegrees * i);
-                        bulletInstance = ShootAtTarget(bullets[upgradeLevel], shootSpawnPoint.transform.position, _rotation, speed, damage, bulletRange, ohk);
+                        bulletInstance = ShootAtTarget(bullets[upgradeLevel], shootSpawnPoint.transform.position, _rotation, bulletSpeed, bulletDamage, bulletRange, ohk);
                         
                         timeSinceLastShot = Time.time;
                     }
                 } else
                 {
                     // This is main shooting
-                    bulletInstance = ShootAtTarget(bullets[upgradeLevel], shootSpawnPoint.transform.position, rotation, speed, damage, bulletRange, ohk);
+                    bulletInstance = ShootAtTarget(bullets[upgradeLevel], shootSpawnPoint.transform.position, rotation, bulletSpeed, bulletDamage, bulletRange, ohk);
                     timeSinceLastShot = Time.time;
                 }
             } 
             
         }
         // -----------------------------------------------------------------------------
-        // We need to update it every frame, so it does not lag behind shooting.
+        // We need to update base sprite every frame, so it does not lag behind shooting,
+        // because muzzle effects upgrades are processed with every shot,
+        // not with every frame.
         // -----------------------------------------------------------------------------
         UpdateBaseSprite();
     }
@@ -174,9 +207,9 @@ public class MainTurret : MonoBehaviour
         {
             // Money cost is handled by UpgradeTurret.cs
             // Upgrade speed
-            speed *= 1.2f;
+            bulletSpeed *= 1.2f;
             // Upgrade damage
-            damage *= 1.2f;
+            bulletDamage *= 1.2f;
             // Upgrade bulletRange
             bulletRange *= 1.2f;
             // Potentially upgrade sell cost

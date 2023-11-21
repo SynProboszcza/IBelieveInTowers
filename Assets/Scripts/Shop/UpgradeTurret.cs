@@ -20,10 +20,24 @@ public class UpgradeTurret : MonoBehaviour
 
     private void OnMouseDown()
     {
-        Debug.Log("no tak, kliknelo sie");
-        if (mainGame.GetComponent<MainGameLoop>().CanBuyTurretOrUpgrade(upgradeCost)) 
+        // If player can afford
+        // Try to pay
+        // Check if upgraded
+        if (mainGame.GetComponent<MainGameLoop>().CanPlayerBearCost(upgradeCost)) 
         {
-            transform.parent.gameObject.GetComponent<MainTurret>().LevelUp();
+            if (mainGame.GetComponent<MainGameLoop>().PayWithPlayerMoney(upgradeCost))
+            {
+                if(transform.parent.gameObject.GetComponent<MainTurret>().LevelUp())
+                {
+                    Debug.Log("Upgraded");
+                } else
+                {
+                    Debug.Log("NOT Upgraded");
+                }
+            } else
+            {
+                Debug.Log("We checked and player could afford, and then not");
+            }
         }
     }
 }

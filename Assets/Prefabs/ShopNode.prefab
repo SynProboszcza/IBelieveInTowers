@@ -100,7 +100,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1128f315adf8f904fbb05f2329a57ee1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  turretPrefab: {fileID: 1308187787354350598, guid: faa361a0c80793d40a84b024c0da90d4, type: 3}
+  turretPrefab: {fileID: 1308187787354350598, guid: 186ea5601f25f8143a848f1728413169, type: 3}
   mainGame: {fileID: 0}
   turretCost: 50
 --- !u!61 &8679894708563823697
@@ -484,7 +484,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1128f315adf8f904fbb05f2329a57ee1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  turretPrefab: {fileID: 1308187787354350598, guid: eca51d446979ef34aad4ccb0e99dd0f5, type: 3}
+  turretPrefab: {fileID: 1308187787354350598, guid: 4d8ecfb27d261aa45bf5ece67f4efb1b, type: 3}
   mainGame: {fileID: 0}
   turretCost: 50
 --- !u!61 &7437376552609581128

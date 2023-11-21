@@ -72,13 +72,38 @@ public class MainGameLoop : MonoBehaviour
 
     }
 
-    public bool CanBuyTurretOrUpgrade(int cost)
+    public bool CanBuyTurret(int cost)
     {
         if(playerMoney >= cost)
         {
             playerMoney -= cost;
             return true;
         } else
+        {
+            return false;
+        }
+    }
+
+    public bool CanPlayerBearCost(int cost)
+    {
+        if (playerMoney >= cost)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public bool PayWithPlayerMoney(int cost)
+    {
+        if (playerMoney >= cost)
+        {
+            playerMoney -= cost;
+            return true;
+        }
+        else
         {
             return false;
         }
