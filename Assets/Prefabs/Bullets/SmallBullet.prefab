@@ -10,11 +10,11 @@ GameObject:
   m_Component:
   - component: {fileID: 1513483495957633694}
   - component: {fileID: 1471422252598555755}
-  - component: {fileID: 7566625854154903731}
+  - component: {fileID: 6978816487568175619}
   - component: {fileID: 3200402235546972120}
   - component: {fileID: 219389324956672151}
   m_Layer: 0
-  m_Name: BoltBullet
+  m_Name: SmallBullet
   m_TagString: Bullet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -76,7 +76,7 @@ SpriteRenderer:
   m_SortingLayerID: -1404148799
   m_SortingLayer: 7
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 5009a4887e619b84eb4a976bc82f3040, type: 3}
+  m_Sprite: {fileID: 21300000, guid: bda4e56b05fcc7f46a36c0f03e637bb1, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -87,7 +87,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!60 &7566625854154903731
+--- !u!60 &6978816487568175619
 PolygonCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -104,7 +104,7 @@ PolygonCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.3, y: 0.1}
+    oldSize: {x: 0.32, y: 0.2}
     newSize: {x: 1, y: 0.5}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -112,16 +112,14 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: 0.1100171, y: 0.050006565}
-      - {x: 0.09999136, y: 0.05000132}
-      - {x: 0.100000136, y: 0.030000107}
-      - {x: -0.14001942, y: 0.03000388}
-      - {x: -0.13999774, y: -0.029982561}
-      - {x: 0.100019865, y: -0.030001588}
-      - {x: 0.10001634, y: -0.050022375}
-      - {x: 0.11000381, y: -0.049999997}
-      - {x: 0.14999999, y: -0.010002654}
-      - {x: 0.15000042, y: 0.0099990275}
+    - - {x: 0.07205799, y: 0.09866787}
+      - {x: -0.16153589, y: 0.098028585}
+      - {x: -0.109544136, y: 0.026395768}
+      - {x: -0.1104818, y: -0.027011536}
+      - {x: -0.15890637, y: -0.09903471}
+      - {x: 0.0779883, y: -0.09911248}
+      - {x: 0.16013663, y: -0.03975363}
+      - {x: 0.16069537, y: 0.026819788}
 --- !u!50 &3200402235546972120
 Rigidbody2D:
   serializedVersion: 4

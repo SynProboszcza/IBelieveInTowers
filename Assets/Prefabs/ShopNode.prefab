@@ -100,9 +100,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1128f315adf8f904fbb05f2329a57ee1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  turretPrefab: {fileID: 1308187787354350598, guid: faa361a0c80793d40a84b024c0da90d4, type: 3}
-  mainGame: {fileID: 0}
-  turretCost: 50
+  turretPrefab: {fileID: 1308187787354350598, guid: 9e49b6a65d25093478d583ea14d62516, type: 3}
+  turretCost: 500
 --- !u!61 &8679894708563823697
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -250,9 +249,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1128f315adf8f904fbb05f2329a57ee1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  turretPrefab: {fileID: 1308187787354350598, guid: ae73eeedf16e18a4dbc925757df244b1, type: 3}
-  mainGame: {fileID: 0}
-  turretCost: 50
+  turretPrefab: {fileID: 1308187787354350598, guid: 0d03dbe01fe45d043800aec4718b1ea0, type: 3}
+  turretCost: 250
 --- !u!61 &3662635066719492714
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -326,8 +324,8 @@ Transform:
   m_GameObject: {fileID: 1535409136472633699}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 4933651203109152033}
   m_RootOrder: 0
@@ -484,8 +482,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1128f315adf8f904fbb05f2329a57ee1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  turretPrefab: {fileID: 1308187787354350598, guid: eca51d446979ef34aad4ccb0e99dd0f5, type: 3}
-  mainGame: {fileID: 0}
+  turretPrefab: {fileID: 1308187787354350598, guid: 1e92aa245022dff44ba3909551136627, type: 3}
   turretCost: 50
 --- !u!61 &7437376552609581128
 BoxCollider2D:
@@ -634,9 +631,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1128f315adf8f904fbb05f2329a57ee1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  turretPrefab: {fileID: 1308187787354350598, guid: eca51d446979ef34aad4ccb0e99dd0f5, type: 3}
-  mainGame: {fileID: 0}
-  turretCost: 50
+  turretPrefab: {fileID: 1308187787354350598, guid: 79bd27562a51e6142827c498bb0e21f3, type: 3}
+  turretCost: 300
 --- !u!61 &2608598167562212255
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -710,8 +706,8 @@ Transform:
   m_GameObject: {fileID: 3709738742788253615}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 1195899693902982123}
   m_RootOrder: 0
@@ -794,8 +790,8 @@ Transform:
   m_GameObject: {fileID: 3815954501072495185}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 4149133959276491548}
   m_RootOrder: 0
@@ -952,9 +948,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1128f315adf8f904fbb05f2329a57ee1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  turretPrefab: {fileID: 1308187787354350598, guid: 9bf6fe097e1673b4a8ce825099e71a0b, type: 3}
-  mainGame: {fileID: 0}
-  turretCost: 50
+  turretPrefab: {fileID: 1308187787354350598, guid: 4758fef7907a2b8469e674a5948c3763, type: 3}
+  turretCost: 150
 --- !u!61 &7742556134334133841
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1390,9 +1385,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1128f315adf8f904fbb05f2329a57ee1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  turretPrefab: {fileID: 1308187787354350598, guid: 5a1483d8f7cf068489ddd015253664f4, type: 3}
-  mainGame: {fileID: 0}
-  turretCost: 50
+  turretPrefab: {fileID: 1308187787354350598, guid: 186ea5601f25f8143a848f1728413169, type: 3}
+  turretCost: 100
 --- !u!61 &3886205985209480649
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1466,8 +1460,8 @@ Transform:
   m_GameObject: {fileID: 7022994107221366410}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 8410569368739838573}
   m_RootOrder: 0
@@ -1550,8 +1544,8 @@ Transform:
   m_GameObject: {fileID: 7858798753088718150}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 3689925898334192044}
   m_RootOrder: 0
@@ -1634,8 +1628,8 @@ Transform:
   m_GameObject: {fileID: 8383184085829428868}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 5581468175568253591}
   m_RootOrder: 0
