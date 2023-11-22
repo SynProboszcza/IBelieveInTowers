@@ -23,6 +23,7 @@ public class Bullet : MonoBehaviour
     {
         if(distanceToLive < distanceFromShot)
         {
+            //maybe add effects
             Destroy(gameObject);
         } else
         {
@@ -31,22 +32,23 @@ public class Bullet : MonoBehaviour
         transform.Translate(new Vector3(speed*0.001f, 0f));
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
         if (ohk)
         {
             Destroy(collision.gameObject);
             Destroy(gameObject);
-        } else if(collision.gameObject.GetComponent<Health>() != null)
+        } else if(collision.gameObject.GetComponent<Enemy>() != null)
         {
-            collision.gameObject.GetComponent<Health>().takeDamage(damage);
+            collision.gameObject.GetComponent<Enemy>().TakeDamage(damage);
             Destroy(gameObject);
         } else if (collision.gameObject.tag == "Bullet")
         {
             //do nothing
         } else
         {
-            Destroy(collision.gameObject);
+            //do nothing because it can destroy other objects
+            //Destroy(collision.gameObject);
         }
     }
 
@@ -63,5 +65,10 @@ public class Bullet : MonoBehaviour
     public void Setohk(bool ohk)
     {
         this.ohk = ohk;
+    }
+
+    public void SetDistanceToLive(float distanceToLive)
+    {
+        this.distanceToLive = distanceToLive;
     }
 }
