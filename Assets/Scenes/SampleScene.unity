@@ -306,22 +306,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99512d57b42bce94f875d5a05b9ad28e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Bullet: {fileID: 6643630402151057952, guid: 116a823518bfa8747bab8d55939bc99a, type: 3}
-  shootSpawnPoint: {fileID: 602226824}
-  Gun: {fileID: 0}
+  gunSprites: []
+  muzzleEffectsSprites: []
+  bullets: []
   muzzleEffects: {fileID: 0}
-  Target: {fileID: 0}
-  layerIndex: 0
+  gun: {fileID: 0}
+  shootSpawnPoint: {fileID: 602226824}
+  target: {fileID: 0}
+  upgradeLevel: 0
   speed: 50
   damage: 20
-  angle: 0
   fireRate: 0.3
-  timeSinceLastShot: 0
   distanceToShutoffMuzzleEffects: 0.5
+  bulletRange: 5
   ohk: 0
   isEnemyClose: 0
-  ShootThisFrame: 0
-  TargetPosition: {x: 0, y: 0}
+  shootThisFrame: 0
+  isShotgun: 0
+  shotgunSpreadInDegrees: 15
+  shotgunPelletsToTheSides: 1
+  targetPosition: {x: 0, y: 0}
+  srBase: {fileID: 0}
+  srGun: {fileID: 0}
+  srMuzzleEffects: {fileID: 0}
 --- !u!120 &89257476
 LineRenderer:
   m_ObjectHideFlags: 0
@@ -579,31 +586,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d223efecb0297549aab0056f4c38384, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemy: {fileID: 1800778710029251882, guid: 5952b40b45f223840898b39f4ee03c69, type: 3}
-  Waypoints:
-  - {fileID: 1771505227}
-  - {fileID: 1166836594}
-  - {fileID: 707517583}
-  - {fileID: 1221700191}
-  - {fileID: 1414581657}
-  - {fileID: 22921913}
-  - {fileID: 1784749886}
-  - {fileID: 2023526461}
-  - {fileID: 1088599901}
-  - {fileID: 82704207}
-  - {fileID: 919897982}
-  - {fileID: 1313784086}
-  - {fileID: 2098670469}
-  - {fileID: 753126661}
-  - {fileID: 168709517}
-  - {fileID: 672366381}
+  enemy1: {fileID: 0}
+  enemies: []
+  waypoints: []
   spawnRate: 1
   enemySpeed: 2
   enemyHealth: 50
-  timeSinceLastRespawn: 0
   enemyDamage: 0
   spawnCountMax: 10
+  whichEnemyToSpawnIndex: 2
+  moneyRewardPerEnemy: 0
   isSpawnAllowed: 1
+  isSpawningConstantly: 0
 --- !u!212 &259290417
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -8969,6 +8963,37 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 801399894942381637, guid: a53ce800a56bf6e42aa7065e273b30e1, type: 3}
   m_PrefabInstance: {fileID: 801399893745916954}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1299715432
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1299715433}
+  m_Layer: 0
+  m_Name: test mariusza1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1299715433
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1299715432}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 16.581041, y: 16.558956, z: -0.21568185}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 12
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1299752667
 GameObject:
   m_ObjectHideFlags: 0
