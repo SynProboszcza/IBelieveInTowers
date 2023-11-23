@@ -1,0 +1,48 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class UpgradeTurret : MonoBehaviour
+{
+    private GameObject mainGame;
+    private int upgradeCost = 100;
+    void Start()
+    {
+        mainGame = GameObject.FindWithTag("SingleTagForMainGameLoop");
+    }
+    public void SetUpgradeCost(int cost)
+    {
+        this.upgradeCost = cost;
+    }
+
+    private void OnMouseDown()
+    {
+        // If player can afford 
+        // If turret can be upgraded (3 is max upgrade)
+        // Try to pay
+        // Check if upgraded and log (for now)
+        if (mainGame.GetComponent<MainGameLoop>().CanPlayerBearCost(upgradeCost)) 
+        {
+            if (transform.parent.gameObject.GetComponent<MainTurret>().GetUpgradeLevel() < 3)
+            {
+                if (mainGame.GetComponent<MainGameLoop>().PayWithPlayerMoney(upgradeCost))
+                {
+                    if(transform.parent.gameObject.GetComponent<MainTurret>().LevelUp())
+                    {
+                        Debug.Log("Upgraded");
+                    } else
+                    {
+                        Debug.Log("NOT Upgraded");
+                    }
+                } else
+                {
+                    Debug.Log("We checked and player could afford, and then not");
+                }
+            } else
+            {
+                Debug.Log("Turret already at max level");
+            }
+        }
+    }
+
+}

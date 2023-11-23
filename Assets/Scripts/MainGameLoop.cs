@@ -30,6 +30,7 @@ public class MainGameLoop : MonoBehaviour
     public float shopNodesZOffset = -2;
     public bool isDebugging = false;
     public bool isShopOpen = false;
+    public bool isAllowedInstantiating = true;
 
     void Awake()
     {
@@ -45,8 +46,11 @@ public class MainGameLoop : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        GetPlayArenaCorners();
-        GenerateAndConfigureNodeMesh(topLeft, bottomRight);
+        if (isAllowedInstantiating)
+        {
+            GetPlayArenaCorners();
+            GenerateAndConfigureNodeMesh(topLeft, bottomRight);
+        }
 
         //configure them maybe?
     }
@@ -75,6 +79,31 @@ public class MainGameLoop : MonoBehaviour
             playerMoney -= cost;
             return true;
         } else
+        {
+            return false;
+        }
+    }
+
+    public bool CanPlayerBearCost(int cost)
+    {
+        if (playerMoney >= cost)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public bool PayWithPlayerMoney(int cost)
+    {
+        if (playerMoney >= cost)
+        {
+            playerMoney -= cost;
+            return true;
+        }
+        else
         {
             return false;
         }

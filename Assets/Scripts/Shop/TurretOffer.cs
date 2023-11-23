@@ -5,7 +5,7 @@ using UnityEngine;
 public class TurretOffer : MonoBehaviour
 {
     public GameObject turretPrefab;
-    public GameObject mainGame;
+    private GameObject mainGame;
     public int turretCost = 50;
     // Start is called before the first frame update
     void Start()
@@ -14,7 +14,8 @@ public class TurretOffer : MonoBehaviour
         // Set turret base sprite
         gameObject.GetComponent<SpriteRenderer>().sprite = turretPrefab.GetComponent<SpriteRenderer>().sprite;
         // Set turret weapon sprite
-        gameObject.transform.GetChild(0).GetComponent<SpriteRenderer>().sprite = turretPrefab.transform.GetChild(0).GetComponent<SpriteRenderer>().sprite;
+        gameObject.transform.Find("WeaponSprite").GetComponent<SpriteRenderer>().sprite = turretPrefab.transform.Find("Gun").GetComponent<SpriteRenderer>().sprite;
+
     }
 
     private void OnMouseDown()

@@ -52,15 +52,32 @@ MonoBehaviour:
   - {fileID: 1800778710029251882, guid: 1aa4dabccfe8de2409ef83e4d873edf0, type: 3}
   - {fileID: 1800778710029251882, guid: 6fb70ba20ab76e34f9bedc6ccdfd3712, type: 3}
   - {fileID: 1800778710029251882, guid: a88eeb599fba4034985be61950d1f8a3, type: 3}
-  waypoints: []
+  waypoints:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   spawnRate: 0.5
   enemySpeed: 2
-  enemyHealth: 50
+  enemyHealth: 200
   enemyDamage: 7
-  spawnCountMax: 30
+  spawnCountMax: 50
   whichEnemyToSpawnIndex: 0
-  moneyRewardPerEnemy: 0
+  moneyRewardPerEnemy: 150
   isSpawnAllowed: 1
+  isSpawningConstantly: 0
 --- !u!212 &8224584258733623559
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -99,8 +116,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 671726197
-  m_SortingLayer: 8
+  m_SortingLayerID: -286623127
+  m_SortingLayer: 3
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 5f0d0d8fef97d9a49968fdabaf2d539c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
