@@ -5,10 +5,13 @@ using UnityEngine;
 public class UpgradeTurret : MonoBehaviour
 {
     private GameObject mainGame;
+    private SpriteRenderer sr;
     private int upgradeCost = 100;
     void Start()
     {
         mainGame = GameObject.FindWithTag("SingleTagForMainGameLoop");
+        sr = gameObject.GetComponent<SpriteRenderer>();
+        sr.gameObject.SetActive(false);
     }
     public void SetUpgradeCost(int cost)
     {
@@ -43,6 +46,11 @@ public class UpgradeTurret : MonoBehaviour
                 Debug.Log("Turret already at max level");
             }
         }
+    }
+
+    private void ShowRedCross(int seconds)
+    {
+        sr.gameObject.SetActive(true);
     }
 
 }
