@@ -134,6 +134,7 @@
     <Compile Include="Assets\Scripts\Multiplayer\Managers\MasterManager.cs" />
     <Compile Include="Assets\Scripts\Multiplayer\Managers\SingletonScriptableObject.cs" />
     <Compile Include="Assets\Scripts\Multiplayer\Managers\GameSettings.cs" />
+    <Compile Include="Assets\Scripts\Multiplayer\HostGame.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />

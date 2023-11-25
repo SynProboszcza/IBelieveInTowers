@@ -7,6 +7,6 @@ public class GoBackToMainMenu : MonoBehaviour
 {
     public void ReturnToMainMenu()
     {
-        SceneManager.LoadScene("MenuGlowneChyba");
+        SceneManager.LoadScene("MainMenu");
     }
 }
