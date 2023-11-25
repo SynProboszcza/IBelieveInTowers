@@ -23,8 +23,8 @@ public class ShopContainer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //close the shop if mouse is specified units away
-        //or when other shop is open
+        // Close the shop if mouse is specified units away
+        // or when other shop is open
         mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         if ((
             Vector2.Distance(mouseWorldPos, gameObject.transform.GetChild(0).transform.position) > distanceToCloseShop) 

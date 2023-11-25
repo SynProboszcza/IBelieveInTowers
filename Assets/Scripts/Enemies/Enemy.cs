@@ -23,7 +23,7 @@ public class Enemy : MonoBehaviour
     void Update()
     {
         Move();
-        if(currentHealth < 0)
+        if(currentHealth <= 0)
         {
             Die();
         }
@@ -45,16 +45,16 @@ public class Enemy : MonoBehaviour
             }
         } else
         {
-            //this should never execute, leaving just as fallback
-            //destroy is handled by Despawner, that also deals dmg
+            // This should never execute, leaving just as fallback
+            // destroy is handled by Despawner, that also deals dmg
             Destroy(gameObject);
         }
     }
 
     public void Die()
     {
-        //maybe add some effects to death, idk particles or
-        //animated text of how much money it gave
+        // Maybe add some effects to death, idk particles or
+        // animated text of how much money it gave
         //mainGame.GetComponent<MainGameLoop>().AddPlayerMoney(moneyReward);
         if (mainGame != null) // Had to add this check for main menu enemies
         {

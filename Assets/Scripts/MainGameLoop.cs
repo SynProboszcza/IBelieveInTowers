@@ -10,10 +10,10 @@ public class MainGameLoop : MonoBehaviour
 {
     public GameObject nodePrefab;
     public List<GameObject> nodes = new List<GameObject>();
-    public GameObject shopNodesCollection;
+    private GameObject shopNodesCollection;
 
     // playArenaCorners is an object that has 4 properly named child gameObjects
-    // their transform.position 's are corners of play arena
+    // Their transform.position 's are corners of play arena
     public Transform playArenaCorners;
     public Transform[] waypoints;
     public Transform[] obstacles;
@@ -49,6 +49,7 @@ public class MainGameLoop : MonoBehaviour
     {
         if (isAllowedInstantiating)
         {
+            shopNodesCollection = new GameObject("ShopNodesCollection");
             GetPlayArenaCorners();
             GenerateAndConfigureNodeMesh(topLeft, bottomRight);
         }
@@ -150,20 +151,6 @@ public class MainGameLoop : MonoBehaviour
                 }
             }
 
-            // It would be easier to change array to List
-            // Add obstacles on path
-            //for (int i = 0; i < waypoints.Length - 1; i++)
-            //{
-            //    if (waypoints[i].position.y == waypoints[i + 1].position.y)
-            //    {
-            //        // y = y, go horizontal
-            //        for (float y = waypoints[i].position.y + 1; y <= waypoints[i /+ /1].position.y; y++)
-            //        {
-            //           Transform _obstacle = Instantiate(obstacles[0], new Vector3//(waypoints[i].position.x, y, 0), Quaternion.identity);
-            //            //_obstacle.transform.parent = obstacles.;
-            //        }
-            //    }
-            //}
             
             // ---------------------------------------------------------------------------------------------
             // Remove nodes from obstacles
@@ -179,10 +166,33 @@ public class MainGameLoop : MonoBehaviour
                     }
                 }
             }
+
+
+            // ---------------------------------------------------------------------------------------------
+            // ---------------------------------------------------------------------------------------------
+            // My old attempts; TODO remove it 
+            // ---------------------------------------------------------------------------------------------
+            // ---------------------------------------------------------------------------------------------
+
+            // It would be easier to change array to List
+            // Add obstacles on path
+            //for (int i = 0; i < waypoints.Length - 1; i++)
+            //{
+            //    if (waypoints[i].position.y == waypoints[i + 1].position.y)
+            //    {
+            //        // y = y, go horizontal
+            //        for (float y = waypoints[i].position.y + 1; y <= waypoints[i /+ /1].position.y; y++)
+            //        {
+            //           Transform _obstacle = Instantiate(obstacles[0], new Vector3//(waypoints[i].position.x, y, 0), Quaternion.identity);
+            //            //_obstacle.transform.parent = obstacles.;
+            //        }
+            //    }
+            //}
+
             //remove nodes from path
             //for every pair
-                //find out if it is vertical or horizontal
-                    //go ++ and destroy in approxx position
+            //find out if it is vertical or horizontal
+            //go ++ and destroy in approxx position
             //for(int i = 0; i <= waypoints.Length - 2; i++)
             //{
             //    if (Mathf.Approximately(waypoints[i].position.x, waypoints[i//+1].position.x))
@@ -255,20 +265,21 @@ public class MainGameLoop : MonoBehaviour
             //        Debug.Log("Could not find straight line inbetween waypoints, maybe position isnt int?");
             //    }
             //}
-        } 
+            // ---------------------------------------------------------------------------------------------
+            // ---------------------------------------------------------------------------------------------
+            // ---------------------------------------------------------------------------------------------
+            // ---------------------------------------------------------------------------------------------
+
+        }
         else
         {
-            Debug.Log("nie mamy nodes");
+            Debug.Log("Node prefabs were not set");
         }
-        Debug.Log("function ended, instantiated: " + nodesInstantiated + ", destroyed: " + nodesDestroyed);
+        Debug.Log("shopNodes instantiated: " + nodesInstantiated + ", destroyed: " + nodesDestroyed + ",  left: " + (nodesInstantiated - nodesDestroyed));
     }
 
     private void GetPlayArenaCorners()
     {
-        //topLeft = playArenaCorners.GetChild(0).transform.position;
-        //topRight = playArenaCorners.GetChild(1).transform.position;
-        //bottomLeft = playArenaCorners.GetChild(2).transform.position;
-        //bottomRight = playArenaCorners.GetChild(3).transform.position;
         foreach (Transform child in playArenaCorners)
         {
             if (child.name == "topLeft")
