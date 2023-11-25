@@ -7,29 +7,23 @@ using UnityEngine;
 
 public class TestConnection : MonoBehaviourPunCallbacks
 {
-    public string gameVersion = "0.1"; 
-    // Start is called before the first frame update
     void Start()
     {
         print("Connecting to server...");
-        PhotonNetwork.GameVersion = gameVersion;
+        PhotonNetwork.NickName = MasterManager.GameSettings.nickname;
+        PhotonNetwork.GameVersion = MasterManager.GameSettings.gameVersion;
         PhotonNetwork.ConnectUsingSettings();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     public override void OnConnectedToMaster()
     {
         print("Rejoice! We connected!");
+        print(PhotonNetwork.LocalPlayer.NickName);
     }
 
     public override void OnDisconnected(DisconnectCause cause)
     {
+        print("Disconnected because: " + cause.ToString());
         base.OnDisconnected(cause);
-        print(cause);
     }
 }
