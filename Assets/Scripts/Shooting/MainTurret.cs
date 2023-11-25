@@ -13,6 +13,7 @@ public class MainTurret : MonoBehaviour
     public GameObject muzzleEffects;
     public GameObject gun;
     public GameObject shootSpawnPoint;
+    private GameObject bulletsCollection;
     private GameObject target;
     private GameObject bulletInstance;
     // Upgrade slider
@@ -77,9 +78,11 @@ public class MainTurret : MonoBehaviour
         srMuzzleEffects = transform.Find("Gun").transform.Find("Muzzle").transform.Find("MuzzleEffects").GetComponent<SpriteRenderer>();
         transform.Find("UpgradeCollider").GetComponent<UpgradeTurret>().SetUpgradeCost(upgradeCost);
         muzzleEffects.SetActive(false);
+        if (bulletsCollection == null) {
+            bulletsCollection = new GameObject("BulletsCollection");
+        }
     }
 
-    // Update is called once per frame
     void Update()
     {
         // -----------------------------------------------------------------------------
@@ -192,6 +195,7 @@ public class MainTurret : MonoBehaviour
         _bullet.GetComponent<Bullet>().SetDamage(baseBulletDamage * damageMultipliers[upgradeLevel]);
         _bullet.GetComponent<Bullet>().SetDistanceToLive(baseBulletRange * bulletRangeMultipliers[upgradeLevel]);
         _bullet.GetComponent<Bullet>().Setohk(oneHitKill);
+        _bullet.transform.SetParent(bulletsCollection.transform);
         UpdateMuzzleEffects();
         muzzleEffects.SetActive(true);
         return _bullet;

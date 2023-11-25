@@ -10,9 +10,10 @@ public class MainGameLoop : MonoBehaviour
 {
     public GameObject nodePrefab;
     public List<GameObject> nodes = new List<GameObject>();
+    private GameObject shopNodesCollection;
 
     // playArenaCorners is an object that has 4 properly named child gameObjects
-    // their transform.position 's are corners of play arena
+    // Their transform.position 's are corners of play arena
     public Transform playArenaCorners;
     public Transform[] waypoints;
     public Transform[] obstacles;
@@ -48,11 +49,12 @@ public class MainGameLoop : MonoBehaviour
     {
         if (isAllowedInstantiating)
         {
+            shopNodesCollection = new GameObject("ShopNodesCollection");
             GetPlayArenaCorners();
             GenerateAndConfigureNodeMesh(topLeft, bottomRight);
         }
 
-        //configure them maybe?
+        // Configure them maybe?
     }
 
     // Update is called once per frame
@@ -138,6 +140,7 @@ public class MainGameLoop : MonoBehaviour
                     //it would be better to check if node is on
                     //forbidden tile, then skip that tile
                     GameObject singleNode = Instantiate(nodePrefab, new Vector3(x, y, shopNodesZOffset), Quaternion.identity);
+                    singleNode.transform.SetParent(shopNodesCollection.transform);
                     //configure node right here and right now
                     //reduce number of nodes - we cant place them on:
                     //paths, obstacles, spawners, despawners,
@@ -147,6 +150,30 @@ public class MainGameLoop : MonoBehaviour
                     nodes.Add(singleNode);
                 }
             }
+
+            
+            // ---------------------------------------------------------------------------------------------
+            // Remove nodes from obstacles
+            // ---------------------------------------------------------------------------------------------
+            foreach (GameObject node in nodes)
+            {
+                foreach (Transform obstacle in obstacles)
+                {
+                    //if(node.transform.position == obstacle.transform.position)
+                    if(Mathf.Approximately(node.transform.position.x, obstacle.transform.position.x) && Mathf.Approximately(node.transform.position.y, obstacle.transform.position.y))
+                    {
+                        DestroyNode(node);
+                    }
+                }
+            }
+
+
+            // ---------------------------------------------------------------------------------------------
+            // ---------------------------------------------------------------------------------------------
+            // My old attempts; TODO remove it 
+            // ---------------------------------------------------------------------------------------------
+            // ---------------------------------------------------------------------------------------------
+
             // It would be easier to change array to List
             // Add obstacles on path
             //for (int i = 0; i < waypoints.Length - 1; i++)
@@ -162,22 +189,10 @@ public class MainGameLoop : MonoBehaviour
             //    }
             //}
 
-            //remove nodes from obstacles
-            foreach (GameObject node in nodes)
-            {
-                foreach (Transform obstacle in obstacles)
-                {
-                    //if(node.transform.position == obstacle.transform.position)
-                    if(Mathf.Approximately(node.transform.position.x, obstacle.transform.position.x) && Mathf.Approximately(node.transform.position.y, obstacle.transform.position.y))
-                    {
-                        DestroyNode(node);
-                    }
-                }
-            }
             //remove nodes from path
             //for every pair
-                //find out if it is vertical or horizontal
-                    //go ++ and destroy in approxx position
+            //find out if it is vertical or horizontal
+            //go ++ and destroy in approxx position
             //for(int i = 0; i <= waypoints.Length - 2; i++)
             //{
             //    if (Mathf.Approximately(waypoints[i].position.x, waypoints[i//+1].position.x))
@@ -250,20 +265,21 @@ public class MainGameLoop : MonoBehaviour
             //        Debug.Log("Could not find straight line inbetween waypoints, maybe position isnt int?");
             //    }
             //}
-        } 
+            // ---------------------------------------------------------------------------------------------
+            // ---------------------------------------------------------------------------------------------
+            // ---------------------------------------------------------------------------------------------
+            // ---------------------------------------------------------------------------------------------
+
+        }
         else
         {
-            Debug.Log("nie mamy nodes");
+            Debug.Log("Node prefabs were not set");
         }
-        Debug.Log("function ended, instantiated: " + nodesInstantiated + ", destroyed: " + nodesDestroyed);
+        Debug.Log("shopNodes instantiated: " + nodesInstantiated + ", destroyed: " + nodesDestroyed + ",  left: " + (nodesInstantiated - nodesDestroyed));
     }
 
     private void GetPlayArenaCorners()
     {
-        //topLeft = playArenaCorners.GetChild(0).transform.position;
-        //topRight = playArenaCorners.GetChild(1).transform.position;
-        //bottomLeft = playArenaCorners.GetChild(2).transform.position;
-        //bottomRight = playArenaCorners.GetChild(3).transform.position;
         foreach (Transform child in playArenaCorners)
         {
             if (child.name == "topLeft")

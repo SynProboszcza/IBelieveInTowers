@@ -31,8 +31,7 @@ public class TurretOffer : MonoBehaviour
             CloseNode();
         } else
         {
-            //show some error; money is tight
-            Debug.Log("no moneeeeeyyyyyyy");
+            Debug.Log("Not enough money to buy a turret");
             CloseShop();
         }
     }

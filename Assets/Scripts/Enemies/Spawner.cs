@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Spawner : MonoBehaviour
 {
-    public GameObject enemy1;
+    private GameObject enemiesCollection;
     public GameObject[] enemies;
     public Transform[] waypoints;
     [Tooltip("Time inbetween spawns")]
@@ -23,6 +23,11 @@ public class Spawner : MonoBehaviour
     //public bool simpleMode = true;
     public bool isSpawnAllowed = true;
     public bool isSpawningConstantly = false;
+
+    private void Start()
+    {
+        enemiesCollection = new GameObject("EnemiesCollection");
+    }
 
     // Update is called once per frame
     void Update()
@@ -49,6 +54,7 @@ public class Spawner : MonoBehaviour
         _enemy.GetComponent<Enemy>().SetWaypoints(waypoints);
         _enemy.GetComponent<Enemy>().SetHealth(enemyHealth);
         _enemy.GetComponent<Enemy>().SetMoneyReward(moneyRewardPerEnemy);
+        _enemy.transform.SetParent(enemiesCollection.transform);
         timeSinceLastRespawn = Time.time;
         spawnCount++;
     }
