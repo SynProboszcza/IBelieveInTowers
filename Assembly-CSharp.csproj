@@ -135,6 +135,8 @@
     <Compile Include="Assets\Scripts\Multiplayer\Managers\SingletonScriptableObject.cs" />
     <Compile Include="Assets\Scripts\Multiplayer\Managers\GameSettings.cs" />
     <Compile Include="Assets\Scripts\Multiplayer\HostGame.cs" />
+    <Compile Include="Assets\Scripts\UI\JoinRoom.cs" />
+    <Compile Include="Assets\Scripts\UI\CreateRoomMenu.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />

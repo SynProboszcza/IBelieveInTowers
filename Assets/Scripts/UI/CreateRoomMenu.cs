@@ -1,0 +1,42 @@
+using Photon.Pun;
+using Photon.Realtime;
+using System.Collections;
+using System.Collections.Generic;
+using TMPro;
+using UnityEngine;
+
+public class CreateRoomMenu : MonoBehaviourPunCallbacks
+{
+
+    [SerializeField]
+    private TMP_Text _roomName;
+
+
+    public void OnClickCreateRoom()
+    {
+        if (!PhotonNetwork.IsConnected)
+        {
+            Debug.Log("Not Connected, aborting creating room");
+            return;
+        }
+        RoomOptions options= new RoomOptions();
+        options.MaxPlayers = 2;
+        if (_roomName == null || _roomName.text == "")
+        {
+            _roomName.text = "DefaultRoomName";
+        }
+        PhotonNetwork.CreateRoom(_roomName.text, options, TypedLobby.Default);
+    }
+
+    public override void OnCreatedRoom()
+    {
+        // TODO: change scene to appropriate room
+        Debug.Log("Created room succesfully", this);
+        base.OnCreatedRoom();
+    }
+
+    public override void OnCreateRoomFailed(short returnCode, string message)
+    {
+        base.OnCreateRoomFailed(returnCode, message);
+    }
+}
