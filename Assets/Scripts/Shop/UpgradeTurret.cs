@@ -5,10 +5,14 @@ using UnityEngine;
 public class UpgradeTurret : MonoBehaviour
 {
     private GameObject mainGame;
+    private SpriteRenderer sr;
     private int upgradeCost = 100;
+    public int secondsToShowNegativeFeedback = 1;
     void Start()
     {
         mainGame = GameObject.FindWithTag("SingleTagForMainGameLoop");
+        sr = gameObject.GetComponent<SpriteRenderer>();
+        sr.enabled = false;
     }
     public void SetUpgradeCost(int cost)
     {
@@ -33,16 +37,39 @@ public class UpgradeTurret : MonoBehaviour
                     } else
                     {
                         Debug.Log("NOT Upgraded");
+                        ShowRedCrossForNSeconds(secondsToShowNegativeFeedback);
                     }
                 } else
                 {
                     Debug.Log("We checked and player could afford, and then not");
+                    ShowRedCrossForNSeconds(secondsToShowNegativeFeedback);
                 }
             } else
             {
                 Debug.Log("Turret already at max level");
+                ShowRedCrossForNSeconds(secondsToShowNegativeFeedback);
             }
+        } else
+        {
+            Debug.Log("Player can't afford to upgrade");
+            ShowRedCrossForNSeconds(secondsToShowNegativeFeedback);
         }
     }
 
+    private void ShowRedCrossForNSeconds(int seconds)
+    {
+        sr.enabled = true;
+        StartCoroutine(DisableRedCrossAfterNSeconds(seconds));
+    }
+
+    IEnumerator DisableRedCrossAfterNSeconds(int seconds)
+    {
+        yield return new WaitForSeconds(seconds);
+        sr.enabled = false;
+    }
+
+    public void SetSecondsToShowNotUpgrading(int seconds)
+    {
+        this.secondsToShowNegativeFeedback = seconds;
+    }
 }

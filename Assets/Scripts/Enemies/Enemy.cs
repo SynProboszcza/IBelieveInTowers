@@ -36,7 +36,10 @@ public class Enemy : MonoBehaviour
                waypoints[waypointIndex].transform.position,
                speed * Time.deltaTime);
 
-            if (transform.position == waypoints[waypointIndex].transform.position)
+            //if (transform.position == waypoints[waypointIndex].transform.position)
+            if (Mathf.Approximately(transform.position.x, waypoints[waypointIndex].transform.position.x) 
+                && Mathf.Approximately(transform.position.y, waypoints[waypointIndex].transform.position.y)
+                )
             {
                 waypointIndex += 1;
             }
@@ -52,7 +55,11 @@ public class Enemy : MonoBehaviour
     {
         //maybe add some effects to death, idk particles or
         //animated text of how much money it gave
-        mainGame.GetComponent<MainGameLoop>().AddPlayerMoney(moneyReward);
+        //mainGame.GetComponent<MainGameLoop>().AddPlayerMoney(moneyReward);
+        if (mainGame != null) // Had to add this check for main menu enemies
+        {
+            mainGame.GetComponent<MainGameLoop>().AddPlayerMoney(moneyReward);
+        }
         Destroy(gameObject);
     }
 
