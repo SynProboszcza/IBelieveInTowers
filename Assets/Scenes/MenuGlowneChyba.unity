@@ -12582,7 +12582,7 @@ GameObject:
   - component: {fileID: 1380196102}
   - component: {fileID: 1380196101}
   m_Layer: 5
-  m_Name: ButtonSelectLevel
+  m_Name: ButtonJoinGame
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -13262,7 +13262,7 @@ GameObject:
   - component: {fileID: 1864220330}
   - component: {fileID: 1864220329}
   m_Layer: 5
-  m_Name: ButtonLoadGame
+  m_Name: ButtonHostGame
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

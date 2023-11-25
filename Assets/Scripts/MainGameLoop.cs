@@ -10,6 +10,7 @@ public class MainGameLoop : MonoBehaviour
 {
     public GameObject nodePrefab;
     public List<GameObject> nodes = new List<GameObject>();
+    public GameObject shopNodesCollection;
 
     // playArenaCorners is an object that has 4 properly named child gameObjects
     // their transform.position 's are corners of play arena
@@ -52,7 +53,7 @@ public class MainGameLoop : MonoBehaviour
             GenerateAndConfigureNodeMesh(topLeft, bottomRight);
         }
 
-        //configure them maybe?
+        // Configure them maybe?
     }
 
     // Update is called once per frame
@@ -138,6 +139,7 @@ public class MainGameLoop : MonoBehaviour
                     //it would be better to check if node is on
                     //forbidden tile, then skip that tile
                     GameObject singleNode = Instantiate(nodePrefab, new Vector3(x, y, shopNodesZOffset), Quaternion.identity);
+                    singleNode.transform.SetParent(shopNodesCollection.transform);
                     //configure node right here and right now
                     //reduce number of nodes - we cant place them on:
                     //paths, obstacles, spawners, despawners,
@@ -147,6 +149,7 @@ public class MainGameLoop : MonoBehaviour
                     nodes.Add(singleNode);
                 }
             }
+
             // It would be easier to change array to List
             // Add obstacles on path
             //for (int i = 0; i < waypoints.Length - 1; i++)
@@ -161,8 +164,10 @@ public class MainGameLoop : MonoBehaviour
             //        }
             //    }
             //}
-
-            //remove nodes from obstacles
+            
+            // ---------------------------------------------------------------------------------------------
+            // Remove nodes from obstacles
+            // ---------------------------------------------------------------------------------------------
             foreach (GameObject node in nodes)
             {
                 foreach (Transform obstacle in obstacles)
