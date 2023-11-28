@@ -21,38 +21,44 @@ public class UpgradeTurret : MonoBehaviour
 
     private void OnMouseDown()
     {
-        // If player can afford 
-        // If turret can be upgraded (3 is max upgrade)
-        // Try to pay
-        // Check if upgraded and log (for now)
-        if (mainGame.GetComponent<MainGameLoop>().CanPlayerBearCost(upgradeCost)) 
+        // Added check because in main menu there is no mainGame gameobject
+        // and this generated errors for free; this way we disable upgrading
+        // turrets in main menu
+        if(mainGame != null)
         {
-            if (transform.parent.gameObject.GetComponent<MainTurret>().GetUpgradeLevel() < 3)
+            // If player can afford 
+            // If turret can be upgraded (3 is max upgrade)
+            // Try to pay
+            // Check if upgraded and log (for now)
+            if (mainGame.GetComponent<MainGameLoop>().CanPlayerBearCost(upgradeCost)) 
             {
-                if (mainGame.GetComponent<MainGameLoop>().PayWithPlayerMoney(upgradeCost))
+                if (transform.parent.gameObject.GetComponent<MainTurret>().GetUpgradeLevel() < 3)
                 {
-                    if(transform.parent.gameObject.GetComponent<MainTurret>().LevelUp())
+                    if (mainGame.GetComponent<MainGameLoop>().PayWithPlayerMoney(upgradeCost))
                     {
-                        Debug.Log("Upgraded");
+                        if(transform.parent.gameObject.GetComponent<MainTurret>().LevelUp())
+                        {
+                            Debug.Log("Upgraded");
+                        } else
+                        {
+                            Debug.Log("NOT Upgraded");
+                            ShowRedCrossForNSeconds(secondsToShowNegativeFeedback);
+                        }
                     } else
                     {
-                        Debug.Log("NOT Upgraded");
+                        Debug.Log("We checked and player could afford, and then not");
                         ShowRedCrossForNSeconds(secondsToShowNegativeFeedback);
                     }
                 } else
                 {
-                    Debug.Log("We checked and player could afford, and then not");
+                    Debug.Log("Turret already at max level");
                     ShowRedCrossForNSeconds(secondsToShowNegativeFeedback);
                 }
             } else
             {
-                Debug.Log("Turret already at max level");
+                Debug.Log("Player can't afford to upgrade");
                 ShowRedCrossForNSeconds(secondsToShowNegativeFeedback);
             }
-        } else
-        {
-            Debug.Log("Player can't afford to upgrade");
-            ShowRedCrossForNSeconds(secondsToShowNegativeFeedback);
         }
     }
 

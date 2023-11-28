@@ -61,7 +61,7 @@ public class MainGameLoop : MonoBehaviour
     void Update()
     {
         //update player health
-        string playerHealthTextTemplate = "Zdrowie: " + playerHealth;
+        string playerHealthTextTemplate = "Health: " + playerHealth;
         playerHealthTextField.text = playerHealthTextTemplate;
         //update their money
         string playerMoneyTextTemplate = "Gold: " + playerMoney;

@@ -61,6 +61,7 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\SimpleScript.cs" />
     <Compile Include="Assets\Photon\PhotonLibs\WebSocket\SocketWebTcp.cs" />
     <Compile Include="Assets\Scripts\Enemies\Enemy.cs" />
+    <Compile Include="Assets\Scripts\Multiplayer\HostGame.cs" />
     <Compile Include="Assets\Photon\PhotonChat\Demos\DemoChat\ChatAppIdCheckerUI.cs" />
     <Compile Include="Assets\Photon\PhotonChat\Demos\DemoChat\AppSettingsExtensions.cs" />
     <Compile Include="Assets\load game script\SceneSwitcher.cs" />
@@ -88,6 +89,7 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TextConsoleSimulator.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\ObjectSpin.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextInfoDebugTool.cs" />
+    <Compile Include="Assets\Scripts\Multiplayer\TestConnection.cs" />
     <Compile Include="Assets\Scripts\MenuButtons\GoBackToMainMenu.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextEventCheck.cs" />
     <Compile Include="Assets\Scripts\Health\Despawn.cs" />
@@ -106,6 +108,7 @@
     <Compile Include="Assets\Photon\PhotonChat\Demos\DemoChat\NamePickGui.cs" />
     <Compile Include="Assets\Scripts\Shooting\Bullet.cs" />
     <Compile Include="Assets\Scripts\MainMenuLoop.cs" />
+    <Compile Include="Assets\Scripts\Multiplayer\Managers\MasterManager.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TextMeshSpawner.cs" />
     <Compile Include="Assets\Scripts\Shop\UpgradeTurret.cs" />
     <Compile Include="Assets\Scripts\Deprecated\Moving\ControlWithArrows.cs" />
@@ -118,6 +121,7 @@
     <Compile Include="Assets\Photon\PhotonChat\Demos\DemoChat\FriendItem.cs" />
     <Compile Include="Assets\Scripts\Deprecated\ShootAtMouse.cs" />
     <Compile Include="Assets\sprite muzzle flashes\AnimatedTexture.cs" />
+    <Compile Include="Assets\Scripts\UI\CreateRoomMenu.cs" />
     <Compile Include="Assets\Photon\PhotonChat\Demos\DemoChat\ChatGui.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\DropdownSample.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_PhoneNumberValidator.cs" />
@@ -126,17 +130,14 @@
     <Compile Include="Assets\Photon\PhotonChat\Demos\Common\TextToggleIsOnTransition.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TeleType.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexZoom.cs" />
+    <Compile Include="Assets\Scripts\UI\JoinRoom.cs" />
     <Compile Include="Assets\Scripts\MainGameLoop.cs" />
     <Compile Include="Assets\Photon\PhotonChat\Demos\Common\OnStartDelete.cs" />
-    <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01.cs" />
-    <Compile Include="Assets\Scripts\MenuButtons\QuitButton.cs" />
-    <Compile Include="Assets\Scripts\Multiplayer\TestConnection.cs" />
-    <Compile Include="Assets\Scripts\Multiplayer\Managers\MasterManager.cs" />
-    <Compile Include="Assets\Scripts\Multiplayer\Managers\SingletonScriptableObject.cs" />
     <Compile Include="Assets\Scripts\Multiplayer\Managers\GameSettings.cs" />
-    <Compile Include="Assets\Scripts\Multiplayer\HostGame.cs" />
-    <Compile Include="Assets\Scripts\UI\JoinRoom.cs" />
-    <Compile Include="Assets\Scripts\UI\CreateRoomMenu.cs" />
+    <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01.cs" />
+    <Compile Include="Assets\Scripts\Multiplayer\Managers\SingletonScriptableObject.cs" />
+    <Compile Include="Assets\Scripts\MenuButtons\QuitButton.cs" />
+    <Compile Include="Assets\Scripts\MenuButtons\HostGameButton.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
