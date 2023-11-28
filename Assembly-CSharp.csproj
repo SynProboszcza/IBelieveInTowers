@@ -121,7 +121,7 @@
     <Compile Include="Assets\Photon\PhotonChat\Demos\DemoChat\FriendItem.cs" />
     <Compile Include="Assets\Scripts\Deprecated\ShootAtMouse.cs" />
     <Compile Include="Assets\sprite muzzle flashes\AnimatedTexture.cs" />
-    <Compile Include="Assets\Scripts\UI\CreateRoomMenu.cs" />
+    <Compile Include="Assets\Scripts\UI\Rooms\CreateRoomMenu.cs" />
     <Compile Include="Assets\Photon\PhotonChat\Demos\DemoChat\ChatGui.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\DropdownSample.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_PhoneNumberValidator.cs" />
@@ -130,7 +130,7 @@
     <Compile Include="Assets\Photon\PhotonChat\Demos\Common\TextToggleIsOnTransition.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TeleType.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexZoom.cs" />
-    <Compile Include="Assets\Scripts\UI\JoinRoom.cs" />
+    <Compile Include="Assets\Scripts\UI\Rooms\JoinRoom.cs" />
     <Compile Include="Assets\Scripts\MainGameLoop.cs" />
     <Compile Include="Assets\Photon\PhotonChat\Demos\Common\OnStartDelete.cs" />
     <Compile Include="Assets\Scripts\Multiplayer\Managers\GameSettings.cs" />
@@ -138,6 +138,7 @@
     <Compile Include="Assets\Scripts\Multiplayer\Managers\SingletonScriptableObject.cs" />
     <Compile Include="Assets\Scripts\MenuButtons\QuitButton.cs" />
     <Compile Include="Assets\Scripts\MenuButtons\HostGameButton.cs" />
+    <Compile Include="Assets\Scripts\UI\Rooms\RoomListingsMenu.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
