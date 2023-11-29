@@ -12,18 +12,17 @@ public class Bullet : MonoBehaviour
     public Vector2 originalPosition;
     [Tooltip("One Hit Kill - deletes whatever it collides with")]
     public bool ohk = false;
-    // Start is called before the first frame update
+
     void Start()
     {
         originalPosition = transform.position;
     }
 
-    // Update is called once per frame
     void Update()
     {
         if(distanceToLive < distanceFromShot)
         {
-            //maybe add effects
+            // We can add death effects here
             Destroy(gameObject);
         } else
         {
@@ -44,10 +43,11 @@ public class Bullet : MonoBehaviour
             Destroy(gameObject);
         } else if (collision.gameObject.tag == "Bullet")
         {
-            //do nothing
+            // We don't want bullets colliding with each other
+            // because this generates bugs
         } else
         {
-            //do nothing because it can destroy other objects
+            // Do nothing because it can destroy other objects
             //Destroy(collision.gameObject);
         }
     }
