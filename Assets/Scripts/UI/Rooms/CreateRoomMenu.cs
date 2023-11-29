@@ -4,12 +4,14 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CreateRoomMenu : MonoBehaviourPunCallbacks
 {
 
     [SerializeField]
     private TMP_Text _roomName;
+    public GameObject showConnection;
 
 
     public void OnClickCreateRoom()
@@ -17,9 +19,10 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
         if (!PhotonNetwork.IsConnected)
         {
             Debug.Log("Not Connected, aborting creating room");
+            showConnection.GetComponent<RawImage>().color = Color.red;
             return;
         }
-        RoomOptions options= new RoomOptions();
+        RoomOptions options = new RoomOptions();
         options.MaxPlayers = 2;
         if (_roomName == null || _roomName.text == "")
         {
@@ -32,6 +35,8 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
     {
         // TODO: change scene to appropriate room
         Debug.Log("Created room succesfully", this);
+        showConnection.GetComponent<RawImage>().color = Color.green;
+
         base.OnCreatedRoom();
     }
 
