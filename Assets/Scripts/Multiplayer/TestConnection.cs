@@ -7,11 +7,14 @@ using UnityEngine;
 
 public class TestConnection : MonoBehaviourPunCallbacks
 {
+    public string nickNamePrefix = "defaultNickname";
+    public string gameVersion = "0.1";
     void Start()
     {
         print("Connecting to server...");
-        PhotonNetwork.NickName = MasterManager.GameSettings.nickname;
-        PhotonNetwork.GameVersion = MasterManager.GameSettings.gameVersion;
+        nickNamePrefix += Random.Range(0, 55555).ToString();
+        PhotonNetwork.NickName = nickNamePrefix;
+        PhotonNetwork.GameVersion = gameVersion;
         PhotonNetwork.ConnectUsingSettings();
     }
 

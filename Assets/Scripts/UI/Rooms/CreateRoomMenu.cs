@@ -11,6 +11,7 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
 
     [SerializeField]
     private TMP_Text _roomName;
+    // Temporary only, delete after debugging
     public GameObject showConnection;
 
 
@@ -19,6 +20,8 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
         if (!PhotonNetwork.IsConnected)
         {
             Debug.Log("Not Connected, aborting creating room");
+
+            // Temporary only, delete after debugging
             showConnection.GetComponent<RawImage>().color = Color.red;
             return;
         }
