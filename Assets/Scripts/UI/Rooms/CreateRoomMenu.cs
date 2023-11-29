@@ -10,41 +10,49 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
 {
 
     [SerializeField]
-    private TMP_Text _roomName;
-    // Temporary only, delete after debugging
+    private TMP_InputField _roomName;
     public GameObject showConnection;
 
 
     public void OnClickCreateRoom()
     {
-        if (!PhotonNetwork.IsConnected)
+        if (!PhotonNetwork.IsConnectedAndReady)
         {
             Debug.Log("Not Connected, aborting creating room");
 
-            // Temporary only, delete after debugging
-            showConnection.GetComponent<RawImage>().color = Color.red;
+            showConnection.GetComponent<TMP_Text>().text = "Connection is null or not ready yet!";
             return;
         }
         RoomOptions options = new RoomOptions();
         options.MaxPlayers = 2;
-        if (_roomName == null || _roomName.text == "")
+        print(":::" + _roomName.text + ":::");
+        if (_roomName.text == "")
         {
             _roomName.text = "DefaultRoomName";
         }
+        print(":::" + _roomName.text + ":::");
         PhotonNetwork.CreateRoom(_roomName.text, options, TypedLobby.Default);
     }
 
     public override void OnCreatedRoom()
     {
         // TODO: change scene to appropriate room
-        Debug.Log("Created room succesfully", this);
-        showConnection.GetComponent<RawImage>().color = Color.green;
 
+        showConnection.GetComponent<TMP_Text>().text = "Room created with name: "+ _roomName.text +"\n Joining...";
+        PhotonNetwork.JoinLobby();
         base.OnCreatedRoom();
     }
 
     public override void OnCreateRoomFailed(short returnCode, string message)
     {
+        showConnection.GetComponent<TMP_Text>().text = "Failed to create room!";
         base.OnCreateRoomFailed(returnCode, message);
+    }
+
+    public override void OnConnectedToMaster()
+    {
+        showConnection.GetComponent<TMP_Text>().text = "Connected to master!";
+
+        base.OnConnectedToMaster();
     }
 }
