@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class GoBackToMainMenu : MonoBehaviour
+public class HostGameButton : MonoBehaviour
 {
-    public void ReturnToMainMenu()
+    public void ShowHostGameScene()
     {
-        SceneManager.LoadScene("MainMenu");
+        SceneManager.LoadScene("HostGame");
     }
 }
