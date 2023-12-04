@@ -13,6 +13,8 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
     private TMP_InputField _roomName;
     [SerializeField]
     private TMP_InputField _nickName;
+    [SerializeField]
+    private Toggle[] settingToggles;
     public GameObject showConnection;
     public string backupNickNamePrefix = "defaultNickname";
     public string gameVersion = "0.1";
@@ -20,13 +22,20 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
 
     void Start()
     {
+        gameObject.GetComponent<Button>().interactable = false;
         print("Connecting to server...");
         PhotonNetwork.GameVersion = gameVersion;
         PhotonNetwork.ConnectUsingSettings();
     }
 
+    // Called when player clicks Host Game button
     public void OnClickCreateRoom()
     {
+        //
+        //
+        // Make toggles not clickable
+        //
+        //
         if (!PhotonNetwork.IsConnectedAndReady)
         {
             Debug.Log("Not Connected, aborting creating room");
@@ -51,27 +60,36 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
         } else
         {
             backupNickNamePrefix += Random.Range(0, 55555).ToString();
+            _nickName.text = backupNickNamePrefix;
             PhotonNetwork.NickName = backupNickNamePrefix;
         }
+
         PhotonNetwork.CreateRoom(_roomName.text, options, TypedLobby.Default);
+
     }
 
     public override void OnConnectedToMaster()
     {
         showConnection.GetComponent<TMP_Text>().text = "Connected to master";
+        gameObject.GetComponent<Button>().interactable = true;
         base.OnConnectedToMaster();
     }
 
     public override void OnCreatedRoom()
     {
-        showConnection.GetComponent<TMP_Text>().text = "Joining room: " + _roomName.text + " as " + PhotonNetwork.LocalPlayer.NickName + "...";
-        PhotonNetwork.JoinLobby();
+        showConnection.GetComponent<TMP_Text>().text = "Created room: " + _roomName.text;
         base.OnCreatedRoom();
+    }
+
+    public override void OnJoinedRoom()
+    {
+        // TODO change scene here
+        showConnection.GetComponent<TMP_Text>().text = "Joined room: " + PhotonNetwork.CurrentRoom.Name;
+        base.OnJoinedRoom();
     }
 
     public override void OnJoinedLobby()
     {
-        // TODO change scene here
         print("Joined Lobby" + PhotonNetwork.CurrentLobby.ToString());
         base.OnJoinedLobby();
     }
