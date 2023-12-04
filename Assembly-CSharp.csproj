@@ -140,6 +140,8 @@
     <Compile Include="Assets\Scripts\Multiplayer\UpdateRoomList.cs" />
     <Compile Include="Assets\Scripts\MenuButtons\JoinGame.cs" />
     <Compile Include="Assets\Scripts\debugworkinprogress.cs" />
+    <Compile Include="Assets\Scripts\AddToDontDestroyOnLoad.cs" />
+    <Compile Include="Assets\Scripts\CrossSceneManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />

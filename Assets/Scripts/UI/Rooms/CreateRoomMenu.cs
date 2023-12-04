@@ -124,7 +124,7 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
 
     public override void OnJoinedLobby()
     {
-        print("Joined Lobby" + PhotonNetwork.CurrentLobby.ToString());
+        print("Joined Lobby: " + PhotonNetwork.CurrentLobby.ToString());
         base.OnJoinedLobby();
     }
 
