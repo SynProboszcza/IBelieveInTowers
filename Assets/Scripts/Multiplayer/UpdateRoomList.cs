@@ -6,9 +6,6 @@ using UnityEngine;
 
 public class UpdateRoomList : MonoBehaviourPunCallbacks
 {
-    [SerializeField]
-    private GameObject asd;
-
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
     {
         print(roomList);

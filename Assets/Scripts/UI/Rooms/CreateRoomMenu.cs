@@ -15,6 +15,8 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
     private TMP_InputField _nickName;
     [SerializeField]
     private Toggle[] settingToggles;
+    [SerializeField]
+    private Button debugButton;
     public GameObject showConnection;
     public string backupNickNamePrefix = "defaultNickname";
     public string gameVersion = "0.1";
@@ -22,10 +24,35 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
 
     void Start()
     {
-        gameObject.GetComponent<Button>().interactable = false;
-        print("Connecting to server...");
-        PhotonNetwork.GameVersion = gameVersion;
-        PhotonNetwork.ConnectUsingSettings();
+        // We need to check for readiness, because user can go back to main menu
+        // and this will be called twice, and we cant connect twice because connection
+        // persists between scene changes
+        if (PhotonNetwork.IsConnectedAndReady)
+        {
+            gameObject.GetComponent<Button>().interactable = true;
+            showConnection.GetComponent<TMP_Text>().text = "Connected to ";
+
+            // Checking if connected to a particular room
+            if (PhotonNetwork.CurrentRoom != null)
+            {
+                showConnection.GetComponent<TMP_Text>().text += "room: " + PhotonNetwork.CurrentRoom.Name;
+                gameObject.GetComponent<Button>().interactable = false;
+                // Code theoretically should not get here, but in case 
+                // Change scene to PrePlay or Play
+            }
+            else
+            {
+                showConnection.GetComponent<TMP_Text>().text += "master";
+            }
+        }
+        // We're not ready, so we need to set up and connect
+        else
+        {
+            PhotonNetwork.GameVersion = gameVersion;
+            gameObject.GetComponent<Button>().interactable = false;
+            print("Connecting to server...");
+            PhotonNetwork.ConnectUsingSettings();
+        }
     }
 
     // Called when player clicks Host Game button
@@ -54,7 +81,7 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
         // Checking for nickname, if not exists set up default
         // There is minimum length for nickname specified by Dawid,
         // not demanded by Photon
-        if(_nickName.text.ToString().Length > 3)
+        if(_nickName.text.ToString().Length >= 3)
         {
             PhotonNetwork.NickName = _nickName.text.ToString();
         } else
@@ -85,7 +112,14 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
     {
         // TODO change scene here
         showConnection.GetComponent<TMP_Text>().text = "Joined room: " + PhotonNetwork.CurrentRoom.Name;
+        gameObject.GetComponent<Button>().interactable = false;
         base.OnJoinedRoom();
+    }
+
+    public override void OnRoomListUpdate(List<RoomInfo> roomList)
+    {
+        print(roomList);
+        base.OnRoomListUpdate(roomList);
     }
 
     public override void OnJoinedLobby()
