@@ -22,6 +22,7 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
     public string gameVersion = "0.1";
 
 
+    // Check for connection and connect if not
     void Start()
     {
         // We need to check for readiness, because user can go back to main menu
@@ -56,6 +57,8 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
     }
 
     // Called when player clicks Host Game button
+    // If connectedAndReady check/set nickname and room name
+    // and create room with these; also max players is set 2 2
     public void OnClickCreateRoom()
     {
         //
@@ -118,6 +121,7 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
 
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
     {
+        print("List updated");
         print(roomList);
         base.OnRoomListUpdate(roomList);
     }
