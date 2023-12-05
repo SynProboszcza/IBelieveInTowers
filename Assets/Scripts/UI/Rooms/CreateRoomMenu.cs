@@ -127,13 +127,14 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
 
     public override void OnRoomListUpdate(List<RoomInfo> _roomList)
     {
-        print("List updated");
-        print(_roomList[0].Name);
+        print("List updated:");
         foreach (RoomInfo _room in _roomList)
         {
-            GameObject _roomPrefab = roomPrefab;
-            _roomPrefab.transform.FindChild("RoomName").GetComponent<TMP_Text>().text = "testing";
-            Instantiate(_roomPrefab, roomList.transform);
+            print(_room.Name);
+            GameObject _roomPrefab = (GameObject)Instantiate(this.roomPrefab, roomList.transform);
+            _roomPrefab.SetActive(false);
+            _roomPrefab.transform.Find("RoomName").GetComponent<TMP_Text>().text = _room.Name + "\n" + _room.PlayerCount.ToString() + " / " + _room.MaxPlayers.ToString();
+            _roomPrefab.SetActive(true);
         }
         base.OnRoomListUpdate(_roomList);
     }
