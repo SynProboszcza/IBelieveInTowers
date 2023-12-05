@@ -53,7 +53,6 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
             gameObject.GetComponent<Button>().interactable = false;
             print("Connecting to server...");
             PhotonNetwork.ConnectUsingSettings();
-            PhotonNetwork.JoinLobby(TypedLobby.Default);
         }
     }
 
@@ -104,6 +103,7 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
     {
         showConnection.GetComponent<TMP_Text>().text = "Connected to master";
         gameObject.GetComponent<Button>().interactable = true;
+        PhotonNetwork.JoinLobby(TypedLobby.Default);
         base.OnConnectedToMaster();
     }
 
