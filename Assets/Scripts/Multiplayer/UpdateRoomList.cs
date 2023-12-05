@@ -24,12 +24,14 @@ public class UpdateRoomList : MonoBehaviourPunCallbacks
             //gameObject.GetComponent<Button>().interactable = false;
             print("Connecting to server...");
             PhotonNetwork.ConnectUsingSettings();
+
         }
     }
 
 
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
     {
+        print("ROOMS UPDATED");
         print(roomList);
         base.OnRoomListUpdate(roomList);
     }

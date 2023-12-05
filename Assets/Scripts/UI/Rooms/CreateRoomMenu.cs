@@ -102,6 +102,7 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
     {
         showConnection.GetComponent<TMP_Text>().text = "Connected to master";
         gameObject.GetComponent<Button>().interactable = true;
+        PhotonNetwork.JoinLobby(TypedLobby.Default);
         base.OnConnectedToMaster();
     }
 
@@ -122,7 +123,7 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
     {
         print("List updated");
-        print(roomList);
+        print(roomList[0].Name);
         base.OnRoomListUpdate(roomList);
     }
 
