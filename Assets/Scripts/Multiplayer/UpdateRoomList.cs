@@ -30,6 +30,8 @@ public class UpdateRoomList : MonoBehaviourPunCallbacks
 
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
     {
+
+        print("ROOMS UPDATED");
         print(roomList);
         base.OnRoomListUpdate(roomList);
     }
