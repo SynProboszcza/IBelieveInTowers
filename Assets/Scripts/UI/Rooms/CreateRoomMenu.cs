@@ -123,7 +123,7 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
     {
         print("List updated");
-        print(roomList);
+        print(roomList[0].Name);
         base.OnRoomListUpdate(roomList);
     }
 
