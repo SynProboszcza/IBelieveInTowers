@@ -24,7 +24,6 @@ public class UpdateRoomList : MonoBehaviourPunCallbacks
             //gameObject.GetComponent<Button>().interactable = false;
             print("Connecting to server...");
             PhotonNetwork.ConnectUsingSettings();
-            PhotonNetwork.JoinLobby(TypedLobby.Default);
 
         }
     }
