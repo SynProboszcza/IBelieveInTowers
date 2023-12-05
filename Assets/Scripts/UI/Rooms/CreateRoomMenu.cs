@@ -17,6 +17,10 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
     private Toggle[] settingToggles;
     [SerializeField]
     private Button debugButton;
+    [SerializeField]
+    private GameObject roomPrefab;
+    [SerializeField]
+    private GameObject roomList;
     public GameObject showConnection;
     public string backupNickNamePrefix = "defaultNickname";
     public string gameVersion = "0.1";
@@ -59,6 +63,7 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
     // Called when player clicks Host Game button
     // If connectedAndReady check/set nickname and room name
     // and create room with these; also max players is set 2 2
+    // If room is created Photon joins it automatically
     public void OnClickCreateRoom()
     {
         //
@@ -120,11 +125,17 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
         base.OnJoinedRoom();
     }
 
-    public override void OnRoomListUpdate(List<RoomInfo> roomList)
+    public override void OnRoomListUpdate(List<RoomInfo> _roomList)
     {
         print("List updated");
-        print(roomList[0].Name);
-        base.OnRoomListUpdate(roomList);
+        print(_roomList[0].Name);
+        foreach (RoomInfo _room in _roomList)
+        {
+            GameObject _roomPrefab = roomPrefab;
+            _roomPrefab.transform.FindChild("RoomName").GetComponent<TMP_Text>().text = "testing";
+            Instantiate(_roomPrefab, roomList.transform);
+        }
+        base.OnRoomListUpdate(_roomList);
     }
 
     public override void OnJoinedLobby()
