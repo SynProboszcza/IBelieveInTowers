@@ -94,6 +94,7 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
             PhotonNetwork.NickName = backupNickNamePrefix;
         }
 
+        PhotonNetwork.JoinLobby(TypedLobby.Default);
         PhotonNetwork.CreateRoom(_roomName.text, options, TypedLobby.Default);
 
     }
