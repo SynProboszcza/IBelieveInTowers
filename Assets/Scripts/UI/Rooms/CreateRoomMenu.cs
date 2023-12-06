@@ -1,4 +1,5 @@
 using Photon.Pun;
+using Photon.Pun.Demo.Cockpit;
 using Photon.Realtime;
 using System.Collections.Generic;
 using TMPro;
@@ -15,7 +16,7 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
     [SerializeField]
     private Toggle[] settingToggles;
     [SerializeField]
-    private Button debugButton;
+    private Button refreshListButton;
     [SerializeField]
     private GameObject roomPrefab;
     [SerializeField]
@@ -115,7 +116,22 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
         PhotonNetwork.ConnectUsingSettings();
     }
 
-    private void RestartConnection()
+    public void RefreshListOfRooms()
+    {
+        refreshListButton.GetComponent<Button>().interactable = false;
+        ClearVisibleList();
+        RestartConnection();
+    }
+
+    public void ClearVisibleList()
+    {
+        for(int i = 0; i < roomList.transform.childCount; i++)
+        {
+            Destroy(roomList.transform.GetChild(i).gameObject);
+        }
+    }
+
+    public void RestartConnection()
     {
         restartConnectionFlag = true;
         PhotonNetwork.Disconnect();
@@ -138,6 +154,7 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
     {
         showConnection.GetComponent<TMP_Text>().text = "Connected to master";
         gameObject.GetComponent<Button>().interactable = true;
+        refreshListButton.GetComponent<Button>().interactable = true;
         PhotonNetwork.JoinLobby(TypedLobby.Default);
         base.OnConnectedToMaster();
     }

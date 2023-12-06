@@ -141,6 +141,7 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01.cs" />
     <Compile Include="Assets\Scripts\MenuButtons\QuitButton.cs" />
     <Compile Include="Assets\Scripts\Multiplayer\JoinRoomFromList.cs" />
+    <Compile Include="Assets\Scripts\Multiplayer\RestartConnectionOnClick.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
