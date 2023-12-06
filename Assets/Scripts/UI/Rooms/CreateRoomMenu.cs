@@ -2,6 +2,7 @@ using Photon.Pun;
 using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -21,6 +22,9 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
     private GameObject roomPrefab;
     [SerializeField]
     private GameObject roomList;
+    [SerializeField]
+    private TMP_Text showRoomsFound;
+    private List<RoomInfo> roomListCache;
     public GameObject showConnection;
     public string backupNickNamePrefix = "defaultNickname";
     public string gameVersion = "0.1";
@@ -103,6 +107,27 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
 
     }
 
+    private void ShowAvailableRooms()
+    {
+        if (roomListCache.Count < 1)
+        {
+            showRoomsFound.GetComponent<TMP_Text>().text = "No rooms found!";
+        } else if (roomListCache.Count == 1)
+        {
+            showRoomsFound.GetComponent<TMP_Text>().text = "Found one room.";
+        } else
+        {
+            showRoomsFound.GetComponent<TMP_Text>().text = "Found " + roomListCache.Count.ToString() + "rooms.";
+        }
+        foreach (RoomInfo _room in roomListCache)
+        {
+            GameObject _roomPrefab = (GameObject)Instantiate(this.roomPrefab, roomList.transform);
+            _roomPrefab.SetActive(false);
+            _roomPrefab.transform.Find("RoomName").GetComponent<TMP_Text>().text = _room.Name + "\n" + _room.PlayerCount.ToString() + " / " + _room.MaxPlayers.ToString();
+            _roomPrefab.SetActive(true);
+        }
+    }
+
     public override void OnConnectedToMaster()
     {
         showConnection.GetComponent<TMP_Text>().text = "Connected to master";
@@ -127,15 +152,13 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
 
     public override void OnRoomListUpdate(List<RoomInfo> _roomList)
     {
-        print("List updated:");
+        print("List updated");
+        roomListCache.Clear();
         foreach (RoomInfo _room in _roomList)
         {
-            print(_room.Name);
-            GameObject _roomPrefab = (GameObject)Instantiate(this.roomPrefab, roomList.transform);
-            _roomPrefab.SetActive(false);
-            _roomPrefab.transform.Find("RoomName").GetComponent<TMP_Text>().text = _room.Name + "\n" + _room.PlayerCount.ToString() + " / " + _room.MaxPlayers.ToString();
-            _roomPrefab.SetActive(true);
+            roomListCache.Append(_room);
         }
+        ShowAvailableRooms();
         base.OnRoomListUpdate(_roomList);
     }
 
