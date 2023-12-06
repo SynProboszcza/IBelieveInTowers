@@ -6,8 +6,10 @@ using UnityEngine;
 
 public class JoinRoomFromList : MonoBehaviour
 {
-    public void OnMouseDown()
+    public void ClickIntercept()
     {
-        PhotonNetwork.JoinRoom(gameObject.transform.Find("RoomName").GetComponent<TMP_Text>().text);
+        string _roomName = gameObject.transform.Find("RoomName").GetComponent<TMP_Text>().text;
+        print("Connecting with room: " + _roomName);
+        PhotonNetwork.JoinRoom(_roomName);
     }
 }
