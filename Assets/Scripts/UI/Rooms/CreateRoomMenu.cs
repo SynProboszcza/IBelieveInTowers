@@ -24,7 +24,8 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
     private GameObject roomList;
     [SerializeField]
     private TMP_Text showRoomsFound;
-    private List<RoomInfo> roomListCache;
+    public List<RoomInfo> roomListFromMaster = new List<RoomInfo>();
+    public List<GameObject> displayedRoomsCache = new List<GameObject>();
     public GameObject showConnection;
     public string backupNickNamePrefix = "defaultNickname";
     public string gameVersion = "0.1";
@@ -109,22 +110,40 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
 
     private void ShowAvailableRooms()
     {
-        if (roomListCache.Count < 1)
+        // Here we have 3 options: 
+        //  Less than one - nothing
+        //  One - special case
+        //  More than one - general case
+        // We update list only when rooms.count >= 1
+        if (roomListFromMaster.Count < 1)
         {
-            showRoomsFound.GetComponent<TMP_Text>().text = "No rooms found!";
-        } else if (roomListCache.Count == 1)
-        {
-            showRoomsFound.GetComponent<TMP_Text>().text = "Found one room.";
-        } else
-        {
-            showRoomsFound.GetComponent<TMP_Text>().text = "Found " + roomListCache.Count.ToString() + "rooms.";
+            showRoomsFound.GetComponent<TMP_Text>().text = "No new rooms found!";
         }
-        foreach (RoomInfo _room in roomListCache)
+        else if (roomListFromMaster.Count >= 1)
         {
-            GameObject _roomPrefab = (GameObject)Instantiate(this.roomPrefab, roomList.transform);
-            _roomPrefab.SetActive(false);
-            _roomPrefab.transform.Find("RoomName").GetComponent<TMP_Text>().text = _room.Name + "\n" + _room.PlayerCount.ToString() + " / " + _room.MaxPlayers.ToString();
-            _roomPrefab.SetActive(true);
+            if(roomListFromMaster.Count == 1)
+            {
+                showRoomsFound.GetComponent<TMP_Text>().text = "Found one new room.";
+            }
+            else
+            {
+                showRoomsFound.GetComponent<TMP_Text>().text = "Found " + roomListFromMaster.Count.ToString() + " new rooms.";
+            }
+            foreach (RoomInfo _room in roomListFromMaster)
+            {
+                //print(_room);
+                if (_room.IsVisible 
+                   && _room.IsOpen 
+                   && _room.PlayerCount != 0)
+                    //&& _room.CustomProperties["Founder"] != null)
+                {
+                    GameObject _roomPrefab = (GameObject)Instantiate(this.roomPrefab, roomList.transform);
+                    _roomPrefab.SetActive(false);
+                    _roomPrefab.transform.Find("RoomName").GetComponent<TMP_Text>().text = _room.Name + "\n" + _room.PlayerCount.ToString() + " / " + _room.MaxPlayers.ToString();
+                    _roomPrefab.SetActive(true);
+                    displayedRoomsCache.Add(_roomPrefab);
+                }
+            }
         }
     }
 
@@ -149,14 +168,29 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
         gameObject.GetComponent<Button>().interactable = false;
         base.OnJoinedRoom();
     }
+    
+    private void HideUnavailableRooms()
+    {
+        foreach (GameObject _room in displayedRoomsCache)
+        {
+            if (!roomListFromMaster.Contains(
+                new Room(_room.transform.Find("RoomName").GetComponent<TMP_Text>().text,
+                new RoomOptions())))
+            {
+                Destroy(_room);
+            }
+        }
+        roomListFromMaster.Clear();
+        displayedRoomsCache.Clear();
+    }
 
     public override void OnRoomListUpdate(List<RoomInfo> _roomList)
     {
         print("List updated");
-        roomListCache.Clear();
+        HideUnavailableRooms();
         foreach (RoomInfo _room in _roomList)
         {
-            roomListCache.Append(_room);
+            roomListFromMaster.Add(_room);
         }
         ShowAvailableRooms();
         base.OnRoomListUpdate(_roomList);
