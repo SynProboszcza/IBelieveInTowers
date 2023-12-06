@@ -7143,6 +7143,8 @@ MonoBehaviour:
   debugButton: {fileID: 0}
   roomPrefab: {fileID: 5473110327480553, guid: 3bc2bfacc34d83242b6d92cab323456e, type: 3}
   roomList: {fileID: 1906290182}
+  showRoomsFound: {fileID: 1772500915}
+  displayedRoomsCache: []
   showConnection: {fileID: 1766878994}
   backupNickNamePrefix: defaultNickname
   gameVersion: 0.1
