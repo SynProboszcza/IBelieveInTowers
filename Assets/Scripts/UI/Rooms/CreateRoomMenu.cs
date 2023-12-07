@@ -1,9 +1,10 @@
 using Photon.Pun;
+using Photon.Pun.Demo.Cockpit;
 using Photon.Realtime;
-using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class CreateRoomMenu : MonoBehaviourPunCallbacks
@@ -16,10 +17,20 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
     [SerializeField]
     private Toggle[] settingToggles;
     [SerializeField]
-    private Button debugButton;
+    private Button refreshListButton;
+    [SerializeField]
+    private GameObject roomPrefab;
+    [SerializeField]
+    private GameObject roomList;
+    [SerializeField]
+    private TMP_Text showRoomsFound;
+    public List<RoomInfo> openRoomsFromMaster = new List<RoomInfo>();
+    public List<RoomInfo> openRoomsFromMasterCache = new List<RoomInfo>();
+    public List<GameObject> displayedRoomsCache = new List<GameObject>();
     public GameObject showConnection;
     public string backupNickNamePrefix = "defaultNickname";
     public string gameVersion = "0.1";
+    private bool restartConnectionFlag = false;
 
 
     // Check for connection and connect if not
@@ -44,21 +55,21 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
             else
             {
                 showConnection.GetComponent<TMP_Text>().text += "master";
+                //ShowCachedRooms();
+                RestartConnection(); // Doing this to get OnRoomListUpdate callback
             }
         }
         // We're not ready, so we need to set up and connect
         else
         {
-            PhotonNetwork.GameVersion = gameVersion;
-            gameObject.GetComponent<Button>().interactable = false;
-            print("Connecting to server...");
-            PhotonNetwork.ConnectUsingSettings();
+            SetUpConnection();
         }
     }
 
     // Called when player clicks Host Game button
     // If connectedAndReady check/set nickname and room name
     // and create room with these; also max players is set 2 2
+    // If room is created Photon joins it automatically
     public void OnClickCreateRoom()
     {
         //
@@ -98,10 +109,53 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
 
     }
 
+    private void SetUpConnection()
+    {
+        PhotonNetwork.GameVersion = gameVersion;
+        gameObject.GetComponent<Button>().interactable = false;
+        print("Connecting to server...");
+        PhotonNetwork.ConnectUsingSettings();
+    }
+
+    public void RefreshListOfRooms()
+    {
+        refreshListButton.GetComponent<Button>().interactable = false;
+        ClearVisibleList();
+        RestartConnection();
+    }
+
+    public void ClearVisibleList()
+    {
+        for(int i = 0; i < roomList.transform.childCount; i++)
+        {
+            Destroy(roomList.transform.GetChild(i).gameObject);
+        }
+    }
+
+    public void RestartConnection()
+    {
+        restartConnectionFlag = true;
+        PhotonNetwork.Disconnect();
+    }
+
+    private void ShowRooms(List<RoomInfo> _list)
+    {
+        foreach (RoomInfo _room in _list)
+        {
+            GameObject _roomPrefab = (GameObject)Instantiate(this.roomPrefab, roomList.transform);
+            _roomPrefab.SetActive(false);
+            _roomPrefab.transform.Find("RoomName").GetComponent<TMP_Text>().text = _room.Name;
+            _roomPrefab.SetActive(true);
+            displayedRoomsCache.Add(_roomPrefab);
+            openRoomsFromMasterCache.Add(_room);
+        }
+    }
+
     public override void OnConnectedToMaster()
     {
         showConnection.GetComponent<TMP_Text>().text = "Connected to master";
         gameObject.GetComponent<Button>().interactable = true;
+        refreshListButton.GetComponent<Button>().interactable = true;
         PhotonNetwork.JoinLobby(TypedLobby.Default);
         base.OnConnectedToMaster();
     }
@@ -114,17 +168,74 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
 
     public override void OnJoinedRoom()
     {
-        // TODO change scene here
         showConnection.GetComponent<TMP_Text>().text = "Joined room: " + PhotonNetwork.CurrentRoom.Name;
         gameObject.GetComponent<Button>().interactable = false;
+        // Show big text "Found player" or smth
+        SceneManager.LoadScene("PreparingToPlay");
         base.OnJoinedRoom();
     }
-
-    public override void OnRoomListUpdate(List<RoomInfo> roomList)
+    
+    private void HideUnavailableRooms()
     {
-        print("List updated");
-        print(roomList[0].Name);
-        base.OnRoomListUpdate(roomList);
+        for (int k = 0; k < Mathf.Abs(displayedRoomsCache.Count - openRoomsFromMaster.Count); k++)
+        {
+            foreach (GameObject _room in displayedRoomsCache)
+            {
+                if (!openRoomsFromMaster.Contains(
+                    new Room(_room.transform.Find("RoomName").GetComponent<TMP_Text>().text,
+                    new RoomOptions())))
+                {
+                    displayedRoomsCache.Remove(_room);
+                    Destroy(_room);
+                    print("Removed and destroyed: " + _room);
+                    break;
+                }
+            }
+        }
+        //displayedRoomsCache.Clear();
+    }
+
+    public override void OnRoomListUpdate(List<RoomInfo> _roomList)
+    {
+        print("Got update List:");
+        openRoomsFromMaster.Clear();
+        foreach (RoomInfo _room in _roomList)
+        {
+            print("Got room: " + _room.Name);
+            if (_room.IsVisible
+               && _room.IsOpen
+               && _room.PlayerCount != 0)
+            {
+                print("Added room: " + _room.Name);
+                openRoomsFromMaster.Add(_room);
+            }
+        }
+
+        HideUnavailableRooms();
+
+        // Here we have 3 options: 
+        //  Less than one - nothing
+        //  One - special case
+        //  More than one - general case
+        // We update list only when rooms.count >= 1
+        if (openRoomsFromMaster.Count < 1)
+        {
+            showRoomsFound.GetComponent<TMP_Text>().text = "No new rooms found!";
+        }
+        else if (openRoomsFromMaster.Count >= 1)
+        {
+            if (openRoomsFromMaster.Count == 1)
+            {
+                showRoomsFound.GetComponent<TMP_Text>().text = "Found one new room.";
+            }
+            else
+            {
+                showRoomsFound.GetComponent<TMP_Text>().text = "Found " + openRoomsFromMaster.Count.ToString() + " new rooms.";
+            }
+
+            ShowRooms(openRoomsFromMaster);
+        }
+        base.OnRoomListUpdate(_roomList);
     }
 
     public override void OnJoinedLobby()
@@ -142,6 +253,11 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
     public override void OnDisconnected(DisconnectCause cause)
     {
         print("Disconnected because: " + cause.ToString());
+        if (cause == DisconnectCause.DisconnectByClientLogic && restartConnectionFlag)
+        {
+            restartConnectionFlag = false;
+            SetUpConnection();
+        }
         base.OnDisconnected(cause);
     }
 
