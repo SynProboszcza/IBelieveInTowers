@@ -151,6 +151,26 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
         }
     }
 
+    private void HideUnavailableRooms()
+    {
+        for (int k = 0; k < Mathf.Abs(displayedRoomsCache.Count - openRoomsFromMaster.Count); k++)
+        {
+            foreach (GameObject _room in displayedRoomsCache)
+            {
+                if (!openRoomsFromMaster.Contains(
+                    new Room(_room.transform.Find("RoomName").GetComponent<TMP_Text>().text,
+                    new RoomOptions())))
+                {
+                    displayedRoomsCache.Remove(_room);
+                    Destroy(_room);
+                    print("Removed and destroyed: " + _room);
+                    break;
+                }
+            }
+        }
+        //displayedRoomsCache.Clear();
+    }
+
     public override void OnConnectedToMaster()
     {
         showConnection.GetComponent<TMP_Text>().text = "Connected to master";
@@ -175,26 +195,6 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
         base.OnJoinedRoom();
     }
     
-    private void HideUnavailableRooms()
-    {
-        for (int k = 0; k < Mathf.Abs(displayedRoomsCache.Count - openRoomsFromMaster.Count); k++)
-        {
-            foreach (GameObject _room in displayedRoomsCache)
-            {
-                if (!openRoomsFromMaster.Contains(
-                    new Room(_room.transform.Find("RoomName").GetComponent<TMP_Text>().text,
-                    new RoomOptions())))
-                {
-                    displayedRoomsCache.Remove(_room);
-                    Destroy(_room);
-                    print("Removed and destroyed: " + _room);
-                    break;
-                }
-            }
-        }
-        //displayedRoomsCache.Clear();
-    }
-
     public override void OnRoomListUpdate(List<RoomInfo> _roomList)
     {
         print("Got update List:");
