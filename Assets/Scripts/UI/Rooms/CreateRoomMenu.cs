@@ -4,6 +4,7 @@ using Photon.Realtime;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class CreateRoomMenu : MonoBehaviourPunCallbacks
@@ -167,9 +168,10 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
 
     public override void OnJoinedRoom()
     {
-        // TODO change scene here
         showConnection.GetComponent<TMP_Text>().text = "Joined room: " + PhotonNetwork.CurrentRoom.Name;
         gameObject.GetComponent<Button>().interactable = false;
+        // Show big text "Found player" or smth
+        SceneManager.LoadScene("PreparingToPlay");
         base.OnJoinedRoom();
     }
     
