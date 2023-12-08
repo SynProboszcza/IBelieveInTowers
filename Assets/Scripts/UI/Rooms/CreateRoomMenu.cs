@@ -84,11 +84,12 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
         }
         // -----------------------------------------------------------
         // Set default custom room properties:
-        //  expose your nickname for another player
+        //  prepare keys to fill in nicknames
         //  set player time to live to 5 seconds
         // -----------------------------------------------------------
         ExitGames.Client.Photon.Hashtable _customProperties = new ExitGames.Client.Photon.Hashtable();
-        _customProperties.Add("roomCreatorNickname", PhotonNetwork.NickName);
+        _customProperties.Add("roomCreatorNickname", "defualt master");
+        _customProperties.Add("roomJoinedNickname", "defualt joined");
         RoomOptions options = new RoomOptions();
         options.MaxPlayers = 2;
         options.PlayerTtl = 5000;
@@ -117,7 +118,6 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
         // -----------------------------------------------------------
         PhotonNetwork.CreateRoom(_roomName.text, options, TypedLobby.Default);
     }
-
 
     public void RefreshListOfRooms()
     {
@@ -201,6 +201,19 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
         showConnection.GetComponent<TMP_Text>().text = "Joined room: " + PhotonNetwork.CurrentRoom.Name;
         gameObject.GetComponent<Button>().interactable = false;
         // Show big text "Found player" or smth
+        // -----------------------------------------------------------
+        // Expose nicknames
+        // -----------------------------------------------------------
+        if (PhotonNetwork.IsMasterClient)
+        {
+            ExitGames.Client.Photon.Hashtable _customProperties = new ExitGames.Client.Photon.Hashtable();
+            _customProperties.Add("roomCreatorNickname", PhotonNetwork.NickName);
+        } else
+        {
+            ExitGames.Client.Photon.Hashtable _customProperties = new ExitGames.Client.Photon.Hashtable();
+            _customProperties.Add("roomJoinedNickname", PhotonNetwork.NickName);
+            PhotonNetwork.CurrentRoom.SetCustomProperties(_customProperties);
+        }
         SceneManager.LoadScene("PreparingToPlay");
         base.OnJoinedRoom();
     }
