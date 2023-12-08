@@ -10672,7 +10672,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 2135872490}
         m_TargetAssemblyTypeName: LeaveRoom, Assembly-CSharp
-        m_MethodName: ClickIntercept
+        m_MethodName: ClickInterceptToLeaveRoom
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

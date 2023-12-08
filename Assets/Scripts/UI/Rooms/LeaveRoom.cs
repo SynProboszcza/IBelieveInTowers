@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 
 public class LeaveRoom : MonoBehaviour
 {
-    public void ClickIntercept()
+    public void ClickInterceptToLeaveRoom()
     {
         print("Disconnecting with room: " + PhotonNetwork.CurrentRoom.Name.ToString());
         PhotonNetwork.LeaveRoom();

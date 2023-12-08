@@ -1,3 +1,4 @@
+using ExitGames.Client.Photon;
 using Photon.Pun;
 using TMPro;
 using UnityEngine;
@@ -11,10 +12,6 @@ public class PreMainGame : MonoBehaviourPunCallbacks
     public TMP_Text textfieldRegion;
     public TMP_Text textfieldMyNickName;
     public TMP_Text textfieldEnemyNickName;
-    void Start()
-    {
-        
-    }
 
     void Update()
     {
@@ -26,18 +23,6 @@ public class PreMainGame : MonoBehaviourPunCallbacks
         {
             readyToggle.transform.Find("Label").GetComponent<Text>().color = Color.red;
         }
-        if (PhotonNetwork.IsConnectedAndReady)
-        {
-            string _enemyNickName = "Connecting...";
-            if (PhotonNetwork.IsMasterClient)
-            {
-                _enemyNickName = PhotonNetwork.CurrentRoom.CustomProperties["roomCreatorNickname"].ToString();
-            } else
-            {
-                _enemyNickName = PhotonNetwork.CurrentRoom.CustomProperties["roomJoinedNickname"].ToString();
-            }
-            RefreshTextfields(PhotonNetwork.CurrentLobby.Type.ToString(), PhotonNetwork.CurrentRoom.Name.ToString(), PhotonNetwork.CloudRegion, PhotonNetwork.NickName, _enemyNickName);
-        }
     }
 
     public void RefreshTextfields(string _lobbyName, string _roomName, string _regionName, string _nickName, string _enemyNickName)
@@ -47,5 +32,28 @@ public class PreMainGame : MonoBehaviourPunCallbacks
         textfieldRegion.GetComponent<TMP_Text>().text = "Region: " + _regionName;
         textfieldMyNickName.GetComponent<TMP_Text>().text = "Me: " + _nickName;
         textfieldEnemyNickName.GetComponent<TMP_Text>().text = "Enemy: " + _enemyNickName;
+    }
+
+    public override void OnRoomPropertiesUpdate(Hashtable propertiesThatChanged)
+    {
+        print("some properties changed!");
+        print(propertiesThatChanged);
+        string _enemyNickName = "Connecting...";
+        foreach (var key in propertiesThatChanged.Keys)
+        {
+            _enemyNickName = propertiesThatChanged[key].ToString();
+        }
+
+        // if (PhotonNetwork.IsMasterClient)
+        // {
+        //     _enemyNickName = PhotonNetwork.CurrentRoom.CustomProperties["roomCreatorNickname"].ToString();
+        // }
+        // else
+        // {
+        //     _enemyNickName = PhotonNetwork.CurrentRoom.CustomProperties["roomJoinedNickname"].ToString();
+        // }
+        RefreshTextfields(PhotonNetwork.CurrentLobby.Type.ToString(), PhotonNetwork.CurrentRoom.Name.ToString(), PhotonNetwork.CloudRegion, PhotonNetwork.NickName, _enemyNickName);
+
+        base.OnRoomPropertiesUpdate(propertiesThatChanged);
     }
 }
