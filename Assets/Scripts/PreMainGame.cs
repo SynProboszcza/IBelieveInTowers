@@ -12,6 +12,13 @@ public class PreMainGame : MonoBehaviourPunCallbacks
     public TMP_Text textfieldRegion;
     public TMP_Text textfieldMyNickName;
     public TMP_Text textfieldEnemyNickName;
+    public bool amIMaster;
+
+    private void Start()
+    {
+        amIMaster = PhotonNetwork.IsMasterClient;
+        RefreshTextfields(PhotonNetwork.CurrentLobby.Type.ToString(), PhotonNetwork.CurrentRoom.Name.ToString(), PhotonNetwork.CloudRegion, PhotonNetwork.NickName, "Waiting for opponnent...");
+    }
 
     void Update()
     {
@@ -36,32 +43,21 @@ public class PreMainGame : MonoBehaviourPunCallbacks
 
     public override void OnRoomPropertiesUpdate(Hashtable propertiesThatChanged)
     {
+        // as of rn properties will change every time someone joins a room
+        // property changed will be players name being added
         print("some properties changed!");
         print(propertiesThatChanged);
-        string _enemyNickName = "Connecting...";
-        // foreach (var key in propertiesThatChanged.Keys)
-        // {
-        //     _enemyNickName = propertiesThatChanged[key].ToString();
-        // }
-        // =======================
-        if (propertiesThatChanged["roomCreatorNickname"] != null)
+        if (amIMaster)
         {
-            _enemyNickName = propertiesThatChanged["roomCreatorNickname"].ToString();
-        } else if(propertiesThatChanged["roomJoinedNickname"] != null)
-        {
-            _enemyNickName = propertiesThatChanged["roomJoinedNickname"].ToString();
+            // i am master and creator, so joined is my enemy
+            RefreshTextfields(PhotonNetwork.CurrentLobby.Type.ToString(), PhotonNetwork.CurrentRoom.Name.ToString(), PhotonNetwork.CloudRegion, PhotonNetwork.NickName, PhotonNetwork.CurrentRoom.CustomProperties["roomJoinedNickname"].ToString());
         }
+        else
+        {
+            // i am joining and not master, so created is my enemy
+            RefreshTextfields(PhotonNetwork.CurrentLobby.Type.ToString(), PhotonNetwork.CurrentRoom.Name.ToString(), PhotonNetwork.CloudRegion, PhotonNetwork.NickName, PhotonNetwork.CurrentRoom.CustomProperties["roomCreatorNickname"].ToString());
 
-        // if (PhotonNetwork.IsMasterClient)
-        // {
-        //     _enemyNickName = PhotonNetwork.CurrentRoom.CustomProperties["roomCreatorNickname"].ToString();
-        // }
-        // else
-        // {
-        //     _enemyNickName = PhotonNetwork.CurrentRoom.CustomProperties["roomJoinedNickname"].ToString();
-        // }
-        RefreshTextfields(PhotonNetwork.CurrentLobby.Type.ToString(), PhotonNetwork.CurrentRoom.Name.ToString(), PhotonNetwork.CloudRegion, PhotonNetwork.NickName, _enemyNickName);
-
+        }
         base.OnRoomPropertiesUpdate(propertiesThatChanged);
     }
 }
