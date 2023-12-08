@@ -28,16 +28,18 @@ public class PreMainGame : MonoBehaviourPunCallbacks
         }
         if (PhotonNetwork.IsConnectedAndReady)
         {
-            // print(PhotonNetwork.CurrentLobby.Type.ToString());
-            // print(PhotonNetwork.CurrentRoom);
-            // print(PhotonNetwork.CloudRegion);
-            // print(PhotonNetwork.NickName);
-            // print(PhotonNetwork.IsMasterClient);
-            RefreshTextfields(PhotonNetwork.CurrentLobby.Type.ToString(), PhotonNetwork.CurrentRoom.Name.ToString(), PhotonNetwork.CloudRegion, PhotonNetwork.NickName, PhotonNetwork.CurrentRoom.CustomProperties["roomCreatorNickname"].ToString()); // Nick is to be pulled from room.specificinfo or sth
+            string _enemyNickName = "Connecting...";
+            if (PhotonNetwork.IsMasterClient)
+            {
+                _enemyNickName = PhotonNetwork.CurrentRoom.CustomProperties["roomCreatorNickname"].ToString();
+            } else
+            {
+                _enemyNickName = PhotonNetwork.CurrentRoom.CustomProperties["roomJoinedNickname"].ToString();
+            }
+            RefreshTextfields(PhotonNetwork.CurrentLobby.Type.ToString(), PhotonNetwork.CurrentRoom.Name.ToString(), PhotonNetwork.CloudRegion, PhotonNetwork.NickName, _enemyNickName);
         }
     }
 
-    // PhotonNetwork is not set(?) 
     public void RefreshTextfields(string _lobbyName, string _roomName, string _regionName, string _nickName, string _enemyNickName)
     {
         textfieldLobby.GetComponent<TMP_Text>().text = "Lobby: " + _lobbyName;
