@@ -20,6 +20,7 @@ TagManager:
   - Spawner
   - ShopNode
   - Despawner
+  - NickName
   layers:
   - Default
   - TransparentFX
