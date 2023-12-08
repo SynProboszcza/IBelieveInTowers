@@ -39,9 +39,17 @@ public class PreMainGame : MonoBehaviourPunCallbacks
         print("some properties changed!");
         print(propertiesThatChanged);
         string _enemyNickName = "Connecting...";
-        foreach (var key in propertiesThatChanged.Keys)
+        // foreach (var key in propertiesThatChanged.Keys)
+        // {
+        //     _enemyNickName = propertiesThatChanged[key].ToString();
+        // }
+        // =======================
+        if (propertiesThatChanged["roomCreatorNickname"] != null)
         {
-            _enemyNickName = propertiesThatChanged[key].ToString();
+            _enemyNickName = propertiesThatChanged["roomCreatorNickname"].ToString();
+        } else if(propertiesThatChanged["roomJoinedNickname"] != null)
+        {
+            _enemyNickName = propertiesThatChanged["roomJoinedNickname"].ToString();
         }
 
         // if (PhotonNetwork.IsMasterClient)
