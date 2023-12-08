@@ -222,6 +222,7 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
             print("i am master");
             ExitGames.Client.Photon.Hashtable _customProperties = new ExitGames.Client.Photon.Hashtable();
             _customProperties.Add("roomCreatorNickname", PhotonNetwork.NickName);
+            PhotonNetwork.CurrentRoom.SetCustomProperties(_customProperties);
         } else
         {
             print("i am joined");
