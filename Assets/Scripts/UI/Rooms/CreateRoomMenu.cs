@@ -87,13 +87,13 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
         //  prepare keys to fill in nicknames
         //  set player time to live to 5 seconds
         // -----------------------------------------------------------
-        ExitGames.Client.Photon.Hashtable _customProperties = new ExitGames.Client.Photon.Hashtable();
-        _customProperties.Add("roomCreatorNickname", "defualt master");
-        _customProperties.Add("roomJoinedNickname", "defualt joined");
+        // ExitGames.Client.Photon.Hashtable _customProperties = new ExitGames.Client.Photon.Hashtable();
+        // _customProperties.Add("roomCreatorNickname", "defualt master");
+        // _customProperties.Add("roomJoinedNickname", "defualt joined");
         RoomOptions options = new RoomOptions();
         options.MaxPlayers = 2;
         options.PlayerTtl = 5000;
-        options.CustomRoomProperties = _customProperties;
+        // options.CustomRoomProperties = _customProperties;
         // -----------------------------------------------------------
         // Checking for room name, if not exists set up default
         // -----------------------------------------------------------
