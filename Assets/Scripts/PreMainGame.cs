@@ -33,7 +33,7 @@ public class PreMainGame : MonoBehaviourPunCallbacks
             // print(PhotonNetwork.CloudRegion);
             // print(PhotonNetwork.NickName);
             // print(PhotonNetwork.IsMasterClient);
-            RefreshTextfields(PhotonNetwork.CurrentLobby.Type.ToString(), PhotonNetwork.CurrentRoom.Name.ToString(), PhotonNetwork.CloudRegion, PhotonNetwork.NickName, "XxX_Crusher_XxX"); // Nick is to be pulled from room.specificinfo or sth
+            RefreshTextfields(PhotonNetwork.CurrentLobby.Type.ToString(), PhotonNetwork.CurrentRoom.Name.ToString(), PhotonNetwork.CloudRegion, PhotonNetwork.NickName, PhotonNetwork.CurrentRoom.CustomProperties["roomCreatorNickname"].ToString()); // Nick is to be pulled from room.specificinfo or sth
         }
     }
 

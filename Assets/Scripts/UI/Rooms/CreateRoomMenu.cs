@@ -1,6 +1,7 @@
 using Photon.Pun;
 using Photon.Pun.Demo.Cockpit;
 using Photon.Realtime;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -72,29 +73,38 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
     // If room is created Photon joins it automatically
     public void OnClickCreateRoom()
     {
-        //
-        //
-        // Make toggles not clickable
-        //
-        //
+        // -----------------------------------------------------------
+        // TODO: Make toggles not clickable
+        // -----------------------------------------------------------
         if (!PhotonNetwork.IsConnectedAndReady)
         {
             Debug.Log("Not Connected, aborting creating room");
             showConnection.GetComponent<TMP_Text>().text = "Can't connect or not ready yet!";
             return;
         }
+        // -----------------------------------------------------------
+        // Set default custom room properties:
+        //  expose your nickname for another player
+        //  set player time to live to 5 seconds
+        // -----------------------------------------------------------
+        ExitGames.Client.Photon.Hashtable _customProperties = new ExitGames.Client.Photon.Hashtable();
+        _customProperties.Add("roomCreatorNickname", PhotonNetwork.NickName);
         RoomOptions options = new RoomOptions();
         options.MaxPlayers = 2;
-        
+        options.PlayerTtl = 5000;
+        options.CustomRoomProperties = _customProperties;
+        // -----------------------------------------------------------
         // Checking for room name, if not exists set up default
+        // -----------------------------------------------------------
         if (_roomName.text == "")
         {
             _roomName.text = "DefaultRoomName";
         }
-
+        // -----------------------------------------------------------
         // Checking for nickname, if not exists set up default
         // There is minimum length for nickname specified by Dawid,
         // not demanded by Photon
+        // -----------------------------------------------------------
         if(_nickName.text.ToString().Length >= 3)
         {
             PhotonNetwork.NickName = _nickName.text.ToString();
@@ -104,18 +114,10 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
             _nickName.text = backupNickNamePrefix;
             PhotonNetwork.NickName = backupNickNamePrefix;
         }
-
+        // -----------------------------------------------------------
         PhotonNetwork.CreateRoom(_roomName.text, options, TypedLobby.Default);
-
     }
 
-    private void SetUpConnection()
-    {
-        PhotonNetwork.GameVersion = gameVersion;
-        gameObject.GetComponent<Button>().interactable = false;
-        print("Connecting to server...");
-        PhotonNetwork.ConnectUsingSettings();
-    }
 
     public void RefreshListOfRooms()
     {
@@ -149,6 +151,14 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
             displayedRoomsCache.Add(_roomPrefab);
             openRoomsFromMasterCache.Add(_room);
         }
+    }
+
+    private void SetUpConnection()
+    {
+        PhotonNetwork.GameVersion = gameVersion;
+        gameObject.GetComponent<Button>().interactable = false;
+        print("Connecting to server...");
+        PhotonNetwork.ConnectUsingSettings();
     }
 
     private void HideUnavailableRooms()
