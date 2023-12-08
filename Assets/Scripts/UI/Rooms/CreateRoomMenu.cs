@@ -4,6 +4,7 @@ using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -117,6 +118,18 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
         }
         // -----------------------------------------------------------
         PhotonNetwork.CreateRoom(_roomName.text, options, TypedLobby.Default);
+    }
+
+    public static void JoinRoomFromList(string roomName)
+    {
+        // Searching with tag because its static method, called by room prefab
+        TMP_InputField _nickName = GameObject.FindWithTag("NickName").GetComponent<TMP_InputField>(); 
+        if (_nickName.text.ToString().Length <= 3)
+        {
+            _nickName.text = "IDidntSetMyNickName";
+        }
+        PhotonNetwork.NickName = _nickName.text;
+        PhotonNetwork.JoinRoom(roomName);
     }
 
     public void RefreshListOfRooms()

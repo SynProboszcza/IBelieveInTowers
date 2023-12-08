@@ -10,6 +10,6 @@ public class JoinRoomFromList : MonoBehaviour
     {
         string _roomName = gameObject.transform.Find("RoomName").GetComponent<TMP_Text>().text;
         print("Connecting with room: " + _roomName);
-        PhotonNetwork.JoinRoom(_roomName);
+        CreateRoomMenu.JoinRoomFromList(_roomName);
     }
 }
