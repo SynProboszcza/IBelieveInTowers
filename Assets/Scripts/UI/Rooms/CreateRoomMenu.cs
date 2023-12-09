@@ -135,16 +135,17 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
     public void RefreshListOfRooms()
     {
         refreshListButton.GetComponent<Button>().interactable = false;
-        ClearVisibleList();
+        ClearVisibleAndCachedRoomList();
         RestartConnection();
     }
 
-    public void ClearVisibleList()
+    public void ClearVisibleAndCachedRoomList()
     {
         for(int i = 0; i < roomList.transform.childCount; i++)
         {
             Destroy(roomList.transform.GetChild(i).gameObject);
         }
+        displayedRoomsCache.Clear();
     }
 
     public void RestartConnection()
