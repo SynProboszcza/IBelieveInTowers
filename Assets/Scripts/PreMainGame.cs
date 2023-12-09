@@ -20,18 +20,6 @@ public class PreMainGame : MonoBehaviourPunCallbacks
         RefreshTextfields(PhotonNetwork.CurrentLobby.Type.ToString(), PhotonNetwork.CurrentRoom.Name.ToString(), PhotonNetwork.CloudRegion, PhotonNetwork.NickName, "Waiting for opponnent...");
     }
 
-    void Update()
-    {
-        // Check for readiness
-        if(readyToggle.isOn)
-        {
-            readyToggle.transform.Find("Label").GetComponent<Text>().color = Color.green;
-        } else
-        {
-            readyToggle.transform.Find("Label").GetComponent<Text>().color = Color.red;
-        }
-    }
-
     public void RefreshTextfields(string _lobbyName, string _roomName, string _regionName, string _nickName, string _enemyNickName)
     {
         textfieldLobby.GetComponent<TMP_Text>().text = "Lobby: " + _lobbyName;
