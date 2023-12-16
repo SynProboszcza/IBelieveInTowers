@@ -180,8 +180,13 @@ public class MainTurret : MonoBehaviour
         return this.turretMaxHealth;
     }
 
+    public void TakeDamage(float _damage)
+    {
+        this.turretHealth -= _damage;
+    }
+
     private void DieAndLeaveShopNode() {
-        Instantiate(shopNodePrefab, transform.position, Quaternion.identity);
+        Instantiate(shopNodePrefab, new Vector3(transform.position.x, transform.position.y, MainGameLoop.shopNodesZOffset), Quaternion.identity);
         Destroy(gameObject);
     }
 
