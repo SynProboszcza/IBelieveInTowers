@@ -9,6 +9,7 @@ public class Enemy : MonoBehaviour
     public Transform[] waypoints;
     public float speed = 2f;
     public float currentHealth;
+    public float maxHealth;
     public int damage = 0;
     public int waypointIndex = 0;
     public int moneyReward = 50;
@@ -17,6 +18,7 @@ public class Enemy : MonoBehaviour
     {
         mainGame = GameObject.FindWithTag("SingleTagForMainGameLoop");
         transform.position = waypoints[waypointIndex].position;
+        maxHealth = currentHealth;
     }
 
     // Update is called once per frame
@@ -106,6 +108,11 @@ public class Enemy : MonoBehaviour
     public float GetHealth()
     {
         return this.currentHealth;
+    }
+
+    public float GetMaxHealth()
+    {
+        return this.maxHealth;
     }
 
     public int GetMoneyReward()

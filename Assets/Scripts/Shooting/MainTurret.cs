@@ -13,6 +13,7 @@ public class MainTurret : MonoBehaviour
     public GameObject muzzleEffects;
     public GameObject gun;
     public GameObject shootSpawnPoint;
+    public GameObject shopNodePrefab;
     private GameObject bulletsCollection;
     private GameObject target;
     private GameObject bulletInstance;
@@ -38,6 +39,10 @@ public class MainTurret : MonoBehaviour
     // Upgrade cost
     // ----------------------------------------------------------------------
     public int upgradeCost = 100;
+    // Turret health
+    // ----------------------------------------------------------------------
+    public float turretHealth = 200f;
+    private float turretMaxHealth;
     // Multipliers of upgrades
     // ----------------------------------------------------------------------
     [Tooltip("Array of bullet damage bonuses for upgrading")]
@@ -81,6 +86,7 @@ public class MainTurret : MonoBehaviour
         if (bulletsCollection == null) {
             bulletsCollection = new GameObject("BulletsCollection");
         }
+        turretMaxHealth = turretHealth;
     }
 
     void Update()
@@ -157,6 +163,26 @@ public class MainTurret : MonoBehaviour
         // not with every frame.
         // -----------------------------------------------------------------------------
         UpdateBaseSprite();
+
+        // Check for death of turret
+        if (turretHealth <= 0) {
+            DieAndLeaveShopNode();
+        }
+    }
+
+    public float GetHealth()
+    {
+        return this.turretHealth;
+    }
+
+    public float GetMaxHealth()
+    {
+        return this.turretMaxHealth;
+    }
+
+    private void DieAndLeaveShopNode() {
+        Instantiate(shopNodePrefab, transform.position, Quaternion.identity);
+        Destroy(gameObject);
     }
 
     private void DestroyBullet(GameObject bullet)

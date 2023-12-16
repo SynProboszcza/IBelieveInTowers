@@ -129,6 +129,7 @@
     <Compile Include="Assets\Photon\PhotonChat\Demos\DemoChat\FriendItem.cs" />
     <Compile Include="Assets\Scripts\Deprecated\ShootAtMouse.cs" />
     <Compile Include="Assets\sprite muzzle flashes\AnimatedTexture.cs" />
+    <Compile Include="Assets\Scripts\UI\Rooms\LeaveRoom.cs" />
     <Compile Include="Assets\Scripts\UI\Rooms\CreateRoomMenu.cs" />
     <Compile Include="Assets\Photon\PhotonChat\Demos\DemoChat\ChatGui.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\DropdownSample.cs" />
@@ -140,10 +141,10 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexZoom.cs" />
     <Compile Include="Assets\Scripts\MainGameLoop.cs" />
     <Compile Include="Assets\Photon\PhotonChat\Demos\Common\OnStartDelete.cs" />
+    <Compile Include="Assets\Scripts\UI\PrePlay\RedGreenToggle.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01.cs" />
     <Compile Include="Assets\Scripts\MenuButtons\QuitButton.cs" />
-    <Compile Include="Assets\Scripts\UI\Rooms\LeaveRoom.cs" />
-    <Compile Include="Assets\Scripts\UI\PrePlay\RedGreenToggle.cs" />
+    <Compile Include="Assets\Scripts\UI\Healthbar.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
