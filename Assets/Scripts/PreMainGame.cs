@@ -52,7 +52,6 @@ public class PreMainGame : MonoBehaviourPunCallbacks
 
     public void ShowConnectionTestingNetworking()
     {
-        var image = PhotonNetwork.Instantiate("test", new Vector3(700, 500, 0), Quaternion.identity, 0);
-        image.transform.SetParent(mainCanvasReference.transform);
+        PhotonNetwork.Instantiate("test", new Vector3(700, 500, 0), Quaternion.identity, 0);
     }
 }
