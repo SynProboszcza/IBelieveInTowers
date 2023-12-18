@@ -89,8 +89,8 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
         //  set player time to live to 5 seconds
         // -----------------------------------------------------------
         ExitGames.Client.Photon.Hashtable _customProperties = new ExitGames.Client.Photon.Hashtable();
-        _customProperties.Add("roomCreatorNickname", "Connecting...");
-        _customProperties.Add("roomJoinedNickname", "Connecting ...");
+        _customProperties.Add("roomCreatorNickname", "Waiting...");
+        _customProperties.Add("roomJoinedNickname", "Waiting ...");
         RoomOptions options = new RoomOptions();
         options.MaxPlayers = 2;
         options.PlayerTtl = 5000;
@@ -112,7 +112,7 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
             PhotonNetwork.NickName = _nickName.text.ToString();
         } else
         {
-            backupNickNamePrefix += Random.Range(0, 55555).ToString();
+            backupNickNamePrefix += Random.Range(0, 99999).ToString();
             _nickName.text = backupNickNamePrefix;
             PhotonNetwork.NickName = backupNickNamePrefix;
         }
