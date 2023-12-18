@@ -1,8 +1,10 @@
 using Photon.Pun;
 using Photon.Pun.Demo.Cockpit;
 using Photon.Realtime;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -72,64 +74,78 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
     // If room is created Photon joins it automatically
     public void OnClickCreateRoom()
     {
-        //
-        //
-        // Make toggles not clickable
-        //
-        //
+        // -----------------------------------------------------------
+        // TODO: Make toggles not clickable
+        // -----------------------------------------------------------
         if (!PhotonNetwork.IsConnectedAndReady)
         {
             Debug.Log("Not Connected, aborting creating room");
             showConnection.GetComponent<TMP_Text>().text = "Can't connect or not ready yet!";
             return;
         }
+        // -----------------------------------------------------------
+        // Set default custom room properties:
+        //  prepare keys to fill in nicknames
+        //  set player time to live to 5 seconds
+        // -----------------------------------------------------------
+        ExitGames.Client.Photon.Hashtable _customProperties = new ExitGames.Client.Photon.Hashtable();
+        _customProperties.Add("roomCreatorNickname", "Waiting...");
+        _customProperties.Add("roomJoinedNickname", "Waiting ...");
         RoomOptions options = new RoomOptions();
         options.MaxPlayers = 2;
-        
+        options.PlayerTtl = 5000;
+        options.CustomRoomProperties = _customProperties;
+        // -----------------------------------------------------------
         // Checking for room name, if not exists set up default
+        // -----------------------------------------------------------
         if (_roomName.text == "")
         {
             _roomName.text = "DefaultRoomName";
         }
-
+        // -----------------------------------------------------------
         // Checking for nickname, if not exists set up default
         // There is minimum length for nickname specified by Dawid,
         // not demanded by Photon
+        // -----------------------------------------------------------
         if(_nickName.text.ToString().Length >= 3)
         {
             PhotonNetwork.NickName = _nickName.text.ToString();
         } else
         {
-            backupNickNamePrefix += Random.Range(0, 55555).ToString();
+            backupNickNamePrefix += Random.Range(0, 99999).ToString();
             _nickName.text = backupNickNamePrefix;
             PhotonNetwork.NickName = backupNickNamePrefix;
         }
-
+        // -----------------------------------------------------------
         PhotonNetwork.CreateRoom(_roomName.text, options, TypedLobby.Default);
-
     }
 
-    private void SetUpConnection()
+    public static void JoinRoomFromList(string roomName)
     {
-        PhotonNetwork.GameVersion = gameVersion;
-        gameObject.GetComponent<Button>().interactable = false;
-        print("Connecting to server...");
-        PhotonNetwork.ConnectUsingSettings();
+        // Searching with tag because its static method, called by room prefab
+        TMP_InputField _nickName = GameObject.FindWithTag("NickName").GetComponent<TMP_InputField>(); 
+        if (_nickName.text.ToString().Length <= 3)
+        {
+            _nickName.text = "IDidntSetMyNickName";
+        }
+        PhotonNetwork.NickName = _nickName.text;
+        PhotonNetwork.JoinRoom(roomName);
     }
 
     public void RefreshListOfRooms()
     {
         refreshListButton.GetComponent<Button>().interactable = false;
-        ClearVisibleList();
+        ClearVisibleAndCachedRoomList();
         RestartConnection();
     }
 
-    public void ClearVisibleList()
+    public void ClearVisibleAndCachedRoomList()
     {
         for(int i = 0; i < roomList.transform.childCount; i++)
         {
             Destroy(roomList.transform.GetChild(i).gameObject);
         }
+        displayedRoomsCache.Clear();
     }
 
     public void RestartConnection()
@@ -149,6 +165,34 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
             displayedRoomsCache.Add(_roomPrefab);
             openRoomsFromMasterCache.Add(_room);
         }
+    }
+
+    private void SetUpConnection()
+    {
+        PhotonNetwork.GameVersion = gameVersion;
+        gameObject.GetComponent<Button>().interactable = false;
+        print("Connecting to server...");
+        PhotonNetwork.ConnectUsingSettings();
+    }
+
+    private void HideUnavailableRooms()
+    {
+        for (int k = 0; k < Mathf.Abs(displayedRoomsCache.Count - openRoomsFromMaster.Count); k++)
+        {
+            foreach (GameObject _room in displayedRoomsCache)
+            {
+                if (!openRoomsFromMaster.Contains(
+                    new Room(_room.transform.Find("RoomName").GetComponent<TMP_Text>().text,
+                    new RoomOptions())))
+                {
+                    displayedRoomsCache.Remove(_room);
+                    Destroy(_room);
+                    print("Removed and destroyed: " + _room);
+                    break;
+                }
+            }
+        }
+        //displayedRoomsCache.Clear();
     }
 
     public override void OnConnectedToMaster()
@@ -171,30 +215,26 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
         showConnection.GetComponent<TMP_Text>().text = "Joined room: " + PhotonNetwork.CurrentRoom.Name;
         gameObject.GetComponent<Button>().interactable = false;
         // Show big text "Found player" or smth
+        // -----------------------------------------------------------
+        // Expose nicknames
+        // -----------------------------------------------------------
+        if (PhotonNetwork.IsMasterClient)
+        {
+            print("i am master");
+            ExitGames.Client.Photon.Hashtable _customProperties = new ExitGames.Client.Photon.Hashtable();
+            _customProperties.Add("roomCreatorNickname", PhotonNetwork.NickName);
+            PhotonNetwork.CurrentRoom.SetCustomProperties(_customProperties);
+        } else
+        {
+            print("i am joined");
+            ExitGames.Client.Photon.Hashtable _customProperties = new ExitGames.Client.Photon.Hashtable();
+            _customProperties.Add("roomJoinedNickname", PhotonNetwork.NickName);
+            PhotonNetwork.CurrentRoom.SetCustomProperties(_customProperties);
+        }
         SceneManager.LoadScene("PreparingToPlay");
         base.OnJoinedRoom();
     }
     
-    private void HideUnavailableRooms()
-    {
-        for (int k = 0; k < Mathf.Abs(displayedRoomsCache.Count - openRoomsFromMaster.Count); k++)
-        {
-            foreach (GameObject _room in displayedRoomsCache)
-            {
-                if (!openRoomsFromMaster.Contains(
-                    new Room(_room.transform.Find("RoomName").GetComponent<TMP_Text>().text,
-                    new RoomOptions())))
-                {
-                    displayedRoomsCache.Remove(_room);
-                    Destroy(_room);
-                    print("Removed and destroyed: " + _room);
-                    break;
-                }
-            }
-        }
-        //displayedRoomsCache.Clear();
-    }
-
     public override void OnRoomListUpdate(List<RoomInfo> _roomList)
     {
         print("Got update List:");

@@ -204,7 +204,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1232912401121106008}
         m_TargetAssemblyTypeName: JoinRoomFromList, Assembly-CSharp
-        m_MethodName: ClickIntercept
+        m_MethodName: ClickInterceptToJoinRoomFromList
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

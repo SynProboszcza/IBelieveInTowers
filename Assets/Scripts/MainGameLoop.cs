@@ -28,7 +28,7 @@ public class MainGameLoop : MonoBehaviour
     public int playerMoney = 0;
     public float playerHealth;
     [Tooltip("Specifies an offset on a Z axis. 0 is default map, camera is -15, positive will be hidden. This is mainly for colliders to work properly")]
-    public float shopNodesZOffset = -2;
+    public static float shopNodesZOffset = -2;
     public bool isDebugging = false;
     public bool isShopOpen = false;
     public bool isAllowedInstantiating = true;
