@@ -12,6 +12,7 @@ public class PreMainGame : MonoBehaviourPunCallbacks
     public TMP_Text textfieldRegion;
     public TMP_Text textfieldMyNickName;
     public TMP_Text textfieldEnemyNickName;
+    public Canvas mainCanvasReference;
     public bool amIMaster;
 
     private void Start()
@@ -47,5 +48,11 @@ public class PreMainGame : MonoBehaviourPunCallbacks
 
         }
         base.OnRoomPropertiesUpdate(propertiesThatChanged);
+    }
+
+    public void ShowConnectionTestingNetworking()
+    {
+        var image = PhotonNetwork.Instantiate("test", new Vector3(700, 500, 0), Quaternion.identity, 0);
+        image.transform.SetParent(mainCanvasReference.transform);
     }
 }
