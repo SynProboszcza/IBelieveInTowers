@@ -20,6 +20,8 @@ TagManager:
   - Spawner
   - ShopNode
   - Despawner
+  - NickName
+  - MainCanvas
   layers:
   - Default
   - TransparentFX
@@ -80,6 +82,9 @@ TagManager:
     locked: 0
   - name: Enemies
     uniqueID: 671726197
+    locked: 0
+  - name: Healthbar
+    uniqueID: 732742781
     locked: 0
   - name: ShopNode
     uniqueID: 2065941807
