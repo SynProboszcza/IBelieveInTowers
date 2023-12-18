@@ -21,6 +21,7 @@ TagManager:
   - ShopNode
   - Despawner
   - NickName
+  - MainCanvas
   layers:
   - Default
   - TransparentFX

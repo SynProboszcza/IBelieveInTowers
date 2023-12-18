@@ -8,7 +8,7 @@ public class TestSyncingObject : MonoBehaviourPunCallbacks
 {
     public override void OnEnable()
     {
-        gameObject.transform.SetParent(GameObject.FindGameObjectWithTag("MainCanvas").transform);
-
+        // Set parent Canvas so you can display it
+        gameObject.transform.SetParent(GameObject.FindWithTag("MainCanvas").transform);
     }
 }
