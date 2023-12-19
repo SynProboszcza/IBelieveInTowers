@@ -3237,6 +3237,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 810567503}
+        m_TargetAssemblyTypeName: BuyUnit, Assembly-CSharp
+        m_MethodName: AddEnemyToList
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &810567501
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3287,8 +3299,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e695f9a3d9d3964f8e02185ff7209ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyList: {fileID: 0}
-  enemyType: {fileID: 0}
+  enemyList: {fileID: 1117020803}
+  enemyPFPPrefab: {fileID: 565263098971828681, guid: f1148d7193643dd469d4d0f9127c1209, type: 3}
+  unitPrice: 205
 --- !u!1 &814072423
 GameObject:
   m_ObjectHideFlags: 0
@@ -12934,6 +12947,10 @@ PrefabInstance:
     - target: {fileID: 3762493281473860658, guid: 4833667a0bd79eb4fa3574675b364ccd, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4030136247814443995, guid: 4833667a0bd79eb4fa3574675b364ccd, type: 3}
+      propertyPath: m_text
+      value: null
       objectReference: {fileID: 0}
     - target: {fileID: 6211869354746924766, guid: 4833667a0bd79eb4fa3574675b364ccd, type: 3}
       propertyPath: m_Name
