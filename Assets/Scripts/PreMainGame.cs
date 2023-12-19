@@ -13,6 +13,7 @@ public class PreMainGame : MonoBehaviourPunCallbacks
     public TMP_Text textfieldMyNickName;
     public TMP_Text textfieldEnemyNickName;
     public Canvas mainCanvasReference;
+    [HideInInspector]
     public bool amIMaster;
 
     private void Start()
@@ -53,5 +54,10 @@ public class PreMainGame : MonoBehaviourPunCallbacks
     public void ShowConnectionTestingNetworking()
     {
         PhotonNetwork.Instantiate("test", new Vector3(700, 500, 0), Quaternion.identity, 0);
+    }
+
+    public void ShowTextToConsole()
+    {
+        print("i am working from" + gameObject.name);
     }
 }
