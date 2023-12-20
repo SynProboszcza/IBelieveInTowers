@@ -58,7 +58,7 @@
   <ItemGroup>
     <Compile Include="Assets\Photon\PhotonRealtime\Demos\DemoLoadBalancing\ConnectAndJoinRandomLb.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\SkewTextExample.cs" />
-    <Compile Include="Assets\Scripts\AddToDontDestroyOnLoad.cs" />
+    <Compile Include="Assets\Scripts\Deprecated\AddToDontDestroyOnLoad.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\SimpleScript.cs" />
     <Compile Include="Assets\Photon\PhotonLibs\WebSocket\SocketWebTcp.cs" />
     <Compile Include="Assets\Scripts\Enemies\Enemy.cs" />
@@ -76,6 +76,7 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark04.cs" />
     <Compile Include="Assets\Scripts\debugworkinprogress.cs" />
     <Compile Include="Assets\Scripts\Shop\TurretOffer.cs" />
+    <Compile Include="Assets\Scripts\Deprecated\ShowSimpleTextToConsole.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\ChatController.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TextMeshProFloatingText.cs" />
     <Compile Include="Assets\Photon\PhotonChat\Demos\Common\EventSystemSpawner.cs" />
@@ -93,6 +94,7 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TextConsoleSimulator.cs" />
     <Compile Include="Assets\Scripts\PreMainGame.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\ObjectSpin.cs" />
+    <Compile Include="Assets\Scripts\Multiplayer\Networking\TestSyncingObject.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextInfoDebugTool.cs" />
     <Compile Include="Assets\Scripts\Multiplayer\TestConnection.cs" />
     <Compile Include="Assets\Scripts\MenuButtons\GoBackToMainMenu.cs" />
@@ -117,6 +119,7 @@
     <Compile Include="Assets\Scripts\Multiplayer\UpdateRoomList.cs" />
     <Compile Include="Assets\Scripts\Shooting\Bullet.cs" />
     <Compile Include="Assets\Scripts\MainMenuLoop.cs" />
+    <Compile Include="Assets\Scripts\Multiplayer\BuyUnit.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TextMeshSpawner.cs" />
     <Compile Include="Assets\Scripts\Shop\UpgradeTurret.cs" />
     <Compile Include="Assets\Scripts\Deprecated\Moving\ControlWithArrows.cs" />
@@ -145,7 +148,6 @@
     <Compile Include="Assets\Scripts\UI\PrePlay\RedGreenToggle.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01.cs" />
     <Compile Include="Assets\Scripts\MenuButtons\QuitButton.cs" />
-    <Compile Include="Assets\Scripts\Multiplayer\Networking\TestSyncingObject.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
