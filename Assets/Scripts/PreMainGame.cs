@@ -90,15 +90,18 @@ public class PreMainGame : MonoBehaviourPunCallbacks
 
     public void ChangeReadyState()
     {
+        print("Changing ready state");
         readyState = !readyState;
+        Hashtable _readyStateHashtable = new Hashtable();
 
         if (amIMaster)
         {
-            PhotonNetwork.CurrentRoom.CustomProperties["isMasterReady"] = readyState;
+            _readyStateHashtable.Add("isMasterReady", readyState);
         } else
         {
-            PhotonNetwork.CurrentRoom.CustomProperties["isJoinedReady"] = readyState;
+            _readyStateHashtable.Add("isJoinedReady", readyState);
         }
+            PhotonNetwork.CurrentRoom.SetCustomProperties(_readyStateHashtable);
     }
 
     public void ShowEnemyReadyState(bool _isEnemyReady)
