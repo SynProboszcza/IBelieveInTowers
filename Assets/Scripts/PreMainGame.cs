@@ -38,19 +38,25 @@ public class PreMainGame : MonoBehaviourPunCallbacks
 
     public override void OnRoomPropertiesUpdate(Hashtable propertiesThatChanged)
     {
-        // as of rn properties will change every time someone joins a room
-        // property changed will be players name being added
-        print("some properties changed!");
-        print(propertiesThatChanged);
+        // properties change when someone joins and when clicks ReadyToggle
+        //print("some properties changed!");
+        //print(propertiesThatChanged);
+
         if (amIMaster)
         {
             // i am master and creator, so joined is my enemy
-            RefreshTextfields(PhotonNetwork.CurrentLobby.Type.ToString(), PhotonNetwork.CurrentRoom.Name.ToString(), PhotonNetwork.CloudRegion, PhotonNetwork.NickName, PhotonNetwork.CurrentRoom.CustomProperties["roomJoinedNickname"].ToString());
+            if (propertiesThatChanged.ContainsKey("roomJoinedNickname"))
+            {
+                RefreshTextfields(PhotonNetwork.CurrentLobby.Type.ToString(), PhotonNetwork.CurrentRoom.Name.ToString(), PhotonNetwork.CloudRegion, PhotonNetwork.NickName, PhotonNetwork.CurrentRoom.CustomProperties["roomJoinedNickname"].ToString());
+            }
         }
         else
         {
             // i am joining and not master, so created is my enemy
-            RefreshTextfields(PhotonNetwork.CurrentLobby.Type.ToString(), PhotonNetwork.CurrentRoom.Name.ToString(), PhotonNetwork.CloudRegion, PhotonNetwork.NickName, PhotonNetwork.CurrentRoom.CustomProperties["roomCreatorNickname"].ToString());
+            if (propertiesThatChanged.ContainsKey("roomCreatorNickname"))
+            {
+                RefreshTextfields(PhotonNetwork.CurrentLobby.Type.ToString(), PhotonNetwork.CurrentRoom.Name.ToString(), PhotonNetwork.CloudRegion, PhotonNetwork.NickName, PhotonNetwork.CurrentRoom.CustomProperties["roomCreatorNickname"].ToString());
+            }
 
         }
         base.OnRoomPropertiesUpdate(propertiesThatChanged);

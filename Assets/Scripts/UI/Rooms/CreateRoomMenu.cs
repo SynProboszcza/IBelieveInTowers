@@ -91,6 +91,8 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
         ExitGames.Client.Photon.Hashtable _customProperties = new ExitGames.Client.Photon.Hashtable();
         _customProperties.Add("roomCreatorNickname", "Waiting...");
         _customProperties.Add("roomJoinedNickname", "Waiting ...");
+        _customProperties.Add("isMasterReady", false);
+        _customProperties.Add("isSecondReady", false);
         RoomOptions options = new RoomOptions();
         options.MaxPlayers = 2;
         options.PlayerTtl = 5000;
