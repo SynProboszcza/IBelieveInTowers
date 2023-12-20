@@ -19,6 +19,25 @@ public class PreMainGame : MonoBehaviourPunCallbacks
     void Start()
     {
         amIMaster = PhotonNetwork.IsMasterClient;
+
+        // Expose nicknames
+        // -----------------------------------------------------------
+        if (amIMaster)
+        {
+            print("i am master");
+            Hashtable _customProperties = new Hashtable();
+            _customProperties.Add("roomCreatorNickname", PhotonNetwork.NickName);
+            PhotonNetwork.CurrentRoom.SetCustomProperties(_customProperties);
+        }
+        else
+        {
+            print("i am joined");
+            Hashtable _customProperties = new Hashtable();
+            _customProperties.Add("roomJoinedNickname", PhotonNetwork.NickName);
+            PhotonNetwork.CurrentRoom.SetCustomProperties(_customProperties);
+        }
+
+
         RefreshTextfields(
             PhotonNetwork.CurrentLobby.Type.ToString(),
             PhotonNetwork.CurrentRoom.Name.ToString(),
@@ -39,8 +58,8 @@ public class PreMainGame : MonoBehaviourPunCallbacks
     public override void OnRoomPropertiesUpdate(Hashtable propertiesThatChanged)
     {
         // properties change when someone joins and when clicks ReadyToggle
-        //print("some properties changed!");
-        //print(propertiesThatChanged);
+        print("some properties changed!");
+        print(propertiesThatChanged);
 
         if (amIMaster)
         {
@@ -52,7 +71,7 @@ public class PreMainGame : MonoBehaviourPunCallbacks
         }
         else
         {
-            // i am joining and not master, so created is my enemy
+            // i am joining and not master, so creator is my enemy
             if (propertiesThatChanged.ContainsKey("roomCreatorNickname"))
             {
                 RefreshTextfields(PhotonNetwork.CurrentLobby.Type.ToString(), PhotonNetwork.CurrentRoom.Name.ToString(), PhotonNetwork.CloudRegion, PhotonNetwork.NickName, PhotonNetwork.CurrentRoom.CustomProperties["roomCreatorNickname"].ToString());

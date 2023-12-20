@@ -38,6 +38,11 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
     // Check for connection and connect if not
     void Start()
     {
+        if (PlayerPrefs.GetString("LocalNickName").Length >= 3)
+        {
+            _nickName.text = PlayerPrefs.GetString("LocalNickName");
+            CrossSceneManager.instance.myNickName = _nickName.text;
+        }
         // We need to check for readiness, because user can go back to main menu
         // and this will be called twice, and we cant connect twice because connection
         // persists between scene changes
@@ -119,6 +124,8 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
             PhotonNetwork.NickName = backupNickNamePrefix;
         }
         // -----------------------------------------------------------
+        PlayerPrefs.SetString("LocalNickName", _nickName.text.ToString());
+        CrossSceneManager.instance.myNickName = _nickName.text;
         PhotonNetwork.CreateRoom(_roomName.text, options, TypedLobby.Default);
     }
 
@@ -218,21 +225,6 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
         gameObject.GetComponent<Button>().interactable = false;
         // Show big text "Found player" or smth
         // -----------------------------------------------------------
-        // Expose nicknames
-        // -----------------------------------------------------------
-        if (PhotonNetwork.IsMasterClient)
-        {
-            print("i am master");
-            ExitGames.Client.Photon.Hashtable _customProperties = new ExitGames.Client.Photon.Hashtable();
-            _customProperties.Add("roomCreatorNickname", PhotonNetwork.NickName);
-            PhotonNetwork.CurrentRoom.SetCustomProperties(_customProperties);
-        } else
-        {
-            print("i am joined");
-            ExitGames.Client.Photon.Hashtable _customProperties = new ExitGames.Client.Photon.Hashtable();
-            _customProperties.Add("roomJoinedNickname", PhotonNetwork.NickName);
-            PhotonNetwork.CurrentRoom.SetCustomProperties(_customProperties);
-        }
         SceneManager.LoadScene("PreparingToPlay");
         base.OnJoinedRoom();
     }
