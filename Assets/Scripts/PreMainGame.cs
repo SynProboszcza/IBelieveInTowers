@@ -39,12 +39,7 @@ public class PreMainGame : MonoBehaviourPunCallbacks
         }
 
 
-        RefreshTextfields(
-            PhotonNetwork.CurrentLobby.Type.ToString(),
-            PhotonNetwork.CurrentRoom.Name.ToString(),
-            PhotonNetwork.CloudRegion,
-            PhotonNetwork.NickName,
-            "Waiting for opponnent...");
+        //RefreshTextfields(PhotonNetwork.CurrentLobby.Type.ToString(), PhotonNetwork.CurrentRoom.Name.ToString(), PhotonNetwork.CloudRegion, PhotonNetwork.NickName, "Waiting for opponnent...");
     }
 
     public void RefreshTextfields(string _lobbyName, string _roomName, string _regionName, string _nickName, string _enemyNickName)
@@ -73,11 +68,7 @@ public class PreMainGame : MonoBehaviourPunCallbacks
         else
         {
             // i am joining and not master, so creator is my enemy
-            if (propertiesThatChanged.ContainsKey("roomCreatorNickname"))
-            {
-                RefreshTextfields(PhotonNetwork.CurrentLobby.Type.ToString(), PhotonNetwork.CurrentRoom.Name.ToString(), PhotonNetwork.CloudRegion, PhotonNetwork.NickName, PhotonNetwork.CurrentRoom.CustomProperties["roomCreatorNickname"].ToString());
-            }
-
+            RefreshTextfields(PhotonNetwork.CurrentLobby.Type.ToString(), PhotonNetwork.CurrentRoom.Name.ToString(), PhotonNetwork.CloudRegion, PhotonNetwork.NickName, PhotonNetwork.CurrentRoom.CustomProperties["roomCreatorNickname"].ToString());
         }
         base.OnRoomPropertiesUpdate(propertiesThatChanged);
     }
