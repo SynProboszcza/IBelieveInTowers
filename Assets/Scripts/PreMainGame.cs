@@ -94,10 +94,10 @@ public class PreMainGame : MonoBehaviourPunCallbacks
 
         if (amIMaster)
         {
-            PhotonNetwork.CurrentRoom.CustomProperties.Add("isMasterReady", readyState);
+            PhotonNetwork.CurrentRoom.CustomProperties["isMasterReady"] = readyState;
         } else
         {
-            PhotonNetwork.CurrentRoom.CustomProperties.Add("isJoinedReady", readyState);
+            PhotonNetwork.CurrentRoom.CustomProperties["isJoinedReady"] = readyState;
         }
     }
 

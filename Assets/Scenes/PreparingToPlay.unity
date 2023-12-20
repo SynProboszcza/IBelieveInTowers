@@ -2358,6 +2358,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 1
+      - m_Target: {fileID: 1025020465}
+        m_TargetAssemblyTypeName: PreMainGame, Assembly-CSharp
+        m_MethodName: ChangeReadyState
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 1
   m_IsOn: 0
 --- !u!114 &618729017
 MonoBehaviour:
@@ -3483,8 +3495,10 @@ MonoBehaviour:
   textfieldRegion: {fileID: 413857504}
   textfieldMyNickName: {fileID: 2116225633}
   textfieldEnemyNickName: {fileID: 463049944}
+  textfieldEnemyReadyState: {fileID: 0}
   mainCanvasReference: {fileID: 412221084}
   amIMaster: 0
+  readyState: 1
 --- !u!1 &1046514354
 GameObject:
   m_ObjectHideFlags: 0
@@ -9978,6 +9992,9 @@ MonoBehaviour:
   opossumPrice: 200
   dinoPrice: 150
   slimerPrice: 250
+  enemyNickname: 
+  myNickName: 
+  amIMaster: 0
 --- !u!4 &1210959662
 Transform:
   m_ObjectHideFlags: 0
