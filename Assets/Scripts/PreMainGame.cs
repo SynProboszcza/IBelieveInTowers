@@ -60,17 +60,4 @@ public class PreMainGame : MonoBehaviourPunCallbacks
     {
         print("i am working from" + gameObject.name);
     }
-
-    public void ShowConnectionTestingNetworking()
-    {
-        PhotonNetwork.Instantiate("test", new Vector3(700, 500, 0), Quaternion.identity, 0);
-    }
-
-    public void RefreshTextfields(string _lobbyName, string _roomName, string _regionName, string _nickName, string _enemyNickName)
-        textfieldLobby.GetComponent<TMP_Text>().text = "Lobby: " + _lobbyName;
-        textfieldRoom.GetComponent<TMP_Text>().text = "Room: " + _roomName;
-        textfieldRegion.GetComponent<TMP_Text>().text = "Region: " + _regionName;
-        textfieldMyNickName.GetComponent<TMP_Text>().text = "Me: " + _nickName;
-        textfieldEnemyNickName.GetComponent<TMP_Text>().text = "Enemy: " + _enemyNickName;
-    }
 }
