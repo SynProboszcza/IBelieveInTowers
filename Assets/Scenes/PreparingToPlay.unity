@@ -3495,10 +3495,10 @@ MonoBehaviour:
   textfieldRegion: {fileID: 413857504}
   textfieldMyNickName: {fileID: 2116225633}
   textfieldEnemyNickName: {fileID: 463049944}
-  textfieldEnemyReadyState: {fileID: 0}
+  textfieldEnemyReadyState: {fileID: 381139287}
   mainCanvasReference: {fileID: 412221084}
   amIMaster: 0
-  readyState: 1
+  readyState: 0
 --- !u!1 &1046514354
 GameObject:
   m_ObjectHideFlags: 0
