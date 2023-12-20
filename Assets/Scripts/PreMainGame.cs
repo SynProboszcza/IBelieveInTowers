@@ -56,35 +56,47 @@ public class PreMainGame : MonoBehaviourPunCallbacks
 
     public override void OnRoomPropertiesUpdate(Hashtable propertiesThatChanged)
     {
-        // properties change when someone joins and when clicks ReadyToggle
+        // Debug section
+        // -------------------------------------------------------------
         //print("some properties changed!");
-        //print(propertiesThatChanged);
+        //print("amount:"+ propertiesThatChanged.Count + "props:" + propertiesThatChanged.ToString());
+
+
 
         // Nicknames checking
         // -------------------------------------------------------------
         if (amIMaster)
         {
-            // i am master and creator, so joined is my enemy
+            // I am master and creator, so joined is my enemy
+
             if (propertiesThatChanged.ContainsKey("roomJoinedNickname"))
             {
                 RefreshTextfields(PhotonNetwork.CurrentLobby.Type.ToString(), PhotonNetwork.CurrentRoom.Name.ToString(), PhotonNetwork.CloudRegion, PhotonNetwork.NickName, PhotonNetwork.CurrentRoom.CustomProperties["roomJoinedNickname"].ToString());
             }
+            // ReadyToggle checking
+            // -------------------------------------------------------------
+            if (propertiesThatChanged.ContainsKey("isJoinedReady"))
+            {
+                ShowEnemyReadyState((bool)propertiesThatChanged["isJoinedReady"]);
+            }
+
+
         }
         else
         {
-            // i am joining and not master, so creator is my enemy
+            // I am joining and not master, so creator is my enemy
+            // We don't check if we're joined, because if we're not master we have to be
+            // So PN.currRoom.CustProps["roomCreatorNickname"] is enemy nick
             RefreshTextfields(PhotonNetwork.CurrentLobby.Type.ToString(), PhotonNetwork.CurrentRoom.Name.ToString(), PhotonNetwork.CloudRegion, PhotonNetwork.NickName, PhotonNetwork.CurrentRoom.CustomProperties["roomCreatorNickname"].ToString());
+
+            // ReadyToggle checking
+            // -------------------------------------------------------------
+            if (propertiesThatChanged.ContainsKey("isMasterReady"))
+            {
+                ShowEnemyReadyState((bool)propertiesThatChanged["isMasterReady"]);
+            }
         }
 
-        // ReadyToggle checking
-        // -------------------------------------------------------------
-        if (propertiesThatChanged.ContainsKey("isJoinedReady"))
-        {
-            ShowEnemyReadyState((bool)propertiesThatChanged["isJoinedReady"]);
-        } else if (propertiesThatChanged.ContainsKey("isMasterReady"))
-        {
-            ShowEnemyReadyState((bool)propertiesThatChanged["isMasterReady"]);
-        }
         base.OnRoomPropertiesUpdate(propertiesThatChanged);
     }
 
@@ -101,7 +113,8 @@ public class PreMainGame : MonoBehaviourPunCallbacks
         {
             _readyStateHashtable.Add("isJoinedReady", readyState);
         }
-            PhotonNetwork.CurrentRoom.SetCustomProperties(_readyStateHashtable);
+
+        PhotonNetwork.CurrentRoom.SetCustomProperties(_readyStateHashtable);
     }
 
     public void ShowEnemyReadyState(bool _isEnemyReady)
