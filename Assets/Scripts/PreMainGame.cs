@@ -12,14 +12,17 @@ public class PreMainGame : MonoBehaviourPunCallbacks
     public TMP_Text textfieldRegion;
     public TMP_Text textfieldMyNickName;
     public TMP_Text textfieldEnemyNickName;
+    public TMP_Text textfieldEnemyReadyState;
     public Canvas mainCanvasReference;
     [HideInInspector]
     public bool amIMaster;
+    public bool readyState = false;
 
     void Start()
     {
         amIMaster = PhotonNetwork.IsMasterClient;
         CrossSceneManager.instance.amIMaster = amIMaster;
+        readyState = false;
 
         // Expose nicknames
         // -----------------------------------------------------------
@@ -54,9 +57,11 @@ public class PreMainGame : MonoBehaviourPunCallbacks
     public override void OnRoomPropertiesUpdate(Hashtable propertiesThatChanged)
     {
         // properties change when someone joins and when clicks ReadyToggle
-        print("some properties changed!");
-        print(propertiesThatChanged);
+        //print("some properties changed!");
+        //print(propertiesThatChanged);
 
+        // Nicknames checking
+        // -------------------------------------------------------------
         if (amIMaster)
         {
             // i am master and creator, so joined is my enemy
@@ -70,7 +75,41 @@ public class PreMainGame : MonoBehaviourPunCallbacks
             // i am joining and not master, so creator is my enemy
             RefreshTextfields(PhotonNetwork.CurrentLobby.Type.ToString(), PhotonNetwork.CurrentRoom.Name.ToString(), PhotonNetwork.CloudRegion, PhotonNetwork.NickName, PhotonNetwork.CurrentRoom.CustomProperties["roomCreatorNickname"].ToString());
         }
+
+        // ReadyToggle checking
+        // -------------------------------------------------------------
+        if (propertiesThatChanged.ContainsKey("isJoinedReady"))
+        {
+            ShowEnemyReadyState((bool)propertiesThatChanged["isJoinedReady"]);
+        } else if (propertiesThatChanged.ContainsKey("isMasterReady"))
+        {
+            ShowEnemyReadyState((bool)propertiesThatChanged["isMasterReady"]);
+        }
         base.OnRoomPropertiesUpdate(propertiesThatChanged);
+    }
+
+    public void ChangeReadyState()
+    {
+        readyState = !readyState;
+
+        if (amIMaster)
+        {
+            PhotonNetwork.CurrentRoom.CustomProperties.Add("isMasterReady", readyState);
+        } else
+        {
+            PhotonNetwork.CurrentRoom.CustomProperties.Add("isJoinedReady", readyState);
+        }
+    }
+
+    public void ShowEnemyReadyState(bool _isEnemyReady)
+    {
+        if (_isEnemyReady)
+        {
+            textfieldEnemyReadyState.text = "Enemy is ready!";
+        } else
+        {
+            textfieldEnemyReadyState.text = "Enemy is not ready.";
+        }
     }
 
     public void ShowConnectionTestingNetworking()
