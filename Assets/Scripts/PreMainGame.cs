@@ -102,7 +102,6 @@ public class PreMainGame : MonoBehaviourPunCallbacks
 
     public void ChangeReadyState()
     {
-        print("Changing ready state");
         readyState = !readyState;
         Hashtable _readyStateHashtable = new Hashtable();
 

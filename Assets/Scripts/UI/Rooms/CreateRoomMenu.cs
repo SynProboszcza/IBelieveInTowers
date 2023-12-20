@@ -122,6 +122,7 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
         RoomOptions options = new RoomOptions();
         options.MaxPlayers = 2;
         options.PlayerTtl = 5000;
+        options.CustomRoomPropertiesForLobby = new string[] {"roomCreatorNickname"};
         options.CustomRoomProperties = _customProperties;
         // -----------------------------------------------------------
         PlayerPrefs.SetString("LocalNickName", _nickName.text.ToString());
@@ -169,7 +170,7 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
         {
             GameObject _roomPrefab = (GameObject)Instantiate(this.roomPrefab, roomList.transform);
             _roomPrefab.SetActive(false);
-            _roomPrefab.transform.Find("RoomName").GetComponent<TMP_Text>().text = _room.Name;
+            _roomPrefab.transform.Find("RoomName").GetComponent<TMP_Text>().text = _room.Name + "\nby: " + _room.CustomProperties["roomCreatorNickname"];
             _roomPrefab.SetActive(true);
             displayedRoomsCache.Add(_roomPrefab);
             openRoomsFromMasterCache.Add(_room);
@@ -235,12 +236,12 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
         openRoomsFromMaster.Clear();
         foreach (RoomInfo _room in _roomList)
         {
-            print("Got room: " + _room.Name);
+            print("Got room: " + _room.Name + " by: " + _room.ToStringFull() + ":::");
             if (_room.IsVisible
                && _room.IsOpen
                && _room.PlayerCount != 0)
             {
-                print("Added room: " + _room.Name);
+                //print("Added room: " + _room.Name);
                 openRoomsFromMaster.Add(_room);
             }
         }
