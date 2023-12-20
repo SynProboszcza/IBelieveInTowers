@@ -236,7 +236,7 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
         openRoomsFromMaster.Clear();
         foreach (RoomInfo _room in _roomList)
         {
-            print("Got room: " + _room.Name + " by: " + _room.ToStringFull() + ":::");
+            print("Got room: " + _room.ToStringFull() + ":::");
             if (_room.IsVisible
                && _room.IsOpen
                && _room.PlayerCount != 0)
