@@ -3498,7 +3498,7 @@ MonoBehaviour:
   textfieldEnemyReadyState: {fileID: 381139287}
   mainCanvasReference: {fileID: 412221084}
   amIMaster: 0
-  readyState: 0
+  readyState: 1
 --- !u!1 &1046514354
 GameObject:
   m_ObjectHideFlags: 0
