@@ -19,6 +19,7 @@ public class PreMainGame : MonoBehaviourPunCallbacks
     void Start()
     {
         amIMaster = PhotonNetwork.IsMasterClient;
+        CrossSceneManager.instance.amIMaster = amIMaster;
 
         // Expose nicknames
         // -----------------------------------------------------------

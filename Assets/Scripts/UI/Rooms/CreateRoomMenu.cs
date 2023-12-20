@@ -89,20 +89,6 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
             return;
         }
         // -----------------------------------------------------------
-        // Set default custom room properties:
-        //  prepare keys to fill in nicknames
-        //  set player time to live to 5 seconds
-        // -----------------------------------------------------------
-        ExitGames.Client.Photon.Hashtable _customProperties = new ExitGames.Client.Photon.Hashtable();
-        _customProperties.Add("roomCreatorNickname", "Waiting...");
-        _customProperties.Add("roomJoinedNickname", "Waiting ...");
-        _customProperties.Add("isMasterReady", false);
-        _customProperties.Add("isSecondReady", false);
-        RoomOptions options = new RoomOptions();
-        options.MaxPlayers = 2;
-        options.PlayerTtl = 5000;
-        options.CustomRoomProperties = _customProperties;
-        // -----------------------------------------------------------
         // Checking for room name, if not exists set up default
         // -----------------------------------------------------------
         if (_roomName.text == "")
@@ -123,6 +109,20 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
             _nickName.text = backupNickNamePrefix;
             PhotonNetwork.NickName = backupNickNamePrefix;
         }
+        // -----------------------------------------------------------
+        // Set default custom room properties:
+        //  prepare keys to fill in nicknames
+        //  set player time to live to 5 seconds
+        // -----------------------------------------------------------
+        ExitGames.Client.Photon.Hashtable _customProperties = new ExitGames.Client.Photon.Hashtable();
+        _customProperties.Add("roomCreatorNickname", _nickName.text);
+        _customProperties.Add("roomJoinedNickname", "Waiting ...");
+        _customProperties.Add("isMasterReady", false);
+        _customProperties.Add("isJoinedReady", false);
+        RoomOptions options = new RoomOptions();
+        options.MaxPlayers = 2;
+        options.PlayerTtl = 5000;
+        options.CustomRoomProperties = _customProperties;
         // -----------------------------------------------------------
         PlayerPrefs.SetString("LocalNickName", _nickName.text.ToString());
         CrossSceneManager.instance.myNickName = _nickName.text;

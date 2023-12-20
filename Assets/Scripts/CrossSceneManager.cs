@@ -27,6 +27,7 @@ public class CrossSceneManager : MonoBehaviour
     public int slimerPrice = 250;
     public string enemyNickname = "";
     public string myNickName = "";
+    public bool amIMaster;
 
     void Start()
     {
