@@ -26,6 +26,7 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
     private GameObject roomList;
     [SerializeField]
     private TMP_Text showRoomsFound;
+    private Dictionary<string, bool> _playerPreferences = new Dictionary<string, bool>();
     public List<RoomInfo> openRoomsFromMaster = new List<RoomInfo>();
     public List<RoomInfo> openRoomsFromMasterCache = new List<RoomInfo>();
     public List<GameObject> displayedRoomsCache = new List<GameObject>();
@@ -109,6 +110,16 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
             _nickName.text = backupNickNamePrefix;
             PhotonNetwork.NickName = backupNickNamePrefix;
         }
+
+        // -----------------------------------------------------------
+        // Checking for user selected settings 
+        // and store them to set up room with them
+        // _playerPreferences is declared as private at the top
+        // -----------------------------------------------------------
+        foreach (Toggle toggle in settingToggles)
+        {
+            _playerPreferences.Add(toggle.gameObject.name, toggle.isOn);
+        }
         // -----------------------------------------------------------
         // Set default custom room properties:
         //  prepare keys to fill in nicknames
@@ -117,12 +128,24 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
         ExitGames.Client.Photon.Hashtable _customProperties = new ExitGames.Client.Photon.Hashtable();
         _customProperties.Add("roomCreatorNickname", _nickName.text);
         _customProperties.Add("roomJoinedNickname", "Waiting ...");
+        _customProperties.Add("isMasterDefending", _playerPreferences["DefendOrAttackIntention"]);
+        _customProperties.Add("UnlimitedMoney", _playerPreferences["UnlimitedMoney"]);
+        _customProperties.Add("UnlimitedMana", _playerPreferences["UnlimitedMana"]);
+        _customProperties.Add("InvincibleTurrets", _playerPreferences["InvincibleTurrets"]);
+        _customProperties.Add("SpecialRules", _playerPreferences["SpecialRules"]);
         _customProperties.Add("isMasterReady", false);
         _customProperties.Add("isJoinedReady", false);
         RoomOptions options = new RoomOptions();
         options.MaxPlayers = 2;
         options.PlayerTtl = 5000;
-        options.CustomRoomPropertiesForLobby = new string[] {"roomCreatorNickname"};
+        options.CustomRoomPropertiesForLobby = new string[] {
+            "roomCreatorNickname",
+            "isMasterDefending",
+            "UnlimitedMoney",
+            "UnlimitedMana",
+            "InvincibleTurrets",
+            "SpecialRules"
+        };
         options.CustomRoomProperties = _customProperties;
         // -----------------------------------------------------------
         PlayerPrefs.SetString("LocalNickName", _nickName.text.ToString());
@@ -226,7 +249,13 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
         gameObject.GetComponent<Button>().interactable = false;
         // Show big text "Found player" or smth
         // -----------------------------------------------------------
-        SceneManager.LoadScene("PreparingToPlay");
+        if (PhotonNetwork.IsMasterClient && _playerPreferences["DefendOrAttackIntention"])
+        {
+            SceneManager.LoadScene("PreparingToPlayAsDefender");
+        } else
+        {
+            SceneManager.LoadScene("PreparingToPlayAsAttacker");
+        }
         base.OnJoinedRoom();
     }
     

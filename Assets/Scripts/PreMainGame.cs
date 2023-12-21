@@ -16,6 +16,9 @@ public class PreMainGame : MonoBehaviourPunCallbacks
     public Canvas mainCanvasReference;
     [HideInInspector]
     public bool amIMaster;
+    [HideInInspector]
+    public bool amIDefender;
+    [HideInInspector]
     public bool readyState = false;
 
     void Start()
@@ -23,7 +26,8 @@ public class PreMainGame : MonoBehaviourPunCallbacks
         amIMaster = PhotonNetwork.IsMasterClient;
         CrossSceneManager.instance.amIMaster = amIMaster;
         readyState = false;
-
+        amIDefender = (bool)PhotonNetwork.CurrentRoom.CustomProperties["isMasterDefending"] && amIMaster;
+        print("am i defender?:" + amIDefender);
         // Expose nicknames
         // -----------------------------------------------------------
         if (amIMaster)
@@ -47,6 +51,13 @@ public class PreMainGame : MonoBehaviourPunCallbacks
 
     public void RefreshTextfields(string _lobbyName, string _roomName, string _regionName, string _nickName, string _enemyNickName)
     {
+        if (amIDefender)
+        {
+            _nickName += " as defender";
+        } else
+        {
+            _nickName += " as attacker";
+        }
         textfieldLobby.GetComponent<TMP_Text>().text = "Lobby: " + _lobbyName;
         textfieldRoom.GetComponent<TMP_Text>().text = "Room: " + _roomName;
         textfieldRegion.GetComponent<TMP_Text>().text = "Region: " + _regionName;
