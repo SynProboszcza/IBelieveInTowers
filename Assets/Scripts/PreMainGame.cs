@@ -91,6 +91,13 @@ public class PreMainGame : MonoBehaviourPunCallbacks
                 ShowEnemyReadyState((bool)propertiesThatChanged["isJoinedReady"]);
             }
 
+            if (readyState && (bool)PhotonNetwork.CurrentRoom.CustomProperties["isJoinedReady"])
+            {
+                textfieldEnemyReadyState.text = "BOTH ARE READY";
+                // SetUpPlayArena();
+                print("Sending RPC to change scene!");
+                gameObject.GetComponent<PhotonView>().RPC("SetUpPlayArena", RpcTarget.All);
+            }
 
         }
         else
@@ -107,33 +114,34 @@ public class PreMainGame : MonoBehaviourPunCallbacks
                 ShowEnemyReadyState((bool)propertiesThatChanged["isMasterReady"]);
             }
         }
-
-        // Check if both ready
-        // -------------------------------------------------------------
-        Hashtable _setBothReady = new() { { "areBothReady", false } };
-        if (BothPlayersReady())
-        {
-            textfieldEnemyReadyState.text = "BOTH ARE READY";
-            _setBothReady = new() { { "areBothReady", true } };
-            PhotonNetwork.CurrentRoom.SetCustomProperties(_setBothReady);
-        } else
-        {
-            //_setBothReady = new() { { "areBothReady", false } };
-            //PhotonNetwork.CurrentRoom.SetCustomProperties(_setBothReady);
-        }
-
         base.OnRoomPropertiesUpdate(propertiesThatChanged);
     }
 
-    public bool BothPlayersReady()
+    [PunRPC]
+    public void SetUpPlayArena()
     {
-        if ((bool)PhotonNetwork.CurrentRoom.CustomProperties["isMasterReady"]
-            && (bool)PhotonNetwork.CurrentRoom.CustomProperties["isJoinedReady"])
-        {
-            return true;
-        }
-        return false;
+        // Wait 5 seconds, send info that both are ready
+        // Change scene using photonnetwork
+        ShowConnectedDecorationAndChangeSceneAfterNSeconds(5);
+
     }
+
+    private void ShowConnectedDecorationAndChangeSceneAfterNSeconds(int seconds)
+    {
+        // Here show to players that we are both ready and going into
+        // playing scene
+        print("Going to different scene after " + seconds + " seconds!");
+        StartCoroutine(ChangeSceneAfterNSeconds(seconds));
+    }
+
+    System.Collections.IEnumerator ChangeSceneAfterNSeconds(int seconds)
+    {
+        yield return new WaitForSeconds(seconds);
+        // Change scene using photonnetwork to playing scene
+        PhotonNetwork.LoadLevel("HostGame");
+
+    }
+
 
     public void ChangeReadyState()
     {
