@@ -154,6 +154,7 @@
     <Compile Include="Assets\Scripts\MenuButtons\GoToSettings.cs" />
     <Compile Include="Assets\Scripts\SettingsScripts\SaveNickname.cs" />
     <Compile Include="Assets\Scripts\UI\HostGameSettings.cs" />
+    <Compile Include="Assets\Scripts\Multiplayer\MultiplayerMainGameLoop.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />

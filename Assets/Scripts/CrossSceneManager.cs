@@ -25,15 +25,18 @@ public class CrossSceneManager : MonoBehaviour
     public int opossumPrice = 200;
     public int dinoPrice = 150;
     public int slimerPrice = 250;
+    public int defenderHealth;
     public string enemyNickname = "";
     public string myNickName = "";
     public bool amIMaster;
+    public bool amIDefender;
 
     void Start()
     {
         DontDestroyOnLoad(gameObject);
         playerMoney = 2000;
         playerMana = 500;
+        defenderHealth = 200;
         myNickName = PlayerPrefs.GetString("LocalNickName");
     }
 

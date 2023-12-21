@@ -23,10 +23,11 @@ public class PreMainGame : MonoBehaviourPunCallbacks
 
     void Start()
     {
-        amIMaster = PhotonNetwork.IsMasterClient;
-        CrossSceneManager.instance.amIMaster = amIMaster;
         readyState = false;
+        amIMaster = PhotonNetwork.IsMasterClient;
         amIDefender = (bool)PhotonNetwork.CurrentRoom.CustomProperties["isMasterDefending"] && amIMaster;
+        CrossSceneManager.instance.amIMaster = amIMaster;
+        CrossSceneManager.instance.amIDefender = amIDefender;
         print("am i defender?:" + amIDefender);
         // Expose nicknames
         // -----------------------------------------------------------
@@ -138,10 +139,10 @@ public class PreMainGame : MonoBehaviourPunCallbacks
     {
         yield return new WaitForSeconds(seconds);
         // Change scene using photonnetwork to playing scene
-        PhotonNetwork.LoadLevel("HostGame");
+        // Select random map
+        PhotonNetwork.LoadLevel("Map1Multiplayer");
 
     }
-
 
     public void ChangeReadyState()
     {
