@@ -49,10 +49,6 @@ public class PreMainGame : MonoBehaviourPunCallbacks
         RefreshTextfields(PhotonNetwork.CurrentLobby.Type.ToString(), PhotonNetwork.CurrentRoom.Name.ToString(), PhotonNetwork.CloudRegion, PhotonNetwork.NickName, "Waiting for opponnent...");
     }
 
-    private void Update()
-    {
-    }
-
     public void RefreshTextfields(string _lobbyName, string _roomName, string _regionName, string _nickName, string _enemyNickName)
     {
         if (amIDefender)
@@ -88,22 +84,11 @@ public class PreMainGame : MonoBehaviourPunCallbacks
             {
                 RefreshTextfields(PhotonNetwork.CurrentLobby.Type.ToString(), PhotonNetwork.CurrentRoom.Name.ToString(), PhotonNetwork.CloudRegion, PhotonNetwork.NickName, PhotonNetwork.CurrentRoom.CustomProperties["roomJoinedNickname"].ToString());
             }
-            // ReadyToggle checking
+            // Updating enemy ready state
             // -------------------------------------------------------------
             if (propertiesThatChanged.ContainsKey("isJoinedReady"))
             {
                 ShowEnemyReadyState((bool)propertiesThatChanged["isJoinedReady"]);
-            }
-
-            // Checkign if both players are ready
-            // -------------------------------------------------------------
-            if ((bool)PhotonNetwork.CurrentRoom.CustomProperties["isMasterReady"]
-                && (bool)PhotonNetwork.CurrentRoom.CustomProperties["isJoinedReady"])
-            {
-                textfieldEnemyReadyState.text = "BOTH ARE READY";
-
-                Hashtable _setBothReady = new() { { "areBothReady", true } };
-                PhotonNetwork.CurrentRoom.SetCustomProperties(_setBothReady);
             }
 
 
@@ -115,7 +100,7 @@ public class PreMainGame : MonoBehaviourPunCallbacks
             // So PN.currRoom.CustProps["roomCreatorNickname"] is enemy nick
             RefreshTextfields(PhotonNetwork.CurrentLobby.Type.ToString(), PhotonNetwork.CurrentRoom.Name.ToString(), PhotonNetwork.CloudRegion, PhotonNetwork.NickName, PhotonNetwork.CurrentRoom.CustomProperties["roomCreatorNickname"].ToString());
 
-            // ReadyToggle checking
+            // Updating enemy ready state
             // -------------------------------------------------------------
             if (propertiesThatChanged.ContainsKey("isMasterReady"))
             {
@@ -123,12 +108,31 @@ public class PreMainGame : MonoBehaviourPunCallbacks
             }
         }
 
-        if (propertiesThatChanged.ContainsKey("areBothReady"))
+        // Check if both ready
+        // -------------------------------------------------------------
+        Hashtable _setBothReady = new() { { "areBothReady", false } };
+        if (BothPlayersReady())
         {
             textfieldEnemyReadyState.text = "BOTH ARE READY";
+            _setBothReady = new() { { "areBothReady", true } };
+            PhotonNetwork.CurrentRoom.SetCustomProperties(_setBothReady);
+        } else
+        {
+            //_setBothReady = new() { { "areBothReady", false } };
+            PhotonNetwork.CurrentRoom.SetCustomProperties(_setBothReady);
         }
 
         base.OnRoomPropertiesUpdate(propertiesThatChanged);
+    }
+
+    public bool BothPlayersReady()
+    {
+        if ((bool)PhotonNetwork.CurrentRoom.CustomProperties["isMasterReady"]
+            && (bool)PhotonNetwork.CurrentRoom.CustomProperties["isJoinedReady"])
+        {
+            return true;
+        }
+        return false;
     }
 
     public void ChangeReadyState()
