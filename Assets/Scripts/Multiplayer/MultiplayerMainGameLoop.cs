@@ -95,7 +95,7 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks
         string playerMoneyTextTemplate = "Gold: " + playerMoney;
         playerMoneyTextField.text = playerMoneyTextTemplate;
         string playerManaTextTemplate = "Mana: " + playerMana;
-        playerMoneyTextField.text = playerManaTextTemplate;
+        playerManaTextField.text = playerManaTextTemplate;
 
         // Check if defending when ded
         //  checking is done when dealing damage
