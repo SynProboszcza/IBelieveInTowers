@@ -833,7 +833,7 @@ GameObject:
   - component: {fileID: 255020487}
   - component: {fileID: 255020488}
   m_Layer: 5
-  m_Name: DefendFirstIntention
+  m_Name: UnlimitedMana
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -938,6 +938,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d59d116d5b44bc140bf768c96fb12ee1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bearPrice: 500
+  bettlePrice: 100
+  opossumPrice: 200
+  dinoPrice: 150
+  slimerPrice: 250
+  enemyNickname: 
+  myNickName: 
+  amIMaster: 0
 --- !u!4 &256259780
 Transform:
   m_ObjectHideFlags: 0
@@ -1422,7 +1430,7 @@ GameObject:
   - component: {fileID: 464461983}
   - component: {fileID: 464461984}
   m_Layer: 5
-  m_Name: WIP
+  m_Name: InvincibleTurrets
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1950,7 +1958,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: I want to defend first!
+  m_Text: WIP - unlimited mana
 --- !u!222 &669961398
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -6785,9 +6793,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Work in progress
-
-'
+  m_Text: WIP - special rules (idk)
 --- !u!222 &1133602347
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -7749,7 +7755,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: I want to attack first!
+  m_Text: WIP - unlimited money
 --- !u!222 &1583977418
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -8130,7 +8136,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Join room immedietaly
+  m_Text: I am defending first!
 --- !u!222 &1690500992
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -8241,7 +8247,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Work in progress
+  m_Text: WIP - invincible turrets
 --- !u!222 &1726698205
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -8530,8 +8536,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1791231596}
   - component: {fileID: 1791231597}
+  - component: {fileID: 1791231598}
   m_Layer: 5
-  m_Name: JoinRoomImmedietaly
+  m_Name: DefendOrAttackIntention
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8605,8 +8612,32 @@ MonoBehaviour:
   m_Group: {fileID: 0}
   onValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1791231598}
+        m_TargetAssemblyTypeName: HostGameSettings, Assembly-CSharp
+        m_MethodName: SetAttackOrDefend
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 1
   m_IsOn: 1
+--- !u!114 &1791231598
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1791231595}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 90c6abaf552376c4ca4e013567e2f3e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1810320881
 GameObject:
   m_ObjectHideFlags: 0
@@ -9043,7 +9074,7 @@ GameObject:
   - component: {fileID: 1908843881}
   - component: {fileID: 1908843882}
   m_Layer: 5
-  m_Name: WIP2
+  m_Name: SpecialRules
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -15155,7 +15186,7 @@ GameObject:
   - component: {fileID: 1990700486}
   - component: {fileID: 1990700487}
   m_Layer: 5
-  m_Name: AttackFirstIntention
+  m_Name: UnlimitedMoney
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

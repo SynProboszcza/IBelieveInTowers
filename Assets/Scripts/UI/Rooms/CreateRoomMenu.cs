@@ -26,6 +26,7 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
     private GameObject roomList;
     [SerializeField]
     private TMP_Text showRoomsFound;
+    private Dictionary<string, bool> _playerPreferences = new Dictionary<string, bool>();
     public List<RoomInfo> openRoomsFromMaster = new List<RoomInfo>();
     public List<RoomInfo> openRoomsFromMasterCache = new List<RoomInfo>();
     public List<GameObject> displayedRoomsCache = new List<GameObject>();
@@ -38,6 +39,11 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
     // Check for connection and connect if not
     void Start()
     {
+        if (PlayerPrefs.GetString("LocalNickName").Length >= 3)
+        {
+            _nickName.text = PlayerPrefs.GetString("LocalNickName");
+            CrossSceneManager.instance.myNickName = _nickName.text;
+        }
         // We need to check for readiness, because user can go back to main menu
         // and this will be called twice, and we cant connect twice because connection
         // persists between scene changes
@@ -84,18 +90,6 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
             return;
         }
         // -----------------------------------------------------------
-        // Set default custom room properties:
-        //  prepare keys to fill in nicknames
-        //  set player time to live to 5 seconds
-        // -----------------------------------------------------------
-        ExitGames.Client.Photon.Hashtable _customProperties = new ExitGames.Client.Photon.Hashtable();
-        _customProperties.Add("roomCreatorNickname", "Waiting...");
-        _customProperties.Add("roomJoinedNickname", "Waiting ...");
-        RoomOptions options = new RoomOptions();
-        options.MaxPlayers = 2;
-        options.PlayerTtl = 5000;
-        options.CustomRoomProperties = _customProperties;
-        // -----------------------------------------------------------
         // Checking for room name, if not exists set up default
         // -----------------------------------------------------------
         if (_roomName.text == "")
@@ -116,7 +110,46 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
             _nickName.text = backupNickNamePrefix;
             PhotonNetwork.NickName = backupNickNamePrefix;
         }
+
         // -----------------------------------------------------------
+        // Checking for user selected settings 
+        // and store them to set up room with them
+        // private _playerPreferences Dictionary<string, bool>
+        // -----------------------------------------------------------
+        foreach (Toggle toggle in settingToggles)
+        {
+            _playerPreferences.Add(toggle.gameObject.name, toggle.isOn);
+        }
+        // -----------------------------------------------------------
+        // Set default custom room properties:
+        //  prepare keys to fill in nicknames
+        //  set player time to live to 5 seconds
+        // -----------------------------------------------------------
+        ExitGames.Client.Photon.Hashtable _customProperties = new ExitGames.Client.Photon.Hashtable();
+        _customProperties.Add("roomCreatorNickname", _nickName.text);
+        _customProperties.Add("roomJoinedNickname", "Waiting ...");
+        _customProperties.Add("isMasterDefending", _playerPreferences["DefendOrAttackIntention"]);
+        _customProperties.Add("UnlimitedMoney", _playerPreferences["UnlimitedMoney"]);
+        _customProperties.Add("UnlimitedMana", _playerPreferences["UnlimitedMana"]);
+        _customProperties.Add("InvincibleTurrets", _playerPreferences["InvincibleTurrets"]);
+        _customProperties.Add("SpecialRules", _playerPreferences["SpecialRules"]);
+        _customProperties.Add("isMasterReady", false);
+        _customProperties.Add("isJoinedReady", false);
+        RoomOptions options = new RoomOptions();
+        options.MaxPlayers = 2;
+        options.PlayerTtl = 5000;
+        options.CustomRoomPropertiesForLobby = new string[] {
+            "roomCreatorNickname",
+            "isMasterDefending",
+            "UnlimitedMoney",
+            "UnlimitedMana",
+            "InvincibleTurrets",
+            "SpecialRules"
+        };
+        options.CustomRoomProperties = _customProperties;
+        // -----------------------------------------------------------
+        PlayerPrefs.SetString("LocalNickName", _nickName.text.ToString());
+        CrossSceneManager.instance.myNickName = _nickName.text;
         PhotonNetwork.CreateRoom(_roomName.text, options, TypedLobby.Default);
     }
 
@@ -159,9 +192,18 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
         foreach (RoomInfo _room in _list)
         {
             GameObject _roomPrefab = (GameObject)Instantiate(this.roomPrefab, roomList.transform);
+            // We want to display ready room, so we disable it -> set it up -> enable it
             _roomPrefab.SetActive(false);
-            _roomPrefab.transform.Find("RoomName").GetComponent<TMP_Text>().text = _room.Name;
+            _roomPrefab.transform.Find("RoomName").GetComponent<TMP_Text>().text = _room.Name + "\nby: " + _room.CustomProperties["roomCreatorNickname"];
+            _roomPrefab.GetComponent<JoinRoomFromList>().rawRoomName = _room.Name;
+            // Setting toggles to display custom room settings
+            _roomPrefab.transform.Find("RoomProps").transform.Find("Defender").GetComponent<Toggle>().isOn = (bool)_room.CustomProperties["isMasterDefending"];
+            _roomPrefab.transform.Find("RoomProps").transform.Find("UnlimitedMoney").GetComponent<Toggle>().isOn = (bool)_room.CustomProperties["UnlimitedMoney"];
+            _roomPrefab.transform.Find("RoomProps").transform.Find("UnlimitedMana").GetComponent<Toggle>().isOn = (bool)_room.CustomProperties["UnlimitedMana"];
+            _roomPrefab.transform.Find("RoomProps").transform.Find("InvincibleTurrets").GetComponent<Toggle>().isOn = (bool)_room.CustomProperties["InvincibleTurrets"];
+            _roomPrefab.transform.Find("RoomProps").transform.Find("SpecialRules").GetComponent<Toggle>().isOn = (bool)_room.CustomProperties["SpecialRules"];
             _roomPrefab.SetActive(true);
+            // Keeping active and shown rooms in cache 
             displayedRoomsCache.Add(_roomPrefab);
             openRoomsFromMasterCache.Add(_room);
         }
@@ -216,22 +258,13 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
         gameObject.GetComponent<Button>().interactable = false;
         // Show big text "Found player" or smth
         // -----------------------------------------------------------
-        // Expose nicknames
-        // -----------------------------------------------------------
-        if (PhotonNetwork.IsMasterClient)
+        if (PhotonNetwork.IsMasterClient && _playerPreferences["DefendOrAttackIntention"])
         {
-            print("i am master");
-            ExitGames.Client.Photon.Hashtable _customProperties = new ExitGames.Client.Photon.Hashtable();
-            _customProperties.Add("roomCreatorNickname", PhotonNetwork.NickName);
-            PhotonNetwork.CurrentRoom.SetCustomProperties(_customProperties);
+            SceneManager.LoadScene("PreparingToPlayAsDefender");
         } else
         {
-            print("i am joined");
-            ExitGames.Client.Photon.Hashtable _customProperties = new ExitGames.Client.Photon.Hashtable();
-            _customProperties.Add("roomJoinedNickname", PhotonNetwork.NickName);
-            PhotonNetwork.CurrentRoom.SetCustomProperties(_customProperties);
+            SceneManager.LoadScene("PreparingToPlayAsAttacker");
         }
-        SceneManager.LoadScene("PreparingToPlay");
         base.OnJoinedRoom();
     }
     
@@ -241,12 +274,13 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
         openRoomsFromMaster.Clear();
         foreach (RoomInfo _room in _roomList)
         {
-            print("Got room: " + _room.Name);
+            print("Got room: " + _room.ToStringFull() + ":::");
             if (_room.IsVisible
                && _room.IsOpen
-               && _room.PlayerCount != 0)
+               && _room.PlayerCount != 0
+               && _room.PlayerCount != _room.MaxPlayers)
             {
-                print("Added room: " + _room.Name);
+                //print("Added room: " + _room.Name);
                 openRoomsFromMaster.Add(_room);
             }
         }
@@ -299,6 +333,12 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
             SetUpConnection();
         }
         base.OnDisconnected(cause);
+    }
+
+    public override void OnJoinRoomFailed(short returnCode, string message)
+    {
+        print("Failed joining room! mess: " + message);
+        base.OnJoinRoomFailed(returnCode, message);
     }
 
 }
