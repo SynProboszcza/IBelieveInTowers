@@ -194,6 +194,7 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
             GameObject _roomPrefab = (GameObject)Instantiate(this.roomPrefab, roomList.transform);
             _roomPrefab.SetActive(false);
             _roomPrefab.transform.Find("RoomName").GetComponent<TMP_Text>().text = _room.Name + "\nby: " + _room.CustomProperties["roomCreatorNickname"];
+            _roomPrefab.GetComponent<JoinRoomFromList>().rawRoomName = _room.Name;
             _roomPrefab.SetActive(true);
             displayedRoomsCache.Add(_roomPrefab);
             openRoomsFromMasterCache.Add(_room);
@@ -323,6 +324,12 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
             SetUpConnection();
         }
         base.OnDisconnected(cause);
+    }
+
+    public override void OnJoinRoomFailed(short returnCode, string message)
+    {
+        print("Failed joining room! mess: " + message);
+        base.OnJoinRoomFailed(returnCode, message);
     }
 
 }
