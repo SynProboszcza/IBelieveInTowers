@@ -49,6 +49,10 @@ public class PreMainGame : MonoBehaviourPunCallbacks
         RefreshTextfields(PhotonNetwork.CurrentLobby.Type.ToString(), PhotonNetwork.CurrentRoom.Name.ToString(), PhotonNetwork.CloudRegion, PhotonNetwork.NickName, "Waiting for opponnent...");
     }
 
+    private void Update()
+    {
+    }
+
     public void RefreshTextfields(string _lobbyName, string _roomName, string _regionName, string _nickName, string _enemyNickName)
     {
         if (amIDefender)
@@ -89,12 +93,17 @@ public class PreMainGame : MonoBehaviourPunCallbacks
             if (propertiesThatChanged.ContainsKey("isJoinedReady"))
             {
                 ShowEnemyReadyState((bool)propertiesThatChanged["isJoinedReady"]);
+            }
 
-                // Checkign if both players are ready
-                if (readyState && (bool)PhotonNetwork.CurrentRoom.CustomProperties["isJoinedReady"])
-                {
-                    textfieldEnemyReadyState.text = "BOTH ARE READY";
-                }
+            // Checkign if both players are ready
+            // -------------------------------------------------------------
+            if ((bool)PhotonNetwork.CurrentRoom.CustomProperties["isMasterReady"]
+                && (bool)PhotonNetwork.CurrentRoom.CustomProperties["isJoinedReady"])
+            {
+                textfieldEnemyReadyState.text = "BOTH ARE READY";
+
+                Hashtable _setBothReady = new() { { "areBothReady", true } };
+                PhotonNetwork.CurrentRoom.SetCustomProperties(_setBothReady);
             }
 
 
@@ -112,6 +121,11 @@ public class PreMainGame : MonoBehaviourPunCallbacks
             {
                 ShowEnemyReadyState((bool)propertiesThatChanged["isMasterReady"]);
             }
+        }
+
+        if (propertiesThatChanged.ContainsKey("areBothReady"))
+        {
+            textfieldEnemyReadyState.text = "BOTH ARE READY";
         }
 
         base.OnRoomPropertiesUpdate(propertiesThatChanged);
