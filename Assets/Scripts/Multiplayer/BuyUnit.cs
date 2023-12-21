@@ -10,20 +10,47 @@ public class BuyUnit : MonoBehaviour
     [SerializeField]
     private GameObject enemyPFPPrefab;
     [SerializeField]
-    private int unitPrice = 200;
+    public int unitPrice
+    { get; private set; }
+    [SerializeField]
+    private float timeNegativeFeedbackSeconds = 0.35f;
+    private Color firstPriceColor;
 
-    private void Start()
+    void Start()
     {
+        unitPrice = CrossSceneManager.instance.enemyPrices[gameObject.name];
         SetUnitPrice(unitPrice);
+        firstPriceColor = transform.Find("Price").GetComponent<TMP_Text>().color;
     }
 
     public void AddEnemyToList()
     {
-        Instantiate(enemyPFPPrefab, enemyList.transform);
+        if (CrossSceneManager.instance.PayWithMoney(unitPrice))
+        {
+            Instantiate(enemyPFPPrefab, enemyList.transform);
+        } else
+        {
+            SetPriceToRedForNSeconds(timeNegativeFeedbackSeconds);
+        }
+
     }
 
     public void SetUnitPrice(int _price)
     {
         transform.Find("Price").GetComponent<TMP_Text>().text = _price.ToString() + " G";
     }
+
+    private void SetPriceToRedForNSeconds(float seconds)
+    {
+        transform.Find("Price").GetComponent<TMP_Text>().color = Color.red;
+        StartCoroutine(SetPriceColorBack(seconds));
+    }
+
+    IEnumerator SetPriceColorBack(float seconds)
+    {
+        yield return new WaitForSeconds(seconds);
+        transform.Find("Price").GetComponent<TMP_Text>().color = firstPriceColor;
+    }
+
+
 }
