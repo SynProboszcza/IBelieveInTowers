@@ -53,10 +53,10 @@ public class PreMainGame : MonoBehaviourPunCallbacks
     {
         if (amIDefender)
         {
-            _nickName += " as defender";
+            _nickName += " - as defender";
         } else
         {
-            _nickName += " as attacker";
+            _nickName += " - as attacker";
         }
         textfieldLobby.GetComponent<TMP_Text>().text = "Lobby: " + _lobbyName;
         textfieldRoom.GetComponent<TMP_Text>().text = "Room: " + _roomName;
