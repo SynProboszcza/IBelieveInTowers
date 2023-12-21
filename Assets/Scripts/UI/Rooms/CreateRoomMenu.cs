@@ -114,7 +114,7 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
         // -----------------------------------------------------------
         // Checking for user selected settings 
         // and store them to set up room with them
-        // _playerPreferences is declared as private at the top
+        // private _playerPreferences Dictionary<string, bool>
         // -----------------------------------------------------------
         foreach (Toggle toggle in settingToggles)
         {
@@ -192,10 +192,18 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
         foreach (RoomInfo _room in _list)
         {
             GameObject _roomPrefab = (GameObject)Instantiate(this.roomPrefab, roomList.transform);
+            // We want to display ready room, so we disable it -> set it up -> enable it
             _roomPrefab.SetActive(false);
             _roomPrefab.transform.Find("RoomName").GetComponent<TMP_Text>().text = _room.Name + "\nby: " + _room.CustomProperties["roomCreatorNickname"];
             _roomPrefab.GetComponent<JoinRoomFromList>().rawRoomName = _room.Name;
+            // Setting toggles to display custom room settings
+            _roomPrefab.transform.Find("RoomProps").transform.Find("Defender").GetComponent<Toggle>().isOn = (bool)_room.CustomProperties["isMasterDefending"];
+            _roomPrefab.transform.Find("RoomProps").transform.Find("UnlimitedMoney").GetComponent<Toggle>().isOn = (bool)_room.CustomProperties["UnlimitedMoney"];
+            _roomPrefab.transform.Find("RoomProps").transform.Find("UnlimitedMana").GetComponent<Toggle>().isOn = (bool)_room.CustomProperties["UnlimitedMana"];
+            _roomPrefab.transform.Find("RoomProps").transform.Find("InvincibleTurrets").GetComponent<Toggle>().isOn = (bool)_room.CustomProperties["InvincibleTurrets"];
+            _roomPrefab.transform.Find("RoomProps").transform.Find("SpecialRules").GetComponent<Toggle>().isOn = (bool)_room.CustomProperties["SpecialRules"];
             _roomPrefab.SetActive(true);
+            // Keeping active and shown rooms in cache 
             displayedRoomsCache.Add(_roomPrefab);
             openRoomsFromMasterCache.Add(_room);
         }
