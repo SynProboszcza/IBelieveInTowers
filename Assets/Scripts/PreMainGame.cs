@@ -70,7 +70,7 @@ public class PreMainGame : MonoBehaviourPunCallbacks
         // Debug section
         // -------------------------------------------------------------
         //print("some properties changed!");
-        //print("amount:"+ propertiesThatChanged.Count + "props:" + propertiesThatChanged.ToString());
+        print("amount:"+ propertiesThatChanged.Count + "props:" + propertiesThatChanged.ToString());
 
 
 
@@ -119,7 +119,7 @@ public class PreMainGame : MonoBehaviourPunCallbacks
         } else
         {
             //_setBothReady = new() { { "areBothReady", false } };
-            PhotonNetwork.CurrentRoom.SetCustomProperties(_setBothReady);
+            //PhotonNetwork.CurrentRoom.SetCustomProperties(_setBothReady);
         }
 
         base.OnRoomPropertiesUpdate(propertiesThatChanged);
