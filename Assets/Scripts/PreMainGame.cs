@@ -89,6 +89,12 @@ public class PreMainGame : MonoBehaviourPunCallbacks
             if (propertiesThatChanged.ContainsKey("isJoinedReady"))
             {
                 ShowEnemyReadyState((bool)propertiesThatChanged["isJoinedReady"]);
+
+                // Checkign if both players are ready
+                if (readyState && (bool)PhotonNetwork.CurrentRoom.CustomProperties["isJoinedReady"])
+                {
+                    textfieldEnemyReadyState.text = "BOTH ARE READY";
+                }
             }
 
 
