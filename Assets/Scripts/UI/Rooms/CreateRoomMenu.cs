@@ -277,7 +277,8 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
             print("Got room: " + _room.ToStringFull() + ":::");
             if (_room.IsVisible
                && _room.IsOpen
-               && _room.PlayerCount != 0)
+               && _room.PlayerCount != 0
+               && _room.PlayerCount != _room.MaxPlayers)
             {
                 //print("Added room: " + _room.Name);
                 openRoomsFromMaster.Add(_room);
