@@ -78,11 +78,15 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks
             defenderHealth = CrossSceneManager.instance.defenderHealth;
         }
 
-        if (isAllowedInstantiating)
+        if (isAllowedInstantiating && amIDefender)
         {
             shopNodesCollection = new GameObject("ShopNodesCollection");
             GetPlayArenaCorners();
             GenerateAndConfigureNodeMesh(topLeft, bottomRight);
+            // TODO: ShopNode needs to show spells
+        } else 
+        {
+            // We're attacking so we need to instantiate spell mesh
         }
         // Configure them maybe?
         
@@ -90,11 +94,11 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks
 
     void Update()
     {
-        string enemyHealthTextTemplate = "Health: " + defenderHealth;
+        string enemyHealthTextTemplate = "Health: " + CrossSceneManager.instance.defenderHealth;
         enemyHealthTextField.text = enemyHealthTextTemplate;
-        string playerMoneyTextTemplate = "Gold: " + playerMoney;
+        string playerMoneyTextTemplate = "Gold: " + CrossSceneManager.instance.playerMoney;
         playerMoneyTextField.text = playerMoneyTextTemplate;
-        string playerManaTextTemplate = "Mana: " + playerMana;
+        string playerManaTextTemplate = "Mana: " + CrossSceneManager.instance.playerMana;
         playerManaTextField.text = playerManaTextTemplate;
 
         // Check if defending when ded

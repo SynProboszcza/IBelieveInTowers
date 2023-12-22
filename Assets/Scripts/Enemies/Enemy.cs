@@ -6,11 +6,14 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
     public GameObject mainGame;
+    //[HideInInspector]
     public Transform[] waypoints;
     public float speed = 2f;
+    [HideInInspector]
     public float currentHealth;
     public float maxHealth;
     public int damage = 0;
+    //[HideInInspector]
     public int waypointIndex = 0;
     public int moneyReward = 50;
     // Start is called before the first frame update
@@ -30,6 +33,7 @@ public class Enemy : MonoBehaviour
             Die();
         }
     }
+
     private void Move()
     {
         if (waypointIndex <= waypoints.Length - 1)

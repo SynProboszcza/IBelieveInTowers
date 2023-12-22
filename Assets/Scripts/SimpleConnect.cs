@@ -13,9 +13,15 @@ public class SimpleConnect : MonoBehaviourPunCallbacks
     public string gameVersion = "0.1";
     public string roomName = "SIMPLEroom";
     public string nickName = "SIMPLEnick";
+    public bool workingOnMap1AttackerPart = false;
+    public GameObject mainGameScript;
 
     private void Start()
     {
+        if (workingOnMap1AttackerPart)
+        {
+            mainGameScript.SetActive(false);
+        }
         BeginConnecting();
     }
 
@@ -44,6 +50,12 @@ public class SimpleConnect : MonoBehaviourPunCallbacks
     public override void OnJoinedRoom()
     {
         print("SIMPLE Joined room: " + roomName);
+
+        if (workingOnMap1AttackerPart)
+        {
+            mainGameScript.SetActive(true);
+        }
+
         base.OnJoinedRoom();
     }
 

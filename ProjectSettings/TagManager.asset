@@ -22,6 +22,7 @@ TagManager:
   - Despawner
   - NickName
   - MainCanvas
+  - SingleTagForEnemiesCollection
   layers:
   - Default
   - TransparentFX
