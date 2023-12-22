@@ -87,6 +87,9 @@ public class SpawnerMultiplayer : MonoBehaviour
         && (Time.time > spawnRate + timeSinceLastRespawn))
         {
             GameObject _unit = PhotonNetwork.Instantiate(unitReference.GetComponent<UnitStatistics>().unitPrefab.name, spawnPosition, Quaternion.identity);
+            print(_unit);
+            //                                          _unit is Enemy and it does not have unitstatistics!!
+            //_unit.GetComponent<Enemy>().SetDamage(==============_unit.GetComponent<UnitStatistics>().damage);
             _unit.GetComponent<Enemy>().SetDamage(_unit.GetComponent<UnitStatistics>().damage);
             _unit.GetComponent<Enemy>().SetSpeed(_unit.GetComponent<UnitStatistics>().speed);
             _unit.GetComponent<Enemy>().SetWaypoints(waypoints);
