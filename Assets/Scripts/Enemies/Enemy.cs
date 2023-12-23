@@ -68,7 +68,7 @@ public class Enemy : MonoBehaviour, IPunObservable
         //     mainGame.GetComponent<MainGameLoop>().AddPlayerMoney(moneyReward);
         // }
         CrossSceneManager.instance.AddMoney(moneyReward);
-        PhotonNetwork.Destroy(gameObject);
+        Destroy(gameObject);
     }
 
     public void SetSpeed(float speed)
