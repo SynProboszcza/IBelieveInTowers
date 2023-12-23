@@ -261,7 +261,7 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
         // -----------------------------------------------------------
         // && IS NOT LOGICAL AND
         // && RETURNS FALSE WHEN BOTH ARGUMENTS ARE FALSE!!!!
-        if (PhotonNetwork.IsMasterClient == _playerPreferences["DefendOrAttackIntention"])
+        if (PhotonNetwork.IsMasterClient == (bool)PhotonNetwork.CurrentRoom.CustomProperties["isMasterDefending"])
         {
             SceneManager.LoadScene("PreparingToPlayAsDefender");
         } else
