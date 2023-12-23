@@ -137,6 +137,8 @@ public class PreMainGame : MonoBehaviourPunCallbacks
     {
         // Wait 5 seconds, send info that both are ready
         // Change scene using photonnetwork
+        readyToggle.interactable = false;
+        print(readyToggle + " is " + readyToggle.interactable);
         ShowConnectedDecorationAndChangeSceneAfterNSeconds(5);
 
     }
