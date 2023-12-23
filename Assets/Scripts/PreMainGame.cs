@@ -138,7 +138,7 @@ public class PreMainGame : MonoBehaviourPunCallbacks
         // Wait 5 seconds, send info that both are ready
         // Change scene using photonnetwork
         readyToggle.interactable = false;
-        print(readyToggle + " is " + readyToggle.interactable);
+        textfieldEnemyReadyState.text = "BOTH ARE READY";
         ShowConnectedDecorationAndChangeSceneAfterNSeconds(5);
 
     }
@@ -147,7 +147,6 @@ public class PreMainGame : MonoBehaviourPunCallbacks
     {
         // Here show to players that we are both ready and going into
         // playing scene
-        readyToggle.interactable = false;
         print("Going to different scene after " + seconds + " seconds!");
         StartCoroutine(ChangeSceneAfterNSeconds(seconds));
     }
