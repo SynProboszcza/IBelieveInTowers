@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -66,7 +67,7 @@ public class Enemy : MonoBehaviour
         {
             mainGame.GetComponent<MainGameLoop>().AddPlayerMoney(moneyReward);
         }
-        Destroy(gameObject);
+        PhotonNetwork.Destroy(gameObject);
     }
 
     public void SetSpeed(float speed)
