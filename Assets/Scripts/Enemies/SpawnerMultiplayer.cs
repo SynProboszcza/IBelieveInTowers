@@ -90,11 +90,11 @@ public class SpawnerMultiplayer : MonoBehaviour
             print(_unit);
             //                                          _unit is Enemy and it does not have unitstatistics!!
             //_unit.GetComponent<Enemy>().SetDamage(==============_unit.GetComponent<UnitStatistics>().damage);
-            _unit.GetComponent<Enemy>().SetDamage(_unit.GetComponent<UnitStatistics>().damage);
-            _unit.GetComponent<Enemy>().SetSpeed(_unit.GetComponent<UnitStatistics>().speed);
+            _unit.GetComponent<Enemy>().SetDamage((int)(_unit.GetComponent<Enemy>().damage * damageMultiplier));
+            _unit.GetComponent<Enemy>().SetSpeed(_unit.GetComponent<Enemy>().speed * speedMultiplier);
             _unit.GetComponent<Enemy>().SetWaypoints(waypoints);
-            _unit.GetComponent<Enemy>().SetHealth(_unit.GetComponent<UnitStatistics>().maxHealth);
-            _unit.GetComponent<Enemy>().SetMoneyReward(_unit.GetComponent<UnitStatistics>().moneyReward);
+            _unit.GetComponent<Enemy>().SetHealth(_unit.GetComponent<Enemy>().maxHealth * healthMultiplier);
+            _unit.GetComponent<Enemy>().SetMoneyReward(_unit.GetComponent<Enemy>().moneyReward);
             //_unit.transform.SetParent(enemiesCollection.transform); // _unit will set its parent itself with SetParent component
             // _unit.GetComponent<SetParent>().SetParentOfThisGO(enemiesCollection); // this will be local only
             Destroy(unitReference);

@@ -13,7 +13,7 @@ public class Enemy : MonoBehaviour
     public float currentHealth;
     public float maxHealth;
     public int damage = 0;
-    //[HideInInspector]
+    [HideInInspector]
     public int waypointIndex = 0;
     public int moneyReward = 50;
     // Start is called before the first frame update

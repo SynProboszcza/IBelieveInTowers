@@ -4,11 +4,23 @@ using UnityEngine;
 
 public class UnitStatistics : MonoBehaviour
 {
-    // Set this in inspector for every PFP
-    // Spawner takes these values and sets them to unit prefab <Enemy>
-    public float speed = 2f;
-    public int maxHealth = 200;
-    public int damage = 13;
-    public int moneyReward = 150;
+    // PFP is only a representation, takes arguments from the enemy
+    // it represents
     public GameObject unitPrefab;
+    [HideInInspector]
+    public float speed = 2f;
+    [HideInInspector]
+    public float maxHealth = 200;
+    [HideInInspector]
+    public int damage = 13;
+    [HideInInspector]
+    public int moneyReward = 150;
+
+    private void Start()
+    {
+        speed = unitPrefab.GetComponent<Enemy>().speed;
+        maxHealth = unitPrefab.GetComponent<Enemy>().maxHealth;
+        damage = unitPrefab.GetComponent<Enemy>().damage;
+        moneyReward = unitPrefab.GetComponent<Enemy>().moneyReward;
+    }
 }
