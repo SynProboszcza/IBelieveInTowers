@@ -123,6 +123,8 @@ public class PreMainGame : MonoBehaviourPunCallbacks
     {
         // Wait 5 seconds, send info that both are ready
         // Change scene using photonnetwork
+        readyToggle.gameObject.SetActive(false);
+        //readyToggle.
         ShowConnectedDecorationAndChangeSceneAfterNSeconds(5);
 
     }
