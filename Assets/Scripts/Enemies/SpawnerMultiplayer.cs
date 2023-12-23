@@ -12,7 +12,7 @@ public class SpawnerMultiplayer : MonoBehaviour
     public Transform[] waypoints;
     private Vector3 spawnPosition;
     [Tooltip("Time inbetween spawns")]
-    public float spawnRate = 1.0f;
+    public float spawnRate = 3.0f;
     [HideInInspector]
     public float enemySpeed = 2f;
     [HideInInspector]
@@ -75,7 +75,7 @@ public class SpawnerMultiplayer : MonoBehaviour
         }
     }
 
-    public void SpawnThisUnit(GameObject unitReference, float damageMultiplier = 1, float speedMultiplier = 1, float healthMultiplier = 1)
+    public void SpawnThisUnit(GameObject unitReference)
     {
         if (
         (isSpawnAllowed // Potentially usefull
@@ -90,10 +90,10 @@ public class SpawnerMultiplayer : MonoBehaviour
             print(_unit);
             //                                          _unit is Enemy and it does not have unitstatistics!!
             //_unit.GetComponent<Enemy>().SetDamage(==============_unit.GetComponent<UnitStatistics>().damage);
-            _unit.GetComponent<Enemy>().SetDamage((int)(_unit.GetComponent<Enemy>().damage * damageMultiplier));
-            _unit.GetComponent<Enemy>().SetSpeed(_unit.GetComponent<Enemy>().speed * speedMultiplier);
+            _unit.GetComponent<Enemy>().SetDamage(_unit.GetComponent<Enemy>().damage);
+            _unit.GetComponent<Enemy>().SetSpeed(_unit.GetComponent<Enemy>().speed);
             _unit.GetComponent<Enemy>().SetWaypoints(waypoints);
-            _unit.GetComponent<Enemy>().SetHealth(_unit.GetComponent<Enemy>().maxHealth * healthMultiplier);
+            _unit.GetComponent<Enemy>().SetHealth(_unit.GetComponent<Enemy>().maxHealth);
             _unit.GetComponent<Enemy>().SetMoneyReward(_unit.GetComponent<Enemy>().moneyReward);
             //_unit.transform.SetParent(enemiesCollection.transform); // _unit will set its parent itself with SetParent component
             // _unit.GetComponent<SetParent>().SetParentOfThisGO(enemiesCollection); // this will be local only
@@ -103,5 +103,4 @@ public class SpawnerMultiplayer : MonoBehaviour
         }
 
     }
-
 }

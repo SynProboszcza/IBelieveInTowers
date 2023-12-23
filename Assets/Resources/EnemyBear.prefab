@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 5124225124800193262}
   - component: {fileID: 6636911674434869619}
   - component: {fileID: -353554034605780274}
+  - component: {fileID: 4291488512872839014}
   m_Layer: 0
   m_Name: EnemyBear
   m_TagString: Enemy
@@ -203,7 +204,8 @@ MonoBehaviour:
   Synchronization: 3
   OwnershipTransfer: 0
   observableSearch: 2
-  ObservedComponents: []
+  ObservedComponents:
+  - {fileID: 4291488512872839014}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -220,6 +222,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tagToSetParenthoodTo: SingleTagForEnemiesCollection
+--- !u!114 &4291488512872839014
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1800778710029251882}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizePosition: 1
+  m_SynchronizeRotation: 1
+  m_SynchronizeScale: 1
+  m_UseLocal: 1
 --- !u!1001 &3863209929989716567
 PrefabInstance:
   m_ObjectHideFlags: 0
