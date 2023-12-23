@@ -259,7 +259,9 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
         gameObject.GetComponent<Button>().interactable = false;
         // Show big text "Found player" or smth
         // -----------------------------------------------------------
-        if (PhotonNetwork.IsMasterClient && _playerPreferences["DefendOrAttackIntention"])
+        // && IS NOT LOGICAL AND
+        // && RETURNS FALSE WHEN BOTH ARGUMENTS ARE FALSE!!!!
+        if (PhotonNetwork.IsMasterClient == _playerPreferences["DefendOrAttackIntention"])
         {
             SceneManager.LoadScene("PreparingToPlayAsDefender");
         } else
