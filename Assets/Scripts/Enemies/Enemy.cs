@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class Enemy : MonoBehaviour
+public class Enemy : MonoBehaviour, IPunObservable
 {
     public GameObject mainGame;
     //[HideInInspector]
@@ -63,10 +63,11 @@ public class Enemy : MonoBehaviour
         // Maybe add some effects to death, idk particles or
         // animated text of how much money it gave
         //mainGame.GetComponent<MainGameLoop>().AddPlayerMoney(moneyReward);
-        if (mainGame != null) // Had to add this check for main menu enemies
-        {
-            mainGame.GetComponent<MainGameLoop>().AddPlayerMoney(moneyReward);
-        }
+        // if (mainGame != null) // Had to add this check for main menu enemies
+        // {
+        //     mainGame.GetComponent<MainGameLoop>().AddPlayerMoney(moneyReward);
+        // }
+        CrossSceneManager.instance.AddMoney(moneyReward);
         PhotonNetwork.Destroy(gameObject);
     }
 
@@ -128,5 +129,10 @@ public class Enemy : MonoBehaviour
     public void TakeDamage(float damage)
     {
         this.currentHealth -= damage;   
+    }
+
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        throw new System.NotImplementedException();
     }
 }

@@ -7,7 +7,7 @@ using UnityEngine;
 public class Spawner : MonoBehaviour
 {
     private GameObject enemiesCollection;
-    public string[] enemies;
+    public GameObject[] enemies;
     public Transform[] waypoints;
     private Vector3 spawnPosition;
     [Tooltip("Time inbetween spawns")]
@@ -36,17 +36,6 @@ public class Spawner : MonoBehaviour
     {
         enemiesCollection = new GameObject("EnemiesCollection");
         spawnPosition = new Vector3(waypoints[0].position.x, waypoints[0].position.y, 0);
-        if (enemies.Length < 5)
-        {
-            print("Got less enemies than 5, setting up default");
-            enemies = new string[] {
-                "EnemyBear",
-                "EnemyBettle",
-                "EnemyDino",
-                "EnemyOpossum",
-                "EnemySlimer"
-            };
-        }
     }
 
     public void SpawnThisUnit(string enemyName, int moneyReward, float damageMultiplier=1, float speedMultiplier=1, float healthMultiplier=1)
