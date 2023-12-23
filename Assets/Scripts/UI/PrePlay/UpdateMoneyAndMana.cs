@@ -14,6 +14,7 @@ public class UpdateMoneyAndMana : MonoBehaviour
     {
         UpdateManaAndMoney();
     }
+
     public void UpdateManaAndMoney()
     {
         moneyText.text = "GOLD: " + CrossSceneManager.instance.playerMoney;
