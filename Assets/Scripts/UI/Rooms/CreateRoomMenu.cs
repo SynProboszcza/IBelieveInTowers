@@ -120,6 +120,7 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
         {
             _playerPreferences.Add(toggle.gameObject.name, toggle.isOn);
         }
+        print(_playerPreferences);
         // -----------------------------------------------------------
         // Set default custom room properties:
         //  prepare keys to fill in nicknames
