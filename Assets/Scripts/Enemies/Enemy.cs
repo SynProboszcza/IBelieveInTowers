@@ -20,12 +20,12 @@ public class Enemy : MonoBehaviour, IPunObservable
     // Start is called before the first frame update
     void Start()
     {
+        currentHealth = maxHealth;
         mainGame = GameObject.FindWithTag("SingleTagForMainGameLoop");
         if (this.GetComponent<PhotonView>().IsMine)
         {
             transform.position = waypoints[waypointIndex].position;
         }
-        maxHealth = currentHealth;
     }
 
     // Update is called once per frame
