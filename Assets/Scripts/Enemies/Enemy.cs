@@ -21,7 +21,10 @@ public class Enemy : MonoBehaviour, IPunObservable
     void Start()
     {
         mainGame = GameObject.FindWithTag("SingleTagForMainGameLoop");
-        transform.position = waypoints[waypointIndex].position;
+        if (this.GetComponent<PhotonView>().IsMine)
+        {
+            transform.position = waypoints[waypointIndex].position;
+        }
         maxHealth = currentHealth;
     }
 
