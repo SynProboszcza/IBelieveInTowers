@@ -133,6 +133,11 @@ public class Enemy : MonoBehaviour, IPunObservable
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
-        throw new System.NotImplementedException();
+        if (stream.IsReading)
+        {
+            transform.position = (Vector3)stream.ReceiveNext();
+        } else if (stream.IsWriting) {
+            stream.SendNext(transform.position);
+        }
     }
 }
