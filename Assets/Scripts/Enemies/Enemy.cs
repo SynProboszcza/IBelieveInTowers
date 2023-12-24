@@ -31,10 +31,16 @@ public class Enemy : MonoBehaviour, IPunObservable
     // Update is called once per frame
     void Update()
     {
-        Move();
-        if(currentHealth <= 0)
+        if (this.GetComponent<PhotonView>().IsMine)
         {
-            Die();
+            Move();
+            if(currentHealth <= 0)
+            {
+                Die();
+            }
+        } else
+        {
+            // do nothing, its controlled by other player
         }
     }
 
@@ -57,7 +63,7 @@ public class Enemy : MonoBehaviour, IPunObservable
         {
             // This should never execute, leaving just as fallback
             // destroy is handled by Despawner, that also deals dmg
-            Destroy(gameObject);
+            Die();
         }
     }
 
@@ -71,7 +77,7 @@ public class Enemy : MonoBehaviour, IPunObservable
         //     mainGame.GetComponent<MainGameLoop>().AddPlayerMoney(moneyReward);
         // }
         CrossSceneManager.instance.AddMoney(moneyReward);
-        Destroy(gameObject);
+        PhotonNetwork.Destroy(gameObject);
     }
 
     public void SetSpeed(float speed)
