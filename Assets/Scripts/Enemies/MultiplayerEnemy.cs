@@ -5,7 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class Enemy : MonoBehaviour
+public class MultiplayerEnemy : MonoBehaviour, IPunObservable
 {
     public GameObject mainGame;
     //[HideInInspector]
@@ -23,16 +23,37 @@ public class Enemy : MonoBehaviour
     {
         currentHealth = maxHealth;
         mainGame = GameObject.FindWithTag("SingleTagForMainGameLoop");
-        transform.position = waypoints[waypointIndex].position;
+        if (this.GetComponent<PhotonView>().IsMine)
+        {
+            transform.position = waypoints[waypointIndex].position;
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
-        Move();
-        if (currentHealth <= 0)
+        if (SceneManager.GetActiveScene().name.Equals("MainMenu"))
         {
-            Die();
+            Move();
+            if (currentHealth <= 0)
+            {
+                Die();
+            }
+        }
+        else
+        {
+            if (this.GetComponent<PhotonView>() != null && this.GetComponent<PhotonView>().IsMine)
+            {
+                Move();
+                if (currentHealth <= 0)
+                {
+                    Die();
+                }
+            }
+            else
+            {
+                // do nothing, its controlled by other player
+            }
         }
     }
 
@@ -45,13 +66,14 @@ public class Enemy : MonoBehaviour
                speed * Time.deltaTime);
 
             //if (transform.position == waypoints[waypointIndex].transform.position)
-            if (Mathf.Approximately(transform.position.x, waypoints[waypointIndex].transform.position.x) 
+            if (Mathf.Approximately(transform.position.x, waypoints[waypointIndex].transform.position.x)
                 && Mathf.Approximately(transform.position.y, waypoints[waypointIndex].transform.position.y)
                 )
             {
                 waypointIndex += 1;
             }
-        } else
+        }
+        else
         {
             // This should never execute, leaving just as fallback
             // destroy is handled by Despawner, that also deals dmg
@@ -68,8 +90,8 @@ public class Enemy : MonoBehaviour
         // {
         //     mainGame.GetComponent<MainGameLoop>().AddPlayerMoney(moneyReward);
         // }
-        mainGame.GetComponent<MainGameLoop>().AddPlayerMoney(moneyReward);
-        Destroy(gameObject);
+        CrossSceneManager.instance.AddMoney(moneyReward);
+        PhotonNetwork.Destroy(gameObject);
     }
 
     public void SetSpeed(float speed)
@@ -129,7 +151,18 @@ public class Enemy : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
-        this.currentHealth -= damage;   
+        this.currentHealth -= damage;
     }
 
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.IsReading)
+        {
+            transform.position = (Vector3)stream.ReceiveNext();
+        }
+        else if (stream.IsWriting)
+        {
+            stream.SendNext(transform.position);
+        }
+    }
 }

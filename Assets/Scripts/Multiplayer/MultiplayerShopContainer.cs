@@ -2,10 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ShopContainer : MonoBehaviour
+public class MultiplayerShopContainer : MonoBehaviour
 {
     private SpriteRenderer sr;
-    public GameObject mainGame;
+    public GameObject multiplayerMainGame;
     [Tooltip("Distance from shop center to mouse position in worldspace units")]
     public float distanceToCloseShop = 4;
     private Vector2 mouseWorldPos;
@@ -16,8 +16,8 @@ public class ShopContainer : MonoBehaviour
         gameObject.transform.GetChild(0).gameObject.SetActive(false);
         sr = GetComponent<SpriteRenderer>();
         sr.enabled = false;
-        mainGame = GameObject.FindWithTag("SingleTagForMainGameLoop");
-        mainGame.GetComponent<MainGameLoop>().isShopOpen = false;
+        multiplayerMainGame = GameObject.FindWithTag("SingleTagForMainGameLoop");
+        multiplayerMainGame.GetComponent<MultiplayerMainGameLoop>().isShopOpen = false;
     }
 
     // Update is called once per frame
@@ -27,7 +27,7 @@ public class ShopContainer : MonoBehaviour
         // or when other shop is open
         mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         if ((
-            Vector2.Distance(mouseWorldPos, gameObject.transform.GetChild(0).transform.position) > distanceToCloseShop) 
+            Vector2.Distance(mouseWorldPos, gameObject.transform.GetChild(0).transform.position) > distanceToCloseShop)
             && gameObject.transform.GetChild(0).gameObject.activeSelf
             )
         {
@@ -39,7 +39,7 @@ public class ShopContainer : MonoBehaviour
     {
         Debug.Log("Opening shop interface");
         gameObject.transform.GetChild(0).gameObject.SetActive(true);
-        mainGame.GetComponent<MainGameLoop>().isShopOpen = true;
+        multiplayerMainGame.GetComponent<MultiplayerMainGameLoop>().isShopOpen = true;
         //Destroy(gameObject);
     }
 
@@ -47,7 +47,7 @@ public class ShopContainer : MonoBehaviour
     {
         sr.enabled = false;
         gameObject.transform.GetChild(0).gameObject.SetActive(false);
-        mainGame.GetComponent<MainGameLoop>().isShopOpen = false;
+        multiplayerMainGame.GetComponent<MultiplayerMainGameLoop>().isShopOpen = false;
         //Debug.Log("mouse:" + mouseWorldPos);
         //Debug.Log("shop:" + gameObject.transform.GetChild(0).transform.position);
         //Debug.Log("distance:" + Vector2.Distance(Input.mousePosition, gameObject.transform.GetChild(0).transform.position));
@@ -74,7 +74,7 @@ public class ShopContainer : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if (!mainGame.GetComponent<MainGameLoop>().isShopOpen)
+        if (!multiplayerMainGame.GetComponent<MultiplayerMainGameLoop>().isShopOpen)
         {
             OpenShop();
         }

@@ -1233,7 +1233,7 @@ GameObject:
   m_Icon: {fileID: 6519382022992737161, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &239573653
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2892,7 +2892,7 @@ PrefabInstance:
     - target: {fileID: 5311621602784914545, guid: eaa34879d2cdb6142a29a701b651f2e7, type: 3}
       propertyPath: enemiesCollection
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1340245192}
     - target: {fileID: 5311621602784914545, guid: eaa34879d2cdb6142a29a701b651f2e7, type: 3}
       propertyPath: waypoints.Array.size
       value: 16
@@ -3791,7 +3791,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &938013104
 MonoBehaviour:
   m_ObjectHideFlags: 0
