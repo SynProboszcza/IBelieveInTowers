@@ -23,7 +23,7 @@ public class SpawnerMultiplayer : MonoBehaviour
     
     // Leaving for potential future gamemodes,
     // for now set high as to not interfere with basic gameplay
-    [HideInInspector]
+    //[HideInInspector]
     public int spawnCountMax = 50000; 
 
     [HideInInspector]
@@ -65,7 +65,7 @@ public class SpawnerMultiplayer : MonoBehaviour
         {
             // _unitPrefab is PFP => PFP has unit stats => unit stats has unit prefab => has Enemy
             GameObject _unitPrefab = listOfEnemies.transform.GetChild(0).gameObject;
-            print(_unitPrefab);
+            //print(_unitPrefab);
             // int _moneyReward = _unitPrefab.GetComponent<UnitStatistics>().moneyReward;
             // string _unitToSpawnString = listOfEnemies.transform.GetChild(0).name.ToString();
             // _unitToSpawnString = _unitToSpawnString.Replace("(Clone)", string.Empty);
@@ -77,6 +77,7 @@ public class SpawnerMultiplayer : MonoBehaviour
 
     public void SpawnThisUnit(GameObject unitReference)
     {
+        //print("got this: " + unitReference);
         if (
         (isSpawnAllowed // Potentially usefull
         && enemies != null
@@ -86,8 +87,9 @@ public class SpawnerMultiplayer : MonoBehaviour
         || isSpawningConstantly // Forcing to spawn all the time to playtest
         && (Time.time > spawnRate + timeSinceLastRespawn))
         {
+            //print("passed checks");
             GameObject _unit = PhotonNetwork.Instantiate(unitReference.GetComponent<UnitStatistics>().unitPrefab.name, spawnPosition, Quaternion.identity);
-            print(_unit);
+            //print(_unit);
             //                                          _unit is Enemy and it does not have unitstatistics!!
             //_unit.GetComponent<Enemy>().SetDamage(==============_unit.GetComponent<UnitStatistics>().damage);
             _unit.GetComponent<MultiplayerEnemy>().SetDamage(_unit.GetComponent<MultiplayerEnemy>().damage);
@@ -100,6 +102,24 @@ public class SpawnerMultiplayer : MonoBehaviour
             Destroy(unitReference);
             timeSinceLastRespawn = Time.time;
             spawnCount++;
+        } else
+        {
+            if (!(Time.time > spawnRate + timeSinceLastRespawn))
+            {
+                print("Waiting to spawn...");
+            } else
+            {
+                print(
+                    "Something is blocking spawn, click to see details:\n" +
+                    "isSpawnAllowed: " + isSpawnAllowed + "\n" +
+                    "enemies: " + enemies + "\n" +
+                    "waypoints: " + waypoints + "\n" +
+                    "(Time.time > spawnRate + timeSinceLastRespawn): " + (Time.time > spawnRate + timeSinceLastRespawn) + "\n" +
+                    "spawncount: " + spawnCount + "\n" +
+                    "spawncountmax: " + spawnCountMax + "\n" +
+                    "isspawningconstantly: " + isSpawningConstantly + "\n"
+                    );
+            }
         }
 
     }
