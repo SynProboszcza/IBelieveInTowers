@@ -112,18 +112,34 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks
         // We need to show defender health to both players, but attacker needs to see it as "Enemy health"
         if (amIDefender)
         {
+            if (CrossSceneManager.instance.isMoneyInfinite)
+            {
+                string playerMoneyTextTemplate = "Gold: inf" ;
+                d_playerMoneyTextField.text = playerMoneyTextTemplate;
+
+            } else
+            {
+                string playerMoneyTextTemplate = "Gold: " + CrossSceneManager.instance.playerMoney;
+                d_playerMoneyTextField.text = playerMoneyTextTemplate;
+            }
             string enemyHealthTextTemplate = "Health: " + CrossSceneManager.instance.defenderHealth;
             d_enemyHealthTextField.text = enemyHealthTextTemplate;
-            string playerMoneyTextTemplate = "Gold: " + CrossSceneManager.instance.playerMoney;
-            d_playerMoneyTextField.text = playerMoneyTextTemplate;
             string playerManaTextTemplate = "Mana: " + CrossSceneManager.instance.playerMana;
             d_playerManaTextField.text = playerManaTextTemplate;
         } else
         {
+            if (CrossSceneManager.instance.isMoneyInfinite)
+            {
+                string playerMoneyTextTemplate = "Gold: inf" ;
+                a_playerMoneyTextField.text = playerMoneyTextTemplate;
+
+            } else
+            {
+                string playerMoneyTextTemplate = "Gold: " + CrossSceneManager.instance.playerMoney;
+                a_playerMoneyTextField.text = playerMoneyTextTemplate;
+            }
             string enemyHealthTextTemplate = "Enemy health: " + CrossSceneManager.instance.defenderHealth;
             a_enemyHealthTextField.text = enemyHealthTextTemplate;
-            string playerMoneyTextTemplate = "Gold: " + CrossSceneManager.instance.playerMoney;
-            a_playerMoneyTextField.text = playerMoneyTextTemplate;
             string playerManaTextTemplate = "Mana: " + CrossSceneManager.instance.playerMana;
             a_playerManaTextField.text = playerManaTextTemplate;
         }

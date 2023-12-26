@@ -27,7 +27,7 @@ public class MultiTurretOffer : MonoBehaviour
 
     public void BuyTurret(GameObject turret, int cost)
     {
-        if (multiMainGame.GetComponent<MultiplayerMainGameLoop>().PayWithGold(cost))
+        if (CrossSceneManager.instance.PayWithMoney(cost))
         {
             string _turretName = "Turrets/" + turret.name;
             PhotonNetwork.Instantiate(_turretName, new Vector3(transform.parent.transform.parent.position.x, transform.parent.transform.parent.position.y, 0), Quaternion.identity);
