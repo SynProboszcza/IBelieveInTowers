@@ -45,7 +45,11 @@ public class Bullet : MonoBehaviour
         {
             // We don't want bullets colliding with each other
             // because this generates bugs
-        } else
+        } else if (collision.gameObject.GetComponent<MultiplayerEnemy>() != null)
+        {
+            collision.gameObject.GetComponent<MultiplayerEnemy>().TakeDamage(damage);
+
+        } else 
         {
             // Do nothing because it can destroy other objects
             //Destroy(collision.gameObject);
