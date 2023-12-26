@@ -1801,10 +1801,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3dfa93d3d87971e4eb935fb2f8399891, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Notes: This components disables MainGame(maingame does it also), sets choosen defender/attacker
+    state, then activates MainGame. MainGame activates proper part on its own. AttackerPart
+    and DefenderPart should always be disabled in editor and only enabled by MainGame.
   backupNickNamePrefix: defaultNickname
   gameVersion: 0.1
   roomName: SIMPLEroom
   nickName: SIMPLEnick
+  amIDefending: 0
+  mainGameScript: {fileID: 0}
 --- !u!1 &711377046
 GameObject:
   m_ObjectHideFlags: 0
@@ -2414,6 +2419,7 @@ MonoBehaviour:
   textfieldMyNickName: {fileID: 2116225633}
   textfieldEnemyNickName: {fileID: 463049944}
   textfieldEnemyReadyState: {fileID: 381139287}
+  leaveRoom: {fileID: 2135872491}
   mainCanvasReference: {fileID: 412221084}
   amIMaster: 0
   amIDefender: 0
@@ -8703,14 +8709,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d59d116d5b44bc140bf768c96fb12ee1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerMoney: 0
   bearPrice: 500
   bettlePrice: 100
   opossumPrice: 200
   dinoPrice: 150
   slimerPrice: 250
+  defenderHealth: 0
   enemyNickname: 
   myNickName: 
   amIMaster: 0
+  amIDefender: 0
+  isMoneyInfinite: 0
 --- !u!4 &1210959662
 Transform:
   m_ObjectHideFlags: 0
@@ -10629,9 +10639,17 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3345287502717792688, guid: a17a2be5e144dbb4b90b66638eb1d8a6, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3345287502788569934, guid: a17a2be5e144dbb4b90b66638eb1d8a6, type: 3}
       propertyPath: m_SizeDelta.x
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3345287502788569934, guid: a17a2be5e144dbb4b90b66638eb1d8a6, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0.00012207031
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a17a2be5e144dbb4b90b66638eb1d8a6, type: 3}
