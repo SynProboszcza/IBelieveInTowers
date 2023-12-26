@@ -162,7 +162,7 @@ MonoBehaviour:
   shopNodePrefab: {fileID: 5003845570486195154, guid: 2bfa89d107a79ee4d92010d08cb39941, type: 3}
   upgradeLevel: 0
   bulletSpeed: 100
-  bulletDamage: 200
+  bulletDamage: 150
   fireRate: 2
   bulletRange: 5
   distanceToShutoffMuzzleEffects: 0.4

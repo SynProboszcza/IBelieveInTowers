@@ -48,6 +48,7 @@ public class Bullet : MonoBehaviour
         } else if (collision.gameObject.GetComponent<MultiplayerEnemy>() != null)
         {
             collision.gameObject.GetComponent<MultiplayerEnemy>().TakeDamage(damage);
+            Destroy(gameObject);
 
         } else 
         {
