@@ -9,19 +9,20 @@ using UnityEngine;
 // connection to a room, so everything about PhotonNetwork works
 public class SimpleConnect : MonoBehaviourPunCallbacks
 {
+    [SerializeField]
+    [TextArea]
+    [Tooltip("Doesn't do anything. Just comments shown in inspector")]
+    public string Notes = "This components disables MainGame, sets choosen defender/attacker state, then activates MainGame. MainGame activates proper part on its own. AttackerPart and DefenderPart should always be disabled in editor and only enabled by MainGame.";
     public string backupNickNamePrefix = "defaultNickname";
     public string gameVersion = "0.1";
     public string roomName = "SIMPLEroom";
     public string nickName = "SIMPLEnick";
-    public bool workingOnMap1AttackerPart = false;
+    public bool amIDefending = false;
     public GameObject mainGameScript;
 
     private void Start()
     {
-        if (workingOnMap1AttackerPart)
-        {
-            mainGameScript.SetActive(false);
-        }
+        mainGameScript.SetActive(false);
         BeginConnecting();
     }
 
@@ -50,12 +51,8 @@ public class SimpleConnect : MonoBehaviourPunCallbacks
     public override void OnJoinedRoom()
     {
         print("SIMPLE Joined room: " + roomName);
-
-        if (workingOnMap1AttackerPart)
-        {
-            mainGameScript.SetActive(true);
-        }
-
+        CrossSceneManager.instance.amIDefender = amIDefending;
+        mainGameScript.SetActive(true);
         base.OnJoinedRoom();
     }
 

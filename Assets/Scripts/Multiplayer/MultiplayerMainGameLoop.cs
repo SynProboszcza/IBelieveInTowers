@@ -24,9 +24,14 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks
     public Transform playArenaCorners;
     public Transform[] waypoints;
     public Transform[] obstacles;
-    public TMP_Text enemyHealthTextField;
-    public TMP_Text playerMoneyTextField;
-    public TMP_Text playerManaTextField;
+    [Header("Attacker stats")]
+    public TMP_Text a_enemyHealthTextField;
+    public TMP_Text a_playerMoneyTextField;
+    public TMP_Text a_playerManaTextField;
+    [Header("Defender stats")]
+    public TMP_Text d_enemyHealthTextField;
+    public TMP_Text d_playerMoneyTextField;
+    public TMP_Text d_playerManaTextField;
     private Vector2 topLeft;
     private Vector2 topRight;
     private Vector2 bottomLeft;
@@ -43,7 +48,7 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks
     public bool isDebugging = false;
     [HideInInspector]
     public bool isShopOpen = false;
-    public bool isAllowedInstantiating = true;
+    //private bool isAllowedInstantiating = true;
     [HideInInspector]
     public bool amIMaster;
     [HideInInspector]
@@ -63,44 +68,29 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks
     void Start()
     {
         // Check if defending, then activate proper part
+        attackerPart.gameObject.SetActive(false);
+        defenderPart.gameObject.SetActive(false);
         amIMaster = CrossSceneManager.instance.amIMaster;
         amIDefender = CrossSceneManager.instance.amIDefender;
         playerMoney = CrossSceneManager.instance.playerMoney;
         playerMana = CrossSceneManager.instance.playerMana;
-        defenderPart.gameObject.SetActive(false);
-        attackerPart.gameObject.SetActive(false);
         if (amIDefender)
         {
             defenderPart.gameObject.SetActive(true);
-        } else
-        {
-            attackerPart.gameObject.SetActive(true);
-            defenderHealth = CrossSceneManager.instance.defenderHealth;
-        }
-
-        if (isAllowedInstantiating && amIDefender)
-        {
             shopNodesCollection = new GameObject("ShopNodesCollection");
             GetPlayArenaCorners();
             GenerateAndConfigureNodeMesh(topLeft, bottomRight);
             // TODO: ShopNode needs to show spells
-        } else 
+        } else
         {
-            // We're attacking so we need to instantiate spell mesh
-        }
-        // Configure them maybe?
-        
+            attackerPart.gameObject.SetActive(true);
+            defenderHealth = CrossSceneManager.instance.defenderHealth;
+        }        
     }
 
     void Update()
     {
-        string enemyHealthTextTemplate = "Health: " + CrossSceneManager.instance.defenderHealth;
-        enemyHealthTextField.text = enemyHealthTextTemplate;
-        string playerMoneyTextTemplate = "Gold: " + CrossSceneManager.instance.playerMoney;
-        playerMoneyTextField.text = playerMoneyTextTemplate;
-        string playerManaTextTemplate = "Mana: " + CrossSceneManager.instance.playerMana;
-        playerManaTextField.text = playerManaTextTemplate;
-
+        UpdatePlayerStats(amIDefender);
         // Check if defending when ded
         //  checking is done when dealing damage
 
@@ -109,6 +99,25 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks
         //wait for escape menu
         //maybe listen for quitting? or add button for it
 
+    }
+
+    private void UpdatePlayerStats(bool isDefender)
+    {
+        // Both players have their own gold and mana, but only defender has health
+        // We need to show defender health to both players, but attacker needs to see it as "Enemy health"
+        if (isDefender)
+        {
+            string enemyHealthTextTemplate = "Health: " + CrossSceneManager.instance.defenderHealth;
+            a_enemyHealthTextField.text = enemyHealthTextTemplate;
+        } else
+        {
+            string enemyHealthTextTemplate = "Enemy health: " + CrossSceneManager.instance.defenderHealth;
+            a_enemyHealthTextField.text = enemyHealthTextTemplate;
+        }
+        string playerMoneyTextTemplate = "Gold: " + CrossSceneManager.instance.playerMoney;
+        a_playerMoneyTextField.text = playerMoneyTextTemplate;
+        string playerManaTextTemplate = "Mana: " + CrossSceneManager.instance.playerMana;
+        a_playerManaTextField.text = playerManaTextTemplate;
     }
 
     public void DefenderDied()

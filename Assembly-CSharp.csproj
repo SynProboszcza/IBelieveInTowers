@@ -79,7 +79,6 @@
     <Compile Include="Assets\Scripts\debugworkinprogress.cs" />
     <Compile Include="Assets\Scripts\Shop\TurretOffer.cs" />
     <Compile Include="Assets\Scripts\Deprecated\ShowSimpleTextToConsole.cs" />
-    <Compile Include="Assets\Scripts\Multiplayer\MultiplayerShopContainer.cs" />
     <Compile Include="Assets\Scripts\Enemies\SetParent.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\ChatController.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TextMeshProFloatingText.cs" />
@@ -160,6 +159,8 @@
     <Compile Include="Assets\Scripts\UI\PrePlay\RedGreenToggle.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01.cs" />
     <Compile Include="Assets\Scripts\MenuButtons\QuitButton.cs" />
+    <Compile Include="Assets\Scripts\Multiplayer\MultiShopContainer.cs" />
+    <Compile Include="Assets\Scripts\Multiplayer\MultiTurretOffer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />

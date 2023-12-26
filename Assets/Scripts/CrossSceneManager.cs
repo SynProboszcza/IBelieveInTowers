@@ -14,8 +14,9 @@ public class CrossSceneManager : MonoBehaviour
     public string gameVersion
     {  get { return gameVersion;}
         private set { this.gameVersion = Application.version; }}
-    public int playerMoney
-    { get; private set;}
+    [SerializeField]
+    public int playerMoney;
+    //{ get; set;}
     public int playerMana
     { get; private set; }
     [HideInInspector]

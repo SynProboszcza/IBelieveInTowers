@@ -11,7 +11,7 @@ public class SpawnerMultiplayer : MonoBehaviour
     public string[] enemies;
     public Transform[] waypoints;
     private Vector3 spawnPosition;
-    [Tooltip("Time inbetween spawns")]
+    [Tooltip("Time inbetween spawns in seconds")]
     public float spawnRate = 3.0f;
     [HideInInspector]
     public float enemySpeed = 2f;
@@ -65,12 +65,7 @@ public class SpawnerMultiplayer : MonoBehaviour
         {
             // _unitPrefab is PFP => PFP has unit stats => unit stats has unit prefab => has Enemy
             GameObject _unitPrefab = listOfEnemies.transform.GetChild(0).gameObject;
-            //print(_unitPrefab);
-            // int _moneyReward = _unitPrefab.GetComponent<UnitStatistics>().moneyReward;
-            // string _unitToSpawnString = listOfEnemies.transform.GetChild(0).name.ToString();
-            // _unitToSpawnString = _unitToSpawnString.Replace("(Clone)", string.Empty);
-            // _unitToSpawnString = "PFPs/" + _unitToSpawnString;
-            // print(_unitToSpawnString);
+            // TODO: Check if sufficient time has passed here, not inside of SpawnThisUnit()
             SpawnThisUnit(_unitPrefab);
         }
     }
@@ -88,7 +83,8 @@ public class SpawnerMultiplayer : MonoBehaviour
         && (Time.time > spawnRate + timeSinceLastRespawn))
         {
             //print("passed checks");
-            GameObject _unit = PhotonNetwork.Instantiate(unitReference.GetComponent<UnitStatistics>().unitPrefab.name, spawnPosition, Quaternion.identity);
+            string unitName = "Enemies/" + unitReference.GetComponent<UnitStatistics>().unitPrefab.name;
+            GameObject _unit = PhotonNetwork.Instantiate(unitName, spawnPosition, Quaternion.identity);
             //print(_unit);
             //                                          _unit is Enemy and it does not have unitstatistics!!
             //_unit.GetComponent<Enemy>().SetDamage(==============_unit.GetComponent<UnitStatistics>().damage);
