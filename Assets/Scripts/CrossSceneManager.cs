@@ -17,8 +17,8 @@ public class CrossSceneManager : MonoBehaviour
     [SerializeField]
     public int playerMoney;
     //{ get; set;}
-    public int playerMana
-    { get; private set; }
+    public int playerMana;
+    //{ get; private set; }
     public Queue<string> unitList { get; private set; }
     [HideInInspector]
     public Dictionary<string, int> enemyPrices;
@@ -32,14 +32,16 @@ public class CrossSceneManager : MonoBehaviour
     public string myNickName = "";
     public bool amIMaster;
     public bool amIDefender;
+    public bool hasDefenderDied = false;
     public bool isMoneyInfinite = false;
+    public bool isManaInfinite = false;
 
     void Start()
     {
         DontDestroyOnLoad(gameObject);
         playerMoney = 2000;
         playerMana = 500;
-        defenderHealth = 200;
+        defenderHealth = 275;
         myNickName = PlayerPrefs.GetString("LocalNickName");
     }
 
@@ -67,6 +69,15 @@ public class CrossSceneManager : MonoBehaviour
 
     }
 
+    public void TakeDefenderDamageAndCheckIfDied(int amount)
+    {
+        defenderHealth -= amount;
+        if (defenderHealth <= 0)
+        {
+            hasDefenderDied = true;
+        }
+    }
+
     public bool PayWithMoney(int cost)
     {
         if (isMoneyInfinite)
@@ -83,6 +94,10 @@ public class CrossSceneManager : MonoBehaviour
 
     public bool PayWithMana(int cost)
     {
+        if (isManaInfinite)
+        {
+            return true;
+        }
         if (playerMana >= cost)
         {
             playerMana -= cost;
