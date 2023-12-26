@@ -28,23 +28,24 @@ public class PreMainGame : MonoBehaviourPunCallbacks
         amIMaster = PhotonNetwork.IsMasterClient;
         amIDefender = (bool)PhotonNetwork.CurrentRoom.CustomProperties["isMasterDefending"] == amIMaster;
         // This shows amimaster and amidefender in nice way, just minified
+        // this line can be commented out to optimize
         if (amIMaster) { if (amIDefender) { print("i am defender master");} else { print("i am attacker master");}} else { if (amIDefender) { print("i am defender joined");} else {print("i am attacker joined");}}
         // -----------------------------------------------------------
         CrossSceneManager.instance.amIMaster = amIMaster;
         CrossSceneManager.instance.amIDefender = amIDefender;
-        print("am i defender?:" + amIDefender);
+        //print("am i defender?:" + amIDefender);
         // Expose nicknames
         // -----------------------------------------------------------
         if (amIMaster)
         {
-            print("i am master");
+            //print("i am master");
             Hashtable _customProperties = new Hashtable();
             _customProperties.Add("roomCreatorNickname", PhotonNetwork.NickName);
             PhotonNetwork.CurrentRoom.SetCustomProperties(_customProperties);
         }
         else
         {
-            print("i am joined");
+            //print("i am joined");
             Hashtable _customProperties = new Hashtable();
             _customProperties.Add("roomJoinedNickname", PhotonNetwork.NickName);
             PhotonNetwork.CurrentRoom.SetCustomProperties(_customProperties);
