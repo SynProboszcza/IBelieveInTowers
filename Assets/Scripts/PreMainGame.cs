@@ -57,8 +57,6 @@ public class PreMainGame : MonoBehaviourPunCallbacks
             CrossSceneManager.instance.isMoneyInfinite = true;
         }
 
-        PhotonNetwork.SendRate = 50;
-
         RefreshTextfields(PhotonNetwork.CurrentLobby.Type.ToString(), PhotonNetwork.CurrentRoom.Name.ToString(), PhotonNetwork.CloudRegion, PhotonNetwork.NickName, "Waiting for opponnent...");
     }
 
