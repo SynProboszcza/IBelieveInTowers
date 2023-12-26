@@ -7759,7 +7759,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: WIP - unlimited money
+  m_Text: Unlimited money for both
 --- !u!222 &1583977418
 CanvasRenderer:
   m_ObjectHideFlags: 0

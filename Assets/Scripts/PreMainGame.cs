@@ -14,6 +14,7 @@ public class PreMainGame : MonoBehaviourPunCallbacks
     public TMP_Text textfieldMyNickName;
     public TMP_Text textfieldEnemyNickName;
     public TMP_Text textfieldEnemyReadyState;
+    public Button leaveRoom;
     public Canvas mainCanvasReference;
     [HideInInspector]
     public bool amIMaster;
@@ -134,6 +135,7 @@ public class PreMainGame : MonoBehaviourPunCallbacks
         // Wait 5 seconds, send info that both are ready
         // Change scene using photonnetwork
         readyToggle.interactable = false;
+        leaveRoom.interactable = false;
         textfieldEnemyReadyState.text = "BOTH ARE READY";
         ShowConnectedDecorationAndChangeSceneAfterNSeconds(5);
 
