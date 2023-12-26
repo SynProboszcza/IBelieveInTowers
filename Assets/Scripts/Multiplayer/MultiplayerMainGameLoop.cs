@@ -90,7 +90,7 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks
 
     void Update()
     {
-        UpdatePlayerStats(amIDefender);
+        UpdatePlayerStats();
         // Check if defending when ded
         //  checking is done when dealing damage
 
@@ -101,23 +101,27 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks
 
     }
 
-    private void UpdatePlayerStats(bool isDefender)
+    private void UpdatePlayerStats()
     {
         // Both players have their own gold and mana, but only defender has health
         // We need to show defender health to both players, but attacker needs to see it as "Enemy health"
-        if (isDefender)
+        if (amIDefender)
         {
             string enemyHealthTextTemplate = "Health: " + CrossSceneManager.instance.defenderHealth;
-            a_enemyHealthTextField.text = enemyHealthTextTemplate;
+            d_enemyHealthTextField.text = enemyHealthTextTemplate;
+            string playerMoneyTextTemplate = "Gold: " + CrossSceneManager.instance.playerMoney;
+            d_playerMoneyTextField.text = playerMoneyTextTemplate;
+            string playerManaTextTemplate = "Mana: " + CrossSceneManager.instance.playerMana;
+            d_playerManaTextField.text = playerManaTextTemplate;
         } else
         {
             string enemyHealthTextTemplate = "Enemy health: " + CrossSceneManager.instance.defenderHealth;
             a_enemyHealthTextField.text = enemyHealthTextTemplate;
+            string playerMoneyTextTemplate = "Gold: " + CrossSceneManager.instance.playerMoney;
+            a_playerMoneyTextField.text = playerMoneyTextTemplate;
+            string playerManaTextTemplate = "Mana: " + CrossSceneManager.instance.playerMana;
+            a_playerManaTextField.text = playerManaTextTemplate;
         }
-        string playerMoneyTextTemplate = "Gold: " + CrossSceneManager.instance.playerMoney;
-        a_playerMoneyTextField.text = playerMoneyTextTemplate;
-        string playerManaTextTemplate = "Mana: " + CrossSceneManager.instance.playerMana;
-        a_playerManaTextField.text = playerManaTextTemplate;
     }
 
     public void DefenderDied()
@@ -127,9 +131,9 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks
 
     public bool PayWithGold(int cost)
     {
-        if (playerMoney >= cost)
+        if (CrossSceneManager.instance.playerMoney >= cost)
         {
-            playerMoney -= cost;
+            CrossSceneManager.instance.playerMoney -= cost;
             return true;
         }
         else
