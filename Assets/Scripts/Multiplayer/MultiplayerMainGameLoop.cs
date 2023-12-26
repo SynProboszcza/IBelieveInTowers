@@ -63,7 +63,7 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks
         // (i think(?)(and maybe every scene?))
         QualitySettings.vSyncCount = 0;  // VSync must be disabled
         Application.targetFrameRate = 60;
-        if (GameObject.Find("SIMPLEConnect").activeSelf)
+        if (GameObject.Find("SIMPLEConnect") != null && GameObject.Find("SIMPLEConnect").activeSelf)
         {
             print("Disabling myself for SIMPLEConnect");
             gameObject.SetActive(false);
