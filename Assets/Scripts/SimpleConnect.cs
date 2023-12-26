@@ -12,7 +12,7 @@ public class SimpleConnect : MonoBehaviourPunCallbacks
     [SerializeField]
     [TextArea]
     [Tooltip("Doesn't do anything. Just comments shown in inspector")]
-    public string Notes = "This components disables MainGame, sets choosen defender/attacker state, then activates MainGame. MainGame activates proper part on its own. AttackerPart and DefenderPart should always be disabled in editor and only enabled by MainGame.";
+    public string Notes = "This components disables MainGame(maingame does it also), sets choosen defender/attacker state, then activates MainGame. MainGame activates proper part on its own. AttackerPart and DefenderPart should always be disabled in editor and only enabled by MainGame.";
     public string backupNickNamePrefix = "defaultNickname";
     public string gameVersion = "0.1";
     public string roomName = "SIMPLEroom";
