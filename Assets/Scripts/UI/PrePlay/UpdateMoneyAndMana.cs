@@ -17,7 +17,15 @@ public class UpdateMoneyAndMana : MonoBehaviour
 
     public void UpdateManaAndMoney()
     {
-        moneyText.text = "GOLD: " + CrossSceneManager.instance.playerMoney;
-        manaText.text = "MANA: " + CrossSceneManager.instance.playerMana;
+        if (CrossSceneManager.instance.isMoneyInfinite)
+        {
+            moneyText.text = "GOLD: inf";
+            manaText.text = "MANA: " + CrossSceneManager.instance.playerMana;
+        } else
+        {
+            manaText.text = "MANA: " + CrossSceneManager.instance.playerMana;
+            moneyText.text = "GOLD: " + CrossSceneManager.instance.playerMoney;
+
+        }
     }
 }

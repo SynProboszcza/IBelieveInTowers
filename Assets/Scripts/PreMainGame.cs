@@ -51,6 +51,11 @@ public class PreMainGame : MonoBehaviourPunCallbacks
             PhotonNetwork.CurrentRoom.SetCustomProperties(_customProperties);
         }
 
+        if ((bool)PhotonNetwork.CurrentRoom.CustomProperties["UnlimitedMoney"])
+        {
+            CrossSceneManager.instance.isMoneyInfinite = true;
+        }
+
 
         RefreshTextfields(PhotonNetwork.CurrentLobby.Type.ToString(), PhotonNetwork.CurrentRoom.Name.ToString(), PhotonNetwork.CloudRegion, PhotonNetwork.NickName, "Waiting for opponnent...");
     }

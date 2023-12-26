@@ -31,6 +31,7 @@ public class CrossSceneManager : MonoBehaviour
     public string myNickName = "";
     public bool amIMaster;
     public bool amIDefender;
+    public bool isMoneyInfinite = false;
 
     void Start()
     {
@@ -67,6 +68,10 @@ public class CrossSceneManager : MonoBehaviour
 
     public bool PayWithMoney(int cost)
     {
+        if (isMoneyInfinite)
+        {
+            return true;
+        }
         if (playerMoney >= cost)
         {
             playerMoney -= cost;
