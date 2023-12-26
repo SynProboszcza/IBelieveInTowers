@@ -11,7 +11,7 @@ public class MultiplayerEnemy : MonoBehaviour, IPunObservable
     //[HideInInspector]
     public Transform[] waypoints;
     public float speed = 2f;
-    [HideInInspector]
+    //[HideInInspector]
     public float currentHealth;
     public float maxHealth;
     public int damage = 0;

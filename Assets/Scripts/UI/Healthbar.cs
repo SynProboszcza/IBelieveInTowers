@@ -32,6 +32,13 @@ public class Healthbar : MonoBehaviour
             // Find current and max health and fill properly
             objectHealth = turretParent.GetHealth();
             objectMaxHealth = turretParent.GetMaxHealth();
+        } else if (gameObject.transform.parent.TryGetComponent<MultiplayerEnemy>(out MultiplayerEnemy mEnemyParent))
+        {
+            // Set healthbar position according to parent object position
+            healthbar.position = transform.parent.position + healthbarOffset;
+            // Find current and max health and fill properly
+            objectHealth = mEnemyParent.GetHealth();
+            objectMaxHealth = mEnemyParent.GetMaxHealth();
         }
             fill.fillAmount = objectHealth / objectMaxHealth;
     }
