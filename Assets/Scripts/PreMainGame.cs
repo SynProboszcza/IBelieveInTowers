@@ -1,6 +1,7 @@
 using ExitGames.Client.Photon;
 using Photon.Pun;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -26,20 +27,9 @@ public class PreMainGame : MonoBehaviourPunCallbacks
         readyState = false;
         amIMaster = PhotonNetwork.IsMasterClient;
         amIDefender = (bool)PhotonNetwork.CurrentRoom.CustomProperties["isMasterDefending"] == amIMaster;
-        print("is master defending: " + (bool)PhotonNetwork.CurrentRoom.CustomProperties["isMasterDefending"]);
-        print("am i master?: " + amIMaster);
-        print("f&&f:" + (false && false));
-        print("f==f:" + (false == false));
-        //czy jestem masterem i czy master sie broni
-        //am, broni = true
-        //am, niebr = false
-        //no, broni = false
-        //no, niebr = true
-        //=====================
-        //true  + true  = true
-        //true  + false = false
-        //false + true  = false
-        //false + false = true
+        // This shows amimaster and amidefender in nice way, just minified
+        if (amIMaster) { if (amIDefender) { print("i am defender master");} else { print("i am attacker master");}} else { if (amIDefender) { print("i am defender joined");} else {print("i am attacker joined");}}
+        // -----------------------------------------------------------
         CrossSceneManager.instance.amIMaster = amIMaster;
         CrossSceneManager.instance.amIDefender = amIDefender;
         print("am i defender?:" + amIDefender);
