@@ -8,6 +8,7 @@ using UnityEngine.UI;
 public class PreMainGame : MonoBehaviourPunCallbacks
 {
     public Toggle readyToggle;
+    public GameObject preListOfEnemies;
     public TMP_Text textfieldLobby;
     public TMP_Text textfieldRoom;
     public TMP_Text textfieldRegion;
@@ -136,6 +137,14 @@ public class PreMainGame : MonoBehaviourPunCallbacks
         readyToggle.interactable = false;
         leaveRoom.interactable = false;
         textfieldEnemyReadyState.text = "BOTH ARE READY";
+        // for every child GO remove it from Content GO and enqueue it
+        // CSM already has addunittolist and popunitfromlist
+        //for(preListOfEnemies.transform.childCount)
+        //if (preListOfEnemies.transform.childCount > 0)
+        //{
+        //    CrossSceneManager.instance.AddUnitToList();
+        //}
+
         ShowConnectedDecorationAndChangeSceneAfterNSeconds(5);
 
     }

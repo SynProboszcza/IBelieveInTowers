@@ -2413,6 +2413,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   readyToggle: {fileID: 618729016}
+  preListOfEnemies: {fileID: 1117020803}
   textfieldLobby: {fileID: 1762170510}
   textfieldRoom: {fileID: 1046514356}
   textfieldRegion: {fileID: 413857504}
@@ -8794,7 +8795,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1270138351
 RectTransform:
   m_ObjectHideFlags: 0
@@ -10546,6 +10547,10 @@ PrefabInstance:
     - target: {fileID: 3345287502002440080, guid: a17a2be5e144dbb4b90b66638eb1d8a6, type: 3}
       propertyPath: m_Name
       value: FirstEnemyListToDeploy
+      objectReference: {fileID: 0}
+    - target: {fileID: 3345287502002440080, guid: a17a2be5e144dbb4b90b66638eb1d8a6, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3345287502002440081, guid: a17a2be5e144dbb4b90b66638eb1d8a6, type: 3}
       propertyPath: m_Pivot.x

@@ -19,6 +19,7 @@ public class CrossSceneManager : MonoBehaviour
     //{ get; set;}
     public int playerMana
     { get; private set; }
+    public Queue<string> unitList { get; private set; }
     [HideInInspector]
     public Dictionary<string, int> enemyPrices;
     public int bearPrice = 500;
@@ -98,5 +99,15 @@ public class CrossSceneManager : MonoBehaviour
     public void AddMoney(int amount)
     {
         playerMoney += amount;
+    }
+
+    public void AddUnitToList(string name)
+    {
+        unitList.Enqueue(name);
+    }
+
+    public string PopUnitFromList()
+    {
+        return unitList.Dequeue();
     }
 }
