@@ -4169,7 +4169,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &938013104
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4190,6 +4190,9 @@ MonoBehaviour:
   roomName: SIMPLEroom
   nickName: SIMPLEnick
   amIDefending: 1
+  isMoneyInfinite: 0
+  isManaInfinite: 0
+  invincibleTurrets: 0
   mainGameScript: {fileID: 239573652}
 --- !u!4 &938013105
 Transform:
@@ -12621,6 +12624,7 @@ MonoBehaviour:
   hasDefenderDied: 0
   isMoneyInfinite: 0
   isManaInfinite: 0
+  invincibleTurrets: 0
 --- !u!4 &1634076229
 Transform:
   m_ObjectHideFlags: 0
