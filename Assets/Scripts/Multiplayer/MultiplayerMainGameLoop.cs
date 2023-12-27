@@ -40,9 +40,9 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks
     public int nodesInstantiated = 0;
     [HideInInspector]
     public int nodesDestroyed = 0;
-    public int playerMoney = 0;
-    public int playerMana = 0;
-    public int defenderHealth;
+    //public int playerMoney = 0;
+    //public int playerMana = 0;
+    //public int defenderHealth;
     [Tooltip("Specifies an offset on a Z axis. 0 is default map, camera is -15, positive will be hidden. This is mainly for colliders to work properly")]
     public static float shopNodesZOffset = -2;
     public bool isDebugging = false;
@@ -65,7 +65,7 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks
         Application.targetFrameRate = 60;
         if (GameObject.Find("SIMPLEConnect") != null && GameObject.Find("SIMPLEConnect").activeSelf)
         {
-            print("Disabling myself for SIMPLEConnect");
+            print("Disabling MainGame for SIMPLEConnect to be enabled when connection is established");
             gameObject.SetActive(false);
         }
     }
@@ -77,8 +77,8 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks
         defenderPart.gameObject.SetActive(false);
         amIMaster = CrossSceneManager.instance.amIMaster;
         amIDefender = CrossSceneManager.instance.amIDefender;
-        playerMoney = CrossSceneManager.instance.playerMoney;
-        playerMana = CrossSceneManager.instance.playerMana;
+        //playerMoney = CrossSceneManager.instance.playerMoney;
+        //playerMana = CrossSceneManager.instance.playerMana;
         if (amIDefender)
         {
             defenderPart.gameObject.SetActive(true);
@@ -89,7 +89,7 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks
         } else
         {
             attackerPart.gameObject.SetActive(true);
-            defenderHealth = CrossSceneManager.instance.defenderHealth;
+            // defenderHealth = CrossSceneManager.instance.defenderHealth;
         }        
     }
 
@@ -143,56 +143,6 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks
             string playerManaTextTemplate = "Mana: " + CrossSceneManager.instance.playerMana;
             a_playerManaTextField.text = playerManaTextTemplate;
         }
-    }
-
-    public void DefenderDied()
-    {
-        print("DEFENDER DIEDED XD");
-    }
-
-    public bool PayWithGold(int cost)
-    {
-        if (CrossSceneManager.instance.playerMoney >= cost)
-        {
-            CrossSceneManager.instance.playerMoney -= cost;
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-    
-    public bool PayWithMana(int cost)
-    {
-        if (playerMana >= cost)
-        {
-            playerMana -= cost;
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-
-    public void TakeDefenderDamage(int damage)
-    {
-        defenderHealth -= damage;
-        if (defenderHealth <= 0)
-        {
-            DefenderDied();
-        }
-    }
-
-    public void AddPlayerMoney(int money)
-    {
-        playerMoney += money;
-    }
-
-    public void AddPlayerMana(int mana)
-    {
-        playerMana += mana;
     }
 
     // ----------------------------------------------------

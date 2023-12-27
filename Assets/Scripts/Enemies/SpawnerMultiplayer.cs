@@ -36,7 +36,7 @@ public class SpawnerMultiplayer : MonoBehaviour
     //public bool simpleMode = true;
     [HideInInspector]
     public bool isSpawnAllowed = true;
-    [HideInInspector]
+    //[HideInInspector]
     public bool isSpawningConstantly = false;
 
     private void Start()
@@ -85,9 +85,6 @@ public class SpawnerMultiplayer : MonoBehaviour
             //print("passed checks");
             string unitName = "Enemies/" + unitReference.GetComponent<UnitStatistics>().unitPrefab.name;
             GameObject _unit = PhotonNetwork.Instantiate(unitName, spawnPosition, Quaternion.identity);
-            //print(_unit);
-            //                                          _unit is Enemy and it does not have unitstatistics!!
-            //_unit.GetComponent<Enemy>().SetDamage(==============_unit.GetComponent<UnitStatistics>().damage);
             _unit.GetComponent<MultiplayerEnemy>().SetDamage(_unit.GetComponent<MultiplayerEnemy>().damage);
             _unit.GetComponent<MultiplayerEnemy>().SetSpeed(_unit.GetComponent<MultiplayerEnemy>().speed);
             _unit.GetComponent<MultiplayerEnemy>().SetWaypoints(waypoints);
@@ -117,6 +114,18 @@ public class SpawnerMultiplayer : MonoBehaviour
                     );
             }
         }
+
+    }
+
+    public void SpawnBearDebug()
+    {
+        string unitName = "Enemies/EnemyBear";
+        GameObject _unit = PhotonNetwork.Instantiate(unitName, spawnPosition, Quaternion.identity);
+        _unit.GetComponent<MultiplayerEnemy>().SetDamage(27);
+        _unit.GetComponent<MultiplayerEnemy>().SetSpeed(20);
+        _unit.GetComponent<MultiplayerEnemy>().SetWaypoints(waypoints);
+        _unit.GetComponent<MultiplayerEnemy>().SetHealth(500);
+        _unit.GetComponent<MultiplayerEnemy>().SetMoneyReward(1234);
 
     }
 }
