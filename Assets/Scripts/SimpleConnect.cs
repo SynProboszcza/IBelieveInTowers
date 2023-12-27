@@ -18,6 +18,7 @@ public class SimpleConnect : MonoBehaviourPunCallbacks
     public string gameVersion = "0.1";
     public string roomName = "SIMPLEroom";
     public string nickName = "SIMPLEnick";
+    [Header("Read-Only, for gameplay change tick it in CrossSceneManager")]
     public bool amIDefending = false;
     public bool isMoneyInfinite = false;
     public bool isManaInfinite = false;
@@ -49,16 +50,7 @@ public class SimpleConnect : MonoBehaviourPunCallbacks
     public override void OnJoinedLobby()
     {
         print("SIMPLE Joined Lobby: " + PhotonNetwork.CurrentLobby.ToString() + "; trying to create and join room: " + roomName);
-        Hashtable _options = new Hashtable();
-        _options.Add("UnlimitedMoney", isMoneyInfinite);
-        _options.Add("UnlimitedMana", isManaInfinite);
-        _options.Add("InvincibleTurrets", invincibleTurrets);
-        //_options.Add("SpecialRules", specialRules);
-        RoomOptions options = new RoomOptions();
-        options.MaxPlayers = 2;
-        options.PlayerTtl = 5000;
-        options.CustomRoomProperties = _options;
-        PhotonNetwork.CreateRoom(roomName, options, TypedLobby.Default);
+        PhotonNetwork.CreateRoom(roomName, new RoomOptions(), TypedLobby.Default);
         base.OnJoinedLobby();
     }
 

@@ -122,10 +122,19 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks
                 string playerMoneyTextTemplate = "Gold: " + CrossSceneManager.instance.playerMoney;
                 d_playerMoneyTextField.text = playerMoneyTextTemplate;
             }
+            // ------------------------------------------------------------------------------------
+            if (CrossSceneManager.instance.isManaInfinite)
+            {
+                string playerManaTextTemplate = "Mana: Inf";
+                d_playerManaTextField.text = playerManaTextTemplate;
+            } else
+            {
+                string playerManaTextTemplate = "Mana: " + CrossSceneManager.instance.playerMana;
+                d_playerManaTextField.text = playerManaTextTemplate;
+            }
+            // ------------------------------------------------------------------------------------
             string enemyHealthTextTemplate = "Health: " + CrossSceneManager.instance.defenderHealth;
             d_enemyHealthTextField.text = enemyHealthTextTemplate;
-            string playerManaTextTemplate = "Mana: " + CrossSceneManager.instance.playerMana;
-            d_playerManaTextField.text = playerManaTextTemplate;
         } else
         {
             if (CrossSceneManager.instance.isMoneyInfinite)
@@ -138,10 +147,18 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks
                 string playerMoneyTextTemplate = "Gold: " + CrossSceneManager.instance.playerMoney;
                 a_playerMoneyTextField.text = playerMoneyTextTemplate;
             }
+            if (CrossSceneManager.instance.isManaInfinite)
+            {
+                string playerManaTextTemplate = "Mana: Inf";
+                a_playerManaTextField.text = playerManaTextTemplate;
+            }
+            else
+            {
+                string playerManaTextTemplate = "Mana: " + CrossSceneManager.instance.playerMana;
+                a_playerManaTextField.text = playerManaTextTemplate;
+            }
             string enemyHealthTextTemplate = "Enemy health: " + CrossSceneManager.instance.defenderHealth;
             a_enemyHealthTextField.text = enemyHealthTextTemplate;
-            string playerManaTextTemplate = "Mana: " + CrossSceneManager.instance.playerMana;
-            a_playerManaTextField.text = playerManaTextTemplate;
         }
     }
 

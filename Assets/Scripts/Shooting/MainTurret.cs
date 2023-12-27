@@ -82,7 +82,7 @@ public class MainTurret : MonoBehaviour
         srBase = GetComponent<SpriteRenderer>();
         //srGun = transform.GetChild(0).GetComponent<SpriteRenderer>(); // For now gun does not need changing with upgrades
         srMuzzleEffects = transform.Find("Gun").transform.Find("Muzzle").transform.Find("MuzzleEffects").GetComponent<SpriteRenderer>();
-        transform.Find("UpgradeCollider").GetComponent<UpgradeTurret>().SetUpgradeCost(upgradeCost);
+        //transform.Find("UpgradeCollider").GetComponent<MultiUpgradeTurret>().SetUpgradeCost(upgradeCost);
         muzzleEffects.SetActive(false);
         if (bulletsCollection == null) {
             bulletsCollection = new GameObject("BulletsCollection");
@@ -269,14 +269,18 @@ public class MainTurret : MonoBehaviour
     {
         if(upgradeLevel < 3)
         {
-            // Money cost is handled by UpgradeTurret.cs
+            // Money cost is handled by CrossSceneManager.cs
             // Upgrades to bullet speed, damage and bulletRange are 
             // handled by arrays of multipliers
-
-            // Potentially upgrade sell cost
-
-            upgradeLevel++;
-            return true;
+            if (CrossSceneManager.instance.PayWithMoney(upgradeCost))
+            {
+                // Potentially upgrade sell cost
+                upgradeLevel++;
+                return true;
+            } else
+            {
+                return false;
+            }
         } else
         {
             return false;
