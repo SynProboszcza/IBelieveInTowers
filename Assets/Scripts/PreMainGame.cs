@@ -29,8 +29,8 @@ public class PreMainGame : MonoBehaviourPunCallbacks
         readyState = false;
         amIMaster = PhotonNetwork.IsMasterClient;
         amIDefender = (bool)PhotonNetwork.CurrentRoom.CustomProperties["isMasterDefending"] == amIMaster;
-        // This shows amimaster and amidefender in nice way, just minified
-        // this line can be commented out to optimize
+        // This shows amIMaster and amIDefender in nice way, just minified
+        // this line can be commented out, it only prints to the console
         if (amIMaster) { if (amIDefender) { print("i am defender master");} else { print("i am attacker master");}} else { if (amIDefender) { print("i am defender joined");} else {print("i am attacker joined");}}
         // -----------------------------------------------------------
         CrossSceneManager.instance.amIMaster = amIMaster;
@@ -52,10 +52,20 @@ public class PreMainGame : MonoBehaviourPunCallbacks
             _customProperties.Add("roomJoinedNickname", PhotonNetwork.NickName);
             PhotonNetwork.CurrentRoom.SetCustomProperties(_customProperties);
         }
-
+        // -----------------------------------------------------------
+        // Checking for special cases like unlimited money, mana and inv. turrets
+        // -----------------------------------------------------------
         if ((bool)PhotonNetwork.CurrentRoom.CustomProperties["UnlimitedMoney"])
         {
             CrossSceneManager.instance.isMoneyInfinite = true;
+        }
+        if ((bool)PhotonNetwork.CurrentRoom.CustomProperties["UnlimitedMana"])
+        {
+            CrossSceneManager.instance.isManaInfinite = true;
+        }
+        if ((bool)PhotonNetwork.CurrentRoom.CustomProperties["InvincibleTurrets"])
+        {
+            CrossSceneManager.instance.invincibleTurrets = true;
         }
 
         RefreshTextfields(PhotonNetwork.CurrentLobby.Type.ToString(), PhotonNetwork.CurrentRoom.Name.ToString(), PhotonNetwork.CloudRegion, PhotonNetwork.NickName, "Waiting for opponnent...");

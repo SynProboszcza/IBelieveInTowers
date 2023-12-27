@@ -76,6 +76,7 @@
     <Compile Include="Assets\Photon\PhotonChat\Demos\DemoChat\ChannelSelector.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexShakeA.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark04.cs" />
+    <Compile Include="Assets\Scripts\Multiplayer\MultiShopContainer.cs" />
     <Compile Include="Assets\Scripts\debugworkinprogress.cs" />
     <Compile Include="Assets\Scripts\Shop\TurretOffer.cs" />
     <Compile Include="Assets\Scripts\Deprecated\ShowSimpleTextToConsole.cs" />
@@ -110,6 +111,7 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\ShaderPropAnimator.cs" />
     <Compile Include="Assets\Scripts\Deprecated\Moving\FollowPath.cs" />
     <Compile Include="Assets\Photon\PhotonLibs\WebSocket\WebSocket.cs" />
+    <Compile Include="Assets\Scripts\Multiplayer\MultiTurretOffer.cs" />
     <Compile Include="Assets\Scripts\Deprecated\Moving\GoInSquares.cs" />
     <Compile Include="Assets\Photon\PhotonChat\Demos\Common\TextButtonTransition.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\WarpTextExample.cs" />
@@ -159,8 +161,6 @@
     <Compile Include="Assets\Scripts\UI\PrePlay\RedGreenToggle.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01.cs" />
     <Compile Include="Assets\Scripts\MenuButtons\QuitButton.cs" />
-    <Compile Include="Assets\Scripts\Multiplayer\MultiShopContainer.cs" />
-    <Compile Include="Assets\Scripts\Multiplayer\MultiTurretOffer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />

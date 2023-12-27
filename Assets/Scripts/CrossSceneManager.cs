@@ -33,6 +33,8 @@ public class CrossSceneManager : MonoBehaviour
     public bool amIMaster;
     public bool amIDefender;
     public bool isMoneyInfinite = false;
+    public bool isManaInfinite = false;
+    public bool invincibleTurrets = false;
 
     void Start()
     {
@@ -83,6 +85,10 @@ public class CrossSceneManager : MonoBehaviour
 
     public bool PayWithMana(int cost)
     {
+        if (isManaInfinite)
+        {
+            return true;
+        }
         if (playerMana >= cost)
         {
             playerMana -= cost;

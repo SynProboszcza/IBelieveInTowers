@@ -43,6 +43,7 @@ public class MainTurret : MonoBehaviour
     // ----------------------------------------------------------------------
     public float turretHealth = 200f;
     private float turretMaxHealth;
+    private bool isTurretInvincible = false;
     // Multipliers of upgrades
     // ----------------------------------------------------------------------
     [Tooltip("Array of bullet damage bonuses for upgrading")]
@@ -86,11 +87,26 @@ public class MainTurret : MonoBehaviour
         if (bulletsCollection == null) {
             bulletsCollection = new GameObject("BulletsCollection");
         }
-        turretMaxHealth = turretHealth;
+        if (CrossSceneManager.instance.invincibleTurrets)
+        {
+            turretMaxHealth = 50000;
+            isTurretInvincible = true;
+            // Update also refreshes this
+        } else
+        {
+            turretMaxHealth = turretHealth;
+        }
     }
 
     void Update()
     {
+        // -----------------------------------------------------------------------------
+        // Refresh max health if invincible turrets are enabled
+        // -----------------------------------------------------------------------------
+        if (isTurretInvincible)
+        {
+            turretHealth = turretMaxHealth;
+        }
         // -----------------------------------------------------------------------------
         // Check for existing bullets, and if they're far enough to disable muzzle effects
         // -----------------------------------------------------------------------------

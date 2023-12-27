@@ -20,12 +20,24 @@ public class UpdateMoneyAndMana : MonoBehaviour
         if (CrossSceneManager.instance.isMoneyInfinite)
         {
             moneyText.text = "GOLD: inf";
-            manaText.text = "MANA: " + CrossSceneManager.instance.playerMana;
-        } else
+            if (CrossSceneManager.instance.isManaInfinite)
+            {
+                manaText.text = "MANA: inf";
+            } else
+            {
+                manaText.text = "MANA: " + CrossSceneManager.instance.playerMana;
+            }
+        }
+        else
         {
-            manaText.text = "MANA: " + CrossSceneManager.instance.playerMana;
             moneyText.text = "GOLD: " + CrossSceneManager.instance.playerMoney;
-
+            if (CrossSceneManager.instance.isManaInfinite)
+            {
+                manaText.text = "MANA: inf";
+            } else
+            {
+                manaText.text = "MANA: " + CrossSceneManager.instance.playerMana;
+            }
         }
     }
 }
