@@ -1,6 +1,7 @@
+using ExitGames.Client.Photon;
 using Photon.Pun;
 using Photon.Realtime;
-using System.Collections;
+//using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -18,6 +19,10 @@ public class SimpleConnect : MonoBehaviourPunCallbacks
     public string roomName = "SIMPLEroom";
     public string nickName = "SIMPLEnick";
     public bool amIDefending = false;
+    public bool isMoneyInfinite = false;
+    public bool isManaInfinite = false;
+    public bool invincibleTurrets = false;
+    //private bool specialRules = false;
     public GameObject mainGameScript;
 
     private void Start()
@@ -44,7 +49,16 @@ public class SimpleConnect : MonoBehaviourPunCallbacks
     public override void OnJoinedLobby()
     {
         print("SIMPLE Joined Lobby: " + PhotonNetwork.CurrentLobby.ToString() + "; trying to create and join room: " + roomName);
-        PhotonNetwork.CreateRoom(roomName, new RoomOptions(), TypedLobby.Default);
+        Hashtable _options = new Hashtable();
+        _options.Add("UnlimitedMoney", isMoneyInfinite);
+        _options.Add("UnlimitedMana", isManaInfinite);
+        _options.Add("InvincibleTurrets", invincibleTurrets);
+        //_options.Add("SpecialRules", specialRules);
+        RoomOptions options = new RoomOptions();
+        options.MaxPlayers = 2;
+        options.PlayerTtl = 5000;
+        options.CustomRoomProperties = _options;
+        PhotonNetwork.CreateRoom(roomName, options, TypedLobby.Default);
         base.OnJoinedLobby();
     }
 
