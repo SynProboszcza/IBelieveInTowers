@@ -1,4 +1,5 @@
 using Photon.Pun;
+using Photon.Pun.UtilityScripts;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -167,6 +168,7 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks
         // sync two clients and start countdown
         // Add custom property as photonnetwork start time
         // and wait for callback to 
+        CountdownTimer.SetStartTime();
         isTimerRunning = true;
     }
 
