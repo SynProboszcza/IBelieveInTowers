@@ -114,7 +114,7 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks
             // defenderHealth = CrossSceneManager.instance.defenderHealth;
         }
         currentTime = roundTimeSeconds;
-        isTimerRunning = true;
+        SynchronizeTimers();
     }
 
     void Update()
@@ -160,6 +160,14 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks
         //wait for escape menu
         //maybe listen for quitting? or add button for it
 
+    }
+
+    public void SynchronizeTimers()
+    {
+        // sync two clients and start countdown
+        // Add custom property as photonnetwork start time
+        // and wait for callback to 
+        isTimerRunning = true;
     }
 
     private void DisplayTime(TMP_Text timer, float time)

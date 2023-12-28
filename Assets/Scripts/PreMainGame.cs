@@ -3,6 +3,7 @@ using Photon.Pun;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class PreMainGame : MonoBehaviourPunCallbacks
@@ -164,6 +165,7 @@ public class PreMainGame : MonoBehaviourPunCallbacks
         // Here show to players that we are both ready and going into
         // playing scene
         print("Going to different scene after " + seconds + " seconds!");
+        LoadYourAsyncScene();
         StartCoroutine(ChangeSceneAfterNSeconds(seconds));
     }
 
@@ -175,6 +177,24 @@ public class PreMainGame : MonoBehaviourPunCallbacks
         PhotonNetwork.LoadLevel("Map1Multiplayer");
 
     }
+
+    System.Collections.IEnumerator LoadYourAsyncScene()
+    {
+        // The Application loads the Scene in the background as the current Scene runs.
+        // This is particularly good for creating loading screens.
+        // You could also load the Scene by using sceneBuildIndex. In this case Scene2 has
+        // a sceneBuildIndex of 1 as shown in Build Settings.
+        print("scene loading");
+        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync("Map1Multiplayer");
+
+        // Wait until the asynchronous scene fully loads
+        while (!asyncLoad.isDone)
+        {
+            yield return null;
+        }
+        print("scene loaded");
+    }
+
 
     public void ChangeReadyState()
     {
