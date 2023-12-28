@@ -276,7 +276,7 @@ public class PreMainGame : MonoBehaviourPunCallbacks, IPunObservable
             print("ENEMY load progress: " + _enemyLoadProgress);
             //if (amIMaster)
             //{
-                if (_enemyLoadProgress >= 0.8f && this.mapLoadProgress >= 0.8f) // floating point math smh
+                if (this.mapLoadProgress >= 0.8f && _enemyLoadProgress >= 0.8f) // floating point math smh
                 {
                     gameObject.GetComponent<PhotonView>().RPC("AllowToChangeScene", RpcTarget.All);
                 }
