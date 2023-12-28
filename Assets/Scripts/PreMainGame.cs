@@ -165,7 +165,7 @@ public class PreMainGame : MonoBehaviourPunCallbacks
         // Here show to players that we are both ready and going into
         // playing scene
         print("Going to different scene after " + seconds + " seconds!");
-        LoadYourAsyncScene();
+        StartCoroutine(LoadYourAsyncScene());
         StartCoroutine(ChangeSceneAfterNSeconds(seconds));
     }
 
