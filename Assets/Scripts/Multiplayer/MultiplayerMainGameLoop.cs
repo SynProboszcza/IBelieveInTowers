@@ -5,6 +5,7 @@ using System.ComponentModel;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using static UnityEngine.UI.Image;
 
 public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks
@@ -13,6 +14,11 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks
     // Every scene(map) has two parts for simplicity
     public GameObject attackerPart;
     public GameObject defenderPart;
+
+    // Public instance so we can enable the correct one
+    // Every scene(map) has two parts for simplicity
+    public GameObject attackerMatchResults;
+    public GameObject defenderMatchResults;
 
     public GameObject nodePrefab;
     [HideInInspector]
@@ -24,11 +30,16 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks
     public Transform playArenaCorners;
     public Transform[] waypoints;
     public Transform[] obstacles;
-    [Header("Attacker stats")]
+    public float roundTimeSeconds = 180;
+    public float currentTime;
+    private bool isTimerRunning = false;
+    [Header("Attacker parts")]
+    public TMP_Text a_timer;
     public TMP_Text a_enemyHealthTextField;
     public TMP_Text a_playerMoneyTextField;
     public TMP_Text a_playerManaTextField;
-    [Header("Defender stats")]
+    [Header("Defender parts")]
+    public TMP_Text d_timer;
     public TMP_Text d_enemyHealthTextField;
     public TMP_Text d_playerMoneyTextField;
     public TMP_Text d_playerManaTextField;
@@ -40,6 +51,7 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks
     public int nodesInstantiated = 0;
     [HideInInspector]
     public int nodesDestroyed = 0;
+    public int secondsToWaitAfterGameEnd = 3;
     //public int playerMoney = 0;
     //public int playerMana = 0;
     //public int defenderHealth;
@@ -53,7 +65,10 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks
     public bool amIMaster;
     [HideInInspector]
     public bool amIDefender;
+    [HideInInspector]
+    private bool matchResultsShown = false; // Flag so it gets run only once
 
+    // FPS limit and SIMPLEConnect
     void Awake()
     {
         // Doing this because difference in framerate between Editor and 
@@ -70,11 +85,18 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks
         }
     }
 
+    // Parts de- and activating
     void Start()
     {
         // Check if defending, then activate proper part
         attackerPart.gameObject.SetActive(false);
         defenderPart.gameObject.SetActive(false);
+        attackerMatchResults.gameObject.SetActive(false);
+        attackerMatchResults.transform.Find("Win").gameObject.SetActive(false);
+        attackerMatchResults.transform.Find("Loose").gameObject.SetActive(false);
+        defenderMatchResults.gameObject.SetActive(false);
+        defenderMatchResults.transform.Find("Win").gameObject.SetActive(false);
+        defenderMatchResults.transform.Find("Loose").gameObject.SetActive(false);
         amIMaster = CrossSceneManager.instance.amIMaster;
         amIDefender = CrossSceneManager.instance.amIDefender;
         //playerMoney = CrossSceneManager.instance.playerMoney;
@@ -90,7 +112,9 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks
         {
             attackerPart.gameObject.SetActive(true);
             // defenderHealth = CrossSceneManager.instance.defenderHealth;
-        }        
+        }
+        currentTime = roundTimeSeconds;
+        isTimerRunning = true;
     }
 
     void Update()
@@ -98,12 +122,153 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks
         UpdatePlayerStats();
         // Check if defending when ded
         //  checking is done when dealing damage
+        if (CrossSceneManager.instance.hasDefenderDied && !matchResultsShown)
+        {
+            GameEnd(amIDefender, true);
+            matchResultsShown = true;
+        }
+        if (isTimerRunning)
+        {
+            if(currentTime > 0)
+            {
+                currentTime -= Time.deltaTime;
+                if (amIDefender)
+                {
+                    DisplayTime(d_timer, currentTime);
+                } else
+                {
+                    DisplayTime(a_timer, currentTime);
+                }
+            } else
+            {
+                // Time has passed!
+                currentTime = -1f; // DisplayTime adds 1, so the result is 0:00
+                if (amIDefender)
+                {
+                    DisplayTime(d_timer, currentTime);
+                } else
+                {
+                    DisplayTime(a_timer, currentTime);
+                }
+                GameEnd(amIDefender, false);
+                isTimerRunning = false;
+            }
+        }
 
         //synchronize with host/client
         //maybe cheats?
         //wait for escape menu
         //maybe listen for quitting? or add button for it
 
+    }
+
+    private void DisplayTime(TMP_Text timer, float time)
+    {
+        time += 1; // this is so it does not show 0 for whole last second
+        int seconds = Mathf.FloorToInt(time % 60);
+        int minutes = Mathf.FloorToInt(time / 60);
+        timer.text = string.Format("{0:00}:{1:00}", minutes, seconds);
+    }
+
+    public void GameEnd(bool amIDefending, bool didDefenderDie)
+    {
+        isTimerRunning = false;
+        if (amIDefending)
+        {
+            if (didDefenderDie)
+            {
+                // i defender died
+                // We don't activate attacker/defender parts, we expect the proper one to be active
+                defenderMatchResults.SetActive(true);
+                defenderMatchResults.transform.Find("Win").gameObject.SetActive(false); // fallback
+                defenderMatchResults.transform.Find("Loose").gameObject.SetActive(true);
+                print("I lost by deadly death, going back to host game after " + secondsToWaitAfterGameEnd + " seconds");
+                GoBackToHostGameAfterNSeconds(secondsToWaitAfterGameEnd);
+            }
+            else
+            {
+                // i defender won by time
+                // We don't activate attacker/defender parts, we expect the proper one to be active
+                defenderMatchResults.SetActive(true);
+                defenderMatchResults.transform.Find("Win").gameObject.SetActive(true); // fallback
+                defenderMatchResults.transform.Find("Loose").gameObject.SetActive(false);
+                print("I won by surviving, going back to host game after " + secondsToWaitAfterGameEnd + " seconds");
+                GoBackToHostGameAfterNSeconds(secondsToWaitAfterGameEnd);
+            }
+        } else
+        {
+            if(didDefenderDie)
+            {
+                // i attacker won by killing defender
+                attackerMatchResults.SetActive(true);
+                attackerMatchResults.transform.Find("Loose").gameObject.SetActive(false); // fallback
+                attackerMatchResults.transform.Find("Win").gameObject.SetActive(true);
+                print("I won by killing defender, going back to host game after " + secondsToWaitAfterGameEnd + " seconds");
+                GoBackToHostGameAfterNSeconds(secondsToWaitAfterGameEnd);
+            }
+            else
+            {
+                // i attacker lost by time passing
+                attackerMatchResults.SetActive(true);
+                attackerMatchResults.transform.Find("Loose").gameObject.SetActive(true); // fallback
+                attackerMatchResults.transform.Find("Win").gameObject.SetActive(false);
+                print("I lost by time, going back to host game after " + secondsToWaitAfterGameEnd + " seconds");
+                GoBackToHostGameAfterNSeconds(secondsToWaitAfterGameEnd);
+            }
+        }
+    }
+
+    public void DefenderDied()
+    {
+        if (amIDefender)
+        {
+            // We don't activate attacker/defender parts, we expect the proper one to be active
+            defenderMatchResults.SetActive(true);
+            defenderMatchResults.transform.Find("Win").gameObject.SetActive(false); // fallback
+            defenderMatchResults.transform.Find("Loose").gameObject.SetActive(true);
+            print("I lost, going back to host game after 10 seconds");
+            GoBackToHostGameAfterNSeconds(10);
+        } else
+        {
+            attackerMatchResults.SetActive(true);
+            attackerMatchResults.transform.Find("Loose").gameObject.SetActive(false); // fallback
+            attackerMatchResults.transform.Find("Win").gameObject.SetActive(true);
+            print("I won, going back to host game after 10 seconds");
+            GoBackToHostGameAfterNSeconds(10);
+        }
+    }
+
+    public void TimePassed()
+    {
+        if (amIDefender)
+        {
+            // We don't activate attacker/defender parts, we expect the proper one to be active
+            defenderMatchResults.SetActive(true);
+            defenderMatchResults.transform.Find("Win").gameObject.SetActive(true); 
+            defenderMatchResults.transform.Find("Loose").gameObject.SetActive(false); // fallback
+            print("I won, going back to host game after 10 seconds");
+            GoBackToHostGameAfterNSeconds(10);
+        }
+        else
+        {
+            attackerMatchResults.SetActive(true);
+            attackerMatchResults.transform.Find("Loose").gameObject.SetActive(true);
+            attackerMatchResults.transform.Find("Win").gameObject.SetActive(false); // fallback
+            print("I lost, going back to host game after 10 seconds");
+            GoBackToHostGameAfterNSeconds(10);
+        }
+
+    }
+
+    private void GoBackToHostGameAfterNSeconds(int seconds)
+    {
+        StartCoroutine(ChangeScene(seconds));
+    }
+
+    private IEnumerator ChangeScene(int seconds)
+    {
+        yield return new WaitForSeconds(seconds);
+        PhotonNetwork.LoadLevel("HostGame");
     }
 
     private void UpdatePlayerStats()
