@@ -26,9 +26,11 @@ public class PreMainGame : MonoBehaviourPunCallbacks, IPunObservable
     public bool readyState = false;
     [HideInInspector]
     private AsyncOperation asyncLoad;
+    [SerializeField]
     private float mapLoadProgress = 0f;
     [SerializeField]
     private float _enemyLoadProgress = 0f;
+    private bool RPCToAllowChangeSceneSent = false;
 
     private void Awake()
     {
@@ -85,6 +87,17 @@ public class PreMainGame : MonoBehaviourPunCallbacks, IPunObservable
         }
 
         RefreshTextfields(PhotonNetwork.CurrentLobby.Type.ToString(), PhotonNetwork.CurrentRoom.Name.ToString(), PhotonNetwork.CloudRegion, PhotonNetwork.NickName, "Waiting for opponnent...");
+    }
+
+    void Update()
+    {       // floating point math smh
+        if ((this.mapLoadProgress >= 0.8f && _enemyLoadProgress >= 0.8f)
+            && !RPCToAllowChangeSceneSent) 
+        {
+            gameObject.GetComponent<PhotonView>().RPC("AllowToChangeScene", RpcTarget.All);
+            RPCToAllowChangeSceneSent = true;
+        }
+
     }
 
     public void RefreshTextfields(string _lobbyName, string _roomName, string _regionName, string _nickName, string _enemyNickName)
@@ -213,7 +226,7 @@ public class PreMainGame : MonoBehaviourPunCallbacks, IPunObservable
         // Wait until the asynchronous scene fully loads
         while (!asyncLoad.isDone)
         {
-            print("local load progress: " + this.asyncLoad.progress);
+            //print("local load progress: " + this.asyncLoad.progress);
             this.mapLoadProgress = asyncLoad.progress;
             // if(this.asyncLoad.progress >= 0.9f)
             // {
@@ -224,7 +237,6 @@ public class PreMainGame : MonoBehaviourPunCallbacks, IPunObservable
             yield return null;
         }
     }
-
 
     public void ChangeReadyState()
     {
@@ -273,14 +285,7 @@ public class PreMainGame : MonoBehaviourPunCallbacks, IPunObservable
         } else
         {
             _enemyLoadProgress = (float)stream.ReceiveNext();
-            print("ENEMY load progress: " + _enemyLoadProgress);
-            //if (amIMaster)
-            //{
-                if (this.mapLoadProgress >= 0.8f && _enemyLoadProgress >= 0.8f) // floating point math smh
-                {
-                    gameObject.GetComponent<PhotonView>().RPC("AllowToChangeScene", RpcTarget.All);
-                }
-            //}
+            //print("ENEMY load progress: " + _enemyLoadProgress);
         }
     }
 }
