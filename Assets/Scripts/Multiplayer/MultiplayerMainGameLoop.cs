@@ -395,7 +395,7 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
         {
             float _currentTime = (float)stream.ReceiveNext();
             float lag = Mathf.Abs((float)(PhotonNetwork.Time - info.SentServerTime));
-            this.currentTime = _currentTime * lag;
+            this.currentTime = _currentTime - lag;
             print("received time");
         }
     }
