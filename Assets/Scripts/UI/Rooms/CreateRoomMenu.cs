@@ -18,6 +18,8 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
     private TMP_InputField _nickName;
     [SerializeField]
     private Toggle[] settingToggles;
+    [SerializeField] 
+    private Slider matchTimeSlider;
     [SerializeField]
     private Button refreshListButton;
     [SerializeField]
@@ -134,6 +136,7 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
         _customProperties.Add("UnlimitedMana", _playerPreferences["UnlimitedMana"]);
         _customProperties.Add("InvincibleTurrets", _playerPreferences["InvincibleTurrets"]);
         _customProperties.Add("SpecialRules", _playerPreferences["SpecialRules"]);
+        _customProperties.Add("MatchTime", matchTimeSlider.GetComponent<UpdateMatchDuration>().secondsMatchShouldBe);
         _customProperties.Add("isMasterReady", false);
         _customProperties.Add("isJoinedReady", false);
         RoomOptions options = new RoomOptions();
