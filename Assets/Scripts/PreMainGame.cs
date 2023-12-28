@@ -24,6 +24,8 @@ public class PreMainGame : MonoBehaviourPunCallbacks
     public bool amIDefender;
     [HideInInspector]
     public bool readyState = false;
+    [HideInInspector]
+    private AsyncOperation asyncLoad;
 
     void Start()
     {
@@ -174,7 +176,8 @@ public class PreMainGame : MonoBehaviourPunCallbacks
         yield return new WaitForSeconds(seconds);
         // Change scene using photonnetwork to playing scene
         // Select random map
-        PhotonNetwork.LoadLevel("Map1Multiplayer");
+        //PhotonNetwork.LoadLevel("Map1Multiplayer");
+        asyncLoad.allowSceneActivation = true;
 
     }
 
@@ -185,7 +188,8 @@ public class PreMainGame : MonoBehaviourPunCallbacks
         // You could also load the Scene by using sceneBuildIndex. In this case Scene2 has
         // a sceneBuildIndex of 1 as shown in Build Settings.
         print("scene loading");
-        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync("Map1Multiplayer");
+        this.asyncLoad = SceneManager.LoadSceneAsync("Map1Multiplayer");
+        asyncLoad.allowSceneActivation = false;
 
         // Wait until the asynchronous scene fully loads
         while (!asyncLoad.isDone)

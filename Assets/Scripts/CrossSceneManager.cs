@@ -79,6 +79,11 @@ public class CrossSceneManager : MonoBehaviour
         }
     }
 
+    public void ResetAfterPlaying()
+    {
+        // reset everything
+    }
+
     public bool PayWithMoney(int cost)
     {
         if (isMoneyInfinite)
