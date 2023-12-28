@@ -2090,7 +2090,8 @@ MonoBehaviour:
   - {fileID: 232621868}
   - {fileID: 716769049}
   - {fileID: 1699625319}
-  roundTimeSeconds: 180
+  roundTimeSeconds: 20
+  currentTime: 0
   a_timer: {fileID: 339148621}
   a_enemyHealthTextField: {fileID: 1813382342}
   a_playerMoneyTextField: {fileID: 920058155}
@@ -2101,6 +2102,7 @@ MonoBehaviour:
   d_playerManaTextField: {fileID: 1243573374}
   nodesInstantiated: 0
   nodesDestroyed: 0
+  secondsToWaitAfterGameEnd: 3
   isDebugging: 0
   isShopOpen: 0
   amIMaster: 0
@@ -4717,7 +4719,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &938013104
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4737,7 +4739,7 @@ MonoBehaviour:
   gameVersion: 0.1
   roomName: SIMPLEroom
   nickName: SIMPLEnick
-  amIDefending: 0
+  amIDefending: 1
   isMoneyInfinite: 0
   isManaInfinite: 0
   invincibleTurrets: 0
