@@ -85,6 +85,10 @@ public class PreMainGame : MonoBehaviourPunCallbacks, IPunObservable
         {
             CrossSceneManager.instance.invincibleTurrets = true;
         }
+        if (PhotonNetwork.CurrentRoom.CustomProperties["MatchTime"] != null)
+        {
+            CrossSceneManager.instance.currentMatchMaxTime = (int)PhotonNetwork.CurrentRoom.CustomProperties["MatchTime"];
+        }
 
         RefreshTextfields(PhotonNetwork.CurrentLobby.Type.ToString(), PhotonNetwork.CurrentRoom.Name.ToString(), PhotonNetwork.CloudRegion, PhotonNetwork.NickName, "Waiting for opponnent...");
     }

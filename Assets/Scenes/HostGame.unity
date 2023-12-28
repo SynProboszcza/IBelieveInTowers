@@ -7516,6 +7516,7 @@ MonoBehaviour:
   - {fileID: 255020488}
   - {fileID: 464461984}
   - {fileID: 1908843882}
+  matchTimeSlider: {fileID: 1415224518}
   refreshListButton: {fileID: 2028721645}
   roomPrefab: {fileID: 5473110327480553, guid: 3bc2bfacc34d83242b6d92cab323456e, type: 3}
   roomList: {fileID: 1906290182}
@@ -7581,6 +7582,7 @@ MonoBehaviour:
   showMatchDuration: {fileID: 1719375972}
   minimumMatchTime: 20
   maximumMatchTime: 300
+  secondsMatchShouldBe: 0
 --- !u!114 &1415224518
 MonoBehaviour:
   m_ObjectHideFlags: 0

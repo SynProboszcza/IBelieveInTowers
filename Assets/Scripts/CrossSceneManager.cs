@@ -16,9 +16,7 @@ public class CrossSceneManager : MonoBehaviour
         private set { this.gameVersion = Application.version; }}
     [SerializeField]
     public int playerMoney;
-    //{ get; set;}
     public int playerMana;
-    //{ get; private set; }
     public Queue<string> unitList { get; private set; }
     [HideInInspector]
     public Dictionary<string, int> enemyPrices;
@@ -28,6 +26,7 @@ public class CrossSceneManager : MonoBehaviour
     public int dinoPrice = 150;
     public int slimerPrice = 250;
     public int defenderHealth;
+    public int currentMatchMaxTime;
     public string enemyNickname = "";
     public string myNickName = "";
     public bool amIMaster;

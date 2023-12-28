@@ -86,7 +86,7 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
         }
     }
 
-    // Parts de- and activating
+    // Parts de- and activating, setting match dur.
     void Start()
     {
         // Check if defending, then activate proper part
@@ -114,8 +114,12 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
             attackerPart.gameObject.SetActive(true);
             // defenderHealth = CrossSceneManager.instance.defenderHealth;
         }
+        roundTimeSeconds = CrossSceneManager.instance.currentMatchMaxTime;
         currentTime = roundTimeSeconds;
-        SynchronizeTimers();
+        
+        // start the timer, syncing is done by sending current time and compensating lag
+        isTimerRunning = true; 
+
     }
 
     void Update()
@@ -164,14 +168,6 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
         //wait for escape menu
         //maybe listen for quitting? or add button for it
 
-    }
-
-    public void SynchronizeTimers()
-    {
-        // sync two clients and start countdown
-        // Add custom property as photonnetwork start time
-        // and wait for callback to 
-        isTimerRunning = true;
     }
 
     private void DisplayTime(TMP_Text timer, float time)
@@ -389,14 +385,14 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
         if (stream.IsWriting)
         {
             stream.SendNext(this.currentTime);
-            print("sent time");
+            //print("sent time");
         }
         else
         {
             float _currentTime = (float)stream.ReceiveNext();
             float lag = Mathf.Abs((float)(PhotonNetwork.Time - info.SentServerTime));
             this.currentTime = _currentTime - lag;
-            print("received time");
+            //print("received time");
         }
     }
 
