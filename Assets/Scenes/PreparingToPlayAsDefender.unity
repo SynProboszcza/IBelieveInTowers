@@ -2426,6 +2426,8 @@ MonoBehaviour:
   amIMaster: 0
   amIDefender: 0
   readyState: 0
+  mapLoadProgress: 0
+  _enemyLoadProgress: 0
 --- !u!114 &1025020466
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8710,6 +8712,7 @@ MonoBehaviour:
   dinoPrice: 150
   slimerPrice: 250
   defenderHealth: 0
+  currentMatchMaxTime: 0
   enemyNickname: 
   myNickName: 
   amIMaster: 0
@@ -9195,7 +9198,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1470303171
 RectTransform:
   m_ObjectHideFlags: 0
