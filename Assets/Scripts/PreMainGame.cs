@@ -27,6 +27,16 @@ public class PreMainGame : MonoBehaviourPunCallbacks
     [HideInInspector]
     private AsyncOperation asyncLoad;
 
+    private void Awake()
+    {
+        if (GameObject.Find("SIMPLEConnect") != null && GameObject.Find("SIMPLEConnect").activeSelf)
+        {
+            print("Disabling PreMainGame for SIMPLEConnect to be enabled when connection is established");
+            gameObject.SetActive(false);
+        }
+
+    }
+
     void Start()
     {
         readyState = false;
@@ -157,9 +167,15 @@ public class PreMainGame : MonoBehaviourPunCallbacks
         //{
         //    CrossSceneManager.instance.AddUnitToList();
         //}
+        StartCoroutine(LoadYourAsyncScene());
+        //ShowConnectedDecorationAndChangeSceneAfterNSeconds(5);
 
-        ShowConnectedDecorationAndChangeSceneAfterNSeconds(5);
+    }
 
+    [PunRPC]
+    public void AllowToChangeScene()
+    {
+        asyncLoad.allowSceneActivation = true;
     }
 
     private void ShowConnectedDecorationAndChangeSceneAfterNSeconds(int seconds)
@@ -167,7 +183,7 @@ public class PreMainGame : MonoBehaviourPunCallbacks
         // Here show to players that we are both ready and going into
         // playing scene
         print("Going to different scene after " + seconds + " seconds!");
-        StartCoroutine(LoadYourAsyncScene());
+        //StartCoroutine(LoadYourAsyncScene());
         StartCoroutine(ChangeSceneAfterNSeconds(seconds));
     }
 
@@ -177,7 +193,7 @@ public class PreMainGame : MonoBehaviourPunCallbacks
         // Change scene using photonnetwork to playing scene
         // Select random map
         //PhotonNetwork.LoadLevel("Map1Multiplayer");
-        asyncLoad.allowSceneActivation = true;
+        //asyncLoad.allowSceneActivation = true;
 
     }
 
@@ -194,9 +210,15 @@ public class PreMainGame : MonoBehaviourPunCallbacks
         // Wait until the asynchronous scene fully loads
         while (!asyncLoad.isDone)
         {
+            print("load progress: " + this.asyncLoad.progress);
+            if(this.asyncLoad.progress >= 0.9f)
+            {
+                // map is ready
+                print("scene loaded");
+                gameObject.GetComponent<PhotonView>().RPC("AllowToChangeScene", RpcTarget.All);
+            }
             yield return null;
         }
-        print("scene loaded");
     }
 
 

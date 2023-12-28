@@ -168,7 +168,6 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks
         // sync two clients and start countdown
         // Add custom property as photonnetwork start time
         // and wait for callback to 
-        CountdownTimer.SetStartTime();
         isTimerRunning = true;
     }
 
@@ -226,48 +225,6 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks
                 GoBackToHostGameAfterNSeconds(secondsToWaitAfterGameEnd);
             }
         }
-    }
-
-    public void DefenderDied()
-    {
-        if (amIDefender)
-        {
-            // We don't activate attacker/defender parts, we expect the proper one to be active
-            defenderMatchResults.SetActive(true);
-            defenderMatchResults.transform.Find("Win").gameObject.SetActive(false); // fallback
-            defenderMatchResults.transform.Find("Loose").gameObject.SetActive(true);
-            print("I lost, going back to host game after 10 seconds");
-            GoBackToHostGameAfterNSeconds(10);
-        } else
-        {
-            attackerMatchResults.SetActive(true);
-            attackerMatchResults.transform.Find("Loose").gameObject.SetActive(false); // fallback
-            attackerMatchResults.transform.Find("Win").gameObject.SetActive(true);
-            print("I won, going back to host game after 10 seconds");
-            GoBackToHostGameAfterNSeconds(10);
-        }
-    }
-
-    public void TimePassed()
-    {
-        if (amIDefender)
-        {
-            // We don't activate attacker/defender parts, we expect the proper one to be active
-            defenderMatchResults.SetActive(true);
-            defenderMatchResults.transform.Find("Win").gameObject.SetActive(true); 
-            defenderMatchResults.transform.Find("Loose").gameObject.SetActive(false); // fallback
-            print("I won, going back to host game after 10 seconds");
-            GoBackToHostGameAfterNSeconds(10);
-        }
-        else
-        {
-            attackerMatchResults.SetActive(true);
-            attackerMatchResults.transform.Find("Loose").gameObject.SetActive(true);
-            attackerMatchResults.transform.Find("Win").gameObject.SetActive(false); // fallback
-            print("I lost, going back to host game after 10 seconds");
-            GoBackToHostGameAfterNSeconds(10);
-        }
-
     }
 
     private void GoBackToHostGameAfterNSeconds(int seconds)
