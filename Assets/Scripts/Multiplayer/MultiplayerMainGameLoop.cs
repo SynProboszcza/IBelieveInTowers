@@ -128,6 +128,9 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
             GameEnd(amIDefender, true);
             matchResultsShown = true;
         }
+        // -----------------------------------------------------------------------
+        // Timer logic
+        // -----------------------------------------------------------------------
         if (isTimerRunning)
         {
             if(currentTime > 0)
@@ -386,10 +389,12 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
         if (stream.IsWriting)
         {
             stream.SendNext(this.currentTime);
+            print("sent time");
         }
         else
         {
             this.currentTime = (float)stream.ReceiveNext();
+            print("received time");
         }
     }
 
