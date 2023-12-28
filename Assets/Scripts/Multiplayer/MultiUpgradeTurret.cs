@@ -21,7 +21,7 @@ public class MultiUpgradeTurret : MonoBehaviour
             ShowRedCrossForNSeconds(secondsToShowNegativeFeedback);
         } else
         {
-            gameObject.GetComponent<PhotonView>().RPC("LevelUp", RpcTarget.All);
+            gameObject.transform.parent.gameObject.GetComponent<PhotonView>().RPC("LevelUp", RpcTarget.All);
 
         }
     }
