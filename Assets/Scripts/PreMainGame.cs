@@ -211,14 +211,14 @@ public class PreMainGame : MonoBehaviourPunCallbacks, IPunObservable
         // Wait until the asynchronous scene fully loads
         while (!asyncLoad.isDone)
         {
-            print("load progress: " + this.asyncLoad.progress);
-            if(this.asyncLoad.progress >= 0.9f)
-            {
-                this.mapLoadProgress = asyncLoad.progress;
-                // map is ready
-                print("scene loaded");
-                //gameObject.GetComponent<PhotonView>().RPC("AllowToChangeScene", RpcTarget.All);
-            }
+            print("local load progress: " + this.asyncLoad.progress);
+            this.mapLoadProgress = asyncLoad.progress;
+            // if(this.asyncLoad.progress >= 0.9f)
+            // {
+            //     // map is ready
+            //     //print("scene loaded");
+            //     //gameObject.GetComponent<PhotonView>().RPC("AllowToChangeScene", RpcTarget.All);
+            // }
             yield return null;
         }
     }
@@ -271,9 +271,13 @@ public class PreMainGame : MonoBehaviourPunCallbacks, IPunObservable
         } else
         {
             float _enemyLoadProgress = (float)stream.ReceiveNext();
-            if (_enemyLoadProgress >= 0.9f && this.mapLoadProgress >= 0.9f)
+            print("enemy load progress: " + _enemyLoadProgress);
+            if (amIMaster)
             {
-                gameObject.GetComponent<PhotonView>().RPC("AllowToChangeScene", RpcTarget.All);
+                if (_enemyLoadProgress >= 0.9f && this.mapLoadProgress >= 0.9f)
+                {
+                    gameObject.GetComponent<PhotonView>().RPC("AllowToChangeScene", RpcTarget.All);
+                }
             }
         }
     }

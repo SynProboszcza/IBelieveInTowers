@@ -84,6 +84,8 @@ public class CrossSceneManager : MonoBehaviour
         // reset everything
     }
 
+    // set round time during play set up
+
     public bool PayWithMoney(int cost)
     {
         if (isMoneyInfinite)
