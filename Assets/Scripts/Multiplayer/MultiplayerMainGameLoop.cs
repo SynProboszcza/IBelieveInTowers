@@ -235,6 +235,7 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks
     private IEnumerator ChangeScene(int seconds)
     {
         yield return new WaitForSeconds(seconds);
+        PhotonNetwork.LeaveRoom();
         PhotonNetwork.LoadLevel("HostGame");
     }
 
