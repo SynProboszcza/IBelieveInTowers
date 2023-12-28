@@ -271,14 +271,14 @@ public class PreMainGame : MonoBehaviourPunCallbacks, IPunObservable
         } else
         {
             float _enemyLoadProgress = (float)stream.ReceiveNext();
-            print("enemy load progress: " + _enemyLoadProgress);
-            if (amIMaster)
-            {
+            print("ENEMY load progress: " + _enemyLoadProgress);
+            //if (amIMaster)
+            //{
                 if (_enemyLoadProgress >= 0.8999999f && this.mapLoadProgress >= 0.8999999f)
                 {
                     gameObject.GetComponent<PhotonView>().RPC("AllowToChangeScene", RpcTarget.All);
                 }
-            }
+            //}
         }
     }
 }
