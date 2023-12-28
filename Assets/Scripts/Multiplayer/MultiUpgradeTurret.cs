@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using System.Security;
@@ -18,6 +19,10 @@ public class MultiUpgradeTurret : MonoBehaviour
         if (!gameObject.transform.parent.gameObject.GetComponent<MainTurret>().LevelUp())
         {
             ShowRedCrossForNSeconds(secondsToShowNegativeFeedback);
+        } else
+        {
+            gameObject.GetComponent<PhotonView>().RPC("LevelUp", RpcTarget.All);
+
         }
     }
 
