@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class PreMainGame : MonoBehaviourPunCallbacks
+public class PreMainGame : MonoBehaviourPunCallbacks, IPunObservable
 {
     public Toggle readyToggle;
     public GameObject preListOfEnemies;
@@ -26,6 +26,7 @@ public class PreMainGame : MonoBehaviourPunCallbacks
     public bool readyState = false;
     [HideInInspector]
     private AsyncOperation asyncLoad;
+    private float mapLoadProgress = 0f;
 
     private void Awake()
     {
@@ -213,9 +214,10 @@ public class PreMainGame : MonoBehaviourPunCallbacks
             print("load progress: " + this.asyncLoad.progress);
             if(this.asyncLoad.progress >= 0.9f)
             {
+                this.mapLoadProgress = asyncLoad.progress;
                 // map is ready
                 print("scene loaded");
-                gameObject.GetComponent<PhotonView>().RPC("AllowToChangeScene", RpcTarget.All);
+                //gameObject.GetComponent<PhotonView>().RPC("AllowToChangeScene", RpcTarget.All);
             }
             yield return null;
         }
@@ -257,5 +259,20 @@ public class PreMainGame : MonoBehaviourPunCallbacks
     public void ShowTextToConsole()
     {
         print("i am working from" + gameObject.name);
+    }
+
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.IsWriting)
+        {
+            stream.SendNext(this.mapLoadProgress);
+        } else
+        {
+            float _enemyLoadProgress = (float)stream.ReceiveNext();
+            if (_enemyLoadProgress >= 0.9f && this.mapLoadProgress >= 0.9f)
+            {
+                gameObject.GetComponent<PhotonView>().RPC("AllowToChangeScene", RpcTarget.All);
+            }
+        }
     }
 }
