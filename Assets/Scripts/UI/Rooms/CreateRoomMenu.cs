@@ -18,6 +18,8 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
     private TMP_InputField _nickName;
     [SerializeField]
     private Toggle[] settingToggles;
+    [SerializeField] 
+    private Slider matchTimeSlider;
     [SerializeField]
     private Button refreshListButton;
     [SerializeField]
@@ -120,6 +122,7 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
         {
             _playerPreferences.Add(toggle.gameObject.name, toggle.isOn);
         }
+        print(_playerPreferences);
         // -----------------------------------------------------------
         // Set default custom room properties:
         //  prepare keys to fill in nicknames
@@ -133,6 +136,7 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
         _customProperties.Add("UnlimitedMana", _playerPreferences["UnlimitedMana"]);
         _customProperties.Add("InvincibleTurrets", _playerPreferences["InvincibleTurrets"]);
         _customProperties.Add("SpecialRules", _playerPreferences["SpecialRules"]);
+        _customProperties.Add("MatchTime", matchTimeSlider.GetComponent<UpdateMatchDuration>().secondsMatchShouldBe);
         _customProperties.Add("isMasterReady", false);
         _customProperties.Add("isJoinedReady", false);
         RoomOptions options = new RoomOptions();
@@ -258,7 +262,9 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
         gameObject.GetComponent<Button>().interactable = false;
         // Show big text "Found player" or smth
         // -----------------------------------------------------------
-        if (PhotonNetwork.IsMasterClient && _playerPreferences["DefendOrAttackIntention"])
+        // && IS NOT LOGICAL AND
+        // && RETURNS FALSE WHEN BOTH ARGUMENTS ARE FALSE!!!!
+        if (PhotonNetwork.IsMasterClient == (bool)PhotonNetwork.CurrentRoom.CustomProperties["isMasterDefending"])
         {
             SceneManager.LoadScene("PreparingToPlayAsDefender");
         } else

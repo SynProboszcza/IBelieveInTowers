@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -43,6 +44,7 @@ public class MainTurret : MonoBehaviour
     // ----------------------------------------------------------------------
     public float turretHealth = 200f;
     private float turretMaxHealth;
+    private bool isTurretInvincible = false;
     // Multipliers of upgrades
     // ----------------------------------------------------------------------
     [Tooltip("Array of bullet damage bonuses for upgrading")]
@@ -81,16 +83,31 @@ public class MainTurret : MonoBehaviour
         srBase = GetComponent<SpriteRenderer>();
         //srGun = transform.GetChild(0).GetComponent<SpriteRenderer>(); // For now gun does not need changing with upgrades
         srMuzzleEffects = transform.Find("Gun").transform.Find("Muzzle").transform.Find("MuzzleEffects").GetComponent<SpriteRenderer>();
-        transform.Find("UpgradeCollider").GetComponent<UpgradeTurret>().SetUpgradeCost(upgradeCost);
+        //transform.Find("UpgradeCollider").GetComponent<MultiUpgradeTurret>().SetUpgradeCost(upgradeCost);
         muzzleEffects.SetActive(false);
         if (bulletsCollection == null) {
             bulletsCollection = new GameObject("BulletsCollection");
         }
-        turretMaxHealth = turretHealth;
+        if (CrossSceneManager.instance.invincibleTurrets)
+        {
+            turretMaxHealth = 50000;
+            isTurretInvincible = true;
+            // Update also refreshes this
+        } else
+        {
+            turretMaxHealth = turretHealth;
+        }
     }
 
     void Update()
     {
+        // -----------------------------------------------------------------------------
+        // Refresh max health if invincible turrets are enabled
+        // -----------------------------------------------------------------------------
+        if (isTurretInvincible)
+        {
+            turretHealth = turretMaxHealth;
+        }
         // -----------------------------------------------------------------------------
         // Check for existing bullets, and if they're far enough to disable muzzle effects
         // -----------------------------------------------------------------------------
@@ -249,16 +266,17 @@ public class MainTurret : MonoBehaviour
         return upgradeLevel;
     }
 
+    [PunRPC]
     public bool LevelUp()
     {
-        if(upgradeLevel < 3)
+        if(upgradeLevel < 3
+            && CrossSceneManager.instance.CanPlayerAffordWithMoney(upgradeCost))
         {
-            // Money cost is handled by UpgradeTurret.cs
+            // Money cost is handled by CrossSceneManager.cs
             // Upgrades to bullet speed, damage and bulletRange are 
             // handled by arrays of multipliers
-
-            // Potentially upgrade sell cost
-
+            // check if it has enough money and substract it
+            CrossSceneManager.instance.PayWithMoney(upgradeCost);
             upgradeLevel++;
             return true;
         } else

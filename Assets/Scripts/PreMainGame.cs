@@ -1,18 +1,22 @@
 using ExitGames.Client.Photon;
 using Photon.Pun;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class PreMainGame : MonoBehaviourPunCallbacks
+public class PreMainGame : MonoBehaviourPunCallbacks, IPunObservable
 {
     public Toggle readyToggle;
+    public GameObject preListOfEnemies;
     public TMP_Text textfieldLobby;
     public TMP_Text textfieldRoom;
     public TMP_Text textfieldRegion;
     public TMP_Text textfieldMyNickName;
     public TMP_Text textfieldEnemyNickName;
     public TMP_Text textfieldEnemyReadyState;
+    public Button leaveRoom;
     public Canvas mainCanvasReference;
     [HideInInspector]
     public bool amIMaster;
@@ -20,33 +24,84 @@ public class PreMainGame : MonoBehaviourPunCallbacks
     public bool amIDefender;
     [HideInInspector]
     public bool readyState = false;
+    [HideInInspector]
+    private AsyncOperation asyncLoad;
+    [SerializeField]
+    private float mapLoadProgress = 0f;
+    [SerializeField]
+    private float _enemyLoadProgress = 0f;
+    private bool RPCToAllowChangeSceneSent = false;
+
+    private void Awake()
+    {
+        if (GameObject.Find("SIMPLEConnect") != null && GameObject.Find("SIMPLEConnect").activeSelf)
+        {
+            print("Disabling PreMainGame for SIMPLEConnect to be enabled when connection is established");
+            gameObject.SetActive(false);
+        }
+
+    }
 
     void Start()
     {
-        amIMaster = PhotonNetwork.IsMasterClient;
-        CrossSceneManager.instance.amIMaster = amIMaster;
         readyState = false;
-        amIDefender = (bool)PhotonNetwork.CurrentRoom.CustomProperties["isMasterDefending"] && amIMaster;
-        print("am i defender?:" + amIDefender);
+        amIMaster = PhotonNetwork.IsMasterClient;
+        amIDefender = (bool)PhotonNetwork.CurrentRoom.CustomProperties["isMasterDefending"] == amIMaster;
+        // This shows amIMaster and amIDefender in nice way, just minified
+        // this line can be commented out, it only prints to the console
+        if (amIMaster) { if (amIDefender) { print("i am defender master");} else { print("i am attacker master");}} else { if (amIDefender) { print("i am defender joined");} else {print("i am attacker joined");}}
+        // -----------------------------------------------------------
+        CrossSceneManager.instance.amIMaster = amIMaster;
+        CrossSceneManager.instance.amIDefender = amIDefender;
+        //print("am i defender?:" + amIDefender);
         // Expose nicknames
         // -----------------------------------------------------------
         if (amIMaster)
         {
-            print("i am master");
+            //print("i am master");
             Hashtable _customProperties = new Hashtable();
             _customProperties.Add("roomCreatorNickname", PhotonNetwork.NickName);
             PhotonNetwork.CurrentRoom.SetCustomProperties(_customProperties);
         }
         else
         {
-            print("i am joined");
+            //print("i am joined");
             Hashtable _customProperties = new Hashtable();
             _customProperties.Add("roomJoinedNickname", PhotonNetwork.NickName);
             PhotonNetwork.CurrentRoom.SetCustomProperties(_customProperties);
         }
-
+        // -----------------------------------------------------------
+        // Checking for special cases like unlimited money, mana and inv. turrets
+        // -----------------------------------------------------------
+        if ((bool)PhotonNetwork.CurrentRoom.CustomProperties["UnlimitedMoney"])
+        {
+            CrossSceneManager.instance.isMoneyInfinite = true;
+        }
+        if ((bool)PhotonNetwork.CurrentRoom.CustomProperties["UnlimitedMana"])
+        {
+            CrossSceneManager.instance.isManaInfinite = true;
+        }
+        if ((bool)PhotonNetwork.CurrentRoom.CustomProperties["InvincibleTurrets"])
+        {
+            CrossSceneManager.instance.invincibleTurrets = true;
+        }
+        if (PhotonNetwork.CurrentRoom.CustomProperties["MatchTime"] != null)
+        {
+            CrossSceneManager.instance.currentMatchMaxTime = (int)PhotonNetwork.CurrentRoom.CustomProperties["MatchTime"];
+        }
 
         RefreshTextfields(PhotonNetwork.CurrentLobby.Type.ToString(), PhotonNetwork.CurrentRoom.Name.ToString(), PhotonNetwork.CloudRegion, PhotonNetwork.NickName, "Waiting for opponnent...");
+    }
+
+    void Update()
+    {       // floating point math smh
+        if ((this.mapLoadProgress >= 0.8f && _enemyLoadProgress >= 0.8f)
+            && !RPCToAllowChangeSceneSent) 
+        {
+            gameObject.GetComponent<PhotonView>().RPC("AllowToChangeScene", RpcTarget.All);
+            RPCToAllowChangeSceneSent = true; // this flag is here so RPC is sent only once
+        }
+
     }
 
     public void RefreshTextfields(string _lobbyName, string _roomName, string _regionName, string _nickName, string _enemyNickName)
@@ -70,7 +125,7 @@ public class PreMainGame : MonoBehaviourPunCallbacks
         // Debug section
         // -------------------------------------------------------------
         //print("some properties changed!");
-        //print("amount:"+ propertiesThatChanged.Count + "props:" + propertiesThatChanged.ToString());
+        print("amount:"+ propertiesThatChanged.Count + "props:" + propertiesThatChanged.ToString());
 
 
 
@@ -84,19 +139,20 @@ public class PreMainGame : MonoBehaviourPunCallbacks
             {
                 RefreshTextfields(PhotonNetwork.CurrentLobby.Type.ToString(), PhotonNetwork.CurrentRoom.Name.ToString(), PhotonNetwork.CloudRegion, PhotonNetwork.NickName, PhotonNetwork.CurrentRoom.CustomProperties["roomJoinedNickname"].ToString());
             }
-            // ReadyToggle checking
+            // Updating enemy ready state
             // -------------------------------------------------------------
             if (propertiesThatChanged.ContainsKey("isJoinedReady"))
             {
                 ShowEnemyReadyState((bool)propertiesThatChanged["isJoinedReady"]);
-
-                // Checkign if both players are ready
-                if (readyState && (bool)PhotonNetwork.CurrentRoom.CustomProperties["isJoinedReady"])
-                {
-                    textfieldEnemyReadyState.text = "BOTH ARE READY";
-                }
             }
 
+            if (readyState && (bool)PhotonNetwork.CurrentRoom.CustomProperties["isJoinedReady"])
+            {
+                textfieldEnemyReadyState.text = "BOTH ARE READY";
+                // SetUpPlayArena();
+                print("Sending RPC to change scene!");
+                gameObject.GetComponent<PhotonView>().RPC("SetUpPlayArena", RpcTarget.All);
+            }
 
         }
         else
@@ -106,15 +162,84 @@ public class PreMainGame : MonoBehaviourPunCallbacks
             // So PN.currRoom.CustProps["roomCreatorNickname"] is enemy nick
             RefreshTextfields(PhotonNetwork.CurrentLobby.Type.ToString(), PhotonNetwork.CurrentRoom.Name.ToString(), PhotonNetwork.CloudRegion, PhotonNetwork.NickName, PhotonNetwork.CurrentRoom.CustomProperties["roomCreatorNickname"].ToString());
 
-            // ReadyToggle checking
+            // Updating enemy ready state
             // -------------------------------------------------------------
             if (propertiesThatChanged.ContainsKey("isMasterReady"))
             {
                 ShowEnemyReadyState((bool)propertiesThatChanged["isMasterReady"]);
             }
         }
-
         base.OnRoomPropertiesUpdate(propertiesThatChanged);
+    }
+
+    [PunRPC]
+    public void SetUpPlayArena()
+    {
+        // Wait 5 seconds, send info that both are ready
+        // Change scene using photonnetwork
+        readyToggle.interactable = false;
+        leaveRoom.interactable = false;
+        textfieldEnemyReadyState.text = "BOTH ARE READY";
+        // for every child GO remove it from Content GO and enqueue it
+        // CSM already has addunittolist and popunitfromlist
+        //for(preListOfEnemies.transform.childCount)
+        //if (preListOfEnemies.transform.childCount > 0)
+        //{
+        //    CrossSceneManager.instance.AddUnitToList();
+        //}
+        StartCoroutine(LoadYourAsyncScene());
+        //ShowConnectedDecorationAndChangeSceneAfterNSeconds(5);
+
+    }
+
+    [PunRPC]
+    public void AllowToChangeScene()
+    {
+        asyncLoad.allowSceneActivation = true;
+    }
+
+    private void ShowConnectedDecorationAndChangeSceneAfterNSeconds(int seconds)
+    {
+        // Here show to players that we are both ready and going into
+        // playing scene
+        print("Going to different scene after " + seconds + " seconds!");
+        //StartCoroutine(LoadYourAsyncScene());
+        StartCoroutine(ChangeSceneAfterNSeconds(seconds));
+    }
+
+    System.Collections.IEnumerator ChangeSceneAfterNSeconds(int seconds)
+    {
+        yield return new WaitForSeconds(seconds);
+        // Change scene using photonnetwork to playing scene
+        // Select random map
+        //PhotonNetwork.LoadLevel("Map1Multiplayer");
+        //asyncLoad.allowSceneActivation = true;
+
+    }
+
+    System.Collections.IEnumerator LoadYourAsyncScene()
+    {
+        // The Application loads the Scene in the background as the current Scene runs.
+        // This is particularly good for creating loading screens.
+        // You could also load the Scene by using sceneBuildIndex. In this case Scene2 has
+        // a sceneBuildIndex of 1 as shown in Build Settings.
+        print("scene loading");
+        this.asyncLoad = SceneManager.LoadSceneAsync("Map1Multiplayer");
+        asyncLoad.allowSceneActivation = false;
+
+        // Wait until the asynchronous scene fully loads
+        while (!asyncLoad.isDone)
+        {
+            //print("local load progress: " + this.asyncLoad.progress);
+            this.mapLoadProgress = asyncLoad.progress;
+            // if(this.asyncLoad.progress >= 0.9f)
+            // {
+            //     // map is ready
+            //     //print("scene loaded");
+            //     //gameObject.GetComponent<PhotonView>().RPC("AllowToChangeScene", RpcTarget.All);
+            // }
+            yield return null;
+        }
     }
 
     public void ChangeReadyState()
@@ -152,5 +277,19 @@ public class PreMainGame : MonoBehaviourPunCallbacks
     public void ShowTextToConsole()
     {
         print("i am working from" + gameObject.name);
+    }
+
+    // Streaming level load progress to one another so both can check if the second one is loaded
+    // as to achieve "synchronization" during timers
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.IsWriting)
+        {
+            stream.SendNext(this.mapLoadProgress);
+        } else
+        {
+            _enemyLoadProgress = (float)stream.ReceiveNext();
+            //print("ENEMY load progress: " + _enemyLoadProgress);
+        }
     }
 }

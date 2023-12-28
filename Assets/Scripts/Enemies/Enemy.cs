@@ -1,35 +1,41 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Enemy : MonoBehaviour
 {
     public GameObject mainGame;
+    //[HideInInspector]
     public Transform[] waypoints;
     public float speed = 2f;
+    [HideInInspector]
     public float currentHealth;
     public float maxHealth;
     public int damage = 0;
+    [HideInInspector]
     public int waypointIndex = 0;
     public int moneyReward = 50;
     // Start is called before the first frame update
     void Start()
     {
+        currentHealth = maxHealth;
         mainGame = GameObject.FindWithTag("SingleTagForMainGameLoop");
         transform.position = waypoints[waypointIndex].position;
-        maxHealth = currentHealth;
     }
 
     // Update is called once per frame
     void Update()
     {
         Move();
-        if(currentHealth <= 0)
+        if (currentHealth <= 0)
         {
             Die();
         }
     }
+
     private void Move()
     {
         if (waypointIndex <= waypoints.Length - 1)
@@ -49,7 +55,7 @@ public class Enemy : MonoBehaviour
         {
             // This should never execute, leaving just as fallback
             // destroy is handled by Despawner, that also deals dmg
-            Destroy(gameObject);
+            Die();
         }
     }
 
@@ -58,10 +64,11 @@ public class Enemy : MonoBehaviour
         // Maybe add some effects to death, idk particles or
         // animated text of how much money it gave
         //mainGame.GetComponent<MainGameLoop>().AddPlayerMoney(moneyReward);
-        if (mainGame != null) // Had to add this check for main menu enemies
-        {
-            mainGame.GetComponent<MainGameLoop>().AddPlayerMoney(moneyReward);
-        }
+        // if (mainGame != null) // Had to add this check for main menu enemies
+        // {
+        //     mainGame.GetComponent<MainGameLoop>().AddPlayerMoney(moneyReward);
+        // }
+        mainGame.GetComponent<MainGameLoop>().AddPlayerMoney(moneyReward);
         Destroy(gameObject);
     }
 
@@ -124,4 +131,5 @@ public class Enemy : MonoBehaviour
     {
         this.currentHealth -= damage;   
     }
+
 }
