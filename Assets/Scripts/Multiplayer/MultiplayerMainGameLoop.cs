@@ -9,7 +9,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using static UnityEngine.UI.Image;
 
-public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks
+public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
 {
     // Public instance so we can enable the correct one
     // Every scene(map) has two parts for simplicity
@@ -380,4 +380,17 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks
             }
         }
     }
+
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.IsWriting)
+        {
+            stream.SendNext(this.currentTime);
+        }
+        else
+        {
+            this.currentTime = (float)stream.ReceiveNext();
+        }
+    }
+
 }

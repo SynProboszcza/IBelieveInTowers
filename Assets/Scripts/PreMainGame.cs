@@ -261,6 +261,8 @@ public class PreMainGame : MonoBehaviourPunCallbacks, IPunObservable
         print("i am working from" + gameObject.name);
     }
 
+    // Streaming level load progress to one another so both can check if the second one is loaded
+    // as to achieve "synchronization" during timers
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
         if (stream.IsWriting)
