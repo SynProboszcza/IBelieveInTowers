@@ -16,6 +16,10 @@ public class MultiUpgradeTurret : MonoBehaviour
 
     private void OnMouseDown()
     {
+        // Check if player can bear the cost?? or do it better somehow
+        // Now levelup already tries to pay, and returns bool
+        // rpc is sent correctly from parent object, so i should check locally and 
+        // send rpc that set the upgrade level for other player
         if (!gameObject.transform.parent.gameObject.GetComponent<MainTurret>().LevelUp())
         {
             ShowRedCrossForNSeconds(secondsToShowNegativeFeedback);

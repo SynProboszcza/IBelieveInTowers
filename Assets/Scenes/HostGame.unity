@@ -939,6 +939,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerMoney: 0
+  playerMana: 0
   bearPrice: 500
   bettlePrice: 100
   opossumPrice: 200
@@ -949,7 +950,10 @@ MonoBehaviour:
   myNickName: 
   amIMaster: 0
   amIDefender: 0
+  hasDefenderDied: 0
   isMoneyInfinite: 0
+  isManaInfinite: 0
+  invincibleTurrets: 0
 --- !u!4 &256259780
 Transform:
   m_ObjectHideFlags: 0
