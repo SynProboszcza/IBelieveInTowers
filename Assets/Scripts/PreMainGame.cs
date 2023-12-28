@@ -27,6 +27,7 @@ public class PreMainGame : MonoBehaviourPunCallbacks, IPunObservable
     [HideInInspector]
     private AsyncOperation asyncLoad;
     private float mapLoadProgress = 0f;
+    [SerializeField]
     private float _enemyLoadProgress = 0f;
 
     private void Awake()
@@ -271,7 +272,7 @@ public class PreMainGame : MonoBehaviourPunCallbacks, IPunObservable
             stream.SendNext(this.mapLoadProgress);
         } else
         {
-            this._enemyLoadProgress = (float)stream.ReceiveNext();
+            _enemyLoadProgress = (float)stream.ReceiveNext();
             print("ENEMY load progress: " + _enemyLoadProgress);
             //if (amIMaster)
             //{
