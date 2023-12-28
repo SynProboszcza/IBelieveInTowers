@@ -90,6 +90,7 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_UiFrameRateCounter.cs" />
     <Compile Include="Assets\Scripts\SimpleConnect.cs" />
     <Compile Include="Assets\Scripts\Multiplayer\JoinRoomFromList.cs" />
+    <Compile Include="Assets\Scripts\Multiplayer\MultiUpgradeTurret.cs" />
     <Compile Include="Assets\Scripts\MenuButtons\JoinGame.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\CameraController.cs" />
     <Compile Include="Assets\Scripts\Enemies\MultiplayerEnemy.cs" />
@@ -161,7 +162,6 @@
     <Compile Include="Assets\Scripts\UI\PrePlay\RedGreenToggle.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01.cs" />
     <Compile Include="Assets\Scripts\MenuButtons\QuitButton.cs" />
-    <Compile Include="Assets\Scripts\Multiplayer\MultiUpgradeTurret.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />

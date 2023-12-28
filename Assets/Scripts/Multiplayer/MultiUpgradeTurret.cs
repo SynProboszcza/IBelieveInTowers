@@ -16,17 +16,20 @@ public class MultiUpgradeTurret : MonoBehaviour
 
     private void OnMouseDown()
     {
-        // Check if player can bear the cost?? or do it better somehow
-        // Now levelup already tries to pay, and returns bool
-        // rpc is sent correctly from parent object, so i should check locally and 
-        // send rpc that set the upgrade level for other player
-        if (!gameObject.transform.parent.gameObject.GetComponent<MainTurret>().LevelUp())
-        {
-            ShowRedCrossForNSeconds(secondsToShowNegativeFeedback);
-        } else
+        // Check: if player can afford && upgradeLevel is < 3
+        // Cost is inherited from MainTurret parent object
+        //  if yes: send rpc to upgrade
+        //  if no : show negative feedback
+        if (CrossSceneManager.instance.CanPlayerAffordWithMoney(gameObject.transform.parent.gameObject.GetComponent<MainTurret>().upgradeCost)
+            && gameObject.transform.parent.gameObject.GetComponent<MainTurret>().upgradeLevel < 3)
         {
             gameObject.transform.parent.gameObject.GetComponent<PhotonView>().RPC("LevelUp", RpcTarget.All);
-
+        } else
+        {
+            ShowRedCrossForNSeconds(secondsToShowNegativeFeedback);
+            // Those two ifs are just debug, safe to comment out
+            if (!CrossSceneManager.instance.CanPlayerAffordWithMoney(gameObject.transform.parent.gameObject.GetComponent<MainTurret>().upgradeCost)) { print("Not enough money to upgrade"); }
+            if (gameObject.transform.parent.gameObject.GetComponent<MainTurret>().upgradeLevel >= 3) { print("Turret already at max level"); }
         }
     }
 

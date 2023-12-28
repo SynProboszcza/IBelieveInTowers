@@ -117,6 +117,34 @@ public class CrossSceneManager : MonoBehaviour
         playerMoney += amount;
     }
 
+    public bool CanPlayerAffordWithMoney(int cost)
+    {
+        if (isMoneyInfinite)
+        {
+            return true;
+        } else if (playerMoney >= cost)
+        {
+            return true;
+        } else
+        {
+            return false;
+        }
+    }
+
+    public bool CanPlayerAffordWithMana(int cost)
+    {
+        if (isManaInfinite)
+        {
+            return true;
+        } else if (playerMana >= cost)
+        {
+            return true;
+        } else
+        {
+            return false;
+        }
+    }
+
     public void AddUnitToList(string name)
     {
         unitList.Enqueue(name);

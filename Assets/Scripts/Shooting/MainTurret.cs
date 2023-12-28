@@ -269,20 +269,16 @@ public class MainTurret : MonoBehaviour
     [PunRPC]
     public bool LevelUp()
     {
-        if(upgradeLevel < 3)
+        if(upgradeLevel < 3
+            && CrossSceneManager.instance.CanPlayerAffordWithMoney(upgradeCost))
         {
             // Money cost is handled by CrossSceneManager.cs
             // Upgrades to bullet speed, damage and bulletRange are 
             // handled by arrays of multipliers
-            if (CrossSceneManager.instance.PayWithMoney(upgradeCost))
-            {
-                // Potentially upgrade sell cost
-                upgradeLevel++;
-                return true;
-            } else
-            {
-                return false;
-            }
+            // check if it has enough money and substract it
+            CrossSceneManager.instance.PayWithMoney(upgradeCost);
+            upgradeLevel++;
+            return true;
         } else
         {
             return false;
