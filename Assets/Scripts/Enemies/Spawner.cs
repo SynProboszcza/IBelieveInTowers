@@ -34,8 +34,8 @@ public class Spawner : MonoBehaviour
     {
         if (
             (isSpawnAllowed // Disabling spawning for debugging
-            && enemies[whichEnemyToSpawnIndex] != null 
-            && waypoints != null 
+            && enemies[whichEnemyToSpawnIndex] != null
+            && waypoints != null
             && (Time.time > spawnRate + timeSinceLastRespawn)
             && spawnCount < spawnCountMax)
             || isSpawningConstantly // Forcing to spawn all the time to playtest

@@ -14,10 +14,10 @@ public class CrossSceneManager : MonoBehaviour
     public string gameVersion
     {  get { return gameVersion;}
         private set { this.gameVersion = Application.version; }}
-    public int playerMoney
-    { get; private set;}
-    public int playerMana
-    { get; private set; }
+    [SerializeField]
+    public int playerMoney;
+    public int playerMana;
+    public Queue<string> unitList { get; private set; }
     [HideInInspector]
     public Dictionary<string, int> enemyPrices;
     public int bearPrice = 500;
@@ -25,15 +25,23 @@ public class CrossSceneManager : MonoBehaviour
     public int opossumPrice = 200;
     public int dinoPrice = 150;
     public int slimerPrice = 250;
+    public int defenderHealth;
+    public int currentMatchMaxTime;
     public string enemyNickname = "";
     public string myNickName = "";
     public bool amIMaster;
+    public bool amIDefender;
+    public bool hasDefenderDied = false;
+    public bool isMoneyInfinite = false;
+    public bool isManaInfinite = false;
+    public bool invincibleTurrets = false;
 
     void Start()
     {
         DontDestroyOnLoad(gameObject);
         playerMoney = 2000;
         playerMana = 500;
+        defenderHealth = 275;
         myNickName = PlayerPrefs.GetString("LocalNickName");
     }
 
@@ -61,8 +69,28 @@ public class CrossSceneManager : MonoBehaviour
 
     }
 
+    public void TakeDefenderDamageAndCheckIfDied(int amount)
+    {
+        defenderHealth -= amount;
+        if (defenderHealth <= 0)
+        {
+            hasDefenderDied = true;
+        }
+    }
+
+    public void ResetAfterPlaying()
+    {
+        // reset everything
+    }
+
+    // set round time during play set up
+
     public bool PayWithMoney(int cost)
     {
+        if (isMoneyInfinite)
+        {
+            return true;
+        }
         if (playerMoney >= cost)
         {
             playerMoney -= cost;
@@ -73,6 +101,10 @@ public class CrossSceneManager : MonoBehaviour
 
     public bool PayWithMana(int cost)
     {
+        if (isManaInfinite)
+        {
+            return true;
+        }
         if (playerMana >= cost)
         {
             playerMana -= cost;
@@ -89,5 +121,43 @@ public class CrossSceneManager : MonoBehaviour
     public void AddMoney(int amount)
     {
         playerMoney += amount;
+    }
+
+    public bool CanPlayerAffordWithMoney(int cost)
+    {
+        if (isMoneyInfinite)
+        {
+            return true;
+        } else if (playerMoney >= cost)
+        {
+            return true;
+        } else
+        {
+            return false;
+        }
+    }
+
+    public bool CanPlayerAffordWithMana(int cost)
+    {
+        if (isManaInfinite)
+        {
+            return true;
+        } else if (playerMana >= cost)
+        {
+            return true;
+        } else
+        {
+            return false;
+        }
+    }
+
+    public void AddUnitToList(string name)
+    {
+        unitList.Enqueue(name);
+    }
+
+    public string PopUnitFromList()
+    {
+        return unitList.Dequeue();
     }
 }

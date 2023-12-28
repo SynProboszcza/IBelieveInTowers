@@ -146,7 +146,8 @@ MonoBehaviour:
   waypoints: []
   speed: 2
   currentHealth: 0
-  damage: 0
+  maxHealth: 200
+  damage: 13
   waypointIndex: 0
   moneyReward: 50
 --- !u!60 &5124225124800193262

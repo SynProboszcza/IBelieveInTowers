@@ -1,6 +1,7 @@
+using ExitGames.Client.Photon;
 using Photon.Pun;
 using Photon.Realtime;
-using System.Collections;
+//using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -9,13 +10,25 @@ using UnityEngine;
 // connection to a room, so everything about PhotonNetwork works
 public class SimpleConnect : MonoBehaviourPunCallbacks
 {
+    [SerializeField]
+    [TextArea]
+    [Tooltip("Doesn't do anything. Just comments shown in inspector")]
+    public string Notes = "This components disables MainGame(maingame does it also), sets choosen defender/attacker state, then activates MainGame. MainGame activates proper part on its own. AttackerPart and DefenderPart should always be disabled in editor and only enabled by MainGame.";
     public string backupNickNamePrefix = "defaultNickname";
     public string gameVersion = "0.1";
     public string roomName = "SIMPLEroom";
     public string nickName = "SIMPLEnick";
+    [Header("Read-Only, for gameplay change tick it in CrossSceneManager")]
+    public bool amIDefending = false;
+    public bool isMoneyInfinite = false;
+    public bool isManaInfinite = false;
+    public bool invincibleTurrets = false;
+    //private bool specialRules = false;
+    public GameObject mainGameScript;
 
     private void Start()
     {
+        mainGameScript.SetActive(false);
         BeginConnecting();
     }
 
@@ -44,6 +57,8 @@ public class SimpleConnect : MonoBehaviourPunCallbacks
     public override void OnJoinedRoom()
     {
         print("SIMPLE Joined room: " + roomName);
+        CrossSceneManager.instance.amIDefender = amIDefending;
+        mainGameScript.SetActive(true);
         base.OnJoinedRoom();
     }
 

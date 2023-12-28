@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -9,16 +10,28 @@ public class Despawn : MonoBehaviour
 
     private void Start()
     {
-        mainGame = GameObject.FindWithTag("SingleTagForMainGameLoop");
+        // Singleplayer and multiplayer maingameloops are tagged this
+        // Just a fallback, it should be set in editor
+        if(mainGame == null)
+        {
+            mainGame = GameObject.FindWithTag("SingleTagForMainGameLoop");
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (mainGame != null) // Had to add this check for main menu enemies
+        if (mainGame.GetComponent<MainGameLoop>() != null) // Had to add this check for main menu enemies
         {
+            // Singleplayer
             mainGame.GetComponent<MainGameLoop>().TakePlayerDamage(collision.gameObject.GetComponent<Enemy>().GetDamage());
-        }
-        //mainGame.GetComponent<MainGameLoop>().AddPlayerMoney(collision.gameObject.GetComponent<Enemy>().GetMoneyReward());
         Destroy(collision.gameObject);
+        } else if (mainGame.GetComponent<MultiplayerMainGameLoop>() != null)
+        {
+            // Multiplayer
+            //mainGame.GetComponent<MultiplayerMainGameLoop>().TakeDefenderDamage();
+            print("Despawning: " + collision.gameObject.name);
+            CrossSceneManager.instance.TakeDefenderDamageAndCheckIfDied(collision.gameObject.GetComponent<MultiplayerEnemy>().GetDamage());
+            PhotonNetwork.Destroy(collision.gameObject);
+        }
     }
 }
