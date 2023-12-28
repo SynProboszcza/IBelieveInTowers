@@ -2091,7 +2091,7 @@ MonoBehaviour:
   - {fileID: 232621868}
   - {fileID: 716769049}
   - {fileID: 1699625319}
-  roundTimeSeconds: 10
+  roundTimeSeconds: 125
   currentTime: 0
   a_timer: {fileID: 339148621}
   a_enemyHealthTextField: {fileID: 1813382342}

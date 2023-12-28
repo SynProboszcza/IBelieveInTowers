@@ -95,7 +95,7 @@ public class PreMainGame : MonoBehaviourPunCallbacks, IPunObservable
             && !RPCToAllowChangeSceneSent) 
         {
             gameObject.GetComponent<PhotonView>().RPC("AllowToChangeScene", RpcTarget.All);
-            RPCToAllowChangeSceneSent = true;
+            RPCToAllowChangeSceneSent = true; // this flag is here so RPC is sent only once
         }
 
     }
