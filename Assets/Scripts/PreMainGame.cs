@@ -180,6 +180,13 @@ public class PreMainGame : MonoBehaviourPunCallbacks, IPunObservable
         readyToggle.interactable = false;
         leaveRoom.interactable = false;
         textfieldEnemyReadyState.text = "BOTH ARE READY";
+        if (preListOfEnemies != null)
+        {
+            foreach(Transform child in preListOfEnemies.transform)
+            {
+                CrossSceneManager.instance.enemyListFromPreMainGame.Add(child.gameObject);
+            }
+        }
         // for every child GO remove it from Content GO and enqueue it
         // CSM already has addunittolist and popunitfromlist
         //for(preListOfEnemies.transform.childCount)
