@@ -20,6 +20,8 @@ public class CrossSceneManager : MonoBehaviour
     public Queue<string> unitList { get; private set; }
     [HideInInspector]
     public Dictionary<string, int> enemyPrices;
+    [HideInInspector]
+    public List<GameObject> enemyListFromPreMainGame;
     public int bearPrice = 500;
     public int bettlePrice = 100;
     public int opossumPrice = 200;
