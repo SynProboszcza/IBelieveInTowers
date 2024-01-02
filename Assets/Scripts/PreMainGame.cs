@@ -304,7 +304,7 @@ public class PreMainGame : MonoBehaviourPunCallbacks, IPunObservable
         } else
         {
             _enemyLoadProgress = (float)stream.ReceiveNext();
-            //print("ENEMY load progress: " + _enemyLoadProgress);
+            print("ENEMY load progress: " + _enemyLoadProgress);
         }
     }
 }
