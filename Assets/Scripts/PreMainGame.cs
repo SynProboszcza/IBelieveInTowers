@@ -95,7 +95,7 @@ public class PreMainGame : MonoBehaviourPunCallbacks, IPunObservable
 
     void Update()
     {       // floating point math smh
-        if ((this.mapLoadProgress >= 0.8f && _enemyLoadProgress >= 0.8f)
+        if ((this.mapLoadProgress >= 0.9f && _enemyLoadProgress >= 0.9f)
             && !RPCToAllowChangeSceneSent) 
         {
             gameObject.GetComponent<PhotonView>().RPC("AllowToChangeScene", RpcTarget.All);
