@@ -2108,6 +2108,7 @@ MonoBehaviour:
   isShopOpen: 0
   amIMaster: 0
   amIDefender: 0
+  defenderHealthToSync: 0
 --- !u!4 &239573655
 Transform:
   m_ObjectHideFlags: 0
@@ -13506,6 +13507,11 @@ MonoBehaviour:
   currentMatchMaxTime: 0
   enemyNickname: 
   myNickName: 
+  bearPrefab: {fileID: 1800778710029251882, guid: 87ea0512c20c1c140b994ef3df70d698, type: 3}
+  bettlePrefab: {fileID: 1800778710029251882, guid: cbd5016e237baf947b57c88b38399295, type: 3}
+  opossumPrefab: {fileID: 1800778710029251882, guid: 4a9dbed49699e384a928472244668e41, type: 3}
+  dinoPrefab: {fileID: 1800778710029251882, guid: 22bfcd9538747664b96db9175264daf0, type: 3}
+  slimerPrefab: {fileID: 1800778710029251882, guid: baa432b55623a7d49b084e4b478d9367, type: 3}
   amIMaster: 0
   amIDefender: 0
   hasDefenderDied: 0
