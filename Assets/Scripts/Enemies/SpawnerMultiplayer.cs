@@ -38,6 +38,7 @@ public class SpawnerMultiplayer : MonoBehaviour
     public bool isSpawnAllowed = true;
     //[HideInInspector]
     public bool isSpawningConstantly = false;
+    private bool _showWhyNotSpawning = true;
 
     private void Start()
     {
@@ -115,14 +116,13 @@ public class SpawnerMultiplayer : MonoBehaviour
             if (!(Time.time > spawnRate + timeSinceLastRespawn))
             {
                 //print("Waiting to spawn...");
-            } else if (isSpawnAllowed)
+            } else if (!isSpawnAllowed)
             {
-                bool _showWhyNotSpawning = true;
                 if (_showWhyNotSpawning)
                 {
                     print("isSpawnAllowed is blocked, probably for first " + CrossSceneManager.instance.secondsToWaitBeforeGameStart + " seconds.");
                 }
-                _showWhyNotSpawning = false;
+                _showWhyNotSpawning = false; // Flag to send this msg only once
             } else
             {
                 print(
