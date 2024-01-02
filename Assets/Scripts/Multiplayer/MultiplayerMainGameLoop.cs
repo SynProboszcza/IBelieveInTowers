@@ -388,6 +388,7 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
         {
             stream.SendNext(this.currentTime);
             stream.SendNext(defenderHealthToSync);
+            print("Sent time and health: " + defenderHealthToSync);
         }
         else
         {
@@ -396,6 +397,7 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
             float lag = Mathf.Abs((float)(PhotonNetwork.Time - info.SentServerTime));
             this.currentTime = _currentTime - lag;
             this.defenderHealthToSync = (float)stream.ReceiveNext();
+            print("Received time and health: " + defenderHealthToSync);
         }
     }
 

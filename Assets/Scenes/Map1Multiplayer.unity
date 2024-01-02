@@ -5444,6 +5444,10 @@ PrefabInstance:
       propertyPath: mainGame
       value: 
       objectReference: {fileID: 239573652}
+    - target: {fileID: 699773554446857291, guid: b0222477b0aebb84b860725cb84910bb, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2101428351625029212, guid: b0222477b0aebb84b860725cb84910bb, type: 3}
       propertyPath: m_Name
       value: DespawnerMultiplayer
