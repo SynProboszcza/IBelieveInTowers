@@ -210,6 +210,7 @@ public class PreMainGame : MonoBehaviourPunCallbacks, IPunObservable
     [PunRPC]
     public void AllowToChangeScene()
     {
+        print("local load progress:" + mapLoadProgress + "\nremote load progress:" + _enemyLoadProgress);
         asyncLoad.allowSceneActivation = true;
     }
 
@@ -304,7 +305,9 @@ public class PreMainGame : MonoBehaviourPunCallbacks, IPunObservable
         } else
         {
             _enemyLoadProgress = (float)stream.ReceiveNext();
-            print("ENEMY load progress: " + _enemyLoadProgress);
+            //print("ENEMY load progress: " + _enemyLoadProgress);
         }
+        print("local load progress:" + mapLoadProgress + "\nremote load progress:" + _enemyLoadProgress);
+
     }
 }
