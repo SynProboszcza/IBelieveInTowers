@@ -13496,12 +13496,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerMoney: 0
   playerMana: 0
+  enemyListFromPreMainGame: []
   bearPrice: 500
   bettlePrice: 100
   opossumPrice: 200
   dinoPrice: 150
   slimerPrice: 250
   defenderHealth: 0
+  currentMatchMaxTime: 0
   enemyNickname: 
   myNickName: 
   amIMaster: 0

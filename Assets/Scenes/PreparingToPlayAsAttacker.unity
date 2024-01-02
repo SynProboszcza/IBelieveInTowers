@@ -1809,6 +1809,9 @@ MonoBehaviour:
   roomName: SIMPLEroom
   nickName: SIMPLEnick
   amIDefending: 0
+  isMoneyInfinite: 0
+  isManaInfinite: 0
+  invincibleTurrets: 0
   mainGameScript: {fileID: 0}
 --- !u!1 &711377046
 GameObject:
@@ -2425,6 +2428,8 @@ MonoBehaviour:
   amIMaster: 0
   amIDefender: 0
   readyState: 0
+  mapLoadProgress: 0
+  _enemyLoadProgress: 0
 --- !u!114 &1025020466
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8711,17 +8716,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerMoney: 0
+  playerMana: 0
+  enemyListFromPreMainGame: []
   bearPrice: 500
   bettlePrice: 100
   opossumPrice: 200
   dinoPrice: 150
   slimerPrice: 250
   defenderHealth: 0
+  currentMatchMaxTime: 0
   enemyNickname: 
   myNickName: 
   amIMaster: 0
   amIDefender: 0
+  hasDefenderDied: 0
   isMoneyInfinite: 0
+  isManaInfinite: 0
+  invincibleTurrets: 0
 --- !u!4 &1210959662
 Transform:
   m_ObjectHideFlags: 0
@@ -9527,8 +9538,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4285493103
+  m_fontColor: {r: 0.4339623, g: 0.4339623, b: 0.4339623, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:

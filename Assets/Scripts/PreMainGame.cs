@@ -179,13 +179,21 @@ public class PreMainGame : MonoBehaviourPunCallbacks, IPunObservable
         // Change scene using photonnetwork
         readyToggle.interactable = false;
         leaveRoom.interactable = false;
-        textfieldEnemyReadyState.text = "BOTH ARE READY";
+        textfieldEnemyReadyState.text = "Both players ready!";
         if (preListOfEnemies != null)
         {
-            foreach(Transform child in preListOfEnemies.transform)
+            while (preListOfEnemies.transform.childCount > 0 && preListOfEnemies.transform.GetChild(0) != null)
             {
-                CrossSceneManager.instance.enemyListFromPreMainGame.Add(child.gameObject);
+                Transform child = preListOfEnemies.transform.GetChild(0).transform;
+                Transform parent = CrossSceneManager.instance.gameObject.transform.Find("EnemiesFromPreMainGame");
+                child.localScale = new Vector3(0.5f, 0.5f, 0.5f); // List in multimaingame is scaled down by 0.5
+                child.SetParent(parent);
             }
+
+            //foreach(Transform child in preListOfEnemies.transform)
+            //{
+            //    //CrossSceneManager.instance.enemyListFromPreMainGame.Add(child.gameObject);
+            //}
         }
         // for every child GO remove it from Content GO and enqueue it
         // CSM already has addunittolist and popunitfromlist

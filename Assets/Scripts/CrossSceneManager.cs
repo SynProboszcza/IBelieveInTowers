@@ -20,7 +20,7 @@ public class CrossSceneManager : MonoBehaviour
     public Queue<string> unitList { get; private set; }
     [HideInInspector]
     public Dictionary<string, int> enemyPrices;
-    [HideInInspector]
+    //[HideInInspector]
     public List<GameObject> enemyListFromPreMainGame;
     public int bearPrice = 500;
     public int bettlePrice = 100;
@@ -45,6 +45,9 @@ public class CrossSceneManager : MonoBehaviour
         playerMana = 500;
         defenderHealth = 275;
         myNickName = PlayerPrefs.GetString("LocalNickName");
+        GameObject parentForEnemies =  Instantiate(new GameObject("EnemiesFromPreMainGame"));
+        parentForEnemies.name = "EnemiesFromPreMainGame"; // Default instantiation adds "(Clone)" to the name
+        parentForEnemies.transform.parent = transform;
     }
 
     // Make sure there is only one instance

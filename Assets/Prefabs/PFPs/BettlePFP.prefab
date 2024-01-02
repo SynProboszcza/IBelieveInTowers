@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 4815605125722639384}
   - component: {fileID: 5190660569554595491}
   - component: {fileID: -5231888141980040990}
+  - component: {fileID: -7785522417244936446}
   m_Layer: 0
   m_Name: BettlePFP
   m_TagString: Untagged
@@ -167,3 +168,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae813b4c44aad944b8c957aa0e1e1a88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &-7785522417244936446
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 565263098971828681}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d9012909cffd8643badabbf5ababe88, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  unitPrefab: {fileID: 1800778710029251882, guid: cbd5016e237baf947b57c88b38399295, type: 3}
+  speed: 2
+  maxHealth: 200
+  damage: 13
+  moneyReward: 150

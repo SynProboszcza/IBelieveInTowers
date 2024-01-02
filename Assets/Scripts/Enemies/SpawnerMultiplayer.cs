@@ -57,13 +57,10 @@ public class SpawnerMultiplayer : MonoBehaviour
                 "EnemySlimer"
             };
         }
-        if(CrossSceneManager.instance.enemyListFromPreMainGame.Count > 0)
+        while (CrossSceneManager.instance.transform.Find("EnemiesFromPreMainGame").transform.childCount > 0 
+            && CrossSceneManager.instance.transform.Find("EnemiesFromPreMainGame").transform.GetChild(0) != null)
         {
-            foreach (GameObject go in CrossSceneManager.instance.enemyListFromPreMainGame)
-            {
-                GameObject _go = Instantiate(go);
-                _go.transform.SetParent(listOfEnemies.transform);
-            }
+                CrossSceneManager.instance.transform.Find("EnemiesFromPreMainGame").transform.GetChild(0).SetParent(listOfEnemies.transform);
         }
     }
 
