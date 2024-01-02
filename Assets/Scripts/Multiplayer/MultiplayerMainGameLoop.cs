@@ -45,8 +45,8 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
     public TMP_Text d_playerMoneyTextField;
     public TMP_Text d_playerManaTextField;
     private Vector2 topLeft;
-    private Vector2 topRight;
-    private Vector2 bottomLeft;
+    private Vector2 topRight;   // Despite what VS says, they are used in
+    private Vector2 bottomLeft; // GetPlayArenaCorners() 
     private Vector2 bottomRight;
     [HideInInspector]
     public int nodesInstantiated = 0;
@@ -68,6 +68,7 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
     public bool amIDefender;
     [HideInInspector]
     private bool matchResultsShown = false; // Flag so it gets run only once
+    public float defenderHealthToSync;
 
     // FPS limit and SIMPLEConnect
     void Awake()
@@ -100,6 +101,7 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
         defenderMatchResults.transform.Find("Loose").gameObject.SetActive(false);
         amIMaster = CrossSceneManager.instance.amIMaster;
         amIDefender = CrossSceneManager.instance.amIDefender;
+        defenderHealthToSync = CrossSceneManager.instance.defenderHealth;
         //playerMoney = CrossSceneManager.instance.playerMoney;
         //playerMana = CrossSceneManager.instance.playerMana;
         if (amIDefender)
@@ -385,14 +387,15 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
         if (stream.IsWriting)
         {
             stream.SendNext(this.currentTime);
-            //print("sent time");
+            stream.SendNext(defenderHealthToSync);
         }
         else
         {
             float _currentTime = (float)stream.ReceiveNext();
+            // Basic lag compensation
             float lag = Mathf.Abs((float)(PhotonNetwork.Time - info.SentServerTime));
             this.currentTime = _currentTime - lag;
-            //print("received time");
+            this.defenderHealthToSync = (float)stream.ReceiveNext();
         }
     }
 
