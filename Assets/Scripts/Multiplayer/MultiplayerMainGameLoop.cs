@@ -126,6 +126,7 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
 
     void Update()
     {
+        defenderHealthToSync = CrossSceneManager.instance.defenderHealth;
         UpdatePlayerStats();
         // Check if defending when ded
         //  checking is done when dealing damage
@@ -396,7 +397,7 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
             // Basic lag compensation
             float lag = Mathf.Abs((float)(PhotonNetwork.Time - info.SentServerTime));
             this.currentTime = _currentTime - lag;
-            this.defenderHealthToSync = (float)stream.ReceiveNext();
+            CrossSceneManager.instance.defenderHealth = Mathf.FloorToInt((float)stream.ReceiveNext());
             print("Received time and health: " + defenderHealthToSync);
         }
     }
