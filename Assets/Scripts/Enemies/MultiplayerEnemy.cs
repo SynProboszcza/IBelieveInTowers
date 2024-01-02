@@ -159,10 +159,12 @@ public class MultiplayerEnemy : MonoBehaviour, IPunObservable
         if (stream.IsReading)
         {
             transform.position = (Vector3)stream.ReceiveNext();
+            currentHealth = (float)stream.ReceiveNext();
         }
         else if (stream.IsWriting)
         {
             stream.SendNext(transform.position);
+            stream.SendNext(currentHealth);
         }
     }
 }
