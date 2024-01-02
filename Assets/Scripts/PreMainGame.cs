@@ -95,7 +95,7 @@ public class PreMainGame : MonoBehaviourPunCallbacks, IPunObservable
 
     void Update()
     {       // floating point math smh
-        if ((this.mapLoadProgress >= 0.9f && _enemyLoadProgress >= 0.9f)
+        if ((mapLoadProgress >= 0.9f && _enemyLoadProgress >= 0.9f)
             && !RPCToAllowChangeSceneSent) 
         {
             gameObject.GetComponent<PhotonView>().RPC("AllowToChangeScene", RpcTarget.All);
@@ -307,7 +307,7 @@ public class PreMainGame : MonoBehaviourPunCallbacks, IPunObservable
             _enemyLoadProgress = (float)stream.ReceiveNext();
             //print("ENEMY load progress: " + _enemyLoadProgress);
         }
-        print("local load progress:" + mapLoadProgress + "\nremote load progress:" + _enemyLoadProgress);
+        //print("local load progress:" + mapLoadProgress + "\nremote load progress:" + _enemyLoadProgress);
 
     }
 }

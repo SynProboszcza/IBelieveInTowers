@@ -53,6 +53,7 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
     [HideInInspector]
     public int nodesDestroyed = 0;
     public int secondsToWaitAfterGameEnd = 3;
+    public int secondsToWaitBeforeGameStart = 3;
     //public int playerMoney = 0;
     //public int playerMana = 0;
     //public int defenderHealth;
@@ -389,7 +390,7 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
         {
             stream.SendNext(this.currentTime);
             stream.SendNext(defenderHealthToSync);
-            print("Sent time and health: " + defenderHealthToSync);
+            //print("Sent time and health: " + defenderHealthToSync);
         }
         else
         {
@@ -398,7 +399,7 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
             float lag = Mathf.Abs((float)(PhotonNetwork.Time - info.SentServerTime));
             this.currentTime = _currentTime - lag;
             CrossSceneManager.instance.defenderHealth = Mathf.FloorToInt((float)stream.ReceiveNext());
-            print("Received time and health: " + defenderHealthToSync);
+            //print("Received time and health: " + defenderHealthToSync);
         }
     }
 

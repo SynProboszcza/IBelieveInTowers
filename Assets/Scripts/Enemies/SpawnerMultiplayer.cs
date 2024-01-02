@@ -62,6 +62,9 @@ public class SpawnerMultiplayer : MonoBehaviour
         {
                 CrossSceneManager.instance.transform.Find("EnemiesFromPreMainGame").transform.GetChild(0).SetParent(listOfEnemies.transform);
         }
+        // Wait 3 seconds before spawning
+        // Value should be read from multimaingameloop
+        StartCoroutine(WaitForNSeconds(3));
     }
 
     private void Update() 
@@ -73,6 +76,11 @@ public class SpawnerMultiplayer : MonoBehaviour
             // TODO: Check if sufficient time has passed here, not inside of SpawnThisUnit()
             SpawnThisUnit(_unitPrefab);
         }
+    }
+
+    System.Collections.IEnumerator WaitForNSeconds(int seconds)
+    {
+        yield return new WaitForSeconds(seconds);
     }
 
     public void SpawnThisUnit(GameObject unitReference)
