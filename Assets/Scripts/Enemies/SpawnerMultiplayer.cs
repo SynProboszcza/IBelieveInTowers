@@ -65,6 +65,7 @@ public class SpawnerMultiplayer : MonoBehaviour
         // Wait 3 seconds before spawning
         // Value should be read from multimaingameloop
         StartCoroutine(WaitForNSeconds(3));
+        isSpawnAllowed = false;
     }
 
     private void Update() 
@@ -81,6 +82,7 @@ public class SpawnerMultiplayer : MonoBehaviour
     System.Collections.IEnumerator WaitForNSeconds(int seconds)
     {
         yield return new WaitForSeconds(seconds);
+        isSpawnAllowed = true;
     }
 
     public void SpawnThisUnit(GameObject unitReference)
