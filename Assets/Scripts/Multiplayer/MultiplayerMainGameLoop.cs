@@ -53,7 +53,6 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
     [HideInInspector]
     public int nodesDestroyed = 0;
     public int secondsToWaitAfterGameEnd = 3;
-    public int secondsToWaitBeforeGameStart = 3;
     //public int playerMoney = 0;
     //public int playerMana = 0;
     //public int defenderHealth;

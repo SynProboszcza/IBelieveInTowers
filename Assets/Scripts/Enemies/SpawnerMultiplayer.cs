@@ -63,8 +63,8 @@ public class SpawnerMultiplayer : MonoBehaviour
                 CrossSceneManager.instance.transform.Find("EnemiesFromPreMainGame").transform.GetChild(0).SetParent(listOfEnemies.transform);
         }
         // Wait 3 seconds before spawning
-        // Value should be read from multimaingameloop
-        StartCoroutine(WaitForNSeconds(3));
+        // Value should be read from CrossSceneManager - easier to access
+        StartCoroutine(WaitForNSeconds(CrossSceneManager.instance.secondsToWaitBeforeGameStart));
         isSpawnAllowed = false;
     }
 
@@ -115,6 +115,14 @@ public class SpawnerMultiplayer : MonoBehaviour
             if (!(Time.time > spawnRate + timeSinceLastRespawn))
             {
                 //print("Waiting to spawn...");
+            } else if (isSpawnAllowed)
+            {
+                bool _showWhyNotSpawning = true;
+                if (_showWhyNotSpawning)
+                {
+                    print("isSpawnAllowed is blocked, probably for first " + CrossSceneManager.instance.secondsToWaitBeforeGameStart + " seconds.");
+                }
+                _showWhyNotSpawning = false;
             } else
             {
                 print(
