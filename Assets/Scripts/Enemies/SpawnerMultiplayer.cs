@@ -107,7 +107,7 @@ public class SpawnerMultiplayer : MonoBehaviour
         {
             if (!(Time.time > spawnRate + timeSinceLastRespawn))
             {
-                print("Waiting to spawn...");
+                //print("Waiting to spawn...");
             } else
             {
                 print(
