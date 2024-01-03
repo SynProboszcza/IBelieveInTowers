@@ -99,9 +99,9 @@ public class SpawnerMultiplayer : MonoBehaviour
         && (Time.time > spawnRate + timeSinceLastRespawn))
         {
             //print("passed checks");
-            object[] customData = { waypoints };
+            //object[] customData = { waypoints };
             string unitName = "Enemies/" + unitReference.GetComponent<UnitStatistics>().unitPrefab.name;
-            GameObject _unit = PhotonNetwork.Instantiate(unitName, spawnPosition, Quaternion.identity, 0, customData);
+            GameObject _unit = PhotonNetwork.Instantiate(unitName, spawnPosition, Quaternion.identity);
             _unit.GetComponent<MultiplayerEnemy>().SetDamage(_unit.GetComponent<MultiplayerEnemy>().damage);
             _unit.GetComponent<MultiplayerEnemy>().SetSpeed(_unit.GetComponent<MultiplayerEnemy>().speed);
             _unit.GetComponent<MultiplayerEnemy>().SetWaypoints(waypoints);

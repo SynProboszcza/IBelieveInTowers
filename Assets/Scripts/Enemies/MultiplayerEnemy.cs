@@ -24,6 +24,10 @@ public class MultiplayerEnemy : MonoBehaviour, IPunObservable
     {
         currentHealth = maxHealth;
         mainGame = GameObject.FindWithTag("SingleTagForMainGameLoop");
+        if (waypoints == null)
+        {
+            waypoints = mainGame.GetComponent<MultiplayerMainGameLoop>().waypoints;
+        }
         if (this.GetComponent<PhotonView>().IsMine)
         {
             transform.position = waypoints[waypointIndex].position;
@@ -54,12 +58,12 @@ public class MultiplayerEnemy : MonoBehaviour, IPunObservable
             }
             else
             {
-                Move();
-                //print("basically everything else (other player is controlling it) health: " + currentHealth);
-                if (currentHealth <= 0)
-                {
-                    Die();
-                }
+                //Move();
+                ////print("basically everything else (other player is controlling it) health: " + currentHealth);
+                //if (currentHealth <= 0)
+                //{
+                //    Die();
+                //}
             }
         }
     }
