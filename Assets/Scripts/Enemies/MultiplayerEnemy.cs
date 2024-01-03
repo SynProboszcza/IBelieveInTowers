@@ -35,6 +35,7 @@ public class MultiplayerEnemy : MonoBehaviour, IPunObservable
         if (SceneManager.GetActiveScene().name.Equals("MainMenu"))
         {
             Move();
+            //print("main menu");
             if (currentHealth <= 0)
             {
                 Die();
@@ -45,6 +46,7 @@ public class MultiplayerEnemy : MonoBehaviour, IPunObservable
             if (this.GetComponent<PhotonView>() != null && this.GetComponent<PhotonView>().IsMine)
             {
                 Move();
+                //print("i have photon view and its mine");
                 if (currentHealth <= 0)
                 {
                     Die();
@@ -53,6 +55,7 @@ public class MultiplayerEnemy : MonoBehaviour, IPunObservable
             else
             {
                 Move();
+                //print("basically everything else (other player is controlling it) health: " + currentHealth);
                 if (currentHealth <= 0)
                 {
                     Die();
@@ -79,6 +82,7 @@ public class MultiplayerEnemy : MonoBehaviour, IPunObservable
         }
         else
         {
+            //print("zero waypoints");
             // This should never execute, leaving just as fallback
             // destroy is handled by Despawner, that also deals dmg
             Die();
@@ -94,6 +98,7 @@ public class MultiplayerEnemy : MonoBehaviour, IPunObservable
         // {
         //     mainGame.GetComponent<MainGameLoop>().AddPlayerMoney(moneyReward);
         // }
+        //print("Destroying: " + gameObject.name);
         CrossSceneManager.instance.AddMoney(moneyReward);
         PhotonNetwork.Destroy(gameObject);
     }
@@ -191,5 +196,11 @@ public class MultiplayerEnemy : MonoBehaviour, IPunObservable
             stream.SendNext(transform.position);
             stream.SendNext(currentHealth);
         }
+    }
+    public void OnPhotonInstantiate(PhotonMessageInfo info)
+    {
+        object[] instantiationData = info.photonView.InstantiationData;
+        waypoints = (Transform[])instantiationData[0];
+        print("got sth");
     }
 }
