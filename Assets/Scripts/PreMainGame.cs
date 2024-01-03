@@ -31,7 +31,7 @@ public class PreMainGame : MonoBehaviourPunCallbacks, IPunObservable
     private float mapLoadProgress = 0f;
     [SerializeField]
     private float _enemyLoadProgress = 0f;
-    private bool RPCToAllowChangeSceneSent = false;
+    //private bool RPCToAllowChangeSceneSent = false;
     private bool isTimerRunning = false;
     private float currentTime = 30.0f;
 
@@ -182,6 +182,7 @@ public class PreMainGame : MonoBehaviourPunCallbacks, IPunObservable
             if (propertiesThatChanged.ContainsKey("roomJoinedNickname"))
             {
                 RefreshTextfields(PhotonNetwork.CurrentLobby.Type.ToString(), PhotonNetwork.CurrentRoom.Name.ToString(), PhotonNetwork.CloudRegion, PhotonNetwork.NickName, PhotonNetwork.CurrentRoom.CustomProperties["roomJoinedNickname"].ToString());
+                isTimerRunning = true;
             }
             // Updating enemy ready state
             // -------------------------------------------------------------
@@ -204,6 +205,7 @@ public class PreMainGame : MonoBehaviourPunCallbacks, IPunObservable
             // We don't check if we're joined, because if we're not master we have to be
             // So PN.currRoom.CustProps["roomCreatorNickname"] is enemy nick
             RefreshTextfields(PhotonNetwork.CurrentLobby.Type.ToString(), PhotonNetwork.CurrentRoom.Name.ToString(), PhotonNetwork.CloudRegion, PhotonNetwork.NickName, PhotonNetwork.CurrentRoom.CustomProperties["roomCreatorNickname"].ToString());
+            isTimerRunning = true;
             // Updating enemy ready state
             // -------------------------------------------------------------
             if (propertiesThatChanged.ContainsKey("isMasterReady"))
