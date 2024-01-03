@@ -30,7 +30,6 @@ public class MultiplayerEnemy : MonoBehaviour, IPunObservable
         }
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (SceneManager.GetActiveScene().name.Equals("MainMenu"))
@@ -53,7 +52,11 @@ public class MultiplayerEnemy : MonoBehaviour, IPunObservable
             }
             else
             {
-                // do nothing, its controlled by other player
+                Move();
+                if (currentHealth <= 0)
+                {
+                    Die();
+                }
             }
         }
     }
