@@ -80,7 +80,7 @@ public class CrossSceneManager : MonoBehaviour
 
     public void ResetAfterPlaying()
     {
-        // reset everything
+        // Reset everything
     }
 
     // set round time during play set up
