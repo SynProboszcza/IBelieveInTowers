@@ -144,6 +144,7 @@ public class PreMainGame : MonoBehaviourPunCallbacks, IPunObservable
     public void GameNotStarted()
     {
         print("yea, not ready during 30seconds");
+        textfieldTimerToClickReady.color = Color.red;
         // change text color to red
         // idk leave room?
     }
