@@ -33,7 +33,8 @@ public class PreMainGame : MonoBehaviourPunCallbacks, IPunObservable
     private float _enemyLoadProgress = 0f;
     //private bool RPCToAllowChangeSceneSent = false;
     private bool isTimerRunning = false;
-    private float currentTime = 30.0f;
+    private bool areBothReady = false;
+    public float currentTime = 30.0f;
 
     private void Awake()
     {
@@ -127,7 +128,14 @@ public class PreMainGame : MonoBehaviourPunCallbacks, IPunObservable
                 {
                     RefreshTimer(textfieldTimerToClickReady, currentTime);
                 }
-                GameNotStarted();
+                if (areBothReady)
+                {
+                    gameObject.GetComponent<PhotonView>().RPC("AllowToChangeScene", RpcTarget.All);
+                }
+                else
+                {
+                    GameNotStarted();
+                }
                 isTimerRunning = false;
             }
         }
@@ -231,7 +239,7 @@ public class PreMainGame : MonoBehaviourPunCallbacks, IPunObservable
         //  set timer to 0:05(sync it); start scene loading; maybe display some text
         // Then at 0:00 allow to change scene
         // Master should control time flow
-
+        areBothReady = true;
         readyToggle.interactable = false;
         leaveRoom.interactable = false;
         textfieldEnemyReadyState.text = "Both players ready!";
