@@ -58,6 +58,8 @@ public class SimpleConnect : MonoBehaviourPunCallbacks
     {
         print("SIMPLE Joined room: " + roomName);
         CrossSceneManager.instance.amIDefender = amIDefending;
+        CrossSceneManager.instance.isMoneyInfinite = isMoneyInfinite;
+        CrossSceneManager.instance.isManaInfinite = isManaInfinite;
         mainGameScript.SetActive(true);
         base.OnJoinedRoom();
     }

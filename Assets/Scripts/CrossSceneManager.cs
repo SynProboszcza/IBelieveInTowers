@@ -105,23 +105,29 @@ public class CrossSceneManager : MonoBehaviour
         // Reset everything
     }
 
-    private void ShowCostMoney(int cost)
+    private void ShowMoneyChange(int cost, bool isPaying) // Make this take 3rd argument which is position
     {
         mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         GameObject go = Instantiate(showPriceCostPrefab, new Vector3(mouseWorldPos.x+1, mouseWorldPos.y, 0), Quaternion.identity);
-        go.transform.Find("Price").GetComponent<TMP_Text>().text = "-" + cost.ToString() + " G";
+        if (isPaying)
+        {
+            go.transform.Find("Price").GetComponent<TMP_Text>().text = "-" + cost.ToString() + " G";
+        } else
+        {
+            go.transform.Find("Price").GetComponent<TMP_Text>().text = "+" + cost.ToString() + " G";
+        }
     }
 
     public bool PayWithMoney(int cost)
     {
         if (isMoneyInfinite)
         {
-            ShowCostMoney(cost);
+            ShowMoneyChange(cost, true);
             return true;
         }
         if (playerMoney >= cost)
         {
-            ShowCostMoney(cost);
+            ShowMoneyChange(cost, true);
             playerMoney -= cost;
             return true;
         }
@@ -149,8 +155,8 @@ public class CrossSceneManager : MonoBehaviour
 
     public void AddMoney(int amount)
     {
+        ShowMoneyChange(amount, false);
         playerMoney += amount;
-
     }
 
     public bool CanPlayerAffordWithMoney(int cost)
