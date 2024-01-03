@@ -199,6 +199,10 @@ public class MainTurret : MonoBehaviour
 
     public void TakeDamage(float _damage)
     {
+        if (CrossSceneManager.instance.invincibleTurrets)
+        {
+            return;
+        }
         this.turretHealth -= _damage;
     }
 

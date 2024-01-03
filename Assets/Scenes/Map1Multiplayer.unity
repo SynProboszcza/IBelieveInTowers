@@ -2092,7 +2092,7 @@ MonoBehaviour:
   - {fileID: 716769049}
   - {fileID: 1699625319}
   roundTimeSeconds: 125
-  currentTime: 0
+  currentTime: 15
   a_timer: {fileID: 339148621}
   a_enemyHealthTextField: {fileID: 1813382342}
   a_playerMoneyTextField: {fileID: 920058155}
@@ -2872,7 +2872,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &498376029
 Transform:
   m_ObjectHideFlags: 0
@@ -4232,11 +4232,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3345287502717792688, guid: a17a2be5e144dbb4b90b66638eb1d8a6, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3345287502717792688, guid: a17a2be5e144dbb4b90b66638eb1d8a6, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3345287502717792688, guid: a17a2be5e144dbb4b90b66638eb1d8a6, type: 3}
       propertyPath: m_AnchorMin.x
@@ -4244,7 +4244,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3345287502788569934, guid: a17a2be5e144dbb4b90b66638eb1d8a6, type: 3}
       propertyPath: m_SizeDelta.x
-      value: -1600
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3345287502788569934, guid: a17a2be5e144dbb4b90b66638eb1d8a6, type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -4764,8 +4764,8 @@ MonoBehaviour:
   gameVersion: 0.1
   roomName: SIMPLEroom
   nickName: SIMPLEnick
-  amIDefending: 1
-  isMoneyInfinite: 0
+  amIDefending: 0
+  isMoneyInfinite: 1
   isManaInfinite: 0
   invincibleTurrets: 0
   mainGameScript: {fileID: 239573652}
@@ -13509,6 +13509,7 @@ MonoBehaviour:
   slimerPrice: 250
   defenderHealth: 0
   currentMatchMaxTime: 0
+  delayFirstSpawn: 3
   enemyNickname: 
   myNickName: 
   bearPrefab: {fileID: 1800778710029251882, guid: 87ea0512c20c1c140b994ef3df70d698, type: 3}
@@ -13522,6 +13523,7 @@ MonoBehaviour:
   isMoneyInfinite: 0
   isManaInfinite: 0
   invincibleTurrets: 0
+  showPriceCostPrefab: {fileID: 8992059104996785522, guid: 3d4c5d5dd235a1849bc9407173f3d9d5, type: 3}
 --- !u!4 &1634076229
 Transform:
   m_ObjectHideFlags: 0

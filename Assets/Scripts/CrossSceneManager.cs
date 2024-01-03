@@ -1,6 +1,7 @@
 using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 //using UnityEngine.SocialPlatforms.GameCenter;
 
@@ -35,7 +36,7 @@ public class CrossSceneManager : MonoBehaviour
     [HideInInspector]
     public int slimerPrice = 554;
     public int defenderHealth;
-    public int currentMatchMaxTime;
+    public int currentMatchMaxTime = 180;
     public int delayFirstSpawn = 3;
     public string enemyNickname = "";
     public string myNickName = "";
@@ -50,6 +51,9 @@ public class CrossSceneManager : MonoBehaviour
     public bool isMoneyInfinite = false;
     public bool isManaInfinite = false;
     public bool invincibleTurrets = false;
+    private Vector2 mouseWorldPos;
+    public GameObject showPriceCostPrefab;
+
 
     void Start()
     {
@@ -101,14 +105,23 @@ public class CrossSceneManager : MonoBehaviour
         // Reset everything
     }
 
+    private void ShowCostMoney(int cost)
+    {
+        //mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        //GameObject go = Instantiate(showPriceCostPrefab, new Vector3(mouseWorldPos.x, mouseWorldPos.y, 0), Quaternion.identity);
+        //go.transform.Find("Price").GetComponent<TMP_Text>().text = cost.ToString();
+    }
+
     public bool PayWithMoney(int cost)
     {
         if (isMoneyInfinite)
         {
+            ShowCostMoney(cost);
             return true;
         }
         if (playerMoney >= cost)
         {
+            ShowCostMoney(cost);
             playerMoney -= cost;
             return true;
         }

@@ -116,7 +116,7 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
             attackerPart.gameObject.SetActive(true);
             // defenderHealth = CrossSceneManager.instance.defenderHealth;
         }
-        roundTimeSeconds = CrossSceneManager.instance.currentMatchMaxTime;
+        //roundTimeSeconds = CrossSceneManager.instance.currentMatchMaxTime;
         currentTime = roundTimeSeconds;
         
         // start the timer, syncing is done by sending current time and compensating lag

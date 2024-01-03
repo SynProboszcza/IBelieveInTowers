@@ -192,7 +192,7 @@ public class PreMainGame : MonoBehaviourPunCallbacks, IPunObservable
             if (propertiesThatChanged.ContainsKey("roomJoinedNickname"))
             {
                 RefreshTextfields(PhotonNetwork.CurrentLobby.Type.ToString(), PhotonNetwork.CurrentRoom.Name.ToString(), PhotonNetwork.CloudRegion, PhotonNetwork.NickName, PhotonNetwork.CurrentRoom.CustomProperties["roomJoinedNickname"].ToString());
-                isTimerRunning = true;
+                BothJoined();
             }
             // Updating enemy ready state
             // -------------------------------------------------------------
@@ -204,7 +204,6 @@ public class PreMainGame : MonoBehaviourPunCallbacks, IPunObservable
             // -------------------------------------------------------------
             if (readyState && (bool)PhotonNetwork.CurrentRoom.CustomProperties["isJoinedReady"])
             {
-                //textfieldEnemyReadyState.text = "Both players ready!";
                 print("Sending RPC to change scene!");
                 gameObject.GetComponent<PhotonView>().RPC("SetUpPlayArena", RpcTarget.All);
             }
@@ -215,8 +214,7 @@ public class PreMainGame : MonoBehaviourPunCallbacks, IPunObservable
             // We don't check if we're joined, because if we're not master we have to be
             // So PN.currRoom.CustProps["roomCreatorNickname"] is enemy nick
             RefreshTextfields(PhotonNetwork.CurrentLobby.Type.ToString(), PhotonNetwork.CurrentRoom.Name.ToString(), PhotonNetwork.CloudRegion, PhotonNetwork.NickName, PhotonNetwork.CurrentRoom.CustomProperties["roomCreatorNickname"].ToString());
-            isTimerRunning = true;
-            textfieldTimerToClickReady.color = Color.blue;
+            BothJoined();
             // Updating enemy ready state
             // -------------------------------------------------------------
             if (propertiesThatChanged.ContainsKey("isMasterReady"))
@@ -225,6 +223,13 @@ public class PreMainGame : MonoBehaviourPunCallbacks, IPunObservable
             }
         }
         base.OnRoomPropertiesUpdate(propertiesThatChanged);
+    }
+
+    private void BothJoined()
+    {
+        isTimerRunning = true;
+        textfieldTimerToClickReady.color = Color.blue;
+
     }
 
     [PunRPC]
@@ -241,6 +246,9 @@ public class PreMainGame : MonoBehaviourPunCallbacks, IPunObservable
         areBothReady = true;
         readyToggle.interactable = false;
         leaveRoom.interactable = false;
+        textfieldEnemyReadyState.text = "Both players ready!";
+        currentTime = 5.0f;
+        textfieldTimerToClickReady.color = Color.green;
         if (enemiesShopParent != null)
         {
             for (int i = 0; i < enemiesShopParent.transform.childCount; i++)
@@ -249,10 +257,6 @@ public class PreMainGame : MonoBehaviourPunCallbacks, IPunObservable
                 child.GetComponent<Button>().interactable = false;
             }
         }
-
-        textfieldEnemyReadyState.text = "Both players ready!";
-        currentTime = 5.0f;
-        textfieldTimerToClickReady.color = Color.green;
         // Transfer selected units from PreMainGame -> CSM -> MultiplayerMainGameLoop
         if (preListOfEnemies != null)
         {
@@ -265,15 +269,12 @@ public class PreMainGame : MonoBehaviourPunCallbacks, IPunObservable
             }
         }
         StartCoroutine(LoadYourAsyncScene());
-
-        //ShowConnectedDecorationAndChangeSceneAfterNSeconds(5);
-
     }
 
     [PunRPC]
     public void AllowToChangeScene()
     {
-        print("local load progress:" + mapLoadProgress + "\nremote load progress:" + _enemyLoadProgress);
+        //print("local load progress:" + mapLoadProgress + "\nremote load progress:" + _enemyLoadProgress);
         asyncLoad.allowSceneActivation = true;
     }
 
