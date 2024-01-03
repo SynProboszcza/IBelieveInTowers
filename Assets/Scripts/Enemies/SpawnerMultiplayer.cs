@@ -38,7 +38,6 @@ public class SpawnerMultiplayer : MonoBehaviour
     public bool isSpawnAllowed = true;
     //[HideInInspector]
     public bool isSpawningConstantly = false;
-    private bool _showWhyNotSpawning = true;
 
     private void Start()
     {
@@ -58,15 +57,6 @@ public class SpawnerMultiplayer : MonoBehaviour
                 "EnemySlimer"
             };
         }
-        while (CrossSceneManager.instance.transform.Find("EnemiesFromPreMainGame").transform.childCount > 0 
-            && CrossSceneManager.instance.transform.Find("EnemiesFromPreMainGame").transform.GetChild(0) != null)
-        {
-                CrossSceneManager.instance.transform.Find("EnemiesFromPreMainGame").transform.GetChild(0).SetParent(listOfEnemies.transform);
-        }
-        // Wait 3 seconds before spawning
-        // Value should be read from CrossSceneManager - easier to access
-        StartCoroutine(WaitForNSeconds(CrossSceneManager.instance.secondsToWaitBeforeGameStart));
-        isSpawnAllowed = false;
     }
 
     private void Update() 
@@ -78,12 +68,6 @@ public class SpawnerMultiplayer : MonoBehaviour
             // TODO: Check if sufficient time has passed here, not inside of SpawnThisUnit()
             SpawnThisUnit(_unitPrefab);
         }
-    }
-
-    System.Collections.IEnumerator WaitForNSeconds(int seconds)
-    {
-        yield return new WaitForSeconds(seconds);
-        isSpawnAllowed = true;
     }
 
     public void SpawnThisUnit(GameObject unitReference)
@@ -115,14 +99,7 @@ public class SpawnerMultiplayer : MonoBehaviour
         {
             if (!(Time.time > spawnRate + timeSinceLastRespawn))
             {
-                //print("Waiting to spawn...");
-            } else if (!isSpawnAllowed)
-            {
-                if (_showWhyNotSpawning)
-                {
-                    print("isSpawnAllowed is blocked, probably for first " + CrossSceneManager.instance.secondsToWaitBeforeGameStart + " seconds.");
-                }
-                _showWhyNotSpawning = false; // Flag to send this msg only once
+                print("Waiting to spawn...");
             } else
             {
                 print(

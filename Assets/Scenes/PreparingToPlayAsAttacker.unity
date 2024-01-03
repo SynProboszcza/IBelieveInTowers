@@ -1809,9 +1809,6 @@ MonoBehaviour:
   roomName: SIMPLEroom
   nickName: SIMPLEnick
   amIDefending: 0
-  isMoneyInfinite: 0
-  isManaInfinite: 0
-  invincibleTurrets: 0
   mainGameScript: {fileID: 0}
 --- !u!1 &711377046
 GameObject:
@@ -2428,8 +2425,6 @@ MonoBehaviour:
   amIMaster: 0
   amIDefender: 0
   readyState: 0
-  mapLoadProgress: 0
-  _enemyLoadProgress: 0
 --- !u!114 &1025020466
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8716,28 +8711,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerMoney: 0
-  playerMana: 0
-  enemyListFromPreMainGame: []
   bearPrice: 500
   bettlePrice: 100
   opossumPrice: 200
   dinoPrice: 150
   slimerPrice: 250
   defenderHealth: 0
-  currentMatchMaxTime: 0
   enemyNickname: 
   myNickName: 
-  bearPrefab: {fileID: 1800778710029251882, guid: 87ea0512c20c1c140b994ef3df70d698, type: 3}
-  bettlePrefab: {fileID: 1800778710029251882, guid: cbd5016e237baf947b57c88b38399295, type: 3}
-  opossumPrefab: {fileID: 1800778710029251882, guid: 4a9dbed49699e384a928472244668e41, type: 3}
-  dinoPrefab: {fileID: 1800778710029251882, guid: 22bfcd9538747664b96db9175264daf0, type: 3}
-  slimerPrefab: {fileID: 1800778710029251882, guid: baa432b55623a7d49b084e4b478d9367, type: 3}
   amIMaster: 0
   amIDefender: 0
-  hasDefenderDied: 0
   isMoneyInfinite: 0
-  isManaInfinite: 0
-  invincibleTurrets: 0
 --- !u!4 &1210959662
 Transform:
   m_ObjectHideFlags: 0
@@ -9543,8 +9527,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4285493103
-  m_fontColor: {r: 0.4339623, g: 0.4339623, b: 0.4339623, a: 1}
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
