@@ -10,6 +10,7 @@ public class PreMainGame : MonoBehaviourPunCallbacks, IPunObservable
 {
     public Toggle readyToggle;
     public GameObject preListOfEnemies;
+    public GameObject enemiesShopParent;
     public TMP_Text textfieldLobby;
     public TMP_Text textfieldRoom;
     public TMP_Text textfieldRegion;
@@ -215,6 +216,7 @@ public class PreMainGame : MonoBehaviourPunCallbacks, IPunObservable
             // So PN.currRoom.CustProps["roomCreatorNickname"] is enemy nick
             RefreshTextfields(PhotonNetwork.CurrentLobby.Type.ToString(), PhotonNetwork.CurrentRoom.Name.ToString(), PhotonNetwork.CloudRegion, PhotonNetwork.NickName, PhotonNetwork.CurrentRoom.CustomProperties["roomCreatorNickname"].ToString());
             isTimerRunning = true;
+            textfieldTimerToClickReady.color = Color.blue;
             // Updating enemy ready state
             // -------------------------------------------------------------
             if (propertiesThatChanged.ContainsKey("isMasterReady"))
@@ -224,10 +226,6 @@ public class PreMainGame : MonoBehaviourPunCallbacks, IPunObservable
         }
         base.OnRoomPropertiesUpdate(propertiesThatChanged);
     }
-
-    // SetUpPlayArena() starts loading, cant change yet
-    // AllowToChangeScene() allows it
-    // 
 
     [PunRPC]
     public void SetUpPlayArena()
@@ -243,6 +241,15 @@ public class PreMainGame : MonoBehaviourPunCallbacks, IPunObservable
         areBothReady = true;
         readyToggle.interactable = false;
         leaveRoom.interactable = false;
+        if (enemiesShopParent != null)
+        {
+            for (int i = 0; i < enemiesShopParent.transform.childCount; i++)
+            {
+                Transform child = enemiesShopParent.transform.GetChild(i).transform;
+                child.GetComponent<Button>().interactable = false;
+            }
+        }
+
         textfieldEnemyReadyState.text = "Both players ready!";
         currentTime = 5.0f;
         textfieldTimerToClickReady.color = Color.green;

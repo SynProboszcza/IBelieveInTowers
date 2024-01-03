@@ -36,7 +36,7 @@ public class CrossSceneManager : MonoBehaviour
     public int slimerPrice = 554;
     public int defenderHealth;
     public int currentMatchMaxTime;
-    public int secondsToWaitBeforeGameStart = 3;
+    public int delayFirstSpawn = 3;
     public string enemyNickname = "";
     public string myNickName = "";
     public GameObject bearPrefab;

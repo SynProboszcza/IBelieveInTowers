@@ -2417,6 +2417,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   readyToggle: {fileID: 618729016}
   preListOfEnemies: {fileID: 1117020803}
+  enemiesShopParent: {fileID: 765086560434956826}
   textfieldLobby: {fileID: 1762170510}
   textfieldRoom: {fileID: 1046514356}
   textfieldRegion: {fileID: 413857504}
@@ -2431,6 +2432,7 @@ MonoBehaviour:
   readyState: 0
   mapLoadProgress: 0
   _enemyLoadProgress: 0
+  currentTime: 30
 --- !u!114 &1025020466
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8727,7 +8729,7 @@ MonoBehaviour:
   slimerPrice: 250
   defenderHealth: 0
   currentMatchMaxTime: 0
-  secondsToWaitBeforeGameStart: 3
+  delayFirstSpawn: 3
   enemyNickname: 
   myNickName: 
   bearPrefab: {fileID: 1800778710029251882, guid: 87ea0512c20c1c140b994ef3df70d698, type: 3}
@@ -10542,6 +10544,14 @@ PrefabInstance:
       propertyPath: enemyList
       value: 
       objectReference: {fileID: 1117020803}
+    - target: {fileID: 765086559946075503, guid: 7037bb6232695c848be38f8c721d8090, type: 3}
+      propertyPath: m_Transition
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 765086559946075503, guid: 7037bb6232695c848be38f8c721d8090, type: 3}
+      propertyPath: m_Interactable
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 765086560654009241, guid: 7037bb6232695c848be38f8c721d8090, type: 3}
       propertyPath: enemyList
       value: 
@@ -10556,6 +10566,11 @@ PrefabInstance:
       objectReference: {fileID: 1117020803}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7037bb6232695c848be38f8c721d8090, type: 3}
+--- !u!1 &765086560434956826 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 765086559396202230, guid: 7037bb6232695c848be38f8c721d8090, type: 3}
+  m_PrefabInstance: {fileID: 765086560434956825}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &3345287501690456522
 PrefabInstance:
   m_ObjectHideFlags: 0

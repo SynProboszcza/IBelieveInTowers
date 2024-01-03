@@ -8,7 +8,7 @@ using UnityEngine.SceneManagement;
 public class MultiplayerEnemy : MonoBehaviour, IPunObservable
 {
     public GameObject mainGame;
-    [HideInInspector]
+    //[HideInInspector]
     public Transform[] waypoints;
     public float speed = 2f;
     //[HideInInspector]
@@ -24,7 +24,7 @@ public class MultiplayerEnemy : MonoBehaviour, IPunObservable
     {
         currentHealth = maxHealth;
         mainGame = GameObject.FindWithTag("SingleTagForMainGameLoop");
-        if (waypoints == null)
+        if (waypoints == null || waypoints.Length == 0)
         {
             waypoints = mainGame.GetComponent<MultiplayerMainGameLoop>().waypoints;
         }
@@ -58,12 +58,12 @@ public class MultiplayerEnemy : MonoBehaviour, IPunObservable
             }
             else
             {
-                //Move();
-                ////print("basically everything else (other player is controlling it) health: " + currentHealth);
-                //if (currentHealth <= 0)
-                //{
-                //    Die();
-                //}
+                Move();
+                //print("basically everything else (other player is controlling it) health: " + currentHealth);
+                if (currentHealth <= 0)
+                {
+                    Die();
+                }
             }
         }
     }
@@ -104,7 +104,10 @@ public class MultiplayerEnemy : MonoBehaviour, IPunObservable
         // }
         //print("Destroying: " + gameObject.name);
         CrossSceneManager.instance.AddMoney(moneyReward);
-        PhotonNetwork.Destroy(gameObject);
+        if (gameObject.GetComponent<PhotonView>().IsMine)
+        {
+            PhotonNetwork.Destroy(gameObject);
+        }
     }
 
     public void SetCostToSpawn(int amount)

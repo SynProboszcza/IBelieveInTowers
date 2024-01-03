@@ -65,7 +65,7 @@ public class SpawnerMultiplayer : MonoBehaviour
         }
         // Wait 3 seconds before spawning
         // Value should be read from CrossSceneManager - easier to access
-        StartCoroutine(WaitForNSeconds(CrossSceneManager.instance.secondsToWaitBeforeGameStart));
+        StartCoroutine(WaitForNSeconds(CrossSceneManager.instance.delayFirstSpawn));
         isSpawnAllowed = false;
     }
 
@@ -121,7 +121,7 @@ public class SpawnerMultiplayer : MonoBehaviour
             {
                 if (_showWhyNotSpawning)
                 {
-                    print("isSpawnAllowed is blocked, probably for first " + CrossSceneManager.instance.secondsToWaitBeforeGameStart + " seconds.");
+                    print("isSpawnAllowed is blocked, probably for first " + CrossSceneManager.instance.delayFirstSpawn + " seconds.");
                 }
                 _showWhyNotSpawning = false; // Flag to send this msg only once
             } else
