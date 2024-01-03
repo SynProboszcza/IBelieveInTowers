@@ -2423,6 +2423,7 @@ MonoBehaviour:
   textfieldMyNickName: {fileID: 2116225633}
   textfieldEnemyNickName: {fileID: 463049944}
   textfieldEnemyReadyState: {fileID: 381139287}
+  textfieldTimerToClickReady: {fileID: 1842787243}
   leaveRoom: {fileID: 2135872491}
   mainCanvasReference: {fileID: 412221084}
   amIMaster: 0
@@ -2448,7 +2449,8 @@ MonoBehaviour:
   Synchronization: 3
   OwnershipTransfer: 0
   observableSearch: 2
-  ObservedComponents: []
+  ObservedComponents:
+  - {fileID: 1025020465}
   sceneViewId: 2
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -8725,6 +8727,7 @@ MonoBehaviour:
   slimerPrice: 250
   defenderHealth: 0
   currentMatchMaxTime: 0
+  secondsToWaitBeforeGameStart: 3
   enemyNickname: 
   myNickName: 
   bearPrefab: {fileID: 1800778710029251882, guid: 87ea0512c20c1c140b994ef3df70d698, type: 3}
@@ -9511,8 +9514,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -730, y: -100}
-  m_SizeDelta: {x: 222.079, y: 113.2932}
+  m_AnchoredPosition: {x: -717.67206, y: -100}
+  m_SizeDelta: {x: 246.7349, y: 113.2932}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1842787243
 MonoBehaviour:

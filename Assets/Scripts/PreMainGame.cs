@@ -32,6 +32,8 @@ public class PreMainGame : MonoBehaviourPunCallbacks, IPunObservable
     [SerializeField]
     private float _enemyLoadProgress = 0f;
     private bool RPCToAllowChangeSceneSent = false;
+    private bool isTimerRunning = false;
+    private float currentTime = 30.0f;
 
     private void Awake()
     {
@@ -95,14 +97,55 @@ public class PreMainGame : MonoBehaviourPunCallbacks, IPunObservable
     }
 
     void Update()
-    {       // floating point math smh
-        // if ((mapLoadProgress >= 0.9f && _enemyLoadProgress >= 0.9f)
-        //     && !RPCToAllowChangeSceneSent) 
-        // {
-        //     gameObject.GetComponent<PhotonView>().RPC("AllowToChangeScene", RpcTarget.All);
-        //     RPCToAllowChangeSceneSent = true; // this flag is here so RPC is sent only once
-        // }
+    {
+        // -----------------------------------------------------------------------
+        // Timer logic (copied from MultiplayerMainGameLoop)
+        // -----------------------------------------------------------------------
+        if (isTimerRunning)
+        {
+            if (currentTime > 0)
+            {
+                currentTime -= Time.deltaTime;
+                if (amIDefender)
+                {
+                    RefreshTimer(textfieldTimerToClickReady, currentTime);
+                }
+                else
+                {
+                    RefreshTimer(textfieldTimerToClickReady, currentTime);
+                }
+            }
+            else
+            {
+                // Time has passed!
+                currentTime = -1f; // RefreshTimer adds 1, so the result is 0:00
+                if (amIDefender)
+                {
+                    RefreshTimer(textfieldTimerToClickReady, currentTime);
+                }
+                else
+                {
+                    RefreshTimer(textfieldTimerToClickReady, currentTime);
+                }
+                GameNotStarted();
+                isTimerRunning = false;
+            }
+        }
+    }
 
+    public void GameNotStarted()
+    {
+        print("yea, not ready during 30seconds");
+        // change text color to red
+        // idk leave room?
+    }
+
+    public void RefreshTimer(TMP_Text timer, float time)
+    {
+        time += 1; // this is so it does not show 0 for whole last second
+        int seconds = Mathf.FloorToInt(time % 60);
+        int minutes = Mathf.FloorToInt(time / 60);
+        timer.text = string.Format("{0:0}:{1:00}", minutes, seconds);
     }
 
     public void RefreshTextfields(string _lobbyName, string _roomName, string _regionName, string _nickName, string _enemyNickName)
@@ -178,9 +221,20 @@ public class PreMainGame : MonoBehaviourPunCallbacks, IPunObservable
     [PunRPC]
     public void SetUpPlayArena()
     {
+        // Called when both are ready
+        // 
+        // When joining room, timer is stuck at 0:30
+        // When somebody joins, timer starts running down
+        // When both are ready:
+        //  set timer to 0:05(sync it); start scene loading; maybe display some text
+        // Then at 0:00 allow to change scene
+        // Master should control time flow
+
         readyToggle.interactable = false;
         leaveRoom.interactable = false;
         textfieldEnemyReadyState.text = "Both players ready!";
+        currentTime = 5.0f;
+        textfieldTimerToClickReady.color = Color.green;
         // Transfer selected units from PreMainGame -> CSM -> MultiplayerMainGameLoop
         if (preListOfEnemies != null)
         {
@@ -193,14 +247,6 @@ public class PreMainGame : MonoBehaviourPunCallbacks, IPunObservable
             }
         }
         StartCoroutine(LoadYourAsyncScene());
-        // I might be wrong, but here map should be already loaded
-        // 
-        // When joining room, timer is stuck at 0:30
-        // When somebody joins, timer starts running down
-        // When both are ready:
-        //  set timer to 0:05(sync it); start scene loading; maybe display some text
-        // Then at 0:00 allow to change scene
-        // Master should control time flow
 
         //ShowConnectedDecorationAndChangeSceneAfterNSeconds(5);
 
@@ -230,27 +276,17 @@ public class PreMainGame : MonoBehaviourPunCallbacks, IPunObservable
 
     System.Collections.IEnumerator LoadYourAsyncScene()
     {
-        // The Application loads the Scene in the background as the current Scene runs.
-        // This is particularly good for creating loading screens.
-        // You could also load the Scene by using sceneBuildIndex. In this case Scene2 has
-        // a sceneBuildIndex of 1 as shown in Build Settings.
         print("scene loading");
         this.asyncLoad = SceneManager.LoadSceneAsync("Map1Multiplayer");
         asyncLoad.allowSceneActivation = false;
-
-        // Wait until the asynchronous scene fully loads
         while (!asyncLoad.isDone)
         {
-            //print("local load progress: " + this.asyncLoad.progress);
             this.mapLoadProgress = asyncLoad.progress;
-            // if(this.asyncLoad.progress >= 0.9f)
-            // {
-            //     // map is ready
-            //     //print("scene loaded");
-            //     //gameObject.GetComponent<PhotonView>().RPC("AllowToChangeScene", RpcTarget.All);
-            // }
             yield return null;
         }
+        // Here map should be already loaded and not activated 
+
+
     }
 
     public void ChangeReadyState()
@@ -296,10 +332,12 @@ public class PreMainGame : MonoBehaviourPunCallbacks, IPunObservable
     {
         if (stream.IsWriting)
         {
-            stream.SendNext(this.mapLoadProgress);
+            stream.SendNext(mapLoadProgress);
+            stream.SendNext(currentTime);
         } else
         {
             _enemyLoadProgress = (float)stream.ReceiveNext();
+            currentTime = (float)stream.ReceiveNext();
             //print("ENEMY load progress: " + _enemyLoadProgress);
         }
         //print("local load progress:" + mapLoadProgress + "\nremote load progress:" + _enemyLoadProgress);
