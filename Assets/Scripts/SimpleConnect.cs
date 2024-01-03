@@ -18,7 +18,7 @@ public class SimpleConnect : MonoBehaviourPunCallbacks
     public string gameVersion = "0.1";
     public string roomName = "SIMPLEroom";
     public string nickName = "SIMPLEnick";
-    [Header("Read-Only, for gameplay change tick it in CrossSceneManager")]
+    [Header("Setup first, then read-only; for gameplay change tick it in CrossSceneManager")]
     public bool amIDefending = false;
     public bool isMoneyInfinite = false;
     public bool isManaInfinite = false;

@@ -5,15 +5,17 @@ using UnityEngine;
 public class ShowPrice : MonoBehaviour
 {
     public float durationSeconds = 2f;
-    public float speed = 2f;
+    public float forceY = 2f;
+    public Vector2 leftToRight = new Vector2(-1,1);
 
-    private void Update()
+
+    private void Start()
     {
-        for(float i = 0; i < durationSeconds; i += Time.deltaTime)
-        {
-            transform.position = Vector2.MoveTowards(transform.position, new Vector2(transform.position.x, transform.position.y+0.2f), speed * Time.deltaTime);
-        }
-        Destroy(gameObject);
+        Vector2 force = new Vector2(Random.Range(leftToRight.x, leftToRight.y), forceY);
+        gameObject.GetComponent<Rigidbody2D>().AddForce(force);
+        Destroy(gameObject, durationSeconds);
+        //Destroy(transform.parent, durationSeconds+1);
+        // Destruction of parent is handled by a different script attached to it
     }
 
 }

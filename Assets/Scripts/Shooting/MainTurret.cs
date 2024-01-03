@@ -77,6 +77,7 @@ public class MainTurret : MonoBehaviour
     public SpriteRenderer srBase;
     //public SpriteRenderer srGun; // For now gun does not need changing with upgrades
     public SpriteRenderer srMuzzleEffects;
+    public string niceName = "unknown xdd";
 
     void Start()
     {
@@ -282,6 +283,8 @@ public class MainTurret : MonoBehaviour
             // check if it has enough money and substract it
             CrossSceneManager.instance.PayWithMoney(upgradeCost);
             upgradeLevel++;
+            turretMaxHealth *= 1.1f;
+            turretHealth *= 1.1f;
             return true;
         } else
         {

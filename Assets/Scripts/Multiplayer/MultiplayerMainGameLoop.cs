@@ -116,6 +116,10 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
             attackerPart.gameObject.SetActive(true);
             // defenderHealth = CrossSceneManager.instance.defenderHealth;
         }
+
+        // =====================================================================================================================================================
+        // Temporarily disabled
+        // =====================================================================================================================================================
         //roundTimeSeconds = CrossSceneManager.instance.currentMatchMaxTime;
         currentTime = roundTimeSeconds;
         

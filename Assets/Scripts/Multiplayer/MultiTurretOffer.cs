@@ -1,6 +1,8 @@
 using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 
 // Multi as in Multiplayer, not multiple offer per one
@@ -9,6 +11,7 @@ public class MultiTurretOffer : MonoBehaviour
 {
     public GameObject turretPrefab;
     private GameObject multiMainGame;
+    public TMP_Text priceAboveShop;
     public int turretCost = 50;
     void Start()
     {
@@ -48,5 +51,11 @@ public class MultiTurretOffer : MonoBehaviour
     private void CloseNode()
     {
         transform.parent.transform.parent.GetComponent<MultiShopContainer>().CloseNode();
+    }
+
+    private void OnMouseOver()
+    {
+        priceAboveShop.text = turretPrefab.GetComponent<MainTurret>().niceName + "\n" + turretCost.ToString() + " G";
+        // MultiShopContainer sets it back to "Select a turret!" inside CloseShop
     }
 }

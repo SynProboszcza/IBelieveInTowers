@@ -107,9 +107,9 @@ public class CrossSceneManager : MonoBehaviour
 
     private void ShowCostMoney(int cost)
     {
-        //mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        //GameObject go = Instantiate(showPriceCostPrefab, new Vector3(mouseWorldPos.x, mouseWorldPos.y, 0), Quaternion.identity);
-        //go.transform.Find("Price").GetComponent<TMP_Text>().text = cost.ToString();
+        mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        GameObject go = Instantiate(showPriceCostPrefab, new Vector3(mouseWorldPos.x+1, mouseWorldPos.y, 0), Quaternion.identity);
+        go.transform.Find("Price").GetComponent<TMP_Text>().text = "-" + cost.ToString() + " G";
     }
 
     public bool PayWithMoney(int cost)
@@ -150,6 +150,7 @@ public class CrossSceneManager : MonoBehaviour
     public void AddMoney(int amount)
     {
         playerMoney += amount;
+
     }
 
     public bool CanPlayerAffordWithMoney(int cost)
