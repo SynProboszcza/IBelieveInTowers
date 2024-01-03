@@ -236,7 +236,7 @@ MonoBehaviour:
   speed: 1
   currentHealth: 0
   maxHealth: 700
-  damage: 5
+  damage: 10
   waypointIndex: 0
   moneyReward: 500
   costToSpawn: 500
