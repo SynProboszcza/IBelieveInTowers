@@ -18,9 +18,9 @@ public class UnitStatistics : MonoBehaviour
 
     private void Start()
     {
-        speed = unitPrefab.GetComponent<Enemy>().speed;
-        maxHealth = unitPrefab.GetComponent<Enemy>().maxHealth;
-        damage = unitPrefab.GetComponent<Enemy>().damage;
-        moneyReward = unitPrefab.GetComponent<Enemy>().moneyReward;
+        speed = unitPrefab.GetComponent<MultiplayerEnemy>().speed;
+        maxHealth = unitPrefab.GetComponent<MultiplayerEnemy>().maxHealth;
+        damage = unitPrefab.GetComponent<MultiplayerEnemy>().damage;
+        moneyReward = unitPrefab.GetComponent<MultiplayerEnemy>().moneyReward;
     }
 }

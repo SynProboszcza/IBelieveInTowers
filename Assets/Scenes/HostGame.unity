@@ -140,7 +140,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &650844
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1016,14 +1016,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerMoney: 0
   playerMana: 0
+  enemyListFromPreMainGame: []
   bearPrice: 500
   bettlePrice: 100
   opossumPrice: 200
   dinoPrice: 150
   slimerPrice: 250
   defenderHealth: 0
+  currentMatchMaxTime: 0
   enemyNickname: 
   myNickName: 
+  bearPrefab: {fileID: 1800778710029251882, guid: 87ea0512c20c1c140b994ef3df70d698, type: 3}
+  bettlePrefab: {fileID: 1800778710029251882, guid: cbd5016e237baf947b57c88b38399295, type: 3}
+  opossumPrefab: {fileID: 1800778710029251882, guid: 4a9dbed49699e384a928472244668e41, type: 3}
+  dinoPrefab: {fileID: 1800778710029251882, guid: 22bfcd9538747664b96db9175264daf0, type: 3}
+  slimerPrefab: {fileID: 1800778710029251882, guid: baa432b55623a7d49b084e4b478d9367, type: 3}
   amIMaster: 0
   amIDefender: 0
   hasDefenderDied: 0
@@ -1228,6 +1235,42 @@ RectTransform:
   - {fileID: 464461983}
   - {fileID: 1908843881}
   m_Father: {fileID: 1571601289}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &395736117
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 395736118}
+  m_Layer: 5
+  m_Name: 'Left for State: ...'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!224 &395736118
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 395736117}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1592236538}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -2155,7 +2198,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: WIP - unlimited mana
+  m_Text: Unlimited mana
 --- !u!222 &669961398
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -8188,7 +8231,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Unlimited money for both
+  m_Text: Unlimited money
 --- !u!222 &1583977418
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -8230,6 +8273,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 650844}
+  - {fileID: 395736118}
   m_Father: {fileID: 557949506}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -8258,7 +8302,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1592236537}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
@@ -8314,7 +8358,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1592236537}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
@@ -8569,7 +8613,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: I am defending first!
+  m_Text: I am attacking first!
 --- !u!222 &1690500992
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -9138,7 +9182,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 1
-  m_IsOn: 1
+  m_IsOn: 0
 --- !u!114 &1791231598
 MonoBehaviour:
   m_ObjectHideFlags: 0

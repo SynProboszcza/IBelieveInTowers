@@ -16,6 +16,7 @@ public class PreMainGame : MonoBehaviourPunCallbacks, IPunObservable
     public TMP_Text textfieldMyNickName;
     public TMP_Text textfieldEnemyNickName;
     public TMP_Text textfieldEnemyReadyState;
+    public TMP_Text textfieldTimerToClickReady;
     public Button leaveRoom;
     public Canvas mainCanvasReference;
     [HideInInspector]
@@ -95,12 +96,12 @@ public class PreMainGame : MonoBehaviourPunCallbacks, IPunObservable
 
     void Update()
     {       // floating point math smh
-        if ((this.mapLoadProgress >= 0.8f && _enemyLoadProgress >= 0.8f)
-            && !RPCToAllowChangeSceneSent) 
-        {
-            gameObject.GetComponent<PhotonView>().RPC("AllowToChangeScene", RpcTarget.All);
-            RPCToAllowChangeSceneSent = true; // this flag is here so RPC is sent only once
-        }
+        // if ((mapLoadProgress >= 0.9f && _enemyLoadProgress >= 0.9f)
+        //     && !RPCToAllowChangeSceneSent) 
+        // {
+        //     gameObject.GetComponent<PhotonView>().RPC("AllowToChangeScene", RpcTarget.All);
+        //     RPCToAllowChangeSceneSent = true; // this flag is here so RPC is sent only once
+        // }
 
     }
 
@@ -129,7 +130,7 @@ public class PreMainGame : MonoBehaviourPunCallbacks, IPunObservable
 
 
 
-        // Nicknames checking
+        // Nicknames checking / ready checking
         // -------------------------------------------------------------
         if (amIMaster)
         {
@@ -145,15 +146,14 @@ public class PreMainGame : MonoBehaviourPunCallbacks, IPunObservable
             {
                 ShowEnemyReadyState((bool)propertiesThatChanged["isJoinedReady"]);
             }
-
+            // Only Master checks if both are ready
+            // -------------------------------------------------------------
             if (readyState && (bool)PhotonNetwork.CurrentRoom.CustomProperties["isJoinedReady"])
             {
-                textfieldEnemyReadyState.text = "BOTH ARE READY";
-                // SetUpPlayArena();
+                //textfieldEnemyReadyState.text = "Both players ready!";
                 print("Sending RPC to change scene!");
                 gameObject.GetComponent<PhotonView>().RPC("SetUpPlayArena", RpcTarget.All);
             }
-
         }
         else
         {
@@ -161,7 +161,6 @@ public class PreMainGame : MonoBehaviourPunCallbacks, IPunObservable
             // We don't check if we're joined, because if we're not master we have to be
             // So PN.currRoom.CustProps["roomCreatorNickname"] is enemy nick
             RefreshTextfields(PhotonNetwork.CurrentLobby.Type.ToString(), PhotonNetwork.CurrentRoom.Name.ToString(), PhotonNetwork.CloudRegion, PhotonNetwork.NickName, PhotonNetwork.CurrentRoom.CustomProperties["roomCreatorNickname"].ToString());
-
             // Updating enemy ready state
             // -------------------------------------------------------------
             if (propertiesThatChanged.ContainsKey("isMasterReady"))
@@ -172,22 +171,37 @@ public class PreMainGame : MonoBehaviourPunCallbacks, IPunObservable
         base.OnRoomPropertiesUpdate(propertiesThatChanged);
     }
 
+    // SetUpPlayArena() starts loading, cant change yet
+    // AllowToChangeScene() allows it
+    // 
+
     [PunRPC]
     public void SetUpPlayArena()
     {
-        // Wait 5 seconds, send info that both are ready
-        // Change scene using photonnetwork
         readyToggle.interactable = false;
         leaveRoom.interactable = false;
-        textfieldEnemyReadyState.text = "BOTH ARE READY";
-        // for every child GO remove it from Content GO and enqueue it
-        // CSM already has addunittolist and popunitfromlist
-        //for(preListOfEnemies.transform.childCount)
-        //if (preListOfEnemies.transform.childCount > 0)
-        //{
-        //    CrossSceneManager.instance.AddUnitToList();
-        //}
+        textfieldEnemyReadyState.text = "Both players ready!";
+        // Transfer selected units from PreMainGame -> CSM -> MultiplayerMainGameLoop
+        if (preListOfEnemies != null)
+        {
+            while (preListOfEnemies.transform.childCount > 0 && preListOfEnemies.transform.GetChild(0) != null)
+            {
+                Transform child = preListOfEnemies.transform.GetChild(0).transform;
+                Transform parent = CrossSceneManager.instance.gameObject.transform.Find("EnemiesFromPreMainGame");
+                child.localScale = new Vector3(0.5f, 0.5f, 0.5f); // List in multimaingame is scaled down by 0.5
+                child.SetParent(parent);
+            }
+        }
         StartCoroutine(LoadYourAsyncScene());
+        // I might be wrong, but here map should be already loaded
+        // 
+        // When joining room, timer is stuck at 0:30
+        // When somebody joins, timer starts running down
+        // When both are ready:
+        //  set timer to 0:05(sync it); start scene loading; maybe display some text
+        // Then at 0:00 allow to change scene
+        // Master should control time flow
+
         //ShowConnectedDecorationAndChangeSceneAfterNSeconds(5);
 
     }
@@ -195,6 +209,7 @@ public class PreMainGame : MonoBehaviourPunCallbacks, IPunObservable
     [PunRPC]
     public void AllowToChangeScene()
     {
+        print("local load progress:" + mapLoadProgress + "\nremote load progress:" + _enemyLoadProgress);
         asyncLoad.allowSceneActivation = true;
     }
 
@@ -210,11 +225,7 @@ public class PreMainGame : MonoBehaviourPunCallbacks, IPunObservable
     System.Collections.IEnumerator ChangeSceneAfterNSeconds(int seconds)
     {
         yield return new WaitForSeconds(seconds);
-        // Change scene using photonnetwork to playing scene
-        // Select random map
-        //PhotonNetwork.LoadLevel("Map1Multiplayer");
-        //asyncLoad.allowSceneActivation = true;
-
+        gameObject.GetComponent<PhotonView>().RPC("AllowToChangeScene", RpcTarget.All);
     }
 
     System.Collections.IEnumerator LoadYourAsyncScene()
@@ -291,5 +302,7 @@ public class PreMainGame : MonoBehaviourPunCallbacks, IPunObservable
             _enemyLoadProgress = (float)stream.ReceiveNext();
             //print("ENEMY load progress: " + _enemyLoadProgress);
         }
+        //print("local load progress:" + mapLoadProgress + "\nremote load progress:" + _enemyLoadProgress);
+
     }
 }

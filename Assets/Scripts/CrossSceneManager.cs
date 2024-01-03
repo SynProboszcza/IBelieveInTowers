@@ -20,15 +20,30 @@ public class CrossSceneManager : MonoBehaviour
     public Queue<string> unitList { get; private set; }
     [HideInInspector]
     public Dictionary<string, int> enemyPrices;
-    public int bearPrice = 500;
-    public int bettlePrice = 100;
-    public int opossumPrice = 200;
-    public int dinoPrice = 150;
-    public int slimerPrice = 250;
+    //[HideInInspector]
+    public List<GameObject> enemyListFromPreMainGame;
+    // Default prices fallback just in case, they are to be
+    // set from prefabs in Resources
+    [HideInInspector]
+    public int bearPrice = 554;
+    [HideInInspector]
+    public int bettlePrice = 554;
+    [HideInInspector]
+    public int opossumPrice = 554;
+    [HideInInspector]
+    public int dinoPrice = 554;
+    [HideInInspector]
+    public int slimerPrice = 554;
     public int defenderHealth;
     public int currentMatchMaxTime;
+    public int secondsToWaitBeforeGameStart = 3;
     public string enemyNickname = "";
     public string myNickName = "";
+    public GameObject bearPrefab;
+    public GameObject bettlePrefab;
+    public GameObject opossumPrefab;
+    public GameObject dinoPrefab;
+    public GameObject slimerPrefab;
     public bool amIMaster;
     public bool amIDefender;
     public bool hasDefenderDied = false;
@@ -43,9 +58,12 @@ public class CrossSceneManager : MonoBehaviour
         playerMana = 500;
         defenderHealth = 275;
         myNickName = PlayerPrefs.GetString("LocalNickName");
+        GameObject parentForEnemies =  Instantiate(new GameObject("EnemiesFromPreMainGame"));
+        parentForEnemies.name = "EnemiesFromPreMainGame"; // Default instantiation adds "(Clone)" to the name
+        parentForEnemies.transform.parent = transform;
     }
 
-    // Make sure there is only one instance
+    // Make sure there is only one instance and set prices
     private void Awake()
     {
         if(instance != null && instance != this)
@@ -60,11 +78,11 @@ public class CrossSceneManager : MonoBehaviour
         // so i moved it to Awake instead of Start
         enemyPrices = new Dictionary<string, int>
         {
-            { "Bear", bearPrice },
-            { "Bettle", bettlePrice },
-            { "Opossum", opossumPrice },
-            { "Dino", dinoPrice },
-            { "Slimer", slimerPrice }
+            { "Bear", bearPrefab.GetComponent<MultiplayerEnemy>().costToSpawn },
+            { "Bettle", bettlePrefab.GetComponent<MultiplayerEnemy>().costToSpawn },
+            { "Opossum", opossumPrefab.GetComponent<MultiplayerEnemy>().costToSpawn },
+            { "Dino", dinoPrefab.GetComponent<MultiplayerEnemy>().costToSpawn },
+            { "Slimer", slimerPrefab.GetComponent<MultiplayerEnemy>().costToSpawn }
         };
 
     }
@@ -82,8 +100,6 @@ public class CrossSceneManager : MonoBehaviour
     {
         // reset everything
     }
-
-    // set round time during play set up
 
     public bool PayWithMoney(int cost)
     {

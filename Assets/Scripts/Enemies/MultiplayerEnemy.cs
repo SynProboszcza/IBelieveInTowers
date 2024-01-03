@@ -8,17 +8,18 @@ using UnityEngine.SceneManagement;
 public class MultiplayerEnemy : MonoBehaviour, IPunObservable
 {
     public GameObject mainGame;
-    //[HideInInspector]
+    [HideInInspector]
     public Transform[] waypoints;
     public float speed = 2f;
-    //[HideInInspector]
+    [HideInInspector]
     public float currentHealth;
     public float maxHealth;
     public int damage = 0;
     [HideInInspector]
     public int waypointIndex = 0;
     public int moneyReward = 50;
-    // Start is called before the first frame update
+    public int costToSpawn = 555;
+
     void Start()
     {
         currentHealth = maxHealth;
@@ -94,6 +95,11 @@ public class MultiplayerEnemy : MonoBehaviour, IPunObservable
         PhotonNetwork.Destroy(gameObject);
     }
 
+    public void SetCostToSpawn(int amount)
+    {
+        this.costToSpawn = amount;
+    }
+
     public void SetSpeed(float speed)
     {
         this.speed = speed;
@@ -117,6 +123,11 @@ public class MultiplayerEnemy : MonoBehaviour, IPunObservable
     public void SetMoneyReward(int moneyReward)
     {
         this.moneyReward = moneyReward;
+    }
+
+    public int GetCostToSpawn()
+    {
+        return this.costToSpawn;
     }
 
     public float GetSpeed()
@@ -159,10 +170,12 @@ public class MultiplayerEnemy : MonoBehaviour, IPunObservable
         if (stream.IsReading)
         {
             transform.position = (Vector3)stream.ReceiveNext();
+            currentHealth = (float)stream.ReceiveNext();
         }
         else if (stream.IsWriting)
         {
             stream.SendNext(transform.position);
+            stream.SendNext(currentHealth);
         }
     }
 }
