@@ -165,6 +165,17 @@ public class MultiplayerEnemy : MonoBehaviour, IPunObservable
         this.currentHealth -= damage;
     }
 
+    public void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(collision.TryGetComponent<MultiplayerEnemy>(out MultiplayerEnemy enemy))
+        {
+            if(enemy.GetSpeed() <= this.speed)
+            {
+                this.speed = enemy.GetSpeed();
+            }
+        }
+    }
+
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
         if (stream.IsReading)
