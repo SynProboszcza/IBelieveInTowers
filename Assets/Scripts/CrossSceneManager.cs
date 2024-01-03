@@ -98,7 +98,7 @@ public class CrossSceneManager : MonoBehaviour
 
     public void ResetAfterPlaying()
     {
-        // reset everything
+        // Reset everything
     }
 
     public bool PayWithMoney(int cost)
