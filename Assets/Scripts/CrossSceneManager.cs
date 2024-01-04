@@ -103,6 +103,7 @@ public class CrossSceneManager : MonoBehaviour
 
     public void ResetAfterPlaying()
     {
+        print("CSM Reset");
         playerMoney = 2000;
         playerMana = 500;
         defenderHealth = 275;
