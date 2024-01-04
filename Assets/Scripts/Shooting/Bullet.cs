@@ -68,7 +68,7 @@ public class Bullet : MonoBehaviour
              
                 GameObject boom = Instantiate(explosionEffect, transform.position, Quaternion.identity);
                 // Default sprite is of r=1, so we scale it with radious
-                boom.transform.localScale = new Vector3(explosionRadious + 1, explosionRadious + 1, explosionRadious + 1);
+                boom.transform.localScale = new Vector3(explosionRadious * 2, explosionRadious * 2, explosionRadious * 2);
                 Destroy(boom, timeToShowExplosion);
                 Destroy(gameObject);
             } else

@@ -242,6 +242,10 @@ MonoBehaviour:
   waypointIndex: 0
   moneyReward: 200
   costToSpawn: 200
+  canAttackTurrets: 1
+  bullet: {fileID: 6643630402151057952, guid: 116a823518bfa8747bab8d55939bc99a, type: 3}
+  targetPosition: {fileID: 0}
+  bulletAmount: 10
 --- !u!1001 &8795907661844743789
 PrefabInstance:
   m_ObjectHideFlags: 0

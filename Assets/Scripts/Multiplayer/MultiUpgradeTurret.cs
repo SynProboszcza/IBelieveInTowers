@@ -33,6 +33,19 @@ public class MultiUpgradeTurret : MonoBehaviour
         }
     }
 
+    private void OnMouseOver()
+    {
+        transform.parent.transform.Find("Range").Find("RangeCenter").gameObject.SetActive(true);
+        transform.parent.transform.Find("Range").gameObject.GetComponent<SpriteRenderer>().enabled = true;
+    }
+
+    private void OnMouseExit()
+    {
+        transform.parent.transform.Find("Range").Find("RangeCenter").gameObject.SetActive(false);
+        transform.parent.transform.Find("Range").gameObject.GetComponent<SpriteRenderer>().enabled = false;
+    }
+
+
     private void ShowRedCrossForNSeconds(int seconds)
     {
         sr.enabled = true;
