@@ -37,6 +37,7 @@ Transform:
   - {fileID: 6935430095804555025}
   - {fileID: 1308187788945217786}
   - {fileID: 6795221043564783327}
+  - {fileID: 2886296629741287816}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -160,6 +161,7 @@ MonoBehaviour:
   gun: {fileID: 1308187788945217784}
   shootSpawnPoint: {fileID: 1308187787142432023}
   shopNodePrefab: {fileID: 5003845570486195154, guid: 2bfa89d107a79ee4d92010d08cb39941, type: 3}
+  multishopNodePrefab: {fileID: 5003845570486195154, guid: dca36f7296aaaec4797f9c8ec861c3e6, type: 3}
   upgradeLevel: 0
   bulletSpeed: 100
   bulletDamage: 5
@@ -168,6 +170,7 @@ MonoBehaviour:
   distanceToShutoffMuzzleEffects: 0.2
   upgradeCost: 30
   turretHealth: 200
+  turretMaxHealth: 200
   damageMultipliers:
   - 1
   - 1.5
@@ -189,8 +192,11 @@ MonoBehaviour:
   - 3
   - 4
   ohk: 0
+  timeToShowExplosion: 0.2
   isEnemyClose: 0
   shootThisFrame: 0
+  isExplosive: 0
+  closeEnemies: []
   isShotgun: 0
   shotgunSpreadInDegrees: 15
   shotgunPelletsToTheSides: 1
@@ -521,4 +527,66 @@ PrefabInstance:
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5652181059727615735, guid: c5f35cff630a96d4387b6cb010f9be70, type: 3}
   m_PrefabInstance: {fileID: 1170352283510194216}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &5974843367109778119
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 1308187787354350621}
+    m_Modifications:
+    - target: {fileID: 4388177258737859204, guid: 68ad298ae769004498e9f3564d187d52, type: 3}
+      propertyPath: m_Name
+      value: Range
+      objectReference: {fileID: 0}
+    - target: {fileID: 8855421694434583375, guid: 68ad298ae769004498e9f3564d187d52, type: 3}
+      propertyPath: m_RootOrder
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8855421694434583375, guid: 68ad298ae769004498e9f3564d187d52, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8855421694434583375, guid: 68ad298ae769004498e9f3564d187d52, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8855421694434583375, guid: 68ad298ae769004498e9f3564d187d52, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8855421694434583375, guid: 68ad298ae769004498e9f3564d187d52, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8855421694434583375, guid: 68ad298ae769004498e9f3564d187d52, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8855421694434583375, guid: 68ad298ae769004498e9f3564d187d52, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8855421694434583375, guid: 68ad298ae769004498e9f3564d187d52, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8855421694434583375, guid: 68ad298ae769004498e9f3564d187d52, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8855421694434583375, guid: 68ad298ae769004498e9f3564d187d52, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8855421694434583375, guid: 68ad298ae769004498e9f3564d187d52, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 68ad298ae769004498e9f3564d187d52, type: 3}
+--- !u!4 &2886296629741287816 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8855421694434583375, guid: 68ad298ae769004498e9f3564d187d52, type: 3}
+  m_PrefabInstance: {fileID: 5974843367109778119}
   m_PrefabAsset: {fileID: 0}

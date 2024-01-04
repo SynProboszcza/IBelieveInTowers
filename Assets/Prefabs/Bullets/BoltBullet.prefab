@@ -161,3 +161,6 @@ MonoBehaviour:
   distanceFromShot: 0
   originalPosition: {x: 0, y: 0}
   ohk: 0
+  isExplosive: 0
+  explosionRadious: 2
+  explosionEffect: {fileID: 1199399877204284496, guid: 39e6eb505ff89cb4d8ac2c3e4f77d431, type: 3}

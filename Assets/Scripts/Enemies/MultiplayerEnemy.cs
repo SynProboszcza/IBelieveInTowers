@@ -8,7 +8,7 @@ using UnityEngine.SceneManagement;
 public class MultiplayerEnemy : MonoBehaviour, IPunObservable
 {
     public GameObject mainGame;
-    //[HideInInspector]
+    [HideInInspector]
     public Transform[] waypoints;
     public float speed = 2f;
     //[HideInInspector]
@@ -18,7 +18,14 @@ public class MultiplayerEnemy : MonoBehaviour, IPunObservable
     [HideInInspector]
     public int waypointIndex = 0;
     public int moneyReward = 50;
-    // Start is called before the first frame update
+    public int costToSpawn = 555;
+    [Header("Shooting parts - leave empty except for slimer")]
+    public bool canAttackTurrets = false;
+    public GameObject bullet;
+    public Transform targetPosition;
+    public int bulletAmount = 10;
+
+
     void Start()
     {
         currentHealth = maxHealth;
@@ -108,6 +115,11 @@ public class MultiplayerEnemy : MonoBehaviour, IPunObservable
         }
     }
 
+    public void SetCostToSpawn(int amount)
+    {
+        this.costToSpawn = amount;
+    }
+
     public void SetSpeed(float speed)
     {
         this.speed = speed;
@@ -131,6 +143,11 @@ public class MultiplayerEnemy : MonoBehaviour, IPunObservable
     public void SetMoneyReward(int moneyReward)
     {
         this.moneyReward = moneyReward;
+    }
+
+    public int GetCostToSpawn()
+    {
+        return this.costToSpawn;
     }
 
     public float GetSpeed()
@@ -167,6 +184,12 @@ public class MultiplayerEnemy : MonoBehaviour, IPunObservable
     {
         this.currentHealth -= damage;
     }
+    
+    //public void ShootAround(Transform targetTurretPosition)
+    //{
+    //    Quaternion rotation = Quaternion.Euler(0, 0, Mathf.Atan2(targetTurretPosition.position.y, targetTurretPosition.position.x) * Mathf.Rad2Deg + 180f);
+    //    Instantiate(bullet, transform.position, rotation);
+    //}
 
     public void OnTriggerEnter2D(Collider2D collision)
     {
@@ -177,19 +200,25 @@ public class MultiplayerEnemy : MonoBehaviour, IPunObservable
                 this.speed = enemy.GetSpeed();
             }
         }
+        //ShootAround(collision.transform);
     }
+
+
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
         if (stream.IsReading)
         {
             transform.position = (Vector3)stream.ReceiveNext();
+            currentHealth = (float)stream.ReceiveNext();
         }
         else if (stream.IsWriting)
         {
             stream.SendNext(transform.position);
+            stream.SendNext(currentHealth);
         }
     }
+
     public void OnPhotonInstantiate(PhotonMessageInfo info)
     {
         object[] instantiationData = info.photonView.InstantiationData;

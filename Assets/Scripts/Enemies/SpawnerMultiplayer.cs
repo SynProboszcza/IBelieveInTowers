@@ -143,12 +143,12 @@ public class SpawnerMultiplayer : MonoBehaviour
 
     public void SpawnBearDebug()
     {
-        string unitName = "Enemies/EnemyBear";
+        string unitName = "Enemies/EnemySlimer";
         GameObject _unit = PhotonNetwork.Instantiate(unitName, spawnPosition, Quaternion.identity);
         _unit.GetComponent<MultiplayerEnemy>().SetDamage(27);
-        _unit.GetComponent<MultiplayerEnemy>().SetSpeed(0.5f);
+        _unit.GetComponent<MultiplayerEnemy>().SetSpeed(1f);
         _unit.GetComponent<MultiplayerEnemy>().SetWaypoints(waypoints);
-        _unit.GetComponent<MultiplayerEnemy>().SetHealth(500);
+        _unit.GetComponent<MultiplayerEnemy>().SetHealth(1000);
         _unit.GetComponent<MultiplayerEnemy>().SetMoneyReward(1234);
 
     }
