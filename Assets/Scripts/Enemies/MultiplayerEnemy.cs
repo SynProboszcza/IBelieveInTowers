@@ -36,36 +36,41 @@ public class MultiplayerEnemy : MonoBehaviour, IPunObservable
 
     void Update()
     {
-        if (SceneManager.GetActiveScene().name.Equals("MainMenu"))
+        Move();
+        if(currentHealth <= 0) 
         {
-            Move();
-            //print("main menu");
-            if (currentHealth <= 0)
-            {
-                Die();
-            }
+            Die();
         }
-        else
-        {
-            if (this.GetComponent<PhotonView>() != null && this.GetComponent<PhotonView>().IsMine)
-            {
-                Move();
-                //print("i have photon view and its mine");
-                if (currentHealth <= 0)
-                {
-                    Die();
-                }
-            }
-            else
-            {
-                Move();
-                //print("basically everything else (other player is controlling it) health: " + currentHealth);
-                if (currentHealth <= 0)
-                {
-                    Die();
-                }
-            }
-        }
+        // if (SceneManager.GetActiveScene().name.Equals("MainMenu"))
+        // {
+        //     Move();
+        //     //print("main menu");
+        //     if (currentHealth <= 0)
+        //     {
+        //         Die();
+        //     }
+        // }
+        // else
+        // {
+        //     if (this.GetComponent<PhotonView>() != null && this.GetComponent<PhotonView>().IsMine)
+        //     {
+        //         Move();
+        //         //print("i have photon view and its mine");
+        //         if (currentHealth <= 0)
+        //         {
+        //             Die();
+        //         }
+        //     }
+        //     else
+        //     {
+        //         Move();
+        //         //print("basically everything else (other player is controlling it) health: " + currentHealth);
+        //         if (currentHealth <= 0)
+        //         {
+        //             Die();
+        //         }
+        //     }
+        // }
     }
 
     private void Move()
@@ -97,13 +102,7 @@ public class MultiplayerEnemy : MonoBehaviour, IPunObservable
     {
         // Maybe add some effects to death, idk particles or
         // animated text of how much money it gave
-        //mainGame.GetComponent<MainGameLoop>().AddPlayerMoney(moneyReward);
-        // if (mainGame != null) // Had to add this check for main menu enemies
-        // {
-        //     mainGame.GetComponent<MainGameLoop>().AddPlayerMoney(moneyReward);
-        // }
-        //print("Destroying: " + gameObject.name);
-        CrossSceneManager.instance.AddMoney(moneyReward);
+        CrossSceneManager.instance.AddMoney(moneyReward, transform.position);
         if (gameObject.GetComponent<PhotonView>().IsMine)
         {
             PhotonNetwork.Destroy(gameObject);

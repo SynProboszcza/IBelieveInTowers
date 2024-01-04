@@ -41,6 +41,7 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
     // Check for connection and connect if not
     void Start()
     {
+        CrossSceneManager.instance.ResetAfterPlaying();
         if (PlayerPrefs.GetString("LocalNickName").Length >= 3)
         {
             _nickName.text = PlayerPrefs.GetString("LocalNickName");
@@ -246,6 +247,7 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
         showConnection.GetComponent<TMP_Text>().text = "Connected to master";
         gameObject.GetComponent<Button>().interactable = true;
         refreshListButton.GetComponent<Button>().interactable = true;
+        //CrossSceneManager.instance.ResetAfterPlaying();
         PhotonNetwork.JoinLobby(TypedLobby.Default);
         base.OnConnectedToMaster();
     }

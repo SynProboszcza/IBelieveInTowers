@@ -89,7 +89,7 @@ public class MainTurret : MonoBehaviour
         if (bulletsCollection == null) {
             bulletsCollection = new GameObject("BulletsCollection");
         }
-        if (CrossSceneManager.instance.invincibleTurrets)
+        if (CrossSceneManager.instance != null && CrossSceneManager.instance.invincibleTurrets)
         {
             turretMaxHealth = 50000;
             isTurretInvincible = true;

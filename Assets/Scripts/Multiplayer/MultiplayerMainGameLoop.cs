@@ -235,10 +235,10 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
 
     private void GoBackToHostGameAfterNSeconds(int seconds)
     {
-        StartCoroutine(ChangeScene(seconds));
+        StartCoroutine(GoBackHostGame(seconds));
     }
 
-    private IEnumerator ChangeScene(int seconds)
+    private IEnumerator GoBackHostGame(int seconds)
     {
         yield return new WaitForSeconds(seconds);
         PhotonNetwork.LeaveRoom();

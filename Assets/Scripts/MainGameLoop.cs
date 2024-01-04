@@ -60,6 +60,8 @@ public class MainGameLoop : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        playerMoney = CrossSceneManager.instance.playerMoney;
+        playerHealth = CrossSceneManager.instance.defenderHealth;
         //update player health
         string playerHealthTextTemplate = "Health: " + playerHealth;
         playerHealthTextField.text = playerHealthTextTemplate;
