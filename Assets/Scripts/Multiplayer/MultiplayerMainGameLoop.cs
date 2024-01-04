@@ -320,7 +320,7 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
     }
 
     [PunRPC]
-    public void AddResources(bool forDefender, bool isMoney, int amount)
+    public void AddResourcesShowAtMouse(bool forDefender, bool isMoney, int amount)
     {
         if (CrossSceneManager.instance.amIDefender == forDefender)
         {
@@ -340,7 +340,7 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
     }
 
     [PunRPC]
-    public void AddResources(bool forDefender, bool isMoney, int amount, Vector2 fromWhere)
+    public void AddResourcesShowAtSpecifiedPoint(bool forDefender, bool isMoney, int amount, Vector2 fromWhere)
     {
         if (CrossSceneManager.instance.amIDefender == forDefender)
         {
