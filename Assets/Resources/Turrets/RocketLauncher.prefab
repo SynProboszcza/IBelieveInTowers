@@ -191,6 +191,7 @@ MonoBehaviour:
   - 1.4
   - 1.6
   ohk: 0
+  timeToShowExplosion: 0.2
   isEnemyClose: 0
   shootThisFrame: 0
   isExplosive: 1

@@ -62,6 +62,8 @@ public class MainTurret : MonoBehaviour
     public bool ohk = false;
     // Shooting helpers
     // -----------------------------------------------------------------------
+    [Tooltip("Only applicable if isExsplosibe is enabled")]
+    public float timeToShowExplosion = 0.2f;
     public bool isEnemyClose = false;
     public bool shootThisFrame = false;
     public bool isExplosive = false;
@@ -171,21 +173,23 @@ public class MainTurret : MonoBehaviour
                     {
                         // Bullet to the side
                         Quaternion _rotation = Quaternion.Euler(0, 0, Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg + 180f - shotgunSpreadInDegrees * i);
-                        bulletInstance = ShootAtTarget(bullets[upgradeLevel], shootSpawnPoint.transform.position, _rotation, bulletSpeed, bulletDamage, bulletRange, ohk, isExplosive);
-                        
+                        bulletInstance = ShootAtTarget(bullets[upgradeLevel], shootSpawnPoint.transform.position,
+                            _rotation, bulletSpeed, bulletDamage, bulletRange, ohk, isExplosive, timeToShowExplosion);
                         // Bullet centered
-                        bulletInstance = ShootAtTarget(bullets[upgradeLevel], shootSpawnPoint.transform.position, rotation, bulletSpeed, bulletDamage, bulletRange, ohk, isExplosive);
-                        
+                        bulletInstance = ShootAtTarget(bullets[upgradeLevel], shootSpawnPoint.transform.position,
+                            rotation, bulletSpeed, bulletDamage, bulletRange, ohk, isExplosive, timeToShowExplosion);
                         // Bullet to the other side
                         _rotation = Quaternion.Euler(0, 0, Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg + 180f + shotgunSpreadInDegrees * i);
-                        bulletInstance = ShootAtTarget(bullets[upgradeLevel], shootSpawnPoint.transform.position, _rotation, bulletSpeed, bulletDamage, bulletRange, ohk, isExplosive);
+                        bulletInstance = ShootAtTarget(bullets[upgradeLevel], shootSpawnPoint.transform.position,
+                            _rotation, bulletSpeed, bulletDamage, bulletRange, ohk, isExplosive, timeToShowExplosion);
                         
                         timeSinceLastShot = Time.time;
                     }
                 } else
                 {
                     // This is main shooting
-                    bulletInstance = ShootAtTarget(bullets[upgradeLevel], shootSpawnPoint.transform.position, rotation, bulletSpeed, bulletDamage, bulletRange, ohk, isExplosive);
+                    bulletInstance = ShootAtTarget(bullets[upgradeLevel], shootSpawnPoint.transform.position,
+                        rotation, bulletSpeed, bulletDamage, bulletRange, ohk, isExplosive, timeToShowExplosion);
                     timeSinceLastShot = Time.time;
                 }
             } 
@@ -275,7 +279,7 @@ public class MainTurret : MonoBehaviour
         }
     }
 
-    private GameObject ShootAtTarget(GameObject bullet, Vector3 position, Quaternion rotation, float baseBulletSpeed, float baseBulletDamage, float baseBulletRange, bool oneHitKill, bool isExplosive)
+    private GameObject ShootAtTarget(GameObject bullet, Vector3 position, Quaternion rotation, float baseBulletSpeed, float baseBulletDamage, float baseBulletRange, bool oneHitKill, bool isExplosive, float timeToShowExplosion)
     {
         GameObject _bullet = (GameObject)Instantiate(bullet, position, rotation);
         _bullet.GetComponent<Bullet>().SetSpeed(baseBulletSpeed * speedMultipliers[upgradeLevel]);
@@ -283,6 +287,7 @@ public class MainTurret : MonoBehaviour
         _bullet.GetComponent<Bullet>().SetDistanceToLive(baseBulletRange * bulletRangeMultipliers[upgradeLevel]);
         _bullet.GetComponent<Bullet>().Setohk(oneHitKill);
         _bullet.GetComponent<Bullet>().SetIsExplosive(isExplosive);
+        _bullet.GetComponent<Bullet>().SetTimeToShowExplosion(timeToShowExplosion);
         _bullet.transform.SetParent(bulletsCollection.transform);
         UpdateMuzzleEffects();
         muzzleEffects.SetActive(true);
