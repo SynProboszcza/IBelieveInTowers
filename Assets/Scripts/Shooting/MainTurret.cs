@@ -77,6 +77,7 @@ public class MainTurret : MonoBehaviour
     public SpriteRenderer srBase;
     //public SpriteRenderer srGun; // For now gun does not need changing with upgrades
     public SpriteRenderer srMuzzleEffects;
+    public string niceName = "unknown xdd";
 
     void Start()
     {
@@ -88,7 +89,7 @@ public class MainTurret : MonoBehaviour
         if (bulletsCollection == null) {
             bulletsCollection = new GameObject("BulletsCollection");
         }
-        if (CrossSceneManager.instance.invincibleTurrets)
+        if (CrossSceneManager.instance != null && CrossSceneManager.instance.invincibleTurrets)
         {
             turretMaxHealth = 50000;
             isTurretInvincible = true;
@@ -199,6 +200,10 @@ public class MainTurret : MonoBehaviour
 
     public void TakeDamage(float _damage)
     {
+        if (CrossSceneManager.instance.invincibleTurrets)
+        {
+            return;
+        }
         this.turretHealth -= _damage;
     }
 
@@ -278,6 +283,8 @@ public class MainTurret : MonoBehaviour
             // check if it has enough money and substract it
             CrossSceneManager.instance.PayWithMoney(upgradeCost);
             upgradeLevel++;
+            turretMaxHealth *= 1.1f;
+            turretHealth *= 1.1f;
             return true;
         } else
         {

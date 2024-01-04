@@ -2417,12 +2417,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   readyToggle: {fileID: 618729016}
   preListOfEnemies: {fileID: 1117020803}
+  enemiesShopParent: {fileID: 765086560434956826}
   textfieldLobby: {fileID: 1762170510}
   textfieldRoom: {fileID: 1046514356}
   textfieldRegion: {fileID: 413857504}
   textfieldMyNickName: {fileID: 2116225633}
   textfieldEnemyNickName: {fileID: 463049944}
   textfieldEnemyReadyState: {fileID: 381139287}
+  textfieldTimerToClickReady: {fileID: 1842787243}
   leaveRoom: {fileID: 2135872491}
   mainCanvasReference: {fileID: 412221084}
   amIMaster: 0
@@ -2430,6 +2432,7 @@ MonoBehaviour:
   readyState: 0
   mapLoadProgress: 0
   _enemyLoadProgress: 0
+  currentTime: 30
 --- !u!114 &1025020466
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2448,7 +2451,8 @@ MonoBehaviour:
   Synchronization: 3
   OwnershipTransfer: 0
   observableSearch: 2
-  ObservedComponents: []
+  ObservedComponents:
+  - {fileID: 1025020465}
   sceneViewId: 2
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -8725,6 +8729,7 @@ MonoBehaviour:
   slimerPrice: 250
   defenderHealth: 0
   currentMatchMaxTime: 0
+  delayFirstSpawn: 3
   enemyNickname: 
   myNickName: 
   bearPrefab: {fileID: 1800778710029251882, guid: 87ea0512c20c1c140b994ef3df70d698, type: 3}
@@ -8738,6 +8743,7 @@ MonoBehaviour:
   isMoneyInfinite: 0
   isManaInfinite: 0
   invincibleTurrets: 0
+  showPriceCostPrefab: {fileID: 8992059104996785522, guid: 3d4c5d5dd235a1849bc9407173f3d9d5, type: 3}
 --- !u!4 &1210959662
 Transform:
   m_ObjectHideFlags: 0
@@ -9511,8 +9517,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -730, y: -100}
-  m_SizeDelta: {x: 222.079, y: 113.2932}
+  m_AnchoredPosition: {x: -717.67206, y: -100}
+  m_SizeDelta: {x: 246.7349, y: 113.2932}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1842787243
 MonoBehaviour:
@@ -10539,6 +10545,14 @@ PrefabInstance:
       propertyPath: enemyList
       value: 
       objectReference: {fileID: 1117020803}
+    - target: {fileID: 765086559946075503, guid: 7037bb6232695c848be38f8c721d8090, type: 3}
+      propertyPath: m_Transition
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 765086559946075503, guid: 7037bb6232695c848be38f8c721d8090, type: 3}
+      propertyPath: m_Interactable
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 765086560654009241, guid: 7037bb6232695c848be38f8c721d8090, type: 3}
       propertyPath: enemyList
       value: 
@@ -10553,6 +10567,11 @@ PrefabInstance:
       objectReference: {fileID: 1117020803}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7037bb6232695c848be38f8c721d8090, type: 3}
+--- !u!1 &765086560434956826 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 765086559396202230, guid: 7037bb6232695c848be38f8c721d8090, type: 3}
+  m_PrefabInstance: {fileID: 765086560434956825}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &3345287501690456522
 PrefabInstance:
   m_ObjectHideFlags: 0

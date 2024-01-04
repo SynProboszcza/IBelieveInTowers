@@ -75,6 +75,7 @@
     <Compile Include="Assets\Scripts\Shooting\MainTurret.cs" />
     <Compile Include="Assets\Photon\PhotonChat\Demos\DemoChat\ChannelSelector.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexShakeA.cs" />
+    <Compile Include="Assets\Scripts\UI\RemoveMyselfWhenNoChildren.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark04.cs" />
     <Compile Include="Assets\Scripts\Multiplayer\MultiShopContainer.cs" />
     <Compile Include="Assets\Scripts\debugworkinprogress.cs" />
@@ -130,6 +131,7 @@
     <Compile Include="Assets\Scripts\MainMenuLoop.cs" />
     <Compile Include="Assets\Scripts\Multiplayer\BuyUnit.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TextMeshSpawner.cs" />
+    <Compile Include="Assets\Scripts\UI\ShowPrice.cs" />
     <Compile Include="Assets\Scripts\Shop\UpgradeTurret.cs" />
     <Compile Include="Assets\Scripts\Deprecated\Moving\ControlWithArrows.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark03.cs" />

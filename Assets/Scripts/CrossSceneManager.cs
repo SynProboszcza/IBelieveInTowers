@@ -1,6 +1,8 @@
 using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
+using UnityEditor.VersionControl;
 using UnityEngine;
 //using UnityEngine.SocialPlatforms.GameCenter;
 
@@ -35,8 +37,8 @@ public class CrossSceneManager : MonoBehaviour
     [HideInInspector]
     public int slimerPrice = 554;
     public int defenderHealth;
-    public int currentMatchMaxTime;
-    public int secondsToWaitBeforeGameStart = 3;
+    public int currentMatchMaxTime = 180;
+    public int delayFirstSpawn = 3;
     public string enemyNickname = "";
     public string myNickName = "";
     public GameObject bearPrefab;
@@ -50,6 +52,9 @@ public class CrossSceneManager : MonoBehaviour
     public bool isMoneyInfinite = false;
     public bool isManaInfinite = false;
     public bool invincibleTurrets = false;
+    private Vector2 mouseWorldPos;
+    public GameObject showPriceCostPrefab;
+
 
     void Start()
     {
@@ -98,17 +103,60 @@ public class CrossSceneManager : MonoBehaviour
 
     public void ResetAfterPlaying()
     {
-        // Reset everything
+        print("CSM Reset");
+        playerMoney = 2000;
+        playerMana = 500;
+        defenderHealth = 275;
+        currentMatchMaxTime = 180;
+        delayFirstSpawn = 3;
+        enemyNickname = "";
+        myNickName = "";
+        // All not-set bools are implicitly false
+        amIMaster = false;
+        amIDefender = false;
+        hasDefenderDied = false;
+        isMoneyInfinite = false;
+        isManaInfinite = false;
+        invincibleTurrets = false;
+    }
+
+    private void ShowMoneyChange(int cost, bool isPaying) 
+    {
+        // 2 params to use current mouse position
+        mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        GameObject go = Instantiate(showPriceCostPrefab, new Vector3(mouseWorldPos.x+1, mouseWorldPos.y, 0), Quaternion.identity);
+        if (isPaying)
+        {
+            go.transform.Find("Price").GetComponent<TMP_Text>().text = "-" + cost.ToString() + " G";
+        } else
+        {
+            go.transform.Find("Price").GetComponent<TMP_Text>().text = "+" + cost.ToString() + " G";
+        }
+    }
+
+    private void ShowMoneyChange(int cost, bool isPaying, Vector2 position) 
+    {
+        // 3 params to use position thats passed
+        GameObject go = Instantiate(showPriceCostPrefab, new Vector3(position.x, position.y, 0), Quaternion.identity);
+        if (isPaying)
+        {
+            go.transform.Find("Price").GetComponent<TMP_Text>().text = "-" + cost.ToString() + " G";
+        } else
+        {
+            go.transform.Find("Price").GetComponent<TMP_Text>().text = "+" + cost.ToString() + " G";
+        }
     }
 
     public bool PayWithMoney(int cost)
     {
         if (isMoneyInfinite)
         {
+            ShowMoneyChange(cost, true);
             return true;
         }
         if (playerMoney >= cost)
         {
+            ShowMoneyChange(cost, true);
             playerMoney -= cost;
             return true;
         }
@@ -136,6 +184,13 @@ public class CrossSceneManager : MonoBehaviour
 
     public void AddMoney(int amount)
     {
+        ShowMoneyChange(amount, false);
+        playerMoney += amount;
+    }
+
+    public void AddMoney(int amount, Vector2 fromWhere)
+    {
+        ShowMoneyChange(amount, false, fromWhere);
         playerMoney += amount;
     }
 

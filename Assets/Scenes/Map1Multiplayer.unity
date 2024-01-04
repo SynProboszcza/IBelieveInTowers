@@ -2092,7 +2092,7 @@ MonoBehaviour:
   - {fileID: 716769049}
   - {fileID: 1699625319}
   roundTimeSeconds: 125
-  currentTime: 0
+  currentTime: 15
   a_timer: {fileID: 339148621}
   a_enemyHealthTextField: {fileID: 1813382342}
   a_playerMoneyTextField: {fileID: 920058155}
@@ -2108,6 +2108,7 @@ MonoBehaviour:
   isShopOpen: 0
   amIMaster: 0
   amIDefender: 0
+  defenderHealthToSync: 0
 --- !u!4 &239573655
 Transform:
   m_ObjectHideFlags: 0
@@ -4764,9 +4765,9 @@ MonoBehaviour:
   roomName: SIMPLEroom
   nickName: SIMPLEnick
   amIDefending: 1
-  isMoneyInfinite: 0
-  isManaInfinite: 0
-  invincibleTurrets: 0
+  isMoneyInfinite: 1
+  isManaInfinite: 1
+  invincibleTurrets: 1
   mainGameScript: {fileID: 239573652}
 --- !u!4 &938013105
 Transform:
@@ -5443,6 +5444,10 @@ PrefabInstance:
       propertyPath: mainGame
       value: 
       objectReference: {fileID: 239573652}
+    - target: {fileID: 699773554446857291, guid: b0222477b0aebb84b860725cb84910bb, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2101428351625029212, guid: b0222477b0aebb84b860725cb84910bb, type: 3}
       propertyPath: m_Name
       value: DespawnerMultiplayer
@@ -13496,20 +13501,29 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerMoney: 0
   playerMana: 0
+  enemyListFromPreMainGame: []
   bearPrice: 500
   bettlePrice: 100
   opossumPrice: 200
   dinoPrice: 150
   slimerPrice: 250
   defenderHealth: 0
+  currentMatchMaxTime: 0
+  delayFirstSpawn: 3
   enemyNickname: 
   myNickName: 
+  bearPrefab: {fileID: 1800778710029251882, guid: 87ea0512c20c1c140b994ef3df70d698, type: 3}
+  bettlePrefab: {fileID: 1800778710029251882, guid: cbd5016e237baf947b57c88b38399295, type: 3}
+  opossumPrefab: {fileID: 1800778710029251882, guid: 4a9dbed49699e384a928472244668e41, type: 3}
+  dinoPrefab: {fileID: 1800778710029251882, guid: 22bfcd9538747664b96db9175264daf0, type: 3}
+  slimerPrefab: {fileID: 1800778710029251882, guid: baa432b55623a7d49b084e4b478d9367, type: 3}
   amIMaster: 0
   amIDefender: 0
   hasDefenderDied: 0
   isMoneyInfinite: 0
   isManaInfinite: 0
   invincibleTurrets: 0
+  showPriceCostPrefab: {fileID: 8992059104996785522, guid: 3d4c5d5dd235a1849bc9407173f3d9d5, type: 3}
 --- !u!4 &1634076229
 Transform:
   m_ObjectHideFlags: 0
@@ -14355,7 +14369,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1886569868}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 28.5, y: 0, z: 0}
+  m_LocalPosition: {x: 29, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

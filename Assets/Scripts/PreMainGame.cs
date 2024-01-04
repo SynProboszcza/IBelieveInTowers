@@ -10,6 +10,7 @@ public class PreMainGame : MonoBehaviourPunCallbacks, IPunObservable
 {
     public Toggle readyToggle;
     public GameObject preListOfEnemies;
+    public GameObject enemiesShopParent;
     public TMP_Text textfieldLobby;
     public TMP_Text textfieldRoom;
     public TMP_Text textfieldRegion;
@@ -31,7 +32,10 @@ public class PreMainGame : MonoBehaviourPunCallbacks, IPunObservable
     private float mapLoadProgress = 0f;
     [SerializeField]
     private float _enemyLoadProgress = 0f;
-    private bool RPCToAllowChangeSceneSent = false;
+    //private bool RPCToAllowChangeSceneSent = false;
+    private bool isTimerRunning = false;
+    private bool areBothReady = false;
+    public float currentTime = 30.0f;
 
     private void Awake()
     {
@@ -95,14 +99,63 @@ public class PreMainGame : MonoBehaviourPunCallbacks, IPunObservable
     }
 
     void Update()
-    {       // floating point math smh
-        // if ((mapLoadProgress >= 0.9f && _enemyLoadProgress >= 0.9f)
-        //     && !RPCToAllowChangeSceneSent) 
-        // {
-        //     gameObject.GetComponent<PhotonView>().RPC("AllowToChangeScene", RpcTarget.All);
-        //     RPCToAllowChangeSceneSent = true; // this flag is here so RPC is sent only once
-        // }
+    {
+        // -----------------------------------------------------------------------
+        // Timer logic (copied from MultiplayerMainGameLoop)
+        // -----------------------------------------------------------------------
+        if (isTimerRunning)
+        {
+            if (currentTime > 0)
+            {
+                currentTime -= Time.deltaTime;
+                if (amIDefender)
+                {
+                    RefreshTimer(textfieldTimerToClickReady, currentTime);
+                }
+                else
+                {
+                    RefreshTimer(textfieldTimerToClickReady, currentTime);
+                }
+            }
+            else
+            {
+                // Time has passed!
+                currentTime = -1f; // RefreshTimer adds 1, so the result is 0:00
+                if (amIDefender)
+                {
+                    RefreshTimer(textfieldTimerToClickReady, currentTime);
+                }
+                else
+                {
+                    RefreshTimer(textfieldTimerToClickReady, currentTime);
+                }
+                if (areBothReady)
+                {
+                    gameObject.GetComponent<PhotonView>().RPC("AllowToChangeScene", RpcTarget.All);
+                }
+                else
+                {
+                    GameNotStarted();
+                }
+                isTimerRunning = false;
+            }
+        }
+    }
 
+    public void GameNotStarted()
+    {
+        print("yea, not ready during 30seconds");
+        textfieldTimerToClickReady.color = Color.red;
+        // change text color to red
+        // idk leave room?
+    }
+
+    public void RefreshTimer(TMP_Text timer, float time)
+    {
+        time += 1; // this is so it does not show 0 for whole last second
+        int seconds = Mathf.FloorToInt(time % 60);
+        int minutes = Mathf.FloorToInt(time / 60);
+        timer.text = string.Format("{0:0}:{1:00}", minutes, seconds);
     }
 
     public void RefreshTextfields(string _lobbyName, string _roomName, string _regionName, string _nickName, string _enemyNickName)
@@ -139,6 +192,7 @@ public class PreMainGame : MonoBehaviourPunCallbacks, IPunObservable
             if (propertiesThatChanged.ContainsKey("roomJoinedNickname"))
             {
                 RefreshTextfields(PhotonNetwork.CurrentLobby.Type.ToString(), PhotonNetwork.CurrentRoom.Name.ToString(), PhotonNetwork.CloudRegion, PhotonNetwork.NickName, PhotonNetwork.CurrentRoom.CustomProperties["roomJoinedNickname"].ToString());
+                BothJoined();
             }
             // Updating enemy ready state
             // -------------------------------------------------------------
@@ -150,7 +204,6 @@ public class PreMainGame : MonoBehaviourPunCallbacks, IPunObservable
             // -------------------------------------------------------------
             if (readyState && (bool)PhotonNetwork.CurrentRoom.CustomProperties["isJoinedReady"])
             {
-                //textfieldEnemyReadyState.text = "Both players ready!";
                 print("Sending RPC to change scene!");
                 gameObject.GetComponent<PhotonView>().RPC("SetUpPlayArena", RpcTarget.All);
             }
@@ -161,6 +214,7 @@ public class PreMainGame : MonoBehaviourPunCallbacks, IPunObservable
             // We don't check if we're joined, because if we're not master we have to be
             // So PN.currRoom.CustProps["roomCreatorNickname"] is enemy nick
             RefreshTextfields(PhotonNetwork.CurrentLobby.Type.ToString(), PhotonNetwork.CurrentRoom.Name.ToString(), PhotonNetwork.CloudRegion, PhotonNetwork.NickName, PhotonNetwork.CurrentRoom.CustomProperties["roomCreatorNickname"].ToString());
+            BothJoined();
             // Updating enemy ready state
             // -------------------------------------------------------------
             if (propertiesThatChanged.ContainsKey("isMasterReady"))
@@ -171,16 +225,38 @@ public class PreMainGame : MonoBehaviourPunCallbacks, IPunObservable
         base.OnRoomPropertiesUpdate(propertiesThatChanged);
     }
 
-    // SetUpPlayArena() starts loading, cant change yet
-    // AllowToChangeScene() allows it
-    // 
+    private void BothJoined()
+    {
+        isTimerRunning = true;
+        textfieldTimerToClickReady.color = Color.blue;
+
+    }
 
     [PunRPC]
     public void SetUpPlayArena()
     {
+        // Called when both are ready
+        // 
+        // When joining room, timer is stuck at 0:30
+        // When somebody joins, timer starts running down
+        // When both are ready:
+        //  set timer to 0:05(sync it); start scene loading; maybe display some text
+        // Then at 0:00 allow to change scene
+        // Master should control time flow
+        areBothReady = true;
         readyToggle.interactable = false;
         leaveRoom.interactable = false;
         textfieldEnemyReadyState.text = "Both players ready!";
+        currentTime = 5.0f;
+        textfieldTimerToClickReady.color = Color.green;
+        if (enemiesShopParent != null)
+        {
+            for (int i = 0; i < enemiesShopParent.transform.childCount; i++)
+            {
+                Transform child = enemiesShopParent.transform.GetChild(i).transform;
+                child.GetComponent<Button>().interactable = false;
+            }
+        }
         // Transfer selected units from PreMainGame -> CSM -> MultiplayerMainGameLoop
         if (preListOfEnemies != null)
         {
@@ -193,23 +269,12 @@ public class PreMainGame : MonoBehaviourPunCallbacks, IPunObservable
             }
         }
         StartCoroutine(LoadYourAsyncScene());
-        // I might be wrong, but here map should be already loaded
-        // 
-        // When joining room, timer is stuck at 0:30
-        // When somebody joins, timer starts running down
-        // When both are ready:
-        //  set timer to 0:05(sync it); start scene loading; maybe display some text
-        // Then at 0:00 allow to change scene
-        // Master should control time flow
-
-        //ShowConnectedDecorationAndChangeSceneAfterNSeconds(5);
-
     }
 
     [PunRPC]
     public void AllowToChangeScene()
     {
-        print("local load progress:" + mapLoadProgress + "\nremote load progress:" + _enemyLoadProgress);
+        //print("local load progress:" + mapLoadProgress + "\nremote load progress:" + _enemyLoadProgress);
         asyncLoad.allowSceneActivation = true;
     }
 
@@ -230,27 +295,17 @@ public class PreMainGame : MonoBehaviourPunCallbacks, IPunObservable
 
     System.Collections.IEnumerator LoadYourAsyncScene()
     {
-        // The Application loads the Scene in the background as the current Scene runs.
-        // This is particularly good for creating loading screens.
-        // You could also load the Scene by using sceneBuildIndex. In this case Scene2 has
-        // a sceneBuildIndex of 1 as shown in Build Settings.
         print("scene loading");
         this.asyncLoad = SceneManager.LoadSceneAsync("Map1Multiplayer");
         asyncLoad.allowSceneActivation = false;
-
-        // Wait until the asynchronous scene fully loads
         while (!asyncLoad.isDone)
         {
-            //print("local load progress: " + this.asyncLoad.progress);
             this.mapLoadProgress = asyncLoad.progress;
-            // if(this.asyncLoad.progress >= 0.9f)
-            // {
-            //     // map is ready
-            //     //print("scene loaded");
-            //     //gameObject.GetComponent<PhotonView>().RPC("AllowToChangeScene", RpcTarget.All);
-            // }
             yield return null;
         }
+        // Here map should be already loaded and not activated 
+
+
     }
 
     public void ChangeReadyState()
@@ -296,10 +351,12 @@ public class PreMainGame : MonoBehaviourPunCallbacks, IPunObservable
     {
         if (stream.IsWriting)
         {
-            stream.SendNext(this.mapLoadProgress);
+            stream.SendNext(mapLoadProgress);
+            stream.SendNext(currentTime);
         } else
         {
             _enemyLoadProgress = (float)stream.ReceiveNext();
+            currentTime = (float)stream.ReceiveNext();
             //print("ENEMY load progress: " + _enemyLoadProgress);
         }
         //print("local load progress:" + mapLoadProgress + "\nremote load progress:" + _enemyLoadProgress);

@@ -114,7 +114,11 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
             attackerPart.gameObject.SetActive(true);
             // defenderHealth = CrossSceneManager.instance.defenderHealth;
         }
-        roundTimeSeconds = CrossSceneManager.instance.currentMatchMaxTime;
+
+        // =====================================================================================================================================================
+        // Temporarily disabled
+        // =====================================================================================================================================================
+        //roundTimeSeconds = CrossSceneManager.instance.currentMatchMaxTime;
         currentTime = roundTimeSeconds;
         
         // start the timer, syncing is done by sending current time and compensating lag
@@ -228,10 +232,10 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
 
     private void GoBackToHostGameAfterNSeconds(int seconds)
     {
-        StartCoroutine(ChangeScene(seconds));
+        StartCoroutine(GoBackHostGame(seconds));
     }
 
-    private IEnumerator ChangeScene(int seconds)
+    private IEnumerator GoBackHostGame(int seconds)
     {
         yield return new WaitForSeconds(seconds);
         PhotonNetwork.LeaveRoom();

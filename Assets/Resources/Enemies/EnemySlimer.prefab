@@ -238,9 +238,10 @@ MonoBehaviour:
   speed: 2
   currentHealth: 0
   maxHealth: 200
-  damage: 5
+  damage: 15
   waypointIndex: 0
-  moneyReward: 221
+  moneyReward: 200
+  costToSpawn: 200
 --- !u!1001 &8795907661844743789
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -248,6 +249,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1800778710029251927}
     m_Modifications:
+    - target: {fileID: 4140562169342349870, guid: c5f35cff630a96d4387b6cb010f9be70, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.01
+      objectReference: {fileID: 0}
+    - target: {fileID: 4140562169342349870, guid: c5f35cff630a96d4387b6cb010f9be70, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.01
+      objectReference: {fileID: 0}
+    - target: {fileID: 4140562169342349870, guid: c5f35cff630a96d4387b6cb010f9be70, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.01
+      objectReference: {fileID: 0}
     - target: {fileID: 4140562169342349870, guid: c5f35cff630a96d4387b6cb010f9be70, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -0.5

@@ -23,38 +23,53 @@ public class MultiplayerEnemy : MonoBehaviour, IPunObservable
     {
         currentHealth = maxHealth;
         mainGame = GameObject.FindWithTag("SingleTagForMainGameLoop");
+        if (waypoints == null || waypoints.Length == 0)
+        {
+            waypoints = mainGame.GetComponent<MultiplayerMainGameLoop>().waypoints;
+        }
         if (this.GetComponent<PhotonView>().IsMine)
         {
             transform.position = waypoints[waypointIndex].position;
         }
     }
 
-    // Update is called once per frame
     void Update()
     {
-        if (SceneManager.GetActiveScene().name.Equals("MainMenu"))
+        Move();
+        if(currentHealth <= 0) 
         {
-            Move();
-            if (currentHealth <= 0)
-            {
-                Die();
-            }
+            Die();
         }
-        else
-        {
-            if (this.GetComponent<PhotonView>() != null && this.GetComponent<PhotonView>().IsMine)
-            {
-                Move();
-                if (currentHealth <= 0)
-                {
-                    Die();
-                }
-            }
-            else
-            {
-                // do nothing, its controlled by other player
-            }
-        }
+        // if (SceneManager.GetActiveScene().name.Equals("MainMenu"))
+        // {
+        //     Move();
+        //     //print("main menu");
+        //     if (currentHealth <= 0)
+        //     {
+        //         Die();
+        //     }
+        // }
+        // else
+        // {
+        //     if (this.GetComponent<PhotonView>() != null && this.GetComponent<PhotonView>().IsMine)
+        //     {
+        //         Move();
+        //         //print("i have photon view and its mine");
+        //         if (currentHealth <= 0)
+        //         {
+        //             Die();
+        //         }
+        //     }
+        //     else
+        //     {
+        //         Move();
+        //         //print("basically everything else (other player is controlling it) health: " + currentHealth);
+        //         if (currentHealth <= 0)
+        //         {
+        //             Die();
+        //         }
+        //     }
+        // }
     }
 
     private void Move()
@@ -75,6 +90,7 @@ public class MultiplayerEnemy : MonoBehaviour, IPunObservable
         }
         else
         {
+            //print("zero waypoints");
             // This should never execute, leaving just as fallback
             // destroy is handled by Despawner, that also deals dmg
             Die();
@@ -85,13 +101,11 @@ public class MultiplayerEnemy : MonoBehaviour, IPunObservable
     {
         // Maybe add some effects to death, idk particles or
         // animated text of how much money it gave
-        //mainGame.GetComponent<MainGameLoop>().AddPlayerMoney(moneyReward);
-        // if (mainGame != null) // Had to add this check for main menu enemies
-        // {
-        //     mainGame.GetComponent<MainGameLoop>().AddPlayerMoney(moneyReward);
-        // }
-        CrossSceneManager.instance.AddMoney(moneyReward);
-        PhotonNetwork.Destroy(gameObject);
+        CrossSceneManager.instance.AddMoney(moneyReward, transform.position);
+        if (gameObject.GetComponent<PhotonView>().IsMine)
+        {
+            PhotonNetwork.Destroy(gameObject);
+        }
     }
 
     public void SetSpeed(float speed)
@@ -154,6 +168,17 @@ public class MultiplayerEnemy : MonoBehaviour, IPunObservable
         this.currentHealth -= damage;
     }
 
+    public void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(collision.TryGetComponent<MultiplayerEnemy>(out MultiplayerEnemy enemy))
+        {
+            if(enemy.GetSpeed() <= this.speed)
+            {
+                this.speed = enemy.GetSpeed();
+            }
+        }
+    }
+
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
         if (stream.IsReading)
@@ -164,5 +189,11 @@ public class MultiplayerEnemy : MonoBehaviour, IPunObservable
         {
             stream.SendNext(transform.position);
         }
+    }
+    public void OnPhotonInstantiate(PhotonMessageInfo info)
+    {
+        object[] instantiationData = info.photonView.InstantiationData;
+        waypoints = (Transform[])instantiationData[0];
+        print("got sth");
     }
 }

@@ -63,12 +63,13 @@ public class Enemy : MonoBehaviour
     {
         // Maybe add some effects to death, idk particles or
         // animated text of how much money it gave
-        //mainGame.GetComponent<MainGameLoop>().AddPlayerMoney(moneyReward);
-        // if (mainGame != null) // Had to add this check for main menu enemies
-        // {
-        //     mainGame.GetComponent<MainGameLoop>().AddPlayerMoney(moneyReward);
-        // }
-        mainGame.GetComponent<MainGameLoop>().AddPlayerMoney(moneyReward);
+
+        // Check for main menu anim., if mainGame GO does not have
+        // MainGameLoop component dont try to add money
+        if (mainGame != null && mainGame.TryGetComponent<MainGameLoop>(out _))
+        {
+            mainGame.GetComponent<MainGameLoop>().AddPlayerMoney(moneyReward);
+        }
         Destroy(gameObject);
     }
 

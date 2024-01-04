@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class MultiShopContainer : MonoBehaviour
@@ -46,6 +47,7 @@ public class MultiShopContainer : MonoBehaviour
     {
         sr.enabled = false;
         gameObject.transform.GetChild(0).gameObject.SetActive(false);
+        gameObject.transform.Find("Background").Find("Canvas").Find("Price").GetComponent<TMP_Text>().text = "Select a turret!";
         mainGame.GetComponent<MultiplayerMainGameLoop>().isShopOpen = false;
     }
 

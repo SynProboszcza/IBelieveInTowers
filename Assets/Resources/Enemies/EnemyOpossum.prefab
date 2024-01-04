@@ -235,12 +235,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mainGame: {fileID: 0}
   waypoints: []
-  speed: 2
+  speed: 3
   currentHealth: 0
-  maxHealth: 200
-  damage: 5
+  maxHealth: 100
+  damage: 35
   waypointIndex: 0
-  moneyReward: 221
+  moneyReward: 350
+  costToSpawn: 350
 --- !u!1001 &7747007329685284654
 PrefabInstance:
   m_ObjectHideFlags: 0
