@@ -619,8 +619,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -550, y: -475}
-  m_SizeDelta: {x: 700, y: 75}
+  m_AnchoredPosition: {x: -209.99121, y: -475}
+  m_SizeDelta: {x: 1400, y: 75}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &381139287
 MonoBehaviour:
@@ -8733,6 +8733,7 @@ MonoBehaviour:
   isManaInfinite: 0
   invincibleTurrets: 0
   showPriceCostPrefab: {fileID: 8992059104996785522, guid: 3d4c5d5dd235a1849bc9407173f3d9d5, type: 3}
+  spawnDelayPassed: 0
 --- !u!4 &1210959662
 Transform:
   m_ObjectHideFlags: 0
