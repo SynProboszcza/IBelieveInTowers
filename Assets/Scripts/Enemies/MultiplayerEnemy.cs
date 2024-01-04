@@ -81,10 +81,15 @@ public class MultiplayerEnemy : MonoBehaviour, IPunObservable
     {
         // Maybe add some effects to death, idk particles or
         // animated text of how much money it gave
-        CrossSceneManager.instance.AddMoney(moneyReward, transform.position);
         if (gameObject.GetComponent<PhotonView>().IsMine)
         {
+            // isMine == true means im attacker
+            // gameObject.GetComponent<PhotonView>().RPC("AddResources", RpcTarget.All, true, true, 50);
+            // CrossSceneManager.instance.AddMoney(moneyReward, transform.position);
             PhotonNetwork.Destroy(gameObject);
+        } else
+        {
+            gameObject.GetComponent<PhotonView>().RPC("AddResources", RpcTarget.All, true, true, moneyReward);
         }
     }
 

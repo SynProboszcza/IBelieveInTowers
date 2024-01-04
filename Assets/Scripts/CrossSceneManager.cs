@@ -1,3 +1,4 @@
+using Photon.Pun;
 using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
@@ -183,6 +184,12 @@ public class CrossSceneManager : MonoBehaviour
         playerMana += amount;
     }
 
+    public void AddMana(int amount, Vector2 fromWhere)
+    {
+        // Show adding mana
+        playerMana += amount;
+    }
+
     public void AddMoney(int amount)
     {
         ShowMoneyChange(amount, false);
@@ -220,6 +227,49 @@ public class CrossSceneManager : MonoBehaviour
         } else
         {
             return false;
+        }
+    }
+
+    /// <summary>
+    /// Adding specific resources for specific player
+    /// isMoney == true gives money, false gives mana
+    /// </summary>
+    /// <param name="forDefender"></param>
+    /// <param name="isMoney"></param>
+    /// <param name="amount"></param>
+    [PunRPC] 
+    public void AddResources(bool forDefender, bool isMoney, int amount)
+    {
+        if (amIDefender == forDefender)
+        {
+            if (isMoney)
+            {
+                AddMoney(amount);
+            } else
+            {
+                AddMana(amount);
+            }
+        } else
+        {
+            // Do nothing
+        }
+    }
+
+    [PunRPC] 
+    public void AddResources(bool forDefender, bool isMoney, int amount, Vector2 fromWhere)
+    {
+        if (amIDefender == forDefender)
+        {
+            if (isMoney)
+            {
+                AddMoney(amount, fromWhere);
+            } else
+            {
+                AddMana(amount, fromWhere); //ShowManaChange is not implemented yet
+            }
+        } else
+        {
+            // Do nothing
         }
     }
 
