@@ -15,6 +15,7 @@ public class MainTurret : MonoBehaviour
     public GameObject gun;
     public GameObject shootSpawnPoint;
     public GameObject shopNodePrefab;
+    public GameObject multishopNodePrefab;
     private GameObject bulletsCollection;
     private GameObject target;
     private GameObject bulletInstance;
@@ -43,7 +44,7 @@ public class MainTurret : MonoBehaviour
     // Turret health
     // ----------------------------------------------------------------------
     public float turretHealth = 200f;
-    private float turretMaxHealth;
+    public float turretMaxHealth = 200f;
     private bool isTurretInvincible = false;
     // Multipliers of upgrades
     // ----------------------------------------------------------------------
@@ -61,8 +62,12 @@ public class MainTurret : MonoBehaviour
     public bool ohk = false;
     // Shooting helpers
     // -----------------------------------------------------------------------
+    [Tooltip("Only applicable if isExsplosibe is enabled")]
+    public float timeToShowExplosion = 0.2f;
     public bool isEnemyClose = false;
     public bool shootThisFrame = false;
+    public bool isExplosive = false;
+    public List<GameObject> closeEnemies;
     // Settings for a shotgun mode
     // -----------------------------------------------------------------------
     public bool isShotgun = false;
@@ -77,7 +82,7 @@ public class MainTurret : MonoBehaviour
     public SpriteRenderer srBase;
     //public SpriteRenderer srGun; // For now gun does not need changing with upgrades
     public SpriteRenderer srMuzzleEffects;
-    public string niceName = "unknown xdd";
+    public string niceName = "nice name not set in Editor";
 
     void Start()
     {
@@ -129,8 +134,21 @@ public class MainTurret : MonoBehaviour
         //  rotate the gun pointing at enemy, handle fire rate,
         //  handle shotgun shooting.
         // -----------------------------------------------------------------------------
-        if (isEnemyClose && target != null)
+        if (isEnemyClose)
         {
+            // -----------------------------------------------------------------------------
+            // Target selection
+            // -----------------------------------------------------------------------------
+            float distance = Mathf.Infinity;
+            for (int i = 0; i < closeEnemies.Count; i++)
+            {
+                float newDistance = Vector3.Distance(transform.position, closeEnemies[i].transform.position);
+                if (newDistance < distance)
+                {
+                    distance = newDistance;
+                    target = closeEnemies[i];
+                }
+            }
             targetPosition = target.transform.position;
             Vector2 direction = new Vector2(shootSpawnPoint.transform.position.x, shootSpawnPoint.transform.position.y) - targetPosition;
             direction.Normalize();
@@ -155,21 +173,23 @@ public class MainTurret : MonoBehaviour
                     {
                         // Bullet to the side
                         Quaternion _rotation = Quaternion.Euler(0, 0, Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg + 180f - shotgunSpreadInDegrees * i);
-                        bulletInstance = ShootAtTarget(bullets[upgradeLevel], shootSpawnPoint.transform.position, _rotation, bulletSpeed, bulletDamage, bulletRange, ohk);
-                        
+                        bulletInstance = ShootAtTarget(bullets[upgradeLevel], shootSpawnPoint.transform.position,
+                            _rotation, bulletSpeed, bulletDamage, bulletRange, ohk, isExplosive, timeToShowExplosion);
                         // Bullet centered
-                        bulletInstance = ShootAtTarget(bullets[upgradeLevel], shootSpawnPoint.transform.position, rotation, bulletSpeed, bulletDamage, bulletRange, ohk);
-                        
+                        bulletInstance = ShootAtTarget(bullets[upgradeLevel], shootSpawnPoint.transform.position,
+                            rotation, bulletSpeed, bulletDamage, bulletRange, ohk, isExplosive, timeToShowExplosion);
                         // Bullet to the other side
                         _rotation = Quaternion.Euler(0, 0, Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg + 180f + shotgunSpreadInDegrees * i);
-                        bulletInstance = ShootAtTarget(bullets[upgradeLevel], shootSpawnPoint.transform.position, _rotation, bulletSpeed, bulletDamage, bulletRange, ohk);
+                        bulletInstance = ShootAtTarget(bullets[upgradeLevel], shootSpawnPoint.transform.position,
+                            _rotation, bulletSpeed, bulletDamage, bulletRange, ohk, isExplosive, timeToShowExplosion);
                         
                         timeSinceLastShot = Time.time;
                     }
                 } else
                 {
                     // This is main shooting
-                    bulletInstance = ShootAtTarget(bullets[upgradeLevel], shootSpawnPoint.transform.position, rotation, bulletSpeed, bulletDamage, bulletRange, ohk);
+                    bulletInstance = ShootAtTarget(bullets[upgradeLevel], shootSpawnPoint.transform.position,
+                        rotation, bulletSpeed, bulletDamage, bulletRange, ohk, isExplosive, timeToShowExplosion);
                     timeSinceLastShot = Time.time;
                 }
             } 
@@ -208,8 +228,17 @@ public class MainTurret : MonoBehaviour
     }
 
     private void DieAndLeaveShopNode() {
-        Instantiate(shopNodePrefab, new Vector3(transform.position.x, transform.position.y, MainGameLoop.shopNodesZOffset), Quaternion.identity);
-        Destroy(gameObject);
+        if (gameObject.TryGetComponent<PhotonView>(out _) && gameObject.GetComponent<PhotonView>().IsMine) 
+        {
+            // If multiplayer
+            Instantiate(multishopNodePrefab, new Vector3(transform.position.x, transform.position.y, MainGameLoop.shopNodesZOffset), Quaternion.identity);
+            PhotonNetwork.Destroy(gameObject);
+        } else
+        {
+            // If singleplayer
+            Instantiate(shopNodePrefab, new Vector3(transform.position.x, transform.position.y, MainGameLoop.shopNodesZOffset), Quaternion.identity);
+            Destroy(gameObject);
+        }
     }
 
     private void DestroyBullet(GameObject bullet)
@@ -222,6 +251,7 @@ public class MainTurret : MonoBehaviour
     {
         if(collision.CompareTag("Enemy"))
         {
+            closeEnemies.Add(collision.gameObject);
             target = collision.gameObject;
             isEnemyClose = true;
         }
@@ -229,6 +259,10 @@ public class MainTurret : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
+        if (closeEnemies.Contains(collision.gameObject))
+        {
+            closeEnemies.Remove(collision.gameObject);
+        }
         isEnemyClose = false;
     }
 
@@ -236,18 +270,24 @@ public class MainTurret : MonoBehaviour
     {
         if (collision.CompareTag("Enemy"))
         {
-            target = collision.gameObject;
+            if (!closeEnemies.Contains(collision.gameObject))
+            {
+                closeEnemies.Add(collision.gameObject);
+            }
+            //target = collision.gameObject;
             isEnemyClose = true;
         }
     }
 
-    private GameObject ShootAtTarget(GameObject bullet, Vector3 position, Quaternion rotation, float baseBulletSpeed, float baseBulletDamage, float baseBulletRange, bool oneHitKill)
+    private GameObject ShootAtTarget(GameObject bullet, Vector3 position, Quaternion rotation, float baseBulletSpeed, float baseBulletDamage, float baseBulletRange, bool oneHitKill, bool isExplosive, float timeToShowExplosion)
     {
         GameObject _bullet = (GameObject)Instantiate(bullet, position, rotation);
         _bullet.GetComponent<Bullet>().SetSpeed(baseBulletSpeed * speedMultipliers[upgradeLevel]);
         _bullet.GetComponent<Bullet>().SetDamage(baseBulletDamage * damageMultipliers[upgradeLevel]);
         _bullet.GetComponent<Bullet>().SetDistanceToLive(baseBulletRange * bulletRangeMultipliers[upgradeLevel]);
         _bullet.GetComponent<Bullet>().Setohk(oneHitKill);
+        _bullet.GetComponent<Bullet>().SetIsExplosive(isExplosive);
+        _bullet.GetComponent<Bullet>().SetTimeToShowExplosion(timeToShowExplosion);
         _bullet.transform.SetParent(bulletsCollection.transform);
         UpdateMuzzleEffects();
         muzzleEffects.SetActive(true);
@@ -285,6 +325,8 @@ public class MainTurret : MonoBehaviour
             upgradeLevel++;
             turretMaxHealth *= 1.1f;
             turretHealth *= 1.1f;
+            float _toAdd = (turretMaxHealth - turretHealth)/2;
+            turretHealth += _toAdd;
             return true;
         } else
         {

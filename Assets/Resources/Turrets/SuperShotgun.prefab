@@ -37,6 +37,7 @@ Transform:
   - {fileID: 8338431200600241940}
   - {fileID: 1308187788945217786}
   - {fileID: 8076757378941075427}
+  - {fileID: 8193018085022120262}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -107,7 +108,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 3
+  m_Radius: 2
 --- !u!50 &1308187787354350592
 Rigidbody2D:
   serializedVersion: 4
@@ -160,6 +161,7 @@ MonoBehaviour:
   gun: {fileID: 1308187788945217784}
   shootSpawnPoint: {fileID: 1308187787142432023}
   shopNodePrefab: {fileID: 5003845570486195154, guid: 2bfa89d107a79ee4d92010d08cb39941, type: 3}
+  multishopNodePrefab: {fileID: 5003845570486195154, guid: dca36f7296aaaec4797f9c8ec861c3e6, type: 3}
   upgradeLevel: 0
   bulletSpeed: 100
   bulletDamage: 5
@@ -168,6 +170,7 @@ MonoBehaviour:
   distanceToShutoffMuzzleEffects: 0.5
   upgradeCost: 200
   turretHealth: 200
+  turretMaxHealth: 200
   damageMultipliers:
   - 1
   - 1.2
@@ -189,8 +192,11 @@ MonoBehaviour:
   - 1.4
   - 1.6
   ohk: 0
+  timeToShowExplosion: 0.2
   isEnemyClose: 0
   shootThisFrame: 0
+  isExplosive: 0
+  closeEnemies: []
   isShotgun: 1
   shotgunSpreadInDegrees: 2
   shotgunPelletsToTheSides: 5
@@ -337,6 +343,68 @@ GameObject:
 Transform:
   m_CorrespondingSourceObject: {fileID: 1241370380374467517, guid: 005d6e2d8bad12f41aa8ab98fbd6104b, type: 3}
   m_PrefabInstance: {fileID: 224518162467273543}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &817321516547414537
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 1308187787354350621}
+    m_Modifications:
+    - target: {fileID: 4388177258737859204, guid: 68ad298ae769004498e9f3564d187d52, type: 3}
+      propertyPath: m_Name
+      value: Range
+      objectReference: {fileID: 0}
+    - target: {fileID: 8855421694434583375, guid: 68ad298ae769004498e9f3564d187d52, type: 3}
+      propertyPath: m_RootOrder
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8855421694434583375, guid: 68ad298ae769004498e9f3564d187d52, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8855421694434583375, guid: 68ad298ae769004498e9f3564d187d52, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8855421694434583375, guid: 68ad298ae769004498e9f3564d187d52, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8855421694434583375, guid: 68ad298ae769004498e9f3564d187d52, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8855421694434583375, guid: 68ad298ae769004498e9f3564d187d52, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8855421694434583375, guid: 68ad298ae769004498e9f3564d187d52, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8855421694434583375, guid: 68ad298ae769004498e9f3564d187d52, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8855421694434583375, guid: 68ad298ae769004498e9f3564d187d52, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8855421694434583375, guid: 68ad298ae769004498e9f3564d187d52, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8855421694434583375, guid: 68ad298ae769004498e9f3564d187d52, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 68ad298ae769004498e9f3564d187d52, type: 3}
+--- !u!4 &8193018085022120262 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8855421694434583375, guid: 68ad298ae769004498e9f3564d187d52, type: 3}
+  m_PrefabInstance: {fileID: 817321516547414537}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1403317273716664578
 PrefabInstance:
