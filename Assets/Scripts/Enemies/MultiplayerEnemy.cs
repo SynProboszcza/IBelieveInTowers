@@ -89,7 +89,8 @@ public class MultiplayerEnemy : MonoBehaviour, IPunObservable
             PhotonNetwork.Destroy(gameObject);
         } else
         {
-            gameObject.GetComponent<PhotonView>().RPC("AddResources", RpcTarget.All, true, true, moneyReward);
+            // -------------------------------------------------------------  forDefender, isMoney, amount
+            gameObject.GetComponent<PhotonView>().RPC("AddResources", RpcTarget.All, true, true,    moneyReward);
         }
     }
 
