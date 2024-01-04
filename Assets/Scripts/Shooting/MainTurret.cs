@@ -314,23 +314,24 @@ public class MainTurret : MonoBehaviour
     [PunRPC]
     public bool LevelUp()
     {
-        if(upgradeLevel < 3
-            && CrossSceneManager.instance.CanPlayerAffordWithMoney(upgradeCost))
+        if (upgradeLevel < 3)
         {
-            // Money cost is handled by CrossSceneManager.cs
-            // Upgrades to bullet speed, damage and bulletRange are 
-            // handled by arrays of multipliers
-            // check if it has enough money and substract it
-            CrossSceneManager.instance.PayWithMoney(upgradeCost);
+            if (CrossSceneManager.instance.amIDefender 
+                && CrossSceneManager.instance.CanPlayerAffordWithMoney(upgradeCost))
+            {
+                // Money cost is handled by CrossSceneManager.cs
+                // Upgrades to bullet speed, damage and bulletRange are 
+                // handled by arrays of multipliers
+                // check if it has enough money and substract it
+                CrossSceneManager.instance.PayWithMoney(upgradeCost);
+            }
             upgradeLevel++;
             turretMaxHealth *= 1.1f;
             turretHealth *= 1.1f;
             float _toAdd = (turretMaxHealth - turretHealth)/2;
             turretHealth += _toAdd;
             return true;
-        } else
-        {
-            return false;
         }
+        return false;
     }
 }
