@@ -12,6 +12,8 @@ public class Bullet : MonoBehaviour
     public Vector2 originalPosition;
     [Tooltip("One Hit Kill - deletes whatever it collides with")]
     public bool ohk = false;
+    public bool isExplosive;
+    public float explosionRadious = 1f;
 
     void Start()
     {
@@ -47,8 +49,26 @@ public class Bullet : MonoBehaviour
             // because this generates bugs
         } else if (collision.gameObject.GetComponent<MultiplayerEnemy>() != null)
         {
-            collision.gameObject.GetComponent<MultiplayerEnemy>().TakeDamage(damage);
-            Destroy(gameObject);
+            if (isExplosive)
+            {
+                Collider2D[] affected = Physics2D.OverlapCircleAll(transform.position, explosionRadious);
+                foreach (Collider2D c in affected)
+                {
+                    if (c.TryGetComponent<MultiplayerEnemy>(out _))
+                    {
+                        var closestPoint = c.ClosestPoint(transform.position);
+                        var distance = Vector3.Distance(closestPoint, transform.position);
+                        float damagePercent = Mathf.InverseLerp(explosionRadious, 0, distance);
+                        c.GetComponent<MultiplayerEnemy>().TakeDamage(damage * damagePercent);
+                    }
+                }
+                // Show boom
+                Destroy(gameObject);
+            } else
+            {
+                collision.gameObject.GetComponent<MultiplayerEnemy>().TakeDamage(damage);
+                Destroy(gameObject);
+            }
 
         } else 
         {
@@ -70,6 +90,11 @@ public class Bullet : MonoBehaviour
     public void Setohk(bool ohk)
     {
         this.ohk = ohk;
+    }
+
+    public void SetIsExplosive(bool isExplosive)
+    {
+        this.isExplosive = isExplosive;
     }
 
     public void SetDistanceToLive(float distanceToLive)
