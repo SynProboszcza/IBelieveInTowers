@@ -4871,7 +4871,7 @@ MonoBehaviour:
   gameVersion: 0.1
   roomName: SIMPLEroom
   nickName: SIMPLEnick
-  amIDefending: 0
+  amIDefending: 1
   isMoneyInfinite: 0
   isManaInfinite: 0
   invincibleTurrets: 0
