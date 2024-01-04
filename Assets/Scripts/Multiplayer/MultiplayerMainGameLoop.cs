@@ -249,8 +249,11 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
 
     private IEnumerator AddMoneyPerSecond(int amount)
     {
-        yield return new WaitForSeconds(1);
-        CrossSceneManager.instance.AddMoney(amount, topRight);
+        while (true)
+        {
+            yield return new WaitForSeconds(1);
+            CrossSceneManager.instance.AddMoney(amount, topRight);
+        }
     }
 
     private IEnumerator GoBackHostGame(int seconds)
