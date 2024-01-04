@@ -2108,7 +2108,7 @@ MonoBehaviour:
   bottomRight: {x: 0, y: 0}
   nodesInstantiated: 0
   nodesDestroyed: 0
-  secondsToWaitAfterGameEnd: 3
+  secondsToWaitAfterGameEnd: 5
   isDebugging: 1
   isShopOpen: 0
   amIMaster: 0

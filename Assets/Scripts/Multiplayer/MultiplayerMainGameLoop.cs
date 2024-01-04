@@ -71,6 +71,7 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
     private bool matchResultsShown = false; // Flag so it gets run only once
     public float defenderHealthToSync;
     private bool addingMoneySet = false;
+    private Coroutine moneyPerSecond;
 
     // FPS limit and SIMPLEConnect
     void Awake()
@@ -157,7 +158,7 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
                 {
                     if (!addingMoneySet)
                     {
-                        StartCoroutine(AddMoneyPerSecond(a_moneyPerSecond));
+                        moneyPerSecond = StartCoroutine(AddMoneyPerSecond(a_moneyPerSecond));
                         addingMoneySet = true;
                     }
                     DisplayTime(a_timer, currentTime);
@@ -196,7 +197,7 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
     public void GameEnd(bool amIDefending, bool didDefenderDie)
     {
         isTimerRunning = false;
-        StopCoroutine(AddMoneyPerSecond(a_moneyPerSecond));
+        StopCoroutine(moneyPerSecond);
         if (amIDefending)
         {
             if (didDefenderDie)
@@ -358,7 +359,6 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
             // Do nothing
         }
     }
-
 
     // ----------------------------------------------------
     private void DestroyNode(GameObject node)
