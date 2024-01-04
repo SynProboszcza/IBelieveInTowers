@@ -8744,6 +8744,7 @@ MonoBehaviour:
   isManaInfinite: 0
   invincibleTurrets: 0
   showPriceCostPrefab: {fileID: 8992059104996785522, guid: 3d4c5d5dd235a1849bc9407173f3d9d5, type: 3}
+  spawnDelayPassed: 0
 --- !u!4 &1210959662
 Transform:
   m_ObjectHideFlags: 0

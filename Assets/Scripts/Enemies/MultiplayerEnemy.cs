@@ -86,11 +86,12 @@ public class MultiplayerEnemy : MonoBehaviour, IPunObservable
             // isMine == true means im attacker
             // gameObject.GetComponent<PhotonView>().RPC("AddResources", RpcTarget.All, true, true, 50);
             // CrossSceneManager.instance.AddMoney(moneyReward, transform.position);
+            // -------------------------------------------------------------  forDefender, isMoney, amount
+            gameObject.GetComponent<PhotonView>().RPC("AddResources", RpcTarget.All, true, true,    moneyReward);
             PhotonNetwork.Destroy(gameObject);
         } else
         {
-            // -------------------------------------------------------------  forDefender, isMoney, amount
-            gameObject.GetComponent<PhotonView>().RPC("AddResources", RpcTarget.All, true, true,    moneyReward);
+            // Do nothing as this is not my object
         }
     }
 
