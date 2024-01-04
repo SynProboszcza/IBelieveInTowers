@@ -1,5 +1,6 @@
 using Photon.Pun;
 using Photon.Pun.UtilityScripts;
+using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -29,6 +30,7 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
     // playArenaCorners is an object that has 4 properly named child gameObjects
     // Their transform.position 's are corners of play arena
     public Transform playArenaCorners;
+    public GameObject msgToPlayerCanvas;
     public Transform[] waypoints;
     public Transform[] obstacles;
     public float roundTimeSeconds = 180;
@@ -358,6 +360,22 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
         {
             // Do nothing
         }
+    }
+
+    public override void OnPlayerLeftRoom(Player otherPlayer)
+    {
+        isTimerRunning = false;
+        msgToPlayerCanvas.gameObject.SetActive(true);
+        msgToPlayerCanvas.transform.Find("EnemyLeft").gameObject.SetActive(true);
+        PhotonNetwork.LeaveRoom();
+        StartCoroutine(GoBackAfterEnemyPlayerLeaves(3));
+        base.OnPlayerLeftRoom(otherPlayer);
+    }
+
+    System.Collections.IEnumerator GoBackAfterEnemyPlayerLeaves(int seconds)
+    {
+        yield return new WaitForSeconds(seconds);
+        SceneManager.LoadScene("HostGame");
     }
 
     // ----------------------------------------------------
