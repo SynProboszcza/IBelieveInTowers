@@ -39,6 +39,7 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
     public TMP_Text a_enemyHealthTextField;
     public TMP_Text a_playerMoneyTextField;
     public TMP_Text a_playerManaTextField;
+    public int a_moneyPerSecond = 10;
     [Header("Defender parts")]
     public TMP_Text d_timer;
     public TMP_Text d_enemyHealthTextField;
@@ -69,6 +70,7 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
     [HideInInspector]
     private bool matchResultsShown = false; // Flag so it gets run only once
     public float defenderHealthToSync;
+    private bool addingMoneySet = false;
 
     // FPS limit and SIMPLEConnect
     void Awake()
@@ -118,7 +120,8 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
         }
 
         // =====================================================================================================================================================
-        // Temporarily disabled
+        // Temporarily disabled - for testing
+        // TODO: uncomment this
         // =====================================================================================================================================================
         //roundTimeSeconds = CrossSceneManager.instance.currentMatchMaxTime;
         currentTime = roundTimeSeconds;
@@ -152,6 +155,11 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
                     DisplayTime(d_timer, currentTime);
                 } else
                 {
+                    if (!addingMoneySet)
+                    {
+                        StartCoroutine(AddMoneyPerSecond(a_moneyPerSecond));
+                        addingMoneySet = true;
+                    }
                     DisplayTime(a_timer, currentTime);
                 }
             } else
@@ -188,6 +196,7 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
     public void GameEnd(bool amIDefending, bool didDefenderDie)
     {
         isTimerRunning = false;
+        StopCoroutine(AddMoneyPerSecond(a_moneyPerSecond));
         if (amIDefending)
         {
             if (didDefenderDie)
@@ -236,6 +245,12 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
     private void GoBackToHostGameAfterNSeconds(int seconds)
     {
         StartCoroutine(GoBackHostGame(seconds));
+    }
+
+    private IEnumerator AddMoneyPerSecond(int amount)
+    {
+        yield return new WaitForSeconds(1);
+        CrossSceneManager.instance.AddMoney(amount, topRight);
     }
 
     private IEnumerator GoBackHostGame(int seconds)

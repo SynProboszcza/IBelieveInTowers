@@ -54,6 +54,7 @@ public class CrossSceneManager : MonoBehaviour
     public bool invincibleTurrets = false;
     private Vector2 mouseWorldPos;
     public GameObject showPriceCostPrefab;
+    public bool spawnDelayPassed = false;
 
 
     void Start()

@@ -84,6 +84,7 @@ public class SpawnerMultiplayer : MonoBehaviour
     {
         yield return new WaitForSeconds(seconds);
         isSpawnAllowed = true;
+        CrossSceneManager.instance.spawnDelayPassed = true;
     }
 
     public void SpawnThisUnit(GameObject unitReference)
