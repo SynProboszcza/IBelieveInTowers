@@ -31,6 +31,8 @@ public class MainTurret : MonoBehaviour
     public float fireRate = 1;
     [Tooltip("Distance after which bullets disappear")]
     public float bulletRange = 5f;
+    [Tooltip("Distance in which turrets can see")]
+    public float turretRange = 2f;
     // Fire rate  
     // ----------------------------------------------------------------------
     private float timeSinceLastShot;
@@ -56,6 +58,8 @@ public class MainTurret : MonoBehaviour
     public float[] fireRateMultipliers = new float[] { 1.0f, 0.9f, 0.8f, 0.7f };
     [Tooltip("Array of bullet range bonuses for upgrading")]
     public float[] bulletRangeMultipliers = new float[] { 1.0f, 1.2f, 1.4f, 1.6f };
+    [Tooltip("Array of turret seeing range bonuses for upgrading")]
+    public float[] turretRangeMultipliers = new float[] { 1.0f, 1.2f, 1.4f, 1.6f };
     // OneHitKill mechanic, potential upgrade
     // -----------------------------------------------------------------------
     [Tooltip("OneHitKill")]
@@ -103,6 +107,7 @@ public class MainTurret : MonoBehaviour
         {
             turretMaxHealth = turretHealth;
         }
+        UpdateAndShowTurretRange();
     }
 
     void Update()
@@ -241,6 +246,12 @@ public class MainTurret : MonoBehaviour
         }
     }
 
+    private void UpdateAndShowTurretRange()
+    {
+        gameObject.GetComponent<CircleCollider2D>().radius = turretRange * turretRangeMultipliers[upgradeLevel];
+        transform.Find("Range").GetComponent<SetAndShowTurretRange>().UpdateRange();
+    }
+
     private void DestroyBullet(GameObject bullet)
     {
         //maybe add effects
@@ -331,6 +342,7 @@ public class MainTurret : MonoBehaviour
             turretHealth *= 1.1f;
             float _toAdd = (turretMaxHealth - turretHealth)/2;
             turretHealth += _toAdd;
+            UpdateAndShowTurretRange();
             return true;
         }
         return false;
