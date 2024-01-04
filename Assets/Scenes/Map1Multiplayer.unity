@@ -2097,14 +2097,19 @@ MonoBehaviour:
   a_enemyHealthTextField: {fileID: 1813382342}
   a_playerMoneyTextField: {fileID: 920058155}
   a_playerManaTextField: {fileID: 492238717}
+  a_moneyPerSecond: 10
   d_timer: {fileID: 1006505543}
   d_enemyHealthTextField: {fileID: 1074243005}
   d_playerMoneyTextField: {fileID: 166500599}
   d_playerManaTextField: {fileID: 1243573374}
+  topLeft: {x: 0, y: 0}
+  topRight: {x: 0, y: 0}
+  bottomLeft: {x: 0, y: 0}
+  bottomRight: {x: 0, y: 0}
   nodesInstantiated: 0
   nodesDestroyed: 0
   secondsToWaitAfterGameEnd: 3
-  isDebugging: 0
+  isDebugging: 1
   isShopOpen: 0
   amIMaster: 0
   amIDefender: 0
@@ -4764,10 +4769,10 @@ MonoBehaviour:
   gameVersion: 0.1
   roomName: SIMPLEroom
   nickName: SIMPLEnick
-  amIDefending: 1
-  isMoneyInfinite: 1
-  isManaInfinite: 1
-  invincibleTurrets: 1
+  amIDefending: 0
+  isMoneyInfinite: 0
+  isManaInfinite: 0
+  invincibleTurrets: 0
   mainGameScript: {fileID: 239573652}
 --- !u!4 &938013105
 Transform:
@@ -13524,6 +13529,7 @@ MonoBehaviour:
   isManaInfinite: 0
   invincibleTurrets: 0
   showPriceCostPrefab: {fileID: 8992059104996785522, guid: 3d4c5d5dd235a1849bc9407173f3d9d5, type: 3}
+  spawnDelayPassed: 0
 --- !u!4 &1634076229
 Transform:
   m_ObjectHideFlags: 0

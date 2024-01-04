@@ -45,10 +45,10 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
     public TMP_Text d_enemyHealthTextField;
     public TMP_Text d_playerMoneyTextField;
     public TMP_Text d_playerManaTextField;
-    private Vector2 topLeft;
-    private Vector2 topRight;   // Despite what VS says, they are used in
-    private Vector2 bottomLeft; // GetPlayArenaCorners() 
-    private Vector2 bottomRight;
+    public Vector2 topLeft;
+    public Vector2 topRight;   // Despite what VS says, they are used in
+    public Vector2 bottomLeft; // GetPlayArenaCorners() 
+    public Vector2 bottomRight;
     [HideInInspector]
     public int nodesInstantiated = 0;
     [HideInInspector]
@@ -104,13 +104,13 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
         amIMaster = CrossSceneManager.instance.amIMaster;
         amIDefender = CrossSceneManager.instance.amIDefender;
         defenderHealthToSync = CrossSceneManager.instance.defenderHealth;
+        GetPlayArenaCorners();
         //playerMoney = CrossSceneManager.instance.playerMoney;
         //playerMana = CrossSceneManager.instance.playerMana;
         if (amIDefender)
         {
             defenderPart.gameObject.SetActive(true);
             shopNodesCollection = new GameObject("ShopNodesCollection");
-            GetPlayArenaCorners();
             GenerateAndConfigureNodeMesh(topLeft, bottomRight);
             // TODO: ShopNode needs to show spells
         } else
