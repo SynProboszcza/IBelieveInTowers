@@ -191,6 +191,7 @@ MonoBehaviour:
   ohk: 0
   isEnemyClose: 0
   shootThisFrame: 0
+  closeEnemies: []
   isShotgun: 1
   shotgunSpreadInDegrees: 5
   shotgunPelletsToTheSides: 3

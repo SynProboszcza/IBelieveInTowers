@@ -63,6 +63,7 @@ public class MainTurret : MonoBehaviour
     // -----------------------------------------------------------------------
     public bool isEnemyClose = false;
     public bool shootThisFrame = false;
+    public List<GameObject> closeEnemies;
     // Settings for a shotgun mode
     // -----------------------------------------------------------------------
     public bool isShotgun = false;
@@ -77,7 +78,7 @@ public class MainTurret : MonoBehaviour
     public SpriteRenderer srBase;
     //public SpriteRenderer srGun; // For now gun does not need changing with upgrades
     public SpriteRenderer srMuzzleEffects;
-    public string niceName = "unknown xdd";
+    public string niceName = "nice name not set in Editor";
 
     void Start()
     {
@@ -129,8 +130,21 @@ public class MainTurret : MonoBehaviour
         //  rotate the gun pointing at enemy, handle fire rate,
         //  handle shotgun shooting.
         // -----------------------------------------------------------------------------
-        if (isEnemyClose && target != null)
+        if (isEnemyClose)
         {
+            // -----------------------------------------------------------------------------
+            // Target selection
+            // -----------------------------------------------------------------------------
+            float distance = Mathf.Infinity;
+            for (int i = 0; i < closeEnemies.Count; i++)
+            {
+                float newDistance = Vector3.Distance(transform.position, closeEnemies[i].transform.position);
+                if (newDistance < distance)
+                {
+                    distance = newDistance;
+                    target = closeEnemies[i];
+                }
+            }
             targetPosition = target.transform.position;
             Vector2 direction = new Vector2(shootSpawnPoint.transform.position.x, shootSpawnPoint.transform.position.y) - targetPosition;
             direction.Normalize();
@@ -222,6 +236,7 @@ public class MainTurret : MonoBehaviour
     {
         if(collision.CompareTag("Enemy"))
         {
+            closeEnemies.Add(collision.gameObject);
             target = collision.gameObject;
             isEnemyClose = true;
         }
@@ -229,6 +244,10 @@ public class MainTurret : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
+        if (closeEnemies.Contains(collision.gameObject))
+        {
+            closeEnemies.Remove(collision.gameObject);
+        }
         isEnemyClose = false;
     }
 
@@ -236,7 +255,11 @@ public class MainTurret : MonoBehaviour
     {
         if (collision.CompareTag("Enemy"))
         {
-            target = collision.gameObject;
+            if (!closeEnemies.Contains(collision.gameObject))
+            {
+                closeEnemies.Add(collision.gameObject);
+            }
+            //target = collision.gameObject;
             isEnemyClose = true;
         }
     }
