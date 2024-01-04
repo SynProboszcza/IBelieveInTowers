@@ -35,6 +35,7 @@ public class MultiUpgradeTurret : MonoBehaviour
 
     private void OnMouseOver()
     {
+        // We need to disable the gameObject with mask so other "ranges" dont get blocked
         transform.parent.transform.Find("Range").Find("RangeCenter").gameObject.SetActive(true);
         transform.parent.transform.Find("Range").gameObject.GetComponent<SpriteRenderer>().enabled = true;
     }

@@ -43,6 +43,8 @@ MonoBehaviour:
   - LevelUp
   - AllowToChangeScene
   - AddResources
+  - AddResourcesShowAtMouse
+  - AddResourcesShowAtSpecifiedPoint
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

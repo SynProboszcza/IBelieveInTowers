@@ -1,5 +1,6 @@
 using ExitGames.Client.Photon;
 using Photon.Pun;
+using Photon.Realtime;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -225,6 +226,14 @@ public class PreMainGame : MonoBehaviourPunCallbacks, IPunObservable
         base.OnRoomPropertiesUpdate(propertiesThatChanged);
     }
 
+    public override void OnPlayerLeftRoom(Player otherPlayer)
+    {
+        isTimerRunning = false;
+        textfieldEnemyReadyState.text = "Enemy left the room! Going back in a few seconds...";
+        StartCoroutine(GoBackAfterEnemyPlayerLeaves(3));
+        base.OnPlayerLeftRoom(otherPlayer);
+    }
+
     private void BothJoined()
     {
         isTimerRunning = true;
@@ -285,6 +294,12 @@ public class PreMainGame : MonoBehaviourPunCallbacks, IPunObservable
         print("Going to different scene after " + seconds + " seconds!");
         //StartCoroutine(LoadYourAsyncScene());
         StartCoroutine(ChangeSceneAfterNSeconds(seconds));
+    }
+
+    System.Collections.IEnumerator GoBackAfterEnemyPlayerLeaves(int seconds)
+    {
+        yield return new WaitForSeconds(seconds);
+        SceneManager.LoadScene("HostGame");
     }
 
     System.Collections.IEnumerator ChangeSceneAfterNSeconds(int seconds)

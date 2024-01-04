@@ -279,7 +279,8 @@ public class MainTurret : MonoBehaviour
         }
     }
 
-    private GameObject ShootAtTarget(GameObject bullet, Vector3 position, Quaternion rotation, float baseBulletSpeed, float baseBulletDamage, float baseBulletRange, bool oneHitKill, bool isExplosive, float timeToShowExplosion)
+    private GameObject ShootAtTarget(GameObject bullet, Vector3 position, Quaternion rotation,
+        float baseBulletSpeed, float baseBulletDamage, float baseBulletRange, bool oneHitKill, bool isExplosive, float timeToShowExplosion)
     {
         GameObject _bullet = (GameObject)Instantiate(bullet, position, rotation);
         _bullet.GetComponent<Bullet>().SetSpeed(baseBulletSpeed * speedMultipliers[upgradeLevel]);
