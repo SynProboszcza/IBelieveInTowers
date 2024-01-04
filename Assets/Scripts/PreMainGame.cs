@@ -229,7 +229,20 @@ public class PreMainGame : MonoBehaviourPunCallbacks, IPunObservable
     public override void OnPlayerLeftRoom(Player otherPlayer)
     {
         isTimerRunning = false;
+        readyToggle.interactable = false;
+        leaveRoom.interactable = false;
+        readyToggle.isOn = false;
+        textfieldTimerToClickReady.color = Color.magenta;
         textfieldEnemyReadyState.text = "Enemy left the room! Going back in a few seconds...";
+        if (enemiesShopParent != null)
+        {
+            for (int i = 0; i < enemiesShopParent.transform.childCount; i++)
+            {
+                Transform child = enemiesShopParent.transform.GetChild(i).transform;
+                child.GetComponent<Button>().interactable = false;
+            }
+        }
+        PhotonNetwork.LeaveRoom();
         StartCoroutine(GoBackAfterEnemyPlayerLeaves(3));
         base.OnPlayerLeftRoom(otherPlayer);
     }
