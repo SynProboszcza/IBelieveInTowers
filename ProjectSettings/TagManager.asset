@@ -78,6 +78,9 @@ TagManager:
   - name: SentryWeaponsMuzzleEffects
     uniqueID: 209213079
     locked: 0
+  - name: TurretRange
+    uniqueID: 2720108125
+    locked: 0
   - name: Bullets
     uniqueID: 2890818497
     locked: 0
