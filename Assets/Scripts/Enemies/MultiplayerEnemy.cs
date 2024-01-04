@@ -87,7 +87,7 @@ public class MultiplayerEnemy : MonoBehaviour, IPunObservable
             // gameObject.GetComponent<PhotonView>().RPC("AddResources", RpcTarget.All, true, true, 50);
             // CrossSceneManager.instance.AddMoney(moneyReward, transform.position);
             // -------------------------------------------------------------  forDefender, isMoney, amount
-            gameObject.GetComponent<PhotonView>().RPC("AddResources", RpcTarget.All, true, true,    moneyReward);
+            mainGame.GetComponent<PhotonView>().RPC("AddResources", RpcTarget.All, true, true,    moneyReward);
             PhotonNetwork.Destroy(gameObject);
         } else
         {
@@ -182,8 +182,6 @@ public class MultiplayerEnemy : MonoBehaviour, IPunObservable
         }
         //ShootAround(collision.transform);
     }
-
-
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {

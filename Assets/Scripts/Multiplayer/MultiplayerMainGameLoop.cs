@@ -319,6 +319,47 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
         }
     }
 
+    [PunRPC]
+    public void AddResources(bool forDefender, bool isMoney, int amount)
+    {
+        if (CrossSceneManager.instance.amIDefender == forDefender)
+        {
+            if (isMoney)
+            {
+                CrossSceneManager.instance.AddMoney(amount);
+            }
+            else
+            {
+                CrossSceneManager.instance.AddMana(amount);
+            }
+        }
+        else
+        {
+            // Do nothing
+        }
+    }
+
+    [PunRPC]
+    public void AddResources(bool forDefender, bool isMoney, int amount, Vector2 fromWhere)
+    {
+        if (CrossSceneManager.instance.amIDefender == forDefender)
+        {
+            if (isMoney)
+            {
+                CrossSceneManager.instance.AddMoney(amount, fromWhere);
+            }
+            else
+            {
+                CrossSceneManager.instance.AddMana(amount, fromWhere); //ShowManaChange is not implemented yet
+            }
+        }
+        else
+        {
+            // Do nothing
+        }
+    }
+
+
     // ----------------------------------------------------
     private void DestroyNode(GameObject node)
     {

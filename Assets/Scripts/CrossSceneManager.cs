@@ -230,49 +230,6 @@ public class CrossSceneManager : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Adding specific resources for specific player
-    /// isMoney == true gives money, false gives mana
-    /// </summary>
-    /// <param name="forDefender"></param>
-    /// <param name="isMoney"></param>
-    /// <param name="amount"></param>
-    [PunRPC] 
-    public void AddResources(bool forDefender, bool isMoney, int amount)
-    {
-        if (amIDefender == forDefender)
-        {
-            if (isMoney)
-            {
-                AddMoney(amount);
-            } else
-            {
-                AddMana(amount);
-            }
-        } else
-        {
-            // Do nothing
-        }
-    }
-
-    [PunRPC] 
-    public void AddResources(bool forDefender, bool isMoney, int amount, Vector2 fromWhere)
-    {
-        if (amIDefender == forDefender)
-        {
-            if (isMoney)
-            {
-                AddMoney(amount, fromWhere);
-            } else
-            {
-                AddMana(amount, fromWhere); //ShowManaChange is not implemented yet
-            }
-        } else
-        {
-            // Do nothing
-        }
-    }
-
     public void AddUnitToList(string name)
     {
         unitList.Enqueue(name);
