@@ -43,40 +43,13 @@ public class MultiplayerEnemy : MonoBehaviour, IPunObservable
     void Update()
     {
         Move();
-        if(currentHealth <= 0) 
+        if (gameObject.GetComponent<PhotonView>().IsMine)
         {
-            Die();
+            if(currentHealth <= 0) 
+            {
+                Die();
+            }
         }
-        // if (SceneManager.GetActiveScene().name.Equals("MainMenu"))
-        // {
-        //     Move();
-        //     //print("main menu");
-        //     if (currentHealth <= 0)
-        //     {
-        //         Die();
-        //     }
-        // }
-        // else
-        // {
-        //     if (this.GetComponent<PhotonView>() != null && this.GetComponent<PhotonView>().IsMine)
-        //     {
-        //         Move();
-        //         //print("i have photon view and its mine");
-        //         if (currentHealth <= 0)
-        //         {
-        //             Die();
-        //         }
-        //     }
-        //     else
-        //     {
-        //         Move();
-        //         //print("basically everything else (other player is controlling it) health: " + currentHealth);
-        //         if (currentHealth <= 0)
-        //         {
-        //             Die();
-        //         }
-        //     }
-        // }
     }
 
     private void Move()
