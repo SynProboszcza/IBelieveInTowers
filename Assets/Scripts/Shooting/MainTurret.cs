@@ -249,7 +249,8 @@ public class MainTurret : MonoBehaviour
             // If multiplayer
             GameObject go = Instantiate(multishopNodePrefab, new Vector3(transform.position.x, transform.position.y, MainGameLoop.shopNodesZOffset), Quaternion.identity);
             go.transform.SetParent(mainGame.GetComponent<MultiplayerMainGameLoop>().shopNodesCollection.transform);
-            mainGame.GetComponent<PhotonView>().RPC("AddResourcesShowAtSpecifiedPoint(false, true, moneyReward * turretmoneyRewardMultipliers[upgradeLevel], new Vector2(transform.position.x, transform.position.y))", RpcTarget.All);
+            int _finalMoneyReward = Mathf.FloorToInt(moneyReward * turretmoneyRewardMultipliers[upgradeLevel]);
+            mainGame.GetComponent<PhotonView>().RPC("AddResourcesShowAtSpecifiedPoint", RpcTarget.All, false, true, _finalMoneyReward, new Vector2(transform.position.x, transform.position.y));
             // bool forDefender, bool isMoney, int amount, Vector2 fromWhere
             PhotonNetwork.Destroy(gameObject);
         } else
