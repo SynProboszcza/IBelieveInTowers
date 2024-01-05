@@ -25,7 +25,8 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
     public GameObject nodePrefab;
     [HideInInspector]
     public List<GameObject> nodes = new List<GameObject>();
-    private GameObject shopNodesCollection;
+    [HideInInspector]
+    public GameObject shopNodesCollection;
 
     // playArenaCorners is an object that has 4 properly named child gameObjects
     // Their transform.position 's are corners of play arena
@@ -199,7 +200,10 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
     public void GameEnd(bool amIDefending, bool didDefenderDie)
     {
         isTimerRunning = false;
-        StopCoroutine(moneyPerSecond);
+        if (moneyPerSecond != null)
+        {
+            StopCoroutine(moneyPerSecond);
+        }
         if (amIDefending)
         {
             if (didDefenderDie)

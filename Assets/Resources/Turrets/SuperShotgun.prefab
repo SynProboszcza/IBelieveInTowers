@@ -162,13 +162,16 @@ MonoBehaviour:
   shootSpawnPoint: {fileID: 1308187787142432023}
   shopNodePrefab: {fileID: 5003845570486195154, guid: 2bfa89d107a79ee4d92010d08cb39941, type: 3}
   multishopNodePrefab: {fileID: 5003845570486195154, guid: dca36f7296aaaec4797f9c8ec861c3e6, type: 3}
+  mainGame: {fileID: 0}
   upgradeLevel: 0
   bulletSpeed: 100
   bulletDamage: 5
   fireRate: 0.5
   bulletRange: 2
+  turretRange: 2
   distanceToShutoffMuzzleEffects: 0.5
   upgradeCost: 200
+  moneyReward: 250
   turretHealth: 200
   turretMaxHealth: 200
   damageMultipliers:
@@ -187,6 +190,16 @@ MonoBehaviour:
   - 0.8
   - 0.7
   bulletRangeMultipliers:
+  - 1
+  - 1.2
+  - 1.4
+  - 1.6
+  turretRangeMultipliers:
+  - 1
+  - 1.2
+  - 1.4
+  - 1.6
+  turretmoneyRewardMultipliers:
   - 1
   - 1.2
   - 1.4
@@ -223,6 +236,7 @@ MonoBehaviour:
   OwnershipTransfer: 0
   observableSearch: 2
   ObservedComponents:
+  - {fileID: 1308187787354350593}
   - {fileID: 137961102773392139}
   sceneViewId: 0
   InstantiationId: 0

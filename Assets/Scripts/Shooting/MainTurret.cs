@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MainTurret : MonoBehaviour
+public class MainTurret : MonoBehaviour, IPunObservable
 {
     // Base references to modify and access
     // All public GameObjects fields needs to be set in Inspector
@@ -16,6 +16,7 @@ public class MainTurret : MonoBehaviour
     public GameObject shootSpawnPoint;
     public GameObject shopNodePrefab;
     public GameObject multishopNodePrefab;
+    public GameObject mainGame;
     private GameObject bulletsCollection;
     private GameObject target;
     private GameObject bulletInstance;
@@ -43,11 +44,15 @@ public class MainTurret : MonoBehaviour
     // Upgrade cost
     // ----------------------------------------------------------------------
     public int upgradeCost = 100;
+    // Money reward if turret gets destroyed
+    // ----------------------------------------------------------------------
+    public int moneyReward = 300;
     // Turret health
     // ----------------------------------------------------------------------
     public float turretHealth = 200f;
     public float turretMaxHealth = 200f;
     private bool isTurretInvincible = false;
+    private bool isDestroyRPCSent = false;
     // Multipliers of upgrades
     // ----------------------------------------------------------------------
     [Tooltip("Array of bullet damage bonuses for upgrading")]
@@ -60,13 +65,15 @@ public class MainTurret : MonoBehaviour
     public float[] bulletRangeMultipliers = new float[] { 1.0f, 1.2f, 1.4f, 1.6f };
     [Tooltip("Array of turret seeing range bonuses for upgrading")]
     public float[] turretRangeMultipliers = new float[] { 1.0f, 1.2f, 1.4f, 1.6f };
+    [Tooltip("Array of turret seeing range bonuses for upgrading")]
+    public float[] turretmoneyRewardMultipliers = new float[] { 1.0f, 1.5f, 2f, 3f };
     // OneHitKill mechanic, potential upgrade
     // -----------------------------------------------------------------------
     [Tooltip("OneHitKill")]
     public bool ohk = false;
     // Shooting helpers
     // -----------------------------------------------------------------------
-    [Tooltip("Only applicable if isExsplosibe is enabled")]
+    [Tooltip("Only applicable if isExsplosive is enabled")]
     public float timeToShowExplosion = 0.2f;
     public bool isEnemyClose = false;
     public bool shootThisFrame = false;
@@ -91,12 +98,17 @@ public class MainTurret : MonoBehaviour
     void Start()
     {
         srBase = GetComponent<SpriteRenderer>();
+        if (mainGame == null)
+        {
+            mainGame = GameObject.FindGameObjectWithTag("SingleTagForMainGameLoop");
+        }
         //srGun = transform.GetChild(0).GetComponent<SpriteRenderer>(); // For now gun does not need changing with upgrades
         srMuzzleEffects = transform.Find("Gun").transform.Find("Muzzle").transform.Find("MuzzleEffects").GetComponent<SpriteRenderer>();
         //transform.Find("UpgradeCollider").GetComponent<MultiUpgradeTurret>().SetUpgradeCost(upgradeCost);
         muzzleEffects.SetActive(false);
         if (bulletsCollection == null) {
             bulletsCollection = new GameObject("BulletsCollection");
+            bulletsCollection.transform.SetParent(transform);
         }
         if (CrossSceneManager.instance != null && CrossSceneManager.instance.invincibleTurrets)
         {
@@ -208,8 +220,9 @@ public class MainTurret : MonoBehaviour
         UpdateBaseSprite();
 
         // Check for death of turret
-        if (turretHealth <= 0) {
+        if (turretHealth <= 0 && !isDestroyRPCSent) {
             DieAndLeaveShopNode();
+            isDestroyRPCSent = true;
         }
     }
 
@@ -233,12 +246,31 @@ public class MainTurret : MonoBehaviour
     }
 
     private void DieAndLeaveShopNode() {
+        // TryGetComponent is needed as this script is also used in singleplayer
         if (gameObject.TryGetComponent<PhotonView>(out _) && gameObject.GetComponent<PhotonView>().IsMine) 
         {
             // If multiplayer
-            Instantiate(multishopNodePrefab, new Vector3(transform.position.x, transform.position.y, MainGameLoop.shopNodesZOffset), Quaternion.identity);
+            GameObject go = Instantiate(multishopNodePrefab, new Vector3(transform.position.x, transform.position.y, MainGameLoop.shopNodesZOffset), Quaternion.identity);
+            go.transform.SetParent(mainGame.GetComponent<MultiplayerMainGameLoop>().shopNodesCollection.transform);
+            int _finalMoneyReward = Mathf.FloorToInt(moneyReward * turretmoneyRewardMultipliers[upgradeLevel]);
+            mainGame.GetComponent<PhotonView>().RPC("AddResourcesShowAtSpecifiedPoint", RpcTarget.All,
+                false, true, _finalMoneyReward, new Vector2(transform.position.x, transform.position.y));
+            // bool forDefender, bool isMoney, int amount, Vector2 fromWhere
             PhotonNetwork.Destroy(gameObject);
-        } else
+        } else if(gameObject.TryGetComponent<PhotonView>(out _) && !gameObject.GetComponent<PhotonView>().IsMine)
+        {
+            // If online but turret is not mine
+            //GameObject go = Instantiate(multishopNodePrefab, new Vector3(transform.position.x, transform.position.y, MainGameLoop.shopNodesZOffset), Quaternion.identity);
+            //go.transform.SetParent(mainGame.GetComponent<MultiplayerMainGameLoop>().shopNodesCollection.transform);
+            //int _finalMoneyReward = Mathf.FloorToInt(moneyReward * turretmoneyRewardMultipliers[upgradeLevel]);
+            //mainGame.GetComponent<PhotonView>().RPC("AddResourcesShowAtSpecifiedPoint", RpcTarget.All, false, true, _finalMoneyReward, new Vector2(transform.position.x, transform.position.y));
+            // bool forDefender, bool isMoney, int amount, Vector2 fromWhere
+            //PhotonNetwork.Destroy(gameObject);
+            // Sending RPC to owner so he can PhotonNetwork.Destroy it
+            gameObject.GetComponent<PhotonView>().RPC("DestroyMe", RpcTarget.Others);
+
+        }
+        else if(!gameObject.TryGetComponent<PhotonView>(out _))
         {
             // If singleplayer
             Instantiate(shopNodePrefab, new Vector3(transform.position.x, transform.position.y, MainGameLoop.shopNodesZOffset), Quaternion.identity);
@@ -324,6 +356,18 @@ public class MainTurret : MonoBehaviour
     }
 
     [PunRPC]
+    public void DestroyMe()
+    {
+        GameObject go = Instantiate(multishopNodePrefab, new Vector3(transform.position.x, transform.position.y, MainGameLoop.shopNodesZOffset), Quaternion.identity);
+        go.transform.SetParent(mainGame.GetComponent<MultiplayerMainGameLoop>().shopNodesCollection.transform);
+        int _finalMoneyReward = Mathf.FloorToInt(moneyReward * turretmoneyRewardMultipliers[upgradeLevel]);
+        mainGame.GetComponent<PhotonView>().RPC("AddResourcesShowAtSpecifiedPoint", RpcTarget.All,
+            false, true, _finalMoneyReward, new Vector2(transform.position.x, transform.position.y));
+        // bool forDefender, bool isMoney, int amount, Vector2 fromWhere
+        PhotonNetwork.Destroy(gameObject);
+    }
+
+    [PunRPC]
     public bool LevelUp()
     {
         if (upgradeLevel < 3)
@@ -347,4 +391,19 @@ public class MainTurret : MonoBehaviour
         }
         return false;
     }
+
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.IsReading)
+        {
+            turretHealth = (float)stream.ReceiveNext();
+            upgradeLevel = (int)stream.ReceiveNext();
+        }
+        else if (stream.IsWriting)
+        {
+            stream.SendNext(turretHealth);
+            stream.SendNext(upgradeLevel);
+        }
+    }
+
 }
