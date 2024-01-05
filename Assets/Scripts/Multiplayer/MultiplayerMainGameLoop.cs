@@ -200,7 +200,10 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
     public void GameEnd(bool amIDefending, bool didDefenderDie)
     {
         isTimerRunning = false;
-        StopCoroutine(moneyPerSecond);
+        if (moneyPerSecond != null)
+        {
+            StopCoroutine(moneyPerSecond);
+        }
         if (amIDefending)
         {
             if (didDefenderDie)
