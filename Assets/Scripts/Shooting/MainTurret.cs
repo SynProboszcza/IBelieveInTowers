@@ -52,6 +52,7 @@ public class MainTurret : MonoBehaviour, IPunObservable
     public float turretHealth = 200f;
     public float turretMaxHealth = 200f;
     private bool isTurretInvincible = false;
+    private bool isDestroyRPCSent = false;
     // Multipliers of upgrades
     // ----------------------------------------------------------------------
     [Tooltip("Array of bullet damage bonuses for upgrading")]
@@ -219,8 +220,9 @@ public class MainTurret : MonoBehaviour, IPunObservable
         UpdateBaseSprite();
 
         // Check for death of turret
-        if (turretHealth <= 0) {
+        if (turretHealth <= 0 && !isDestroyRPCSent) {
             DieAndLeaveShopNode();
+            isDestroyRPCSent = true;
         }
     }
 
