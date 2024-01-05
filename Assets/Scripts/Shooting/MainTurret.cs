@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MainTurret : MonoBehaviour
+public class MainTurret : MonoBehaviour, IPunObservable
 {
     // Base references to modify and access
     // All public GameObjects fields needs to be set in Inspector
@@ -362,4 +362,19 @@ public class MainTurret : MonoBehaviour
         }
         return false;
     }
+
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.IsReading)
+        {
+            turretHealth = (float)stream.ReceiveNext();
+            upgradeLevel = (int)stream.ReceiveNext();
+        }
+        else if (stream.IsWriting)
+        {
+            stream.SendNext(turretHealth);
+            stream.SendNext(upgradeLevel);
+        }
+    }
+
 }
