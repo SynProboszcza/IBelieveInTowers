@@ -244,6 +244,7 @@ public class MainTurret : MonoBehaviour, IPunObservable
     }
 
     private void DieAndLeaveShopNode() {
+        // TryGetComponent is needed as this script is also used in singleplayer
         if (gameObject.TryGetComponent<PhotonView>(out _) && gameObject.GetComponent<PhotonView>().IsMine) 
         {
             // If multiplayer
@@ -253,7 +254,17 @@ public class MainTurret : MonoBehaviour, IPunObservable
             mainGame.GetComponent<PhotonView>().RPC("AddResourcesShowAtSpecifiedPoint", RpcTarget.All, false, true, _finalMoneyReward, new Vector2(transform.position.x, transform.position.y));
             // bool forDefender, bool isMoney, int amount, Vector2 fromWhere
             PhotonNetwork.Destroy(gameObject);
-        } else
+        } else if(gameObject.TryGetComponent<PhotonView>(out _) && !gameObject.GetComponent<PhotonView>().IsMine)
+        {
+            // If online but turret is not mine
+            GameObject go = Instantiate(multishopNodePrefab, new Vector3(transform.position.x, transform.position.y, MainGameLoop.shopNodesZOffset), Quaternion.identity);
+            go.transform.SetParent(mainGame.GetComponent<MultiplayerMainGameLoop>().shopNodesCollection.transform);
+            int _finalMoneyReward = Mathf.FloorToInt(moneyReward * turretmoneyRewardMultipliers[upgradeLevel]);
+            mainGame.GetComponent<PhotonView>().RPC("AddResourcesShowAtSpecifiedPoint", RpcTarget.All, false, true, _finalMoneyReward, new Vector2(transform.position.x, transform.position.y));
+            // bool forDefender, bool isMoney, int amount, Vector2 fromWhere
+            PhotonNetwork.Destroy(gameObject);
+        }
+        else if(!gameObject.TryGetComponent<PhotonView>(out _))
         {
             // If singleplayer
             Instantiate(shopNodePrefab, new Vector3(transform.position.x, transform.position.y, MainGameLoop.shopNodesZOffset), Quaternion.identity);

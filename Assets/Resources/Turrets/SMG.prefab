@@ -171,6 +171,7 @@ MonoBehaviour:
   turretRange: 3
   distanceToShutoffMuzzleEffects: 0.2
   upgradeCost: 30
+  moneyReward: 250
   turretHealth: 200
   turretMaxHealth: 200
   damageMultipliers:
@@ -194,6 +195,11 @@ MonoBehaviour:
   - 3
   - 4
   turretRangeMultipliers:
+  - 1
+  - 1.2
+  - 1.4
+  - 1.6
+  turretmoneyRewardMultipliers:
   - 1
   - 1.2
   - 1.4
@@ -230,6 +236,7 @@ MonoBehaviour:
   OwnershipTransfer: 0
   observableSearch: 2
   ObservedComponents:
+  - {fileID: 1308187787354350593}
   - {fileID: 5434094372428140978}
   sceneViewId: 0
   InstantiationId: 0
