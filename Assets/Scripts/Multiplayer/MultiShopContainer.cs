@@ -37,10 +37,9 @@ public class MultiShopContainer : MonoBehaviour
 
     private void OpenShop()
     {
-        Debug.Log("Opening MULTIshop interface");
+        //Debug.Log("Opening MULTIshop interface");
         gameObject.transform.GetChild(0).gameObject.SetActive(true);
         mainGame.GetComponent<MultiplayerMainGameLoop>().isShopOpen = true;
-        //Destroy(gameObject);
     }
 
     public void CloseShop()

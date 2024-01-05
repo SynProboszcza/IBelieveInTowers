@@ -1927,6 +1927,7 @@ MonoBehaviour:
   defenderMatchResults: {fileID: 1287907493}
   nodePrefab: {fileID: 5003845570486195154, guid: dca36f7296aaaec4797f9c8ec861c3e6, type: 3}
   nodes: []
+  shopNodesCollection: {fileID: 0}
   playArenaCorners: {fileID: 1792687511}
   msgToPlayerCanvas: {fileID: 726625775}
   waypoints:
@@ -2110,7 +2111,7 @@ MonoBehaviour:
   nodesInstantiated: 0
   nodesDestroyed: 0
   secondsToWaitAfterGameEnd: 5
-  isDebugging: 1
+  isDebugging: 0
   isShopOpen: 0
   amIMaster: 0
   amIDefender: 0

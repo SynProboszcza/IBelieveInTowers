@@ -16,6 +16,7 @@ public class MainTurret : MonoBehaviour
     public GameObject shootSpawnPoint;
     public GameObject shopNodePrefab;
     public GameObject multishopNodePrefab;
+    public GameObject mainGame;
     private GameObject bulletsCollection;
     private GameObject target;
     private GameObject bulletInstance;
@@ -91,12 +92,17 @@ public class MainTurret : MonoBehaviour
     void Start()
     {
         srBase = GetComponent<SpriteRenderer>();
+        if (mainGame == null)
+        {
+            mainGame = GameObject.FindGameObjectWithTag("SingleTagForMainGameLoop");
+        }
         //srGun = transform.GetChild(0).GetComponent<SpriteRenderer>(); // For now gun does not need changing with upgrades
         srMuzzleEffects = transform.Find("Gun").transform.Find("Muzzle").transform.Find("MuzzleEffects").GetComponent<SpriteRenderer>();
         //transform.Find("UpgradeCollider").GetComponent<MultiUpgradeTurret>().SetUpgradeCost(upgradeCost);
         muzzleEffects.SetActive(false);
         if (bulletsCollection == null) {
             bulletsCollection = new GameObject("BulletsCollection");
+            bulletsCollection.transform.SetParent(transform);
         }
         if (CrossSceneManager.instance != null && CrossSceneManager.instance.invincibleTurrets)
         {
@@ -236,7 +242,8 @@ public class MainTurret : MonoBehaviour
         if (gameObject.TryGetComponent<PhotonView>(out _) && gameObject.GetComponent<PhotonView>().IsMine) 
         {
             // If multiplayer
-            Instantiate(multishopNodePrefab, new Vector3(transform.position.x, transform.position.y, MainGameLoop.shopNodesZOffset), Quaternion.identity);
+            GameObject go = Instantiate(multishopNodePrefab, new Vector3(transform.position.x, transform.position.y, MainGameLoop.shopNodesZOffset), Quaternion.identity);
+            go.transform.SetParent(mainGame.GetComponent<MultiplayerMainGameLoop>().shopNodesCollection.transform);
             PhotonNetwork.Destroy(gameObject);
         } else
         {

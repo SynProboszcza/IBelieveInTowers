@@ -69,6 +69,7 @@
     <Compile Include="Assets\Scripts\MenuButtons\NewGame.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextSelector_A.cs" />
     <Compile Include="Assets\Scripts\MenuButtons\GoToSettings.cs" />
+    <Compile Include="Assets\Scripts\Shooting\SetAndShowTurretRange.cs" />
     <Compile Include="Assets\Scripts\SettingsScripts\SaveNickname.cs" />
     <Compile Include="Assets\Scripts\UI\PrePlay\UpdateMoneyAndMana.cs" />
     <Compile Include="Assets\Scripts\Health\UpdatePlayerHealth.cs" />
@@ -165,7 +166,7 @@
     <Compile Include="Assets\Scripts\UI\PrePlay\RedGreenToggle.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01.cs" />
     <Compile Include="Assets\Scripts\MenuButtons\QuitButton.cs" />
-    <Compile Include="Assets\Scripts\Shooting\SetAndShowTurretRange.cs" />
+    <Compile Include="Assets\Scripts\Enemies\ExplodeControl.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />

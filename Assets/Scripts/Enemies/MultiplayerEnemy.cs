@@ -23,9 +23,10 @@ public class MultiplayerEnemy : MonoBehaviour, IPunObservable
     [Header("Exploding - leave empty except for slimer")]
     public bool canAttackTurrets = false;
     public bool isTurretClose = false;
+    [HideInInspector]
     public Transform targetPosition;
     public GameObject explosionEffect;
-    public float explosionRadious = 2f;
+    public float explosionRadius = 2f;
     public float explosionDamage = 150f;
     public float timeToShowExplosion = 0.25f;
     public float timeBetweenExplosions = 2f;
@@ -43,6 +44,12 @@ public class MultiplayerEnemy : MonoBehaviour, IPunObservable
         if (this.GetComponent<PhotonView>().IsMine)
         {
             transform.position = waypoints[waypointIndex].position;
+        }
+        // it needs to be created in prefab, not in code
+        if (canAttackTurrets)
+        {
+            GameObject ec = transform.Find("ExplosionCollider").gameObject;
+            ec.GetComponent<CircleCollider2D>().radius = explosionRadius / 2;
         }
     }
 
@@ -120,6 +127,11 @@ public class MultiplayerEnemy : MonoBehaviour, IPunObservable
         this.damage = damage;
     }
 
+    public void SetExplosiveDamage(int damage)
+    {
+        explosionDamage = damage;
+    }
+
     public void SetWaypoints(Transform[] waypoints)
     {
         this.waypoints = waypoints;
@@ -165,6 +177,11 @@ public class MultiplayerEnemy : MonoBehaviour, IPunObservable
         return this.maxHealth;
     }
 
+    public void SetMaxHealth(float amount)
+    {
+        maxHealth = amount;
+    }
+
     public int GetMoneyReward()
     {
         return this.moneyReward;
@@ -196,23 +213,24 @@ public class MultiplayerEnemy : MonoBehaviour, IPunObservable
         // we need to check not if it collides with turret collider but with turret edges, like upgrade collider
         if (canAttackTurrets)
         {
-            Collider2D[] affected = Physics2D.OverlapCircleAll(transform.position, explosionRadious);
+            Collider2D[] affected = Physics2D.OverlapCircleAll(transform.position, explosionRadius);
             foreach (Collider2D c in affected)
             {
-                if (c.GetComponent<MainTurret>().transform.Find("UpgradeCollider").GetComponent<BoxCollider2D>() != null) // ========================== nullreferenceexception
+                if (c.GetComponent<MultiUpgradeTurret>() != null) 
                 {
-                    var closestPoint = c.GetComponent<MainTurret>().transform.Find("UpgradeCollider").GetComponent<BoxCollider2D>().ClosestPoint(transform.position);
-                    var distance = Vector3.Distance(closestPoint, transform.position);
-                    float damagePercent = Mathf.InverseLerp(explosionRadious, 0, distance);
-                    c.GetComponent<MainTurret>().TakeDamage(damage * damagePercent);
+                    //var closestPoint = c.gameObject.GetComponent<BoxCollider2D>().ClosestPoint(transform.position);
+                    //var distance = Vector3.Distance(closestPoint, transform.position);
+                    //float damagePercent = Mathf.InverseLerp(explosionRadius, 0, distance);
+                    //c.transform.parent.GetComponent<MainTurret>().TakeDamage(damage * damagePercent);
+                    c.transform.parent.GetComponent<MainTurret>().TakeDamage(explosionDamage);
                 }
             }
             // Show boom
 
-            print("boomed");
+            //print("boomed");
             GameObject boom = Instantiate(explosionEffect, transform.position, Quaternion.identity);
             // Default sprite is of r=1, so we scale it with radious
-            boom.transform.localScale = new Vector3(explosionRadious * 2, explosionRadious * 2, explosionRadious * 2);
+            boom.transform.localScale = new Vector3(explosionRadius * 2, explosionRadius * 2, explosionRadius * 2);
             Destroy(boom, timeToShowExplosion);
             //Destroy(gameObject);
         } else
@@ -227,18 +245,14 @@ public class MultiplayerEnemy : MonoBehaviour, IPunObservable
         {
             if(enemy.GetSpeed() <= this.speed)
             {
-                this.speed = enemy.GetSpeed();
+                speed = enemy.GetSpeed();
             }
-        }
-        if (collision.GetComponent<MainTurret>().transform.Find("UpgradeCollider").GetComponent<BoxCollider2D>() != null) // ============ nullreferenceexcpetion
-        {
-            isTurretClose = true;
         }
     }
 
     public void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.GetComponent<MainTurret>().transform.Find("UpgradeCollider").GetComponent<BoxCollider2D>() != null)
+        if (collision.GetComponent<MultiUpgradeTurret>() != null)
         {
             isTurretClose = false;
         }
