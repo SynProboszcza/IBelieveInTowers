@@ -44,6 +44,9 @@ public class MainTurret : MonoBehaviour
     // Upgrade cost
     // ----------------------------------------------------------------------
     public int upgradeCost = 100;
+    // Money reward if turret gets destroyed
+    // ----------------------------------------------------------------------
+    public int moneyReward = 300;
     // Turret health
     // ----------------------------------------------------------------------
     public float turretHealth = 200f;
@@ -61,13 +64,15 @@ public class MainTurret : MonoBehaviour
     public float[] bulletRangeMultipliers = new float[] { 1.0f, 1.2f, 1.4f, 1.6f };
     [Tooltip("Array of turret seeing range bonuses for upgrading")]
     public float[] turretRangeMultipliers = new float[] { 1.0f, 1.2f, 1.4f, 1.6f };
+    [Tooltip("Array of turret seeing range bonuses for upgrading")]
+    public float[] turretmoneyRewardMultipliers = new float[] { 1.0f, 1.5f, 2f, 3f };
     // OneHitKill mechanic, potential upgrade
     // -----------------------------------------------------------------------
     [Tooltip("OneHitKill")]
     public bool ohk = false;
     // Shooting helpers
     // -----------------------------------------------------------------------
-    [Tooltip("Only applicable if isExsplosibe is enabled")]
+    [Tooltip("Only applicable if isExsplosive is enabled")]
     public float timeToShowExplosion = 0.2f;
     public bool isEnemyClose = false;
     public bool shootThisFrame = false;
@@ -244,6 +249,9 @@ public class MainTurret : MonoBehaviour
             // If multiplayer
             GameObject go = Instantiate(multishopNodePrefab, new Vector3(transform.position.x, transform.position.y, MainGameLoop.shopNodesZOffset), Quaternion.identity);
             go.transform.SetParent(mainGame.GetComponent<MultiplayerMainGameLoop>().shopNodesCollection.transform);
+            mainGame.GetComponent<PhotonView>().RPC("AddResourcesShowAtSpecifiedPoint", RpcTarget.All,
+                false, true, moneyReward * turretmoneyRewardMultipliers[upgradeLevel], new Vector2(transform.position.x, transform.position.y));
+            // bool forDefender, bool isMoney, int amount, Vector2 fromWhere
             PhotonNetwork.Destroy(gameObject);
         } else
         {
