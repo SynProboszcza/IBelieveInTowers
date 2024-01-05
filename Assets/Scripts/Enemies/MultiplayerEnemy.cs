@@ -2,6 +2,7 @@ using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -19,11 +20,16 @@ public class MultiplayerEnemy : MonoBehaviour, IPunObservable
     public int waypointIndex = 0;
     public int moneyReward = 50;
     public int costToSpawn = 555;
-    [Header("Shooting parts - leave empty except for slimer")]
+    [Header("Exploding - leave empty except for slimer")]
     public bool canAttackTurrets = false;
-    public GameObject bullet;
+    public bool isTurretClose = false;
     public Transform targetPosition;
-    public int bulletAmount = 10;
+    public GameObject explosionEffect;
+    public float explosionRadious = 2f;
+    public float explosionDamage = 150f;
+    public float timeToShowExplosion = 0.25f;
+    public float timeBetweenExplosions = 2f;
+    public float timeSinceLastShot = 0f;
 
 
     void Start()
@@ -43,40 +49,17 @@ public class MultiplayerEnemy : MonoBehaviour, IPunObservable
     void Update()
     {
         Move();
-        if(currentHealth <= 0) 
+        if (canAttackTurrets && isTurretClose)
         {
-            Die();
+            ExplodeTimed();
         }
-        // if (SceneManager.GetActiveScene().name.Equals("MainMenu"))
-        // {
-        //     Move();
-        //     //print("main menu");
-        //     if (currentHealth <= 0)
-        //     {
-        //         Die();
-        //     }
-        // }
-        // else
-        // {
-        //     if (this.GetComponent<PhotonView>() != null && this.GetComponent<PhotonView>().IsMine)
-        //     {
-        //         Move();
-        //         //print("i have photon view and its mine");
-        //         if (currentHealth <= 0)
-        //         {
-        //             Die();
-        //         }
-        //     }
-        //     else
-        //     {
-        //         Move();
-        //         //print("basically everything else (other player is controlling it) health: " + currentHealth);
-        //         if (currentHealth <= 0)
-        //         {
-        //             Die();
-        //         }
-        //     }
-        // }
+        if (gameObject.GetComponent<PhotonView>().IsMine)
+        {
+            if(currentHealth <= 0) 
+            {
+                Die();
+            }
+        }
     }
 
     private void Move()
@@ -108,10 +91,17 @@ public class MultiplayerEnemy : MonoBehaviour, IPunObservable
     {
         // Maybe add some effects to death, idk particles or
         // animated text of how much money it gave
-        CrossSceneManager.instance.AddMoney(moneyReward, transform.position);
         if (gameObject.GetComponent<PhotonView>().IsMine)
         {
+            // isMine == true means im attacker
+            // gameObject.GetComponent<PhotonView>().RPC("AddResources", RpcTarget.All, true, true, 50);
+            // CrossSceneManager.instance.AddMoney(moneyReward, transform.position);
+            // -------------------------------------------------------------  forDefender, isMoney, amount, fromWhere
+            mainGame.GetComponent<PhotonView>().RPC("AddResourcesShowAtSpecifiedPoint", RpcTarget.All, true, true,    moneyReward, new Vector2(transform.position.x, transform.position.y));
             PhotonNetwork.Destroy(gameObject);
+        } else
+        {
+            // Do nothing as this is not my object
         }
     }
 
@@ -185,11 +175,51 @@ public class MultiplayerEnemy : MonoBehaviour, IPunObservable
         this.currentHealth -= damage;
     }
     
-    //public void ShootAround(Transform targetTurretPosition)
-    //{
-    //    Quaternion rotation = Quaternion.Euler(0, 0, Mathf.Atan2(targetTurretPosition.position.y, targetTurretPosition.position.x) * Mathf.Rad2Deg + 180f);
-    //    Instantiate(bullet, transform.position, rotation);
-    //}
+    public void ExplodeTimed()
+    {
+        //print("try to boom");
+        if ((Time.time > (timeBetweenExplosions + timeSinceLastShot)))
+        {
+            Explode();
+            timeSinceLastShot = Time.time;
+        } //else
+        //{
+        //    print("Time.time: " + Time.time +
+        //        "\ntimeBetweenExplosions: " + timeBetweenExplosions +
+        //        "\ntimeSinceLastShot: " + timeSinceLastShot +
+        //        "\nWhole thing: " + (Time.time > timeBetweenExplosions + timeSinceLastShot));
+        //}
+    }
+
+    public void Explode()
+    {
+        // we need to check not if it collides with turret collider but with turret edges, like upgrade collider
+        if (canAttackTurrets)
+        {
+            Collider2D[] affected = Physics2D.OverlapCircleAll(transform.position, explosionRadious);
+            foreach (Collider2D c in affected)
+            {
+                if (c.GetComponent<MainTurret>().transform.Find("UpgradeCollider").GetComponent<BoxCollider2D>() != null) // ========================== nullreferenceexception
+                {
+                    var closestPoint = c.GetComponent<MainTurret>().transform.Find("UpgradeCollider").GetComponent<BoxCollider2D>().ClosestPoint(transform.position);
+                    var distance = Vector3.Distance(closestPoint, transform.position);
+                    float damagePercent = Mathf.InverseLerp(explosionRadious, 0, distance);
+                    c.GetComponent<MainTurret>().TakeDamage(damage * damagePercent);
+                }
+            }
+            // Show boom
+
+            print("boomed");
+            GameObject boom = Instantiate(explosionEffect, transform.position, Quaternion.identity);
+            // Default sprite is of r=1, so we scale it with radious
+            boom.transform.localScale = new Vector3(explosionRadious * 2, explosionRadious * 2, explosionRadious * 2);
+            Destroy(boom, timeToShowExplosion);
+            //Destroy(gameObject);
+        } else
+        {
+            print("am not explodyy boy");
+        }
+    }
 
     public void OnTriggerEnter2D(Collider2D collision)
     {
@@ -200,10 +230,19 @@ public class MultiplayerEnemy : MonoBehaviour, IPunObservable
                 this.speed = enemy.GetSpeed();
             }
         }
-        //ShootAround(collision.transform);
+        if (collision.GetComponent<MainTurret>().transform.Find("UpgradeCollider").GetComponent<BoxCollider2D>() != null) // ============ nullreferenceexcpetion
+        {
+            isTurretClose = true;
+        }
     }
 
-
+    public void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.GetComponent<MainTurret>().transform.Find("UpgradeCollider").GetComponent<BoxCollider2D>() != null)
+        {
+            isTurretClose = false;
+        }
+    }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {

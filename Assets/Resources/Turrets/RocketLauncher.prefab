@@ -167,6 +167,7 @@ MonoBehaviour:
   bulletDamage: 150
   fireRate: 2
   bulletRange: 5
+  turretRange: 3
   distanceToShutoffMuzzleEffects: 0.4
   upgradeCost: 200
   turretHealth: 200
@@ -187,6 +188,11 @@ MonoBehaviour:
   - 0.8
   - 0.7
   bulletRangeMultipliers:
+  - 1
+  - 1.2
+  - 1.4
+  - 1.6
+  turretRangeMultipliers:
   - 1
   - 1.2
   - 1.4

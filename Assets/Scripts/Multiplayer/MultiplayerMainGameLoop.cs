@@ -1,5 +1,6 @@
 using Photon.Pun;
 using Photon.Pun.UtilityScripts;
+using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -29,6 +30,7 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
     // playArenaCorners is an object that has 4 properly named child gameObjects
     // Their transform.position 's are corners of play arena
     public Transform playArenaCorners;
+    public GameObject msgToPlayerCanvas;
     public Transform[] waypoints;
     public Transform[] obstacles;
     public float roundTimeSeconds = 180;
@@ -39,15 +41,16 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
     public TMP_Text a_enemyHealthTextField;
     public TMP_Text a_playerMoneyTextField;
     public TMP_Text a_playerManaTextField;
+    public int a_moneyPerSecond = 10;
     [Header("Defender parts")]
     public TMP_Text d_timer;
     public TMP_Text d_enemyHealthTextField;
     public TMP_Text d_playerMoneyTextField;
     public TMP_Text d_playerManaTextField;
-    private Vector2 topLeft;
-    private Vector2 topRight;
-    private Vector2 bottomLeft;
-    private Vector2 bottomRight;
+    public Vector2 topLeft;
+    public Vector2 topRight;   // Despite what VS says, they are used in
+    public Vector2 bottomLeft; // GetPlayArenaCorners() 
+    public Vector2 bottomRight;
     [HideInInspector]
     public int nodesInstantiated = 0;
     [HideInInspector]
@@ -68,6 +71,9 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
     public bool amIDefender;
     [HideInInspector]
     private bool matchResultsShown = false; // Flag so it gets run only once
+    public float defenderHealthToSync;
+    private bool addingMoneySet = false;
+    private Coroutine moneyPerSecond;
 
     // FPS limit and SIMPLEConnect
     void Awake()
@@ -100,13 +106,14 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
         defenderMatchResults.transform.Find("Loose").gameObject.SetActive(false);
         amIMaster = CrossSceneManager.instance.amIMaster;
         amIDefender = CrossSceneManager.instance.amIDefender;
+        defenderHealthToSync = CrossSceneManager.instance.defenderHealth;
+        GetPlayArenaCorners();
         //playerMoney = CrossSceneManager.instance.playerMoney;
         //playerMana = CrossSceneManager.instance.playerMana;
         if (amIDefender)
         {
             defenderPart.gameObject.SetActive(true);
             shopNodesCollection = new GameObject("ShopNodesCollection");
-            GetPlayArenaCorners();
             GenerateAndConfigureNodeMesh(topLeft, bottomRight);
             // TODO: ShopNode needs to show spells
         } else
@@ -116,7 +123,8 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
         }
 
         // =====================================================================================================================================================
-        // Temporarily disabled
+        // Temporarily disabled - for testing
+        // TODO: uncomment this
         // =====================================================================================================================================================
         //roundTimeSeconds = CrossSceneManager.instance.currentMatchMaxTime;
         currentTime = roundTimeSeconds;
@@ -128,6 +136,7 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
 
     void Update()
     {
+        defenderHealthToSync = CrossSceneManager.instance.defenderHealth;
         UpdatePlayerStats();
         // Check if defending when ded
         //  checking is done when dealing damage
@@ -149,6 +158,11 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
                     DisplayTime(d_timer, currentTime);
                 } else
                 {
+                    if (!addingMoneySet)
+                    {
+                        moneyPerSecond = StartCoroutine(AddMoneyPerSecond(a_moneyPerSecond));
+                        addingMoneySet = true;
+                    }
                     DisplayTime(a_timer, currentTime);
                 }
             } else
@@ -185,6 +199,7 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
     public void GameEnd(bool amIDefending, bool didDefenderDie)
     {
         isTimerRunning = false;
+        StopCoroutine(moneyPerSecond);
         if (amIDefending)
         {
             if (didDefenderDie)
@@ -233,6 +248,15 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
     private void GoBackToHostGameAfterNSeconds(int seconds)
     {
         StartCoroutine(GoBackHostGame(seconds));
+    }
+
+    private IEnumerator AddMoneyPerSecond(int amount)
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(1);
+            CrossSceneManager.instance.AddMoney(amount, topRight);
+        }
     }
 
     private IEnumerator GoBackHostGame(int seconds)
@@ -296,6 +320,62 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
             string enemyHealthTextTemplate = "Enemy health: " + CrossSceneManager.instance.defenderHealth;
             a_enemyHealthTextField.text = enemyHealthTextTemplate;
         }
+    }
+
+    [PunRPC]
+    public void AddResourcesShowAtMouse(bool forDefender, bool isMoney, int amount)
+    {
+        if (CrossSceneManager.instance.amIDefender == forDefender)
+        {
+            if (isMoney)
+            {
+                CrossSceneManager.instance.AddMoney(amount);
+            }
+            else
+            {
+                CrossSceneManager.instance.AddMana(amount);
+            }
+        }
+        else
+        {
+            // Do nothing
+        }
+    }
+
+    [PunRPC]
+    public void AddResourcesShowAtSpecifiedPoint(bool forDefender, bool isMoney, int amount, Vector2 fromWhere)
+    {
+        if (CrossSceneManager.instance.amIDefender == forDefender)
+        {
+            if (isMoney)
+            {
+                CrossSceneManager.instance.AddMoney(amount, fromWhere);
+            }
+            else
+            {
+                CrossSceneManager.instance.AddMana(amount, fromWhere); //ShowManaChange is not implemented yet
+            }
+        }
+        else
+        {
+            // Do nothing
+        }
+    }
+
+    public override void OnPlayerLeftRoom(Player otherPlayer)
+    {
+        isTimerRunning = false;
+        msgToPlayerCanvas.gameObject.SetActive(true);
+        msgToPlayerCanvas.transform.Find("EnemyLeft").gameObject.SetActive(true);
+        PhotonNetwork.LeaveRoom();
+        StartCoroutine(GoBackAfterEnemyPlayerLeaves(3));
+        base.OnPlayerLeftRoom(otherPlayer);
+    }
+
+    System.Collections.IEnumerator GoBackAfterEnemyPlayerLeaves(int seconds)
+    {
+        yield return new WaitForSeconds(seconds);
+        SceneManager.LoadScene("HostGame");
     }
 
     // ----------------------------------------------------
@@ -389,14 +469,17 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
         if (stream.IsWriting)
         {
             stream.SendNext(this.currentTime);
-            //print("sent time");
+            stream.SendNext(defenderHealthToSync);
+            //print("Sent time and health: " + defenderHealthToSync);
         }
         else
         {
             float _currentTime = (float)stream.ReceiveNext();
+            // Basic lag compensation
             float lag = Mathf.Abs((float)(PhotonNetwork.Time - info.SentServerTime));
             this.currentTime = _currentTime - lag;
-            //print("received time");
+            CrossSceneManager.instance.defenderHealth = Mathf.FloorToInt((float)stream.ReceiveNext());
+            //print("Received time and health: " + defenderHealthToSync);
         }
     }
 

@@ -31,6 +31,8 @@ public class MainTurret : MonoBehaviour
     public float fireRate = 1;
     [Tooltip("Distance after which bullets disappear")]
     public float bulletRange = 5f;
+    [Tooltip("Distance in which turrets can see")]
+    public float turretRange = 2f;
     // Fire rate  
     // ----------------------------------------------------------------------
     private float timeSinceLastShot;
@@ -56,6 +58,8 @@ public class MainTurret : MonoBehaviour
     public float[] fireRateMultipliers = new float[] { 1.0f, 0.9f, 0.8f, 0.7f };
     [Tooltip("Array of bullet range bonuses for upgrading")]
     public float[] bulletRangeMultipliers = new float[] { 1.0f, 1.2f, 1.4f, 1.6f };
+    [Tooltip("Array of turret seeing range bonuses for upgrading")]
+    public float[] turretRangeMultipliers = new float[] { 1.0f, 1.2f, 1.4f, 1.6f };
     // OneHitKill mechanic, potential upgrade
     // -----------------------------------------------------------------------
     [Tooltip("OneHitKill")]
@@ -103,6 +107,7 @@ public class MainTurret : MonoBehaviour
         {
             turretMaxHealth = turretHealth;
         }
+        UpdateAndShowTurretRange();
     }
 
     void Update()
@@ -241,6 +246,12 @@ public class MainTurret : MonoBehaviour
         }
     }
 
+    private void UpdateAndShowTurretRange()
+    {
+        gameObject.GetComponent<CircleCollider2D>().radius = turretRange * turretRangeMultipliers[upgradeLevel];
+        transform.Find("Range").GetComponent<SetAndShowTurretRange>().UpdateRange();
+    }
+
     private void DestroyBullet(GameObject bullet)
     {
         //maybe add effects
@@ -279,7 +290,8 @@ public class MainTurret : MonoBehaviour
         }
     }
 
-    private GameObject ShootAtTarget(GameObject bullet, Vector3 position, Quaternion rotation, float baseBulletSpeed, float baseBulletDamage, float baseBulletRange, bool oneHitKill, bool isExplosive, float timeToShowExplosion)
+    private GameObject ShootAtTarget(GameObject bullet, Vector3 position, Quaternion rotation,
+        float baseBulletSpeed, float baseBulletDamage, float baseBulletRange, bool oneHitKill, bool isExplosive, float timeToShowExplosion)
     {
         GameObject _bullet = (GameObject)Instantiate(bullet, position, rotation);
         _bullet.GetComponent<Bullet>().SetSpeed(baseBulletSpeed * speedMultipliers[upgradeLevel]);
@@ -314,23 +326,25 @@ public class MainTurret : MonoBehaviour
     [PunRPC]
     public bool LevelUp()
     {
-        if(upgradeLevel < 3
-            && CrossSceneManager.instance.CanPlayerAffordWithMoney(upgradeCost))
+        if (upgradeLevel < 3)
         {
-            // Money cost is handled by CrossSceneManager.cs
-            // Upgrades to bullet speed, damage and bulletRange are 
-            // handled by arrays of multipliers
-            // check if it has enough money and substract it
-            CrossSceneManager.instance.PayWithMoney(upgradeCost);
+            if (CrossSceneManager.instance.amIDefender 
+                && CrossSceneManager.instance.CanPlayerAffordWithMoney(upgradeCost))
+            {
+                // Money cost is handled by CrossSceneManager.cs
+                // Upgrades to bullet speed, damage and bulletRange are 
+                // handled by arrays of multipliers
+                // check if it has enough money and substract it
+                CrossSceneManager.instance.PayWithMoney(upgradeCost);
+            }
             upgradeLevel++;
             turretMaxHealth *= 1.1f;
             turretHealth *= 1.1f;
             float _toAdd = (turretMaxHealth - turretHealth)/2;
             turretHealth += _toAdd;
+            UpdateAndShowTurretRange();
             return true;
-        } else
-        {
-            return false;
         }
+        return false;
     }
 }

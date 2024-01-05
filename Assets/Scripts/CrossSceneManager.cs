@@ -1,3 +1,4 @@
+using Photon.Pun;
 using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
@@ -54,6 +55,7 @@ public class CrossSceneManager : MonoBehaviour
     public bool invincibleTurrets = false;
     private Vector2 mouseWorldPos;
     public GameObject showPriceCostPrefab;
+    public bool spawnDelayPassed = false;
 
 
     void Start()
@@ -179,6 +181,12 @@ public class CrossSceneManager : MonoBehaviour
 
     public void AddMana(int amount)
     {
+        playerMana += amount;
+    }
+
+    public void AddMana(int amount, Vector2 fromWhere)
+    {
+        // Show adding mana
         playerMana += amount;
     }
 
