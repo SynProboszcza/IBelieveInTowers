@@ -171,6 +171,7 @@ MonoBehaviour:
   turretRange: 3
   distanceToShutoffMuzzleEffects: 0.2
   upgradeCost: 200
+  moneyReward: 250
   turretHealth: 200
   turretMaxHealth: 200
   damageMultipliers:
@@ -194,6 +195,11 @@ MonoBehaviour:
   - 1.4
   - 1.6
   turretRangeMultipliers:
+  - 1
+  - 1.2
+  - 1.4
+  - 1.6
+  turretmoneyRewardMultipliers:
   - 1
   - 1.2
   - 1.4
