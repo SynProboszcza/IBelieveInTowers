@@ -480,6 +480,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Range
       objectReference: {fileID: 0}
+    - target: {fileID: 4910289325471908781, guid: 68ad298ae769004498e9f3564d187d52, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5494359097597383462, guid: 68ad298ae769004498e9f3564d187d52, type: 3}
+      propertyPath: m_MaskAlphaCutoff
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8855421694434583375, guid: 68ad298ae769004498e9f3564d187d52, type: 3}
       propertyPath: m_RootOrder
       value: 3
