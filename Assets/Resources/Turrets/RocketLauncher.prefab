@@ -164,8 +164,8 @@ MonoBehaviour:
   multishopNodePrefab: {fileID: 5003845570486195154, guid: dca36f7296aaaec4797f9c8ec861c3e6, type: 3}
   mainGame: {fileID: 0}
   upgradeLevel: 0
-  bulletSpeed: 100
-  bulletDamage: 150
+  bulletSpeed: 75
+  bulletDamage: 100
   fireRate: 2
   bulletRange: 5
   turretRange: 3
@@ -213,6 +213,7 @@ MonoBehaviour:
   isShotgun: 0
   shotgunSpreadInDegrees: 15
   shotgunPelletsToTheSides: 1
+  shotgunRandomSpeed: 1
   targetPosition: {x: 0, y: 0}
   srBase: {fileID: 0}
   srMuzzleEffects: {fileID: 0}
@@ -236,6 +237,7 @@ MonoBehaviour:
   OwnershipTransfer: 0
   observableSearch: 2
   ObservedComponents:
+  - {fileID: 1308187787354350593}
   - {fileID: -4290031610596399598}
   sceneViewId: 0
   InstantiationId: 0

@@ -164,9 +164,9 @@ MonoBehaviour:
   multishopNodePrefab: {fileID: 5003845570486195154, guid: dca36f7296aaaec4797f9c8ec861c3e6, type: 3}
   mainGame: {fileID: 0}
   upgradeLevel: 0
-  bulletSpeed: 100
-  bulletDamage: 4
-  fireRate: 1
+  bulletSpeed: 175
+  bulletDamage: 7
+  fireRate: 1.2
   bulletRange: 5
   turretRange: 2.5
   distanceToShutoffMuzzleEffects: 0.5
@@ -213,7 +213,7 @@ MonoBehaviour:
   isShotgun: 1
   shotgunSpreadInDegrees: 5
   shotgunPelletsToTheSides: 3
-  shotgunRandomSpeed: 15
+  shotgunRandomSpeed: 50
   targetPosition: {x: 0, y: 0}
   srBase: {fileID: 0}
   srMuzzleEffects: {fileID: 0}
