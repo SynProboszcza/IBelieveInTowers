@@ -7,6 +7,8 @@ public class TurretOffer : MonoBehaviour
     public GameObject turretPrefab;
     private GameObject mainGame;
     public int turretCost = 50;
+    public string fireballSpritePath; 
+
     // Start is called before the first frame update
     void Start()
     {
@@ -15,6 +17,18 @@ public class TurretOffer : MonoBehaviour
         gameObject.GetComponent<SpriteRenderer>().sprite = turretPrefab.GetComponent<SpriteRenderer>().sprite;
         // Set turret weapon sprite
         gameObject.transform.Find("WeaponSprite").GetComponent<SpriteRenderer>().sprite = turretPrefab.transform.Find("Gun").GetComponent<SpriteRenderer>().sprite;
+
+        fireballSpritePath = "Flames/Fireball/ffireball_0001";
+        Sprite fireballSprite = Resources.Load<Sprite>(fireballSpritePath);
+
+        if (fireballSprite != null)
+        {
+            gameObject.transform.Find("WeaponSprite").GetComponent<SpriteRenderer>().sprite = fireballSprite;
+        }
+        else
+        {
+            Debug.LogError("Failed to load the fireball sprite from Resources folder. Check the file path.");
+        }
 
     }
 
@@ -36,6 +50,10 @@ public class TurretOffer : MonoBehaviour
         }
     }
 
+
+
+
+
     private void CloseShop()
     {
         transform.parent.transform.parent.GetComponent<ShopContainer>().CloseShop();
@@ -45,4 +63,23 @@ public class TurretOffer : MonoBehaviour
     {
         transform.parent.transform.parent.GetComponent<ShopContainer>().CloseNode();
     }
+
+    public void BuyFireBall(Sprite fireballSprite, int cost)
+    {
+        if (mainGame.GetComponent<MainGameLoop>().CanBuyTurret(cost))
+        {
+            GameObject fireball = new GameObject("Fireball"); // Create an empty GameObject
+            fireball.transform.position = transform.position; // Set the position
+            fireball.AddComponent<SpriteRenderer>().sprite = fireballSprite;      
+
+            mainGame.GetComponent<MainGameLoop>().CanBuyTurret(cost); 
+            CloseNode();
+        }
+        else
+        {
+            Debug.Log("Not enough money to buy the fireball spell");
+            CloseShop();
+        }
+    }
+
 }

@@ -23,4 +23,22 @@ public class UnitStatistics : MonoBehaviour
         damage = unitPrefab.GetComponent<Enemy>().damage;
         moneyReward = unitPrefab.GetComponent<Enemy>().moneyReward;
     }
+
+    private void Die()
+    {
+        
+        Destroy(gameObject);
+    }
+
+    public void TakeDamage(float damageAmount)
+    {
+       
+        maxHealth -= damageAmount;
+
+       
+        if (maxHealth <= 0)
+        {
+            Die(); 
+        }
+    }
 }

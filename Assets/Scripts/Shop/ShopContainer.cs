@@ -33,6 +33,11 @@ public class ShopContainer : MonoBehaviour
         {
             CloseShop();
         }
+
+        if (Input.GetMouseButtonDown(0) && gameObject.transform.GetChild(0).gameObject.activeSelf)
+        {
+            BuyFireBall();
+        }
     }
 
     private void OpenShop()
@@ -79,4 +84,33 @@ public class ShopContainer : MonoBehaviour
             OpenShop();
         }
     }
+
+    private void BuyFireBall()
+    {
+        // Get the reference to the Spelloffer=TurretOffer script on the same GameObject
+        TurretOffer TurretOffer = GetComponent<TurretOffer>();
+
+        // Check if the Spelloffer script is available
+        if (TurretOffer != null)
+        {
+            string fireballSpritePath = "Flames/Fireball/ffireball_0001";
+            Sprite fireballSprite = Resources.Load<Sprite>(fireballSpritePath);
+
+            if (fireballSprite != null)
+            {
+                int fireballCost = 20;
+
+                TurretOffer.BuyFireBall(fireballSprite, fireballCost);
+            }
+            else
+            {
+                Debug.LogError("Failed to load the fireball sprite from Resources folder. Check the file path.");
+            }
+        }
+        else
+        {
+            Debug.LogError("Spelloffer script not found.");
+        }
+    }
+
 }
