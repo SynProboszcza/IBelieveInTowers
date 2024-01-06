@@ -213,6 +213,7 @@ MonoBehaviour:
   isShotgun: 1
   shotgunSpreadInDegrees: 2
   shotgunPelletsToTheSides: 5
+  shotgunRandomSpeed: 15
   targetPosition: {x: 0, y: 0}
   srBase: {fileID: 0}
   srMuzzleEffects: {fileID: 0}

@@ -85,6 +85,8 @@ public class MainTurret : MonoBehaviour, IPunObservable
     public float shotgunSpreadInDegrees = 15f;
     [Tooltip("Amount of pellets added to the left and to the right")]
     public int shotgunPelletsToTheSides = 1;
+    [Tooltip("Randomised speed modification to pellets - added to base pellet speed from -value to +value")]
+    public float shotgunRandomSpeed = 15f;
     // Current target location
     // -----------------------------------------------------------------------
     public Vector2 targetPosition;
@@ -190,15 +192,18 @@ public class MainTurret : MonoBehaviour, IPunObservable
                     {
                         // Bullet to the side
                         Quaternion _rotation = Quaternion.Euler(0, 0, Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg + 180f - shotgunSpreadInDegrees * i);
+                        float _speedMod = Random.value * shotgunRandomSpeed - Random.value * shotgunRandomSpeed; // Creates a range from -value to + value
                         bulletInstance = ShootAtTarget(bullets[upgradeLevel], shootSpawnPoint.transform.position,
-                            _rotation, bulletSpeed, bulletDamage, bulletRange, ohk, isExplosive, timeToShowExplosion);
+                            _rotation, bulletSpeed + _speedMod, bulletDamage, bulletRange, ohk, isExplosive, timeToShowExplosion);
                         // Bullet centered
+                        _speedMod = Random.value * shotgunRandomSpeed - Random.value * shotgunRandomSpeed;
                         bulletInstance = ShootAtTarget(bullets[upgradeLevel], shootSpawnPoint.transform.position,
-                            rotation, bulletSpeed, bulletDamage, bulletRange, ohk, isExplosive, timeToShowExplosion);
+                            rotation, bulletSpeed + _speedMod, bulletDamage, bulletRange, ohk, isExplosive, timeToShowExplosion);
                         // Bullet to the other side
+                        _speedMod = Random.value * shotgunRandomSpeed - Random.value * shotgunRandomSpeed;
                         _rotation = Quaternion.Euler(0, 0, Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg + 180f + shotgunSpreadInDegrees * i);
                         bulletInstance = ShootAtTarget(bullets[upgradeLevel], shootSpawnPoint.transform.position,
-                            _rotation, bulletSpeed, bulletDamage, bulletRange, ohk, isExplosive, timeToShowExplosion);
+                            _rotation, bulletSpeed + _speedMod, bulletDamage, bulletRange, ohk, isExplosive, timeToShowExplosion);
                         
                         timeSinceLastShot = Time.time;
                     }

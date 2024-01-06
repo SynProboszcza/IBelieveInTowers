@@ -164,7 +164,7 @@ MonoBehaviour:
   multishopNodePrefab: {fileID: 5003845570486195154, guid: dca36f7296aaaec4797f9c8ec861c3e6, type: 3}
   mainGame: {fileID: 0}
   upgradeLevel: 0
-  bulletSpeed: 100
+  bulletSpeed: 200
   bulletDamage: 5
   fireRate: 0.2
   bulletRange: 2
