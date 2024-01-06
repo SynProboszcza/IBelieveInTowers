@@ -1874,7 +1874,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &541830363
 RectTransform:
   m_ObjectHideFlags: 0
@@ -7073,7 +7073,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: WIP - special rules (idk)
+  m_Text: WIP - reserved for future use
 --- !u!222 &1133602347
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -8616,7 +8616,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: I am defending first!
+  m_Text: I am attacking first!
 --- !u!222 &1690500992
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -8807,7 +8807,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: WIP - invincible turrets
+  m_Text: Invincible turrets
 --- !u!222 &1726698205
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -9185,7 +9185,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 1
-  m_IsOn: 1
+  m_IsOn: 0
 --- !u!114 &1791231598
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9701,7 +9701,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 638448592}
   toggleTransition: 1
   graphic: {fileID: 1549052361}

@@ -124,6 +124,7 @@
     <Compile Include="Assets\Scripts\MenuButtons\HostGameButton.cs" />
     <Compile Include="Assets\Scripts\Health\Health.cs" />
     <Compile Include="Assets\Scripts\Deprecated\Moving\GoLeftRight.cs" />
+    <Compile Include="Assets\Scripts\Enemies\ExplodeControl.cs" />
     <Compile Include="Assets\Scripts\Shop\ShopContainer.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark02.cs" />
     <Compile Include="Assets\Photon\PhotonChat\Demos\DemoChat\NamePickGui.cs" />
@@ -166,7 +167,6 @@
     <Compile Include="Assets\Scripts\UI\PrePlay\RedGreenToggle.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01.cs" />
     <Compile Include="Assets\Scripts\MenuButtons\QuitButton.cs" />
-    <Compile Include="Assets\Scripts\Enemies\ExplodeControl.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />

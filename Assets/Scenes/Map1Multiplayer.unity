@@ -4873,9 +4873,9 @@ MonoBehaviour:
   roomName: SIMPLEroom
   nickName: SIMPLEnick
   amIDefending: 1
-  isMoneyInfinite: 0
-  isManaInfinite: 0
-  invincibleTurrets: 0
+  isMoneyInfinite: 1
+  isManaInfinite: 1
+  invincibleTurrets: 1
   mainGameScript: {fileID: 239573652}
 --- !u!4 &938013105
 Transform:

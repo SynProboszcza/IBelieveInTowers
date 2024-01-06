@@ -148,7 +148,7 @@ public class SpawnerMultiplayer : MonoBehaviour
         GameObject _unit = PhotonNetwork.Instantiate(unitName, spawnPosition, Quaternion.identity);
         _unit.GetComponent<MultiplayerEnemy>().SetDamage(27);
         _unit.GetComponent<MultiplayerEnemy>().SetExplosiveDamage(50);
-        _unit.GetComponent<MultiplayerEnemy>().SetSpeed(0.5f);
+        _unit.GetComponent<MultiplayerEnemy>().SetSpeed(1f);
         _unit.GetComponent<MultiplayerEnemy>().SetWaypoints(waypoints);
         _unit.GetComponent<MultiplayerEnemy>().SetMaxHealth(1000);
         _unit.GetComponent<MultiplayerEnemy>().SetMoneyReward(1234);

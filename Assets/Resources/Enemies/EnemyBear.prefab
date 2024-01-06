@@ -235,17 +235,20 @@ MonoBehaviour:
   waypoints: []
   speed: 1
   currentHealth: 0
-  maxHealth: 700
+  maxHealth: 1500
   damage: 10
   waypointIndex: 0
   moneyReward: 500
   costToSpawn: 500
   canAttackTurrets: 0
+  isTurretClose: 0
   targetPosition: {fileID: 0}
   explosionEffect: {fileID: 1199399877204284496, guid: 39e6eb505ff89cb4d8ac2c3e4f77d431, type: 3}
-  explosionRadious: 2
+  explosionRadius: 2
   explosionDamage: 150
   timeToShowExplosion: 0.25
+  timeBetweenExplosions: 2
+  timeSinceLastShot: 0
 --- !u!1001 &3863209929989716567
 PrefabInstance:
   m_ObjectHideFlags: 0
