@@ -200,7 +200,7 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
     public void RoundEnd(bool amIDefending, bool didDefenderDie)
     {
         // TODO: Decide if load next map, or main menu on finish
-        CrossSceneManager.instance.didDefenderWin.Add(didDefenderDie);
+        CrossSceneManager.instance.didDefenderWin.Add(!didDefenderDie);
         string sceneName = "HostGame";
         if (CrossSceneManager.instance.didDefenderWin.Count < 3)
         {
