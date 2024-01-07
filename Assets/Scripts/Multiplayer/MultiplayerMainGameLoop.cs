@@ -386,6 +386,21 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
         yield return new WaitForSeconds(seconds);
         SceneManager.LoadScene("HostGame");
     }
+    public void LeaveMatchButton()
+    {
+        isTimerRunning = false;
+        msgToPlayerCanvas.gameObject.SetActive(true);
+        msgToPlayerCanvas.transform.Find("EnemyLeft").gameObject.SetActive(true);
+        msgToPlayerCanvas.transform.Find("EnemyLeft").gameObject.GetComponent<TMP_Text>().text = "You left";
+        PhotonNetwork.LeaveRoom();
+        StartCoroutine(GoBackButton(3));
+    }
+
+    System.Collections.IEnumerator GoBackButton(int seconds)
+    {
+        yield return new WaitForSeconds(seconds);
+        SceneManager.LoadScene("HostGame");
+    }
 
     // ----------------------------------------------------
     private void DestroyNode(GameObject node)
