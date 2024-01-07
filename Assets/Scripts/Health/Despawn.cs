@@ -28,10 +28,14 @@ public class Despawn : MonoBehaviour
         } else if (mainGame.GetComponent<MultiplayerMainGameLoop>() != null)
         {
             // Multiplayer
-            //mainGame.GetComponent<MultiplayerMainGameLoop>().TakeDefenderDamage();
-            print("Despawning: " + collision.gameObject.name);
-            CrossSceneManager.instance.TakeDefenderDamageAndCheckIfDied(collision.gameObject.GetComponent<MultiplayerEnemy>().GetDamage());
-            PhotonNetwork.Destroy(collision.gameObject);
+            if (collision.TryGetComponent<MultiplayerEnemy>(out _))
+            {
+                //mainGame.GetComponent<MultiplayerMainGameLoop>().TakeDefenderDamage();
+                print("Despawning: " + collision.gameObject.name);
+                int _dmg = collision.gameObject.GetComponent<MultiplayerEnemy>().GetDamage();
+                CrossSceneManager.instance.TakeDefenderDamageAndCheckIfDied(_dmg);
+                PhotonNetwork.Destroy(collision.gameObject);
+            }
         }
     }
 }
