@@ -56,9 +56,12 @@ public class CrossSceneManager : MonoBehaviour
     private Vector2 mouseWorldPos;
     public GameObject showPriceCostPrefab;
     public bool spawnDelayPassed = false;
+    [Tooltip("For now these are integers as <string>, like \"1\", \"3\" etc. It can be more complex in future if need be")]
     public List<string> mapMiddleNames;
     [Tooltip("ONLY change if you added FULLY FUNCTIONAL map that is correctly named (Map<next number>Multiplayer)")]
     public int amountOfMaps = 4;
+    [Tooltip("List that stores results - amount of <bool>s is the amount of matches played (shold be max 3)")]
+    public List<bool> didDefenderWin = new List<bool>();
 
     void Start()
     {
@@ -113,8 +116,8 @@ public class CrossSceneManager : MonoBehaviour
         // ----------------------
         // HACK: debugging maps
         // ----------------------
-        mapMiddleNames.Clear();
-        mapMiddleNames.Add("3");
+        // mapMiddleNames.Clear();
+        // mapMiddleNames.Add("2");
 
     }
 
@@ -127,9 +130,21 @@ public class CrossSceneManager : MonoBehaviour
         }
     }
 
+    public void ResetInBetweenRounds()
+    {
+        print("CSM Soft Reset In-Between Rounds");
+        playerMoney = 2000;
+        playerMana = 500;
+        defenderHealth = 275;
+        //currentMatchMaxTime = 180;
+        //delayFirstSpawn = 3;
+        spawnDelayPassed = false;
+        hasDefenderDied = false;
+    }
+
     public void ResetAfterPlaying()
     {
-        print("CSM Reset");
+        print("CSM Full Reset");
         playerMoney = 2000;
         playerMana = 500;
         defenderHealth = 275;
@@ -144,6 +159,7 @@ public class CrossSceneManager : MonoBehaviour
         hasDefenderDied = false;
         isMoneyInfinite = false;
         isManaInfinite = false;
+        spawnDelayPassed = false;
         invincibleTurrets = false;
     }
 

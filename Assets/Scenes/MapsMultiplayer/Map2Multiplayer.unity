@@ -12962,6 +12962,9 @@ MonoBehaviour:
   invincibleTurrets: 0
   showPriceCostPrefab: {fileID: 8992059104996785522, guid: 3d4c5d5dd235a1849bc9407173f3d9d5, type: 3}
   spawnDelayPassed: 0
+  mapMiddleNames: []
+  amountOfMaps: 4
+  didDefenderWin: 
 --- !u!4 &1634076229
 Transform:
   m_ObjectHideFlags: 0

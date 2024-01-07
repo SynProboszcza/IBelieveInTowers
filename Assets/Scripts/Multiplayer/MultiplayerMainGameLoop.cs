@@ -140,7 +140,7 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
         //  checking is done when dealing damage
         if (CrossSceneManager.instance.hasDefenderDied && !matchResultsShown)
         {
-            GameEnd(amIDefender, true);
+            RoundEnd(amIDefender, true);
             matchResultsShown = true;
         }
         // -----------------------------------------------------------------------
@@ -177,7 +177,7 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
                 {
                     DisplayTime(a_timer, currentTime);
                 }
-                GameEnd(amIDefender, false);
+                RoundEnd(amIDefender, false);
                 isTimerRunning = false;
             }
         }
@@ -197,9 +197,23 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
         timer.text = string.Format("{0:00}:{1:00}", minutes, seconds);
     }
 
-    public void GameEnd(bool amIDefending, bool didDefenderDie)
+    public void RoundEnd(bool amIDefending, bool didDefenderDie)
     {
+        // TODO: Decide if load next map, or main menu on finish
+        CrossSceneManager.instance.didDefenderWin.Add(didDefenderDie);
+        string sceneName = "HostGame";
+        if (CrossSceneManager.instance.didDefenderWin.Count < 3)
+        {
+            sceneName = "InBetweenScene";
+        } else if (CrossSceneManager.instance.didDefenderWin.Count >= 3)
+        {
+            sceneName = "MainMenu";
+        }
         isTimerRunning = false;
+        ExitGames.Client.Photon.Hashtable roundEndCleaning = new ExitGames.Client.Photon.Hashtable();
+        roundEndCleaning.Add("isMasterReady", false);
+        roundEndCleaning.Add("isJoinedReady", false);
+        PhotonNetwork.CurrentRoom.SetCustomProperties(roundEndCleaning);
         if (moneyPerSecond != null)
         {
             StopCoroutine(moneyPerSecond);
@@ -214,7 +228,7 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
                 defenderMatchResults.transform.Find("Win").gameObject.SetActive(false); // fallback
                 defenderMatchResults.transform.Find("Loose").gameObject.SetActive(true);
                 print("I lost by deadly death, going back to host game after " + secondsToWaitAfterGameEnd + " seconds");
-                GoBackToHostGameAfterNSeconds(secondsToWaitAfterGameEnd);
+                ChangeSceneAfterNSeconds(secondsToWaitAfterGameEnd, sceneName);
             }
             else
             {
@@ -224,7 +238,7 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
                 defenderMatchResults.transform.Find("Win").gameObject.SetActive(true); // fallback
                 defenderMatchResults.transform.Find("Loose").gameObject.SetActive(false);
                 print("I won by surviving, going back to host game after " + secondsToWaitAfterGameEnd + " seconds");
-                GoBackToHostGameAfterNSeconds(secondsToWaitAfterGameEnd);
+                ChangeSceneAfterNSeconds(secondsToWaitAfterGameEnd, sceneName);
             }
         }
         else
@@ -236,7 +250,7 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
                 attackerMatchResults.transform.Find("Loose").gameObject.SetActive(false); // fallback
                 attackerMatchResults.transform.Find("Win").gameObject.SetActive(true);
                 print("I won by killing defender, going back to host game after " + secondsToWaitAfterGameEnd + " seconds");
-                GoBackToHostGameAfterNSeconds(secondsToWaitAfterGameEnd);
+                ChangeSceneAfterNSeconds(secondsToWaitAfterGameEnd, sceneName);
             }
             else
             {
@@ -245,14 +259,19 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
                 attackerMatchResults.transform.Find("Loose").gameObject.SetActive(true); // fallback
                 attackerMatchResults.transform.Find("Win").gameObject.SetActive(false);
                 print("I lost by time, going back to host game after " + secondsToWaitAfterGameEnd + " seconds");
-                GoBackToHostGameAfterNSeconds(secondsToWaitAfterGameEnd);
+                ChangeSceneAfterNSeconds(secondsToWaitAfterGameEnd, sceneName);
             }
+        }
+        if (CrossSceneManager.instance.didDefenderWin.Count >= 3)
+        {
+            print("Game over, going back to main menu");
+            ChangeSceneAfterNSeconds(5, "MainMenu");
         }
     }
 
-    private void GoBackToHostGameAfterNSeconds(int seconds)
+    private void ChangeSceneAfterNSeconds(int seconds, string sceneName)
     {
-        StartCoroutine(GoBackHostGame(seconds));
+        StartCoroutine(ChangeSceneDelayed(seconds, sceneName));
     }
 
     private IEnumerator AddMoneyPerSecond(int amount)
@@ -264,11 +283,11 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
         }
     }
 
-    private IEnumerator GoBackHostGame(int seconds)
+    private IEnumerator ChangeSceneDelayed(int seconds, string sceneName)
     {
         yield return new WaitForSeconds(seconds);
         PhotonNetwork.LeaveRoom();
-        PhotonNetwork.LoadLevel("HostGame");
+        PhotonNetwork.LoadLevel(sceneName);
     }
 
     private void UpdatePlayerStats()
@@ -386,6 +405,7 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
         yield return new WaitForSeconds(seconds);
         SceneManager.LoadScene("HostGame");
     }
+
     public void LeaveMatchButton()
     {
         isTimerRunning = false;

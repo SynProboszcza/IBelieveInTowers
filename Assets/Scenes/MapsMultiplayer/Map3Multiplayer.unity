@@ -14013,6 +14013,7 @@ MonoBehaviour:
   spawnDelayPassed: 0
   mapMiddleNames: []
   amountOfMaps: 4
+  didDefenderWin: 
 --- !u!4 &1634076229
 Transform:
   m_ObjectHideFlags: 0
