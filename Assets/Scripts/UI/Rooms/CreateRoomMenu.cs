@@ -212,7 +212,7 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
             int seconds = Mathf.FloorToInt(_time % 60);
             int minutes = Mathf.FloorToInt(_time / 60);
             _roomPrefab.transform.Find("RoomProps").transform.Find("MatchTime").transform.Find("Minutes").GetComponent<TMP_Text>().text = minutes.ToString();
-            _roomPrefab.transform.Find("RoomProps").transform.Find("MatchTime").transform.Find("Seconds").GetComponent<TMP_Text>().text = string.Format("{0:00}", seconds.ToString());
+            _roomPrefab.transform.Find("RoomProps").transform.Find("MatchTime").transform.Find("Seconds").GetComponent<TMP_Text>().text = string.Format("{0:00}", seconds);
             _roomPrefab.SetActive(true);
             // Keeping active and shown rooms in cache 
             displayedRoomsCache.Add(_roomPrefab);
