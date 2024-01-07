@@ -290,7 +290,7 @@ public class PreMainGame : MonoBehaviourPunCallbacks, IPunObservable
                 child.SetParent(parent);
             }
         }
-
+        // Randomize map, construct a string and pass it to LoadYourAsyncScene()
 
         StartCoroutine(LoadYourAsyncScene("Map2Multiplayer"));
     }
