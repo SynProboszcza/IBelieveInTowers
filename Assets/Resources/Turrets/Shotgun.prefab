@@ -191,9 +191,9 @@ MonoBehaviour:
   - 0.7
   bulletRangeMultipliers:
   - 1
-  - 1.2
+  - 1.1
+  - 1.25
   - 1.4
-  - 1.6
   turretRangeMultipliers:
   - 1
   - 1.2

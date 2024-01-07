@@ -181,9 +181,9 @@ MonoBehaviour:
   - 1.6
   speedMultipliers:
   - 1
-  - 1.2
-  - 1.4
-  - 1.6
+  - 1.5
+  - 2
+  - 2.5
   fireRateMultipliers:
   - 1
   - 0.9
@@ -201,9 +201,9 @@ MonoBehaviour:
   - 1.6
   turretmoneyRewardMultipliers:
   - 1
-  - 1.2
-  - 1.4
-  - 1.6
+  - 2
+  - 3
+  - 4
   ohk: 0
   timeToShowExplosion: 0.2
   isEnemyClose: 0

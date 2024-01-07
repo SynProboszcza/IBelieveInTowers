@@ -191,19 +191,19 @@ MonoBehaviour:
   - 0.35
   bulletRangeMultipliers:
   - 1
-  - 1.2
+  - 1.1
+  - 1.25
   - 1.4
-  - 1.6
   turretRangeMultipliers:
   - 1
+  - 1.1
   - 1.2
-  - 1.4
-  - 1.6
+  - 1.3
   turretmoneyRewardMultipliers:
   - 1
-  - 1.2
-  - 1.4
-  - 1.6
+  - 2
+  - 2.5
+  - 3
   ohk: 0
   timeToShowExplosion: 0.2
   isEnemyClose: 0
