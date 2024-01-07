@@ -110,6 +110,12 @@ public class CrossSceneManager : MonoBehaviour
         {
             mapMiddleNames.Add(i.ToString());
         }
+        // ----------------------
+        // HACK: debugging maps
+        // ----------------------
+        mapMiddleNames.Clear();
+        mapMiddleNames.Add("3");
+
     }
 
     public void TakeDefenderDamageAndCheckIfDied(int amount)

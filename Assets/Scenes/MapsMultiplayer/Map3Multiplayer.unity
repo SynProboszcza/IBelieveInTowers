@@ -1651,8 +1651,6 @@ MonoBehaviour:
   - {fileID: 640255906}
   - {fileID: 1043545269}
   - {fileID: 2062438714}
-  - {fileID: 0}
-  - {fileID: 0}
   - {fileID: 1636086716}
   - {fileID: 1111153915}
   - {fileID: 1150487460}
@@ -14014,6 +14012,7 @@ MonoBehaviour:
   showPriceCostPrefab: {fileID: 8992059104996785522, guid: 3d4c5d5dd235a1849bc9407173f3d9d5, type: 3}
   spawnDelayPassed: 0
   mapMiddleNames: []
+  amountOfMaps: 4
 --- !u!4 &1634076229
 Transform:
   m_ObjectHideFlags: 0
