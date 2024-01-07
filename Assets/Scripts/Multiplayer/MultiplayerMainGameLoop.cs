@@ -286,7 +286,7 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
     private IEnumerator ChangeSceneDelayed(int seconds, string sceneName)
     {
         yield return new WaitForSeconds(seconds);
-        PhotonNetwork.LeaveRoom();
+        //PhotonNetwork.LeaveRoom();
         PhotonNetwork.LoadLevel(sceneName);
     }
 
