@@ -44,4 +44,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/MapsMultiplayer/Map4Multiplayer.unity
     guid: bf2af5bece98cc645afd12ec71daf8a9
+  - enabled: 1
+    path: Assets/Scenes/InBetweenScene.unity
+    guid: a65a787f7880e2e4fb0cbdd5b8c9013f
   m_configObjects: {}

@@ -199,25 +199,57 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
 
     public void RoundEnd(bool amIDefending, bool didDefenderDie)
     {
+        isTimerRunning = false;
+        ExitGames.Client.Photon.Hashtable roundEndCleaning = new ExitGames.Client.Photon.Hashtable();
+        if (moneyPerSecond != null)
+        {
+            StopCoroutine(moneyPerSecond);
+        }
         // TODO: Decide if load next map, or main menu on finish
         CrossSceneManager.instance.didDefenderWin.Add(!didDefenderDie);
         string sceneName = "HostGame";
         if (CrossSceneManager.instance.didDefenderWin.Count < 3)
         {
+            if (CrossSceneManager.instance.didDefenderWin.Count == 2 && (CrossSceneManager.instance.didDefenderWin[0] == CrossSceneManager.instance.didDefenderWin[1]))
+            {
+                // somebody won by 2:0
+                if (amIDefending)
+                {
+                    if (didDefenderDie)
+                    {
+                        // i defender died
+                        GameObject.Find("CanvasLeaveAndFinish").transform.Find("Loose").gameObject.SetActive(true);
+                        ChangeSceneAfterNSeconds(secondsToWaitAfterGameEnd, "MainMenu");
+                    }
+                    else
+                    {
+                        // i defender won by time
+                        GameObject.Find("CanvasLeaveAndFinish").transform.Find("Win").gameObject.SetActive(true);
+                        ChangeSceneAfterNSeconds(secondsToWaitAfterGameEnd, "MainMenu");
+                    }
+                } else
+                {
+                    if (didDefenderDie)
+                    { 
+                        // i attacker won by killing defender
+                        GameObject.Find("CanvasLeaveAndFinish").transform.Find("Win").gameObject.SetActive(true);
+                        ChangeSceneAfterNSeconds(secondsToWaitAfterGameEnd, "MainMenu");
+                    } else
+                    {
+                        // i attacker lost by time
+                        GameObject.Find("CanvasLeaveAndFinish").transform.Find("Loose").gameObject.SetActive(true);
+                        ChangeSceneAfterNSeconds(secondsToWaitAfterGameEnd, "MainMenu");
+                    }
+                }
+            }
             sceneName = "InBetweenScene";
         } else if (CrossSceneManager.instance.didDefenderWin.Count >= 3)
         {
             sceneName = "MainMenu";
         }
-        isTimerRunning = false;
-        ExitGames.Client.Photon.Hashtable roundEndCleaning = new ExitGames.Client.Photon.Hashtable();
         roundEndCleaning.Add("isMasterReady", false);
         roundEndCleaning.Add("isJoinedReady", false);
         PhotonNetwork.CurrentRoom.SetCustomProperties(roundEndCleaning);
-        if (moneyPerSecond != null)
-        {
-            StopCoroutine(moneyPerSecond);
-        }
         if (amIDefending)
         {
             if (didDefenderDie)
