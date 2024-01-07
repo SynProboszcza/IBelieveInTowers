@@ -206,7 +206,8 @@ public class PreMainGame : MonoBehaviourPunCallbacks, IPunObservable
             if (readyState && (bool)PhotonNetwork.CurrentRoom.CustomProperties["isJoinedReady"])
             {
                 print("Sending RPC to change scene!");
-                gameObject.GetComponent<PhotonView>().RPC("SetUpPlayArena", RpcTarget.All);
+                string _middleName = "2";
+                gameObject.GetComponent<PhotonView>().RPC("SetUpPlayArena", RpcTarget.All, _middleName);
             }
         }
         else
@@ -255,7 +256,7 @@ public class PreMainGame : MonoBehaviourPunCallbacks, IPunObservable
     }
 
     [PunRPC]
-    public void SetUpPlayArena()
+    public void SetUpPlayArena(string mapNameMiddlePart)
     {
         // Called when both are ready
         // 
@@ -290,9 +291,9 @@ public class PreMainGame : MonoBehaviourPunCallbacks, IPunObservable
                 child.SetParent(parent);
             }
         }
-        // Randomize map, construct a string and pass it to LoadYourAsyncScene()
-
-        StartCoroutine(LoadYourAsyncScene("Map2Multiplayer"));
+        // Randomization is handled by OnRoomPropertiesUpdate() and passed only by Master client
+        string _mapNameToLoadOnBothClients = "Map" + mapNameMiddlePart + "Multiplayer";
+        StartCoroutine(LoadYourAsyncScene(_mapNameToLoadOnBothClients));
     }
 
     [PunRPC]
