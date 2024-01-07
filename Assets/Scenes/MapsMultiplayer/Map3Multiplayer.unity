@@ -4211,7 +4211,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 5311621602784914545, guid: eaa34879d2cdb6142a29a701b651f2e7, type: 3}
       propertyPath: spawnRate
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5311621602784914545, guid: eaa34879d2cdb6142a29a701b651f2e7, type: 3}
       propertyPath: listOfEnemies
