@@ -215,8 +215,9 @@ public class PreMainGame : MonoBehaviourPunCallbacks, IPunObservable
                 // so if map is named MapSuperMultiplayer you can pass "Super" and it'll work
                 // -------------------------------------------------------------
                 print("Sending RPC to change scene!");
-                int _amountOfReadyAndNamedMapsInsideMultiplayerMapsFolder = 2;
-                string _middleName = Random.Range(1, _amountOfReadyAndNamedMapsInsideMultiplayerMapsFolder + 1).ToString();
+                int _amountOfReadyAndNamedMapsInsideMultiplayerMapsFolder = 3;
+                CrossSceneManager.instance.RandomizeMapSelection(_amountOfReadyAndNamedMapsInsideMultiplayerMapsFolder);
+                string _middleName = CrossSceneManager.instance.mapMiddleNames[0];
                 gameObject.GetComponent<PhotonView>().RPC("SetUpPlayArena", RpcTarget.All, _middleName);
             }
         }

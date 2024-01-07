@@ -2,6 +2,7 @@ using Photon.Pun;
 using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 // using UnityEngine.SocialPlatforms.GameCenter;
@@ -55,7 +56,7 @@ public class CrossSceneManager : MonoBehaviour
     private Vector2 mouseWorldPos;
     public GameObject showPriceCostPrefab;
     public bool spawnDelayPassed = false;
-
+    public List<string> mapMiddleNames;
 
     void Start()
     {
@@ -93,6 +94,22 @@ public class CrossSceneManager : MonoBehaviour
 
     }
 
+    public void RandomizeMapSelection(int maxMapNumber)
+    {
+        List<int> possible = Enumerable.Range(1, maxMapNumber).ToList();
+        List<int> listNumbers = new List<int>();
+        for (int i = 0; i < 3; i++)
+        {
+            int index = Random.Range(0, possible.Count);
+            listNumbers.Add(possible[index]);
+            possible.RemoveAt(index);
+        }
+        foreach (int i in listNumbers)
+        {
+            mapMiddleNames[i] = i.ToString();
+        }
+    }
+
     public void TakeDefenderDamageAndCheckIfDied(int amount)
     {
         defenderHealth -= amount;
@@ -112,6 +129,10 @@ public class CrossSceneManager : MonoBehaviour
         delayFirstSpawn = 3;
         enemyNickname = "";
         myNickName = "";
+        for(int i = 0; i < mapMiddleNames.Count; i++)
+        {
+            mapMiddleNames.RemoveAt(i);
+        }
         // All not-set bools are implicitly false
         amIMaster = false;
         amIDefender = false;
