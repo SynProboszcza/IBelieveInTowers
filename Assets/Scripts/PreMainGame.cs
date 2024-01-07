@@ -37,7 +37,7 @@ public class PreMainGame : MonoBehaviourPunCallbacks, IPunObservable
     private bool isTimerRunning = false;
     private bool areBothReady = false;
     public float currentTime = 30.0f;
-    [Tooltip("Essentially it is time for both clients to load a map")]
+    [Tooltip("Essentially it is time for both clients to load a map. Only really set by Master, because it is synced across clients")]
     public float timeToShowThatBothAreReady = 2f;
 
     private void Awake()
