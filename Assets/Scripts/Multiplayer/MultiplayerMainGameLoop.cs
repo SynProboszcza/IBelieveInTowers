@@ -267,6 +267,7 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
             print("Game over, going back to main menu");
             ChangeSceneAfterNSeconds(5, "MainMenu");
         }
+        CrossSceneManager.instance.ResetInBetweenRounds();
     }
 
     private void ChangeSceneAfterNSeconds(int seconds, string sceneName)
