@@ -220,12 +220,14 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
                         // i defender died
                         GameObject.Find("CanvasLeaveAndFinish").transform.Find("Loose").gameObject.SetActive(true);
                         ChangeSceneAfterNSeconds(secondsToWaitAfterGameEnd, "MainMenu");
+                        return;
                     }
                     else
                     {
                         // i defender won by time
                         GameObject.Find("CanvasLeaveAndFinish").transform.Find("Win").gameObject.SetActive(true);
                         ChangeSceneAfterNSeconds(secondsToWaitAfterGameEnd, "MainMenu");
+                        return;
                     }
                 } else
                 {
@@ -234,11 +236,13 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
                         // i attacker won by killing defender
                         GameObject.Find("CanvasLeaveAndFinish").transform.Find("Win").gameObject.SetActive(true);
                         ChangeSceneAfterNSeconds(secondsToWaitAfterGameEnd, "MainMenu");
+                        return;
                     } else
                     {
                         // i attacker lost by time
                         GameObject.Find("CanvasLeaveAndFinish").transform.Find("Loose").gameObject.SetActive(true);
                         ChangeSceneAfterNSeconds(secondsToWaitAfterGameEnd, "MainMenu");
+                        return;
                     }
                 }
             }
@@ -250,6 +254,7 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
         roundEndCleaning.Add("isMasterReady", false);
         roundEndCleaning.Add("isJoinedReady", false);
         PhotonNetwork.CurrentRoom.SetCustomProperties(roundEndCleaning);
+        CrossSceneManager.instance.ResetInBetweenRounds();
         if (amIDefending)
         {
             if (didDefenderDie)
@@ -294,12 +299,6 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
                 ChangeSceneAfterNSeconds(secondsToWaitAfterGameEnd, sceneName);
             }
         }
-        if (CrossSceneManager.instance.didDefenderWin.Count >= 3)
-        {
-            print("Game over, going back to main menu");
-            ChangeSceneAfterNSeconds(5, "MainMenu");
-        }
-        CrossSceneManager.instance.ResetInBetweenRounds();
     }
 
     private void ChangeSceneAfterNSeconds(int seconds, string sceneName)
