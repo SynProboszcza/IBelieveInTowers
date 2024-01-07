@@ -109,6 +109,7 @@
     <Compile Include="Assets\Scripts\Multiplayer\TestConnection.cs" />
     <Compile Include="Assets\Scripts\MenuButtons\GoBackToMainMenu.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextEventCheck.cs" />
+    <Compile Include="Assets\Scripts\Enemies\ExplosionAnimation.cs" />
     <Compile Include="Assets\Scripts\CrossSceneManager.cs" />
     <Compile Include="Assets\Scripts\Health\Despawn.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\ShaderPropAnimator.cs" />
@@ -167,7 +168,6 @@
     <Compile Include="Assets\Scripts\UI\PrePlay\RedGreenToggle.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01.cs" />
     <Compile Include="Assets\Scripts\MenuButtons\QuitButton.cs" />
-    <Compile Include="Assets\Scripts\Enemies\ExplosionAnimation.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />

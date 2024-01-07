@@ -30,7 +30,7 @@ EditorBuildSettings:
     path: Assets/Scenes/PreparingToPlayAsDefender.unity
     guid: d7945d323744f4f4e942d57babf3757d
   - enabled: 1
-    path: Assets/Scenes/Map1Multiplayer.unity
+    path: Assets/Scenes/MapsMultiplayer/Map1Multiplayer.unity
     guid: aa3f6ef3bd669234e8e070eefc937ce8
   - enabled: 0
     path: Assets/Scenes/map2.unity
