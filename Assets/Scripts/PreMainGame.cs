@@ -37,6 +37,8 @@ public class PreMainGame : MonoBehaviourPunCallbacks, IPunObservable
     private bool isTimerRunning = false;
     private bool areBothReady = false;
     public float currentTime = 30.0f;
+    [Tooltip("Essentially it is time for both clients to load a map")]
+    public float timeToShowThatBothAreReady = 2f;
 
     private void Awake()
     {
@@ -278,7 +280,7 @@ public class PreMainGame : MonoBehaviourPunCallbacks, IPunObservable
         readyToggle.interactable = false;
         leaveRoom.interactable = false;
         textfieldEnemyReadyState.text = "Both players ready!";
-        currentTime = 5.0f;
+        currentTime = timeToShowThatBothAreReady;
         textfieldTimerToClickReady.color = Color.green;
         if (enemiesShopParent != null)
         {
