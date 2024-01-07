@@ -129,10 +129,7 @@ public class CrossSceneManager : MonoBehaviour
         delayFirstSpawn = 3;
         enemyNickname = "";
         myNickName = "";
-        for(int i = 0; i <= mapMiddleNames.Count; i++)
-        {
-            mapMiddleNames.RemoveAt(i);
-        }
+        mapMiddleNames.Clear();
         // All not-set bools are implicitly false
         amIMaster = false;
         amIDefender = false;
