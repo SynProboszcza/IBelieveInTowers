@@ -106,7 +106,7 @@ public class CrossSceneManager : MonoBehaviour
         }
         foreach (int i in listNumbers)
         {
-            mapMiddleNames[i] = i.ToString();
+            mapMiddleNames.Add(i.ToString());
         }
     }
 
