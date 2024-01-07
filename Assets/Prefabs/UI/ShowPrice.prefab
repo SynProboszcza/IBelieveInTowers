@@ -173,6 +173,7 @@ MonoBehaviour:
   durationSeconds: 1
   forceY: 200
   leftToRight: {x: -100, y: 100}
+  topToBottom: {x: 0.5, y: 1.5}
 --- !u!1 &8992059104996785522
 GameObject:
   m_ObjectHideFlags: 0
@@ -256,7 +257,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 0
+  m_PresetInfoIsWorld: 1
 --- !u!114 &7507808688097827167
 MonoBehaviour:
   m_ObjectHideFlags: 0
