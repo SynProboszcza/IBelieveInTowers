@@ -57,6 +57,8 @@ public class CrossSceneManager : MonoBehaviour
     public GameObject showPriceCostPrefab;
     public bool spawnDelayPassed = false;
     public List<string> mapMiddleNames;
+    [Tooltip("ONLY change if you added FULLY FUNCTIONAL map that is correctly named (Map<next number>Multiplayer)")]
+    public int amountOfMaps = 4;
 
     void Start()
     {
@@ -94,9 +96,9 @@ public class CrossSceneManager : MonoBehaviour
 
     }
 
-    public void RandomizeMapSelection(int maxMapNumber)
+    public void RandomizeMapSelection()
     {
-        List<int> possible = Enumerable.Range(1, maxMapNumber).ToList();
+        List<int> possible = Enumerable.Range(1, amountOfMaps).ToList();
         List<int> listNumbers = new List<int>();
         for (int i = 0; i < 3; i++)
         {
