@@ -124,7 +124,7 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
         // Temporarily disabled - for testing
         // HACK: comment roundtimeseconds to use SIMPLEConnect
         // =====================================================================================================================================================
-        //roundTimeSeconds = CrossSceneManager.instance.currentMatchMaxTime;
+        roundTimeSeconds = CrossSceneManager.instance.currentMatchMaxTime;
         currentTime = roundTimeSeconds;
 
         // start the timer, syncing is done by sending current time and compensating lag
