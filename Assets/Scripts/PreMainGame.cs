@@ -201,12 +201,20 @@ public class PreMainGame : MonoBehaviourPunCallbacks, IPunObservable
             {
                 ShowEnemyReadyState((bool)propertiesThatChanged["isJoinedReady"]);
             }
-            // Only Master checks if both are ready
+            // Only Master checks if both are ready, then chooses a map
             // -------------------------------------------------------------
             if (readyState && (bool)PhotonNetwork.CurrentRoom.CustomProperties["isJoinedReady"])
             {
+                // Map choosing consists of selecting random int from 1 to amount of maps
+                // Then it is passed in RPC to joined
+                // All maps should be named like Map1Multiplayer, Map2Multiplayer, Map3Multiplayer etc.
+                // It is pre-ready to set the middle int to something more, SetUpPlayArena glues it together like this:
+                // "Map" + _middleName + "Multiplayer";
+                // so if map is named MapSuperMultiplayer you can pass "Super" and it'll work
+                // -------------------------------------------------------------
                 print("Sending RPC to change scene!");
-                string _middleName = "2";
+                int _amountOfReadyAndNamedMapsInsideMultiplayerMapsFolder = 2;
+                string _middleName = Random.Range(1, _amountOfReadyAndNamedMapsInsideMultiplayerMapsFolder + 1).ToString();
                 gameObject.GetComponent<PhotonView>().RPC("SetUpPlayArena", RpcTarget.All, _middleName);
             }
         }
