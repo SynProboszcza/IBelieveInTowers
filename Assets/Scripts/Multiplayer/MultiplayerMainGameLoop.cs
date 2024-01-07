@@ -124,7 +124,7 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
         // Temporarily disabled - for testing
         // TODO: uncomment this
         // =====================================================================================================================================================
-        //roundTimeSeconds = CrossSceneManager.instance.currentMatchMaxTime;
+        roundTimeSeconds = CrossSceneManager.instance.currentMatchMaxTime;
         currentTime = roundTimeSeconds;
 
         // start the timer, syncing is done by sending current time and compensating lag
