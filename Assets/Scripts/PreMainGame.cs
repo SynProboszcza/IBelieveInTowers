@@ -290,7 +290,9 @@ public class PreMainGame : MonoBehaviourPunCallbacks, IPunObservable
                 child.SetParent(parent);
             }
         }
-        StartCoroutine(LoadYourAsyncScene());
+
+
+        StartCoroutine(LoadYourAsyncScene("Map2Multiplayer"));
     }
 
     [PunRPC]
@@ -321,10 +323,10 @@ public class PreMainGame : MonoBehaviourPunCallbacks, IPunObservable
         gameObject.GetComponent<PhotonView>().RPC("AllowToChangeScene", RpcTarget.All);
     }
 
-    System.Collections.IEnumerator LoadYourAsyncScene()
+    System.Collections.IEnumerator LoadYourAsyncScene(string mapName)
     {
-        print("scene loading");
-        this.asyncLoad = SceneManager.LoadSceneAsync("Map1Multiplayer");
+        print("Loading scene: " + mapName);
+        this.asyncLoad = SceneManager.LoadSceneAsync(mapName);
         asyncLoad.allowSceneActivation = false;
         while (!asyncLoad.isDone)
         {
