@@ -247,6 +247,7 @@ MonoBehaviour:
   explosionRadius: 2
   explosionDamage: 150
   timeToShowExplosion: 0.25
+  timeToDelayExplosionAnimation: 0.1
   timeBetweenExplosions: 2
   timeSinceLastShot: 0
 --- !u!1001 &3863209929989716567

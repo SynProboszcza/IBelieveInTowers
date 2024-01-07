@@ -1,14 +1,10 @@
 using Photon.Pun;
-using Photon.Pun.UtilityScripts;
 using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using static UnityEngine.UI.Image;
 
 public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
 {
@@ -117,7 +113,8 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
             shopNodesCollection = new GameObject("ShopNodesCollection");
             GenerateAndConfigureNodeMesh(topLeft, bottomRight);
             // TODO: ShopNode needs to show spells
-        } else
+        }
+        else
         {
             attackerPart.gameObject.SetActive(true);
             // defenderHealth = CrossSceneManager.instance.defenderHealth;
@@ -125,13 +122,13 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
 
         // =====================================================================================================================================================
         // Temporarily disabled - for testing
-        // TODO: uncomment this
+        // HACK: comment roundtimeseconds to use SIMPLEConnect
         // =====================================================================================================================================================
-        //roundTimeSeconds = CrossSceneManager.instance.currentMatchMaxTime;
+        roundTimeSeconds = CrossSceneManager.instance.currentMatchMaxTime;
         currentTime = roundTimeSeconds;
-        
+
         // start the timer, syncing is done by sending current time and compensating lag
-        isTimerRunning = true; 
+        isTimerRunning = true;
 
     }
 
@@ -151,13 +148,14 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
         // -----------------------------------------------------------------------
         if (isTimerRunning)
         {
-            if(currentTime > 0)
+            if (currentTime > 0)
             {
                 currentTime -= Time.deltaTime;
                 if (amIDefender)
                 {
                     DisplayTime(d_timer, currentTime);
-                } else
+                }
+                else
                 {
                     if (!addingMoneySet)
                     {
@@ -166,14 +164,16 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
                     }
                     DisplayTime(a_timer, currentTime);
                 }
-            } else
+            }
+            else
             {
                 // Time has passed!
                 currentTime = -1f; // DisplayTime adds 1, so the result is 0:00
                 if (amIDefender)
                 {
                     DisplayTime(d_timer, currentTime);
-                } else
+                }
+                else
                 {
                     DisplayTime(a_timer, currentTime);
                 }
@@ -226,9 +226,10 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
                 print("I won by surviving, going back to host game after " + secondsToWaitAfterGameEnd + " seconds");
                 GoBackToHostGameAfterNSeconds(secondsToWaitAfterGameEnd);
             }
-        } else
+        }
+        else
         {
-            if(didDefenderDie)
+            if (didDefenderDie)
             {
                 // i attacker won by killing defender
                 attackerMatchResults.SetActive(true);
@@ -278,10 +279,11 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
         {
             if (CrossSceneManager.instance.isMoneyInfinite)
             {
-                string playerMoneyTextTemplate = "Gold: inf" ;
+                string playerMoneyTextTemplate = "Gold: inf";
                 d_playerMoneyTextField.text = playerMoneyTextTemplate;
 
-            } else
+            }
+            else
             {
                 string playerMoneyTextTemplate = "Gold: " + CrossSceneManager.instance.playerMoney;
                 d_playerMoneyTextField.text = playerMoneyTextTemplate;
@@ -291,7 +293,8 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
             {
                 string playerManaTextTemplate = "Mana: Inf";
                 d_playerManaTextField.text = playerManaTextTemplate;
-            } else
+            }
+            else
             {
                 string playerManaTextTemplate = "Mana: " + CrossSceneManager.instance.playerMana;
                 d_playerManaTextField.text = playerManaTextTemplate;
@@ -299,14 +302,16 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
             // ------------------------------------------------------------------------------------
             string enemyHealthTextTemplate = "Health: " + CrossSceneManager.instance.defenderHealth;
             d_enemyHealthTextField.text = enemyHealthTextTemplate;
-        } else
+        }
+        else
         {
             if (CrossSceneManager.instance.isMoneyInfinite)
             {
-                string playerMoneyTextTemplate = "Gold: inf" ;
+                string playerMoneyTextTemplate = "Gold: inf";
                 a_playerMoneyTextField.text = playerMoneyTextTemplate;
 
-            } else
+            }
+            else
             {
                 string playerMoneyTextTemplate = "Gold: " + CrossSceneManager.instance.playerMoney;
                 a_playerMoneyTextField.text = playerMoneyTextTemplate;
@@ -381,6 +386,21 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
         yield return new WaitForSeconds(seconds);
         SceneManager.LoadScene("HostGame");
     }
+    public void LeaveMatchButton()
+    {
+        isTimerRunning = false;
+        msgToPlayerCanvas.gameObject.SetActive(true);
+        msgToPlayerCanvas.transform.Find("EnemyLeft").gameObject.SetActive(true);
+        msgToPlayerCanvas.transform.Find("EnemyLeft").gameObject.GetComponent<TMP_Text>().text = "You left";
+        PhotonNetwork.LeaveRoom();
+        StartCoroutine(GoBackButton(3));
+    }
+
+    System.Collections.IEnumerator GoBackButton(int seconds)
+    {
+        yield return new WaitForSeconds(seconds);
+        SceneManager.LoadScene("HostGame");
+    }
 
     // ----------------------------------------------------
     private void DestroyNode(GameObject node)
@@ -426,7 +446,7 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
                 foreach (Transform obstacle in obstacles)
                 {
                     //if(node.transform.position == obstacle.transform.position)
-                    if (Mathf.Approximately(node.transform.position.x, obstacle.transform.position.x) 
+                    if (Mathf.Approximately(node.transform.position.x, obstacle.transform.position.x)
                         && Mathf.Approximately(node.transform.position.y, obstacle.transform.position.y))
                     {
                         DestroyNode(node);

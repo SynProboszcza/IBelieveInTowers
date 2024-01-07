@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// This class does not instantiates explosion, only sets isTurretClose flag
+
 public class ExplodeControl : MonoBehaviour
 {
     private void OnTriggerEnter2D(Collider2D collision)

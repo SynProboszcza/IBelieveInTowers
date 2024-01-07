@@ -37,6 +37,8 @@ public class PreMainGame : MonoBehaviourPunCallbacks, IPunObservable
     private bool isTimerRunning = false;
     private bool areBothReady = false;
     public float currentTime = 30.0f;
+    [Tooltip("Essentially it is time for both clients to load a map. Only really set by Master, because it is synced across clients")]
+    public float timeToShowThatBothAreReady = 2f;
 
     private void Awake()
     {
@@ -201,12 +203,22 @@ public class PreMainGame : MonoBehaviourPunCallbacks, IPunObservable
             {
                 ShowEnemyReadyState((bool)propertiesThatChanged["isJoinedReady"]);
             }
-            // Only Master checks if both are ready
+            // Only Master checks if both are ready, then chooses a map
             // -------------------------------------------------------------
             if (readyState && (bool)PhotonNetwork.CurrentRoom.CustomProperties["isJoinedReady"])
             {
+                // Map choosing consists of selecting random int from 1 to amount of maps
+                // Then it is passed in RPC to joined
+                // All maps should be named like Map1Multiplayer, Map2Multiplayer, Map3Multiplayer etc.
+                // It is pre-ready to set the middle int to something more, SetUpPlayArena glues it together like this:
+                // "Map" + _middleName + "Multiplayer";
+                // so if map is named MapSuperMultiplayer you can pass "Super" and it'll work
+                // -------------------------------------------------------------
                 print("Sending RPC to change scene!");
-                gameObject.GetComponent<PhotonView>().RPC("SetUpPlayArena", RpcTarget.All);
+                int _amountOfReadyAndNamedMapsInsideMultiplayerMapsFolder = 3;
+                CrossSceneManager.instance.RandomizeMapSelection(_amountOfReadyAndNamedMapsInsideMultiplayerMapsFolder);
+                string _middleName = CrossSceneManager.instance.mapMiddleNames[0];
+                gameObject.GetComponent<PhotonView>().RPC("SetUpPlayArena", RpcTarget.All, _middleName);
             }
         }
         else
@@ -255,7 +267,7 @@ public class PreMainGame : MonoBehaviourPunCallbacks, IPunObservable
     }
 
     [PunRPC]
-    public void SetUpPlayArena()
+    public void SetUpPlayArena(string mapNameMiddlePart)
     {
         // Called when both are ready
         // 
@@ -269,7 +281,7 @@ public class PreMainGame : MonoBehaviourPunCallbacks, IPunObservable
         readyToggle.interactable = false;
         leaveRoom.interactable = false;
         textfieldEnemyReadyState.text = "Both players ready!";
-        currentTime = 5.0f;
+        currentTime = timeToShowThatBothAreReady;
         textfieldTimerToClickReady.color = Color.green;
         if (enemiesShopParent != null)
         {
@@ -290,7 +302,9 @@ public class PreMainGame : MonoBehaviourPunCallbacks, IPunObservable
                 child.SetParent(parent);
             }
         }
-        StartCoroutine(LoadYourAsyncScene());
+        // Randomization is handled by OnRoomPropertiesUpdate() and passed only by Master client
+        string _mapNameToLoadOnBothClients = "Map" + mapNameMiddlePart + "Multiplayer";
+        StartCoroutine(LoadYourAsyncScene(_mapNameToLoadOnBothClients));
     }
 
     [PunRPC]
@@ -321,10 +335,10 @@ public class PreMainGame : MonoBehaviourPunCallbacks, IPunObservable
         gameObject.GetComponent<PhotonView>().RPC("AllowToChangeScene", RpcTarget.All);
     }
 
-    System.Collections.IEnumerator LoadYourAsyncScene()
+    System.Collections.IEnumerator LoadYourAsyncScene(string mapName)
     {
-        print("scene loading");
-        this.asyncLoad = SceneManager.LoadSceneAsync("Map1Multiplayer");
+        print("Loading scene: " + mapName);
+        this.asyncLoad = SceneManager.LoadSceneAsync(mapName);
         asyncLoad.allowSceneActivation = false;
         while (!asyncLoad.isDone)
         {

@@ -1,10 +1,6 @@
 using Photon.Pun;
 using System.Collections;
-using System.Collections.Generic;
-using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class MultiplayerEnemy : MonoBehaviour, IPunObservable
 {
@@ -29,6 +25,7 @@ public class MultiplayerEnemy : MonoBehaviour, IPunObservable
     public float explosionRadius = 2f;
     public float explosionDamage = 150f;
     public float timeToShowExplosion = 0.25f;
+    public float timeToDelayExplosionAnimation = 0.1f;
     public float timeBetweenExplosions = 2f;
     public float timeSinceLastShot = 0f;
 
@@ -62,7 +59,7 @@ public class MultiplayerEnemy : MonoBehaviour, IPunObservable
         }
         if (gameObject.GetComponent<PhotonView>().IsMine)
         {
-            if(currentHealth <= 0) 
+            if (currentHealth <= 0)
             {
                 Die();
             }
@@ -104,9 +101,10 @@ public class MultiplayerEnemy : MonoBehaviour, IPunObservable
             // gameObject.GetComponent<PhotonView>().RPC("AddResources", RpcTarget.All, true, true, 50);
             // CrossSceneManager.instance.AddMoney(moneyReward, transform.position);
             // -------------------------------------------------------------  forDefender, isMoney, amount, fromWhere
-            mainGame.GetComponent<PhotonView>().RPC("AddResourcesShowAtSpecifiedPoint", RpcTarget.All, true, true,    moneyReward, new Vector2(transform.position.x, transform.position.y));
+            mainGame.GetComponent<PhotonView>().RPC("AddResourcesShowAtSpecifiedPoint", RpcTarget.All, true, true, moneyReward, new Vector2(transform.position.x, transform.position.y));
             PhotonNetwork.Destroy(gameObject);
-        } else
+        }
+        else
         {
             // Do nothing as this is not my object
         }
@@ -191,7 +189,7 @@ public class MultiplayerEnemy : MonoBehaviour, IPunObservable
     {
         this.currentHealth -= damage;
     }
-    
+
     public void ExplodeTimed()
     {
         //print("try to boom");
@@ -216,7 +214,7 @@ public class MultiplayerEnemy : MonoBehaviour, IPunObservable
             Collider2D[] affected = Physics2D.OverlapCircleAll(transform.position, explosionRadius);
             foreach (Collider2D c in affected)
             {
-                if (c.GetComponent<MultiUpgradeTurret>() != null) 
+                if (c.GetComponent<MultiUpgradeTurret>() != null)
                 {
                     //var closestPoint = c.gameObject.GetComponent<BoxCollider2D>().ClosestPoint(transform.position);
                     //var distance = Vector3.Distance(closestPoint, transform.position);
@@ -231,9 +229,12 @@ public class MultiplayerEnemy : MonoBehaviour, IPunObservable
             GameObject boom = Instantiate(explosionEffect, transform.position, Quaternion.identity);
             // Default sprite is of r=1, so we scale it with radious
             boom.transform.localScale = new Vector3(explosionRadius * 2, explosionRadius * 2, explosionRadius * 2);
+            boom.GetComponent<ExplosionAnimation>().timeToDestruction = timeToShowExplosion;
+            boom.GetComponent<ExplosionAnimation>().timeToDelayAnimation = timeToDelayExplosionAnimation;
             Destroy(boom, timeToShowExplosion);
             //Destroy(gameObject);
-        } else
+        }
+        else
         {
             print("am not explodyy boy");
         }
@@ -241,9 +242,9 @@ public class MultiplayerEnemy : MonoBehaviour, IPunObservable
 
     public void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.TryGetComponent<MultiplayerEnemy>(out MultiplayerEnemy enemy))
+        if (collision.TryGetComponent<MultiplayerEnemy>(out MultiplayerEnemy enemy))
         {
-            if(enemy.GetSpeed() <= this.speed)
+            if (enemy.GetSpeed() <= this.speed)
             {
                 speed = enemy.GetSpeed();
             }

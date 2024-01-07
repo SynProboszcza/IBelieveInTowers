@@ -333,6 +333,7 @@ MonoBehaviour:
   explosionRadius: 1
   explosionDamage: 50
   timeToShowExplosion: 0.25
+  timeToDelayExplosionAnimation: 0.1
   timeBetweenExplosions: 1
   timeSinceLastShot: 0
 --- !u!1001 &8795907661844743789
