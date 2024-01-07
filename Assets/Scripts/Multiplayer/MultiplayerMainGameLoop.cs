@@ -219,6 +219,7 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
                     {
                         // i defender died
                         GameObject.Find("CanvasLeaveAndFinish").transform.Find("Loose").gameObject.SetActive(true);
+                        PhotonNetwork.LeaveRoom();
                         ChangeSceneAfterNSeconds(secondsToWaitAfterGameEnd, "MainMenu");
                         return;
                     }
@@ -226,6 +227,7 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
                     {
                         // i defender won by time
                         GameObject.Find("CanvasLeaveAndFinish").transform.Find("Win").gameObject.SetActive(true);
+                        PhotonNetwork.LeaveRoom();
                         ChangeSceneAfterNSeconds(secondsToWaitAfterGameEnd, "MainMenu");
                         return;
                     }
@@ -235,12 +237,14 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
                     { 
                         // i attacker won by killing defender
                         GameObject.Find("CanvasLeaveAndFinish").transform.Find("Win").gameObject.SetActive(true);
+                        PhotonNetwork.LeaveRoom();
                         ChangeSceneAfterNSeconds(secondsToWaitAfterGameEnd, "MainMenu");
                         return;
                     } else
                     {
                         // i attacker lost by time
                         GameObject.Find("CanvasLeaveAndFinish").transform.Find("Loose").gameObject.SetActive(true);
+                        PhotonNetwork.LeaveRoom();
                         ChangeSceneAfterNSeconds(secondsToWaitAfterGameEnd, "MainMenu");
                         return;
                     }
