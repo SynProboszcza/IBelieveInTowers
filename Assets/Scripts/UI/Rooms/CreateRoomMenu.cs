@@ -208,9 +208,9 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
             _roomPrefab.transform.Find("RoomProps").transform.Find("UnlimitedMana").GetComponent<Toggle>().isOn = (bool)_room.CustomProperties["UnlimitedMana"];
             _roomPrefab.transform.Find("RoomProps").transform.Find("InvincibleTurrets").GetComponent<Toggle>().isOn = (bool)_room.CustomProperties["InvincibleTurrets"];
             _roomPrefab.transform.Find("RoomProps").transform.Find("SpecialRules").GetComponent<Toggle>().isOn = (bool)_room.CustomProperties["SpecialRules"];
-            float _floatTime = (float)_room.CustomProperties["MatchTime"];
-            int seconds = Mathf.FloorToInt(_floatTime % 60);
-            int minutes = Mathf.FloorToInt(_floatTime / 60);
+            int _time = (int)_room.CustomProperties["MatchTime"];
+            int seconds = Mathf.FloorToInt(_time % 60);
+            int minutes = Mathf.FloorToInt(_time / 60);
             _roomPrefab.transform.Find("RoomProps").transform.Find("MatchTime").transform.Find("Minutes").GetComponent<TMP_Text>().text = minutes.ToString();
             _roomPrefab.transform.Find("RoomProps").transform.Find("MatchTime").transform.Find("Seconds").GetComponent<TMP_Text>().text = seconds.ToString();
             _roomPrefab.SetActive(true);
