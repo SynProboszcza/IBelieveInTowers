@@ -18,7 +18,7 @@ public class MainMenuLoop : MonoBehaviour
     private void Start()
     {
         CrossSceneManager.instance.ResetAfterPlaying();
-        if (PhotonNetwork.IsConnected)
+        if (PhotonNetwork.IsConnectedAndReady)
         {
             PhotonNetwork.LeaveRoom();
         }
