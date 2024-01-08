@@ -62,6 +62,10 @@ public class CrossSceneManager : MonoBehaviour
     public int amountOfMaps = 4;
     [Tooltip("List that stores results - amount of <bool>s is the amount of matches played (shold be max 3)")]
     public List<bool> didDefenderWin = new List<bool>();
+    public string roundWon = "You won the round, nice!";
+    public string roundLost = "You lost the round, prepare for next one";
+    public string matchWon = "You won the match, congratulations!";
+    public string matchLost = "You lost the match, keep trying :)";
 
     void Start()
     {

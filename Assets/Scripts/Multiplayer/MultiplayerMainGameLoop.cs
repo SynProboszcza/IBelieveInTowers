@@ -244,10 +244,13 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
         else
         {
             // never should be
-            print("QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ");
+            Debug.LogError("SOMETHING WENT CRAZY WRONG");
+            Debug.LogError("SOMETHING WENT CRAZY WRONG");
+            Debug.LogError("SOMETHING WENT CRAZY WRONG");
+            print("CrossSceneManager.instance.didDefenderWin.Count == " + CrossSceneManager.instance.didDefenderWin.Count);
         }
 
-
+        /*
         // // // =====================================================================================
         // // // =====================================================================================
         // // string sceneName = "HostGame";
@@ -347,6 +350,7 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
         // // }
         // // // =====================================================================================
         // // // =====================================================================================
+        */
     }
 
     private void NextRound(bool amIDefending, bool didDefenderDie)
@@ -366,6 +370,7 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
                 // We don't activate attacker/defender parts, we expect the proper one to be active
                 defenderMatchResults.SetActive(true);
                 defenderMatchResults.transform.Find("Win").gameObject.SetActive(false); // fallback
+                defenderMatchResults.transform.Find("Loose").gameObject.GetComponent<TMP_Text>().text = CrossSceneManager.instance.roundLost;
                 defenderMatchResults.transform.Find("Loose").gameObject.SetActive(true);
                 print("I lost by deadly death, going back to host game after " + secondsToWaitAfterGameEnd + " seconds");
                 ChangeSceneAfterNSeconds(secondsToWaitAfterGameEnd, sceneName, false);
@@ -375,6 +380,7 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
             {
                 // We don't activate attacker/defender parts, we expect the proper one to be active
                 defenderMatchResults.SetActive(true);
+                defenderMatchResults.transform.Find("Win").gameObject.GetComponent<TMP_Text>().text = CrossSceneManager.instance.roundWon;
                 defenderMatchResults.transform.Find("Win").gameObject.SetActive(true);
                 defenderMatchResults.transform.Find("Loose").gameObject.SetActive(false); // fallback
                 print("I won by surviving, going back to host game after " + secondsToWaitAfterGameEnd + " seconds");
@@ -388,6 +394,7 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
             {
                 attackerMatchResults.SetActive(true);
                 attackerMatchResults.transform.Find("Loose").gameObject.SetActive(false); // fallback
+                attackerMatchResults.transform.Find("Win").gameObject.GetComponent<TMP_Text>().text = CrossSceneManager.instance.roundWon;
                 attackerMatchResults.transform.Find("Win").gameObject.SetActive(true);
                 print("I won by killing defender, going back to host game after " + secondsToWaitAfterGameEnd + " seconds");
                 ChangeSceneAfterNSeconds(secondsToWaitAfterGameEnd, sceneName, false);
@@ -396,6 +403,7 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
             else
             {
                 attackerMatchResults.SetActive(true);
+                attackerMatchResults.transform.Find("Loose").gameObject.GetComponent<TMP_Text>().text = CrossSceneManager.instance.roundLost;
                 attackerMatchResults.transform.Find("Loose").gameObject.SetActive(true);
                 attackerMatchResults.transform.Find("Win").gameObject.SetActive(false); // fallback
                 print("I lost by time, going back to host game after " + secondsToWaitAfterGameEnd + " seconds");
@@ -421,6 +429,7 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
             if (didDefenderWin)
             {
                 // i defender won by time
+                GameObject.Find("CanvasLeaveAndFinish").transform.Find("Win").gameObject.GetComponent<TMP_Text>().text = CrossSceneManager.instance.matchWon;
                 GameObject.Find("CanvasLeaveAndFinish").transform.Find("Win").gameObject.SetActive(true);
                 //PhotonNetwork.LeaveRoom(); // main menu leaves room on its own
                 ChangeSceneAfterNSeconds(secondsToWaitAfterGameEnd, sceneName, true);
@@ -428,6 +437,7 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
             else
             {
                 // i defender died
+                GameObject.Find("CanvasLeaveAndFinish").transform.Find("Loose").gameObject.GetComponent<TMP_Text>().text = CrossSceneManager.instance.matchLost;
                 GameObject.Find("CanvasLeaveAndFinish").transform.Find("Loose").gameObject.SetActive(true);
                 //PhotonNetwork.LeaveRoom(); // main menu leaves room on its own
                 ChangeSceneAfterNSeconds(secondsToWaitAfterGameEnd, sceneName, true);
@@ -438,6 +448,7 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
             if (didDefenderWin)
             {
                 // i attacker lost by time
+                GameObject.Find("CanvasLeaveAndFinish").transform.Find("Loose").gameObject.GetComponent<TMP_Text>().text = CrossSceneManager.instance.matchLost;
                 GameObject.Find("CanvasLeaveAndFinish").transform.Find("Loose").gameObject.SetActive(true);
                 //PhotonNetwork.LeaveRoom(); // main menu leaves room on its own
                 ChangeSceneAfterNSeconds(secondsToWaitAfterGameEnd, sceneName, true);
@@ -445,6 +456,7 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
             else
             {
                 // i attacker won by killing defender
+                GameObject.Find("CanvasLeaveAndFinish").transform.Find("Win").gameObject.GetComponent<TMP_Text>().text = CrossSceneManager.instance.matchWon;
                 GameObject.Find("CanvasLeaveAndFinish").transform.Find("Win").gameObject.SetActive(true);
                 //PhotonNetwork.LeaveRoom(); // main menu leaves room on its own
                 ChangeSceneAfterNSeconds(secondsToWaitAfterGameEnd, sceneName, true);
