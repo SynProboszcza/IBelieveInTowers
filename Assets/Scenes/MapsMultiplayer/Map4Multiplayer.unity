@@ -4540,7 +4540,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 565676688}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -8, y: 8, z: 0}
+  m_LocalPosition: {x: -7.5, y: 8, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -5706,7 +5706,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 960737797}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -19, y: 8, z: 0}
+  m_LocalPosition: {x: -18.5, y: 8, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -14308,7 +14308,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1627054366}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -13, y: 8, z: 0}
+  m_LocalPosition: {x: -12.5, y: 8, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -14368,6 +14368,7 @@ MonoBehaviour:
   isMoneyInfinite: 0
   isManaInfinite: 0
   invincibleTurrets: 0
+  isMatchOver: 0
   showPriceCostPrefab: {fileID: 8992059104996785522, guid: 3d4c5d5dd235a1849bc9407173f3d9d5, type: 3}
   spawnDelayPassed: 0
   mapMiddleNames: []
