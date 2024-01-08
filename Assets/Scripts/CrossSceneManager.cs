@@ -53,6 +53,7 @@ public class CrossSceneManager : MonoBehaviour
     public bool isMoneyInfinite = false;
     public bool isManaInfinite = false;
     public bool invincibleTurrets = false;
+    public bool isMatchOver = false;
     private Vector2 mouseWorldPos;
     public GameObject showPriceCostPrefab;
     public bool spawnDelayPassed = false;
@@ -171,6 +172,7 @@ public class CrossSceneManager : MonoBehaviour
         isManaInfinite = false;
         spawnDelayPassed = false;
         invincibleTurrets = false;
+        isMatchOver = false;
     }
 
     private void ShowMoneyChange(int cost, bool isPaying) 

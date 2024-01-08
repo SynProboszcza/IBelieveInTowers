@@ -395,6 +395,13 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
         //  roundEndCleaning()
         // 
         // This does not add anything to CSM, only soft reset
+
+        // Wont run if the match is already finished
+        if (CrossSceneManager.instance.isMatchOver)
+        {
+            RoundEndCleaning();
+            return;
+        }
         string sceneName = "InBetweenScene";
         if (amIDefending)
         {
@@ -455,7 +462,8 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
         //  leave room
         //  change scene to main menu
         //      CSM full reset in main menu
-
+        CrossSceneManager.instance.isMatchOver = true;
+        gameObject.GetComponent<PhotonView>().RPC("MatchIsOver", RpcTarget.All);
         string sceneName = "MainMenu";
         bool didDefenderWin = false;
         if (CrossSceneManager.instance.didDefenderWin.Count == 2 && (CrossSceneManager.instance.didDefenderWin[0] == CrossSceneManager.instance.didDefenderWin[1]))
@@ -488,7 +496,7 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
             if (didDefenderWin)
             {
                 // i defender won match by time
-                print("i defender won match by time");
+                print("i defender won match");
                 defenderMatchResults.SetActive(false); // disable round won/lost texts
                 attackerMatchResults.SetActive(false);
                 GameObject.Find("CanvasLeaveAndFinish").transform.Find("Win").gameObject.GetComponent<TMP_Text>().text = CrossSceneManager.instance.matchWon;
@@ -499,7 +507,7 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
             else
             {
                 // i defender died match
-                print("i defender died match");
+                print("i defender lost match");
                 defenderMatchResults.SetActive(false); // disable round won/lost texts
                 attackerMatchResults.SetActive(false);
                 GameObject.Find("CanvasLeaveAndFinish").transform.Find("Loose").gameObject.GetComponent<TMP_Text>().text = CrossSceneManager.instance.matchLost;
@@ -513,7 +521,7 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
             if (didDefenderWin)
             {
                 // i attacker lost match by time
-                print("i attacker lost match by time");
+                print("i attacker lost match");
                 defenderMatchResults.SetActive(false); // disable round won/lost texts
                 attackerMatchResults.SetActive(false);
                 GameObject.Find("CanvasLeaveAndFinish").transform.Find("Loose").gameObject.GetComponent<TMP_Text>().text = CrossSceneManager.instance.matchLost;
@@ -524,7 +532,7 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
             else
             {
                 // i attacker won match by killing defender
-                print("i attacker won match by killing defender");
+                print("i attacker won match");
                 defenderMatchResults.SetActive(false); // disable round won/lost texts
                 attackerMatchResults.SetActive(false);
                 GameObject.Find("CanvasLeaveAndFinish").transform.Find("Win").gameObject.GetComponent<TMP_Text>().text = CrossSceneManager.instance.matchWon;
@@ -640,6 +648,12 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
             string enemyHealthTextTemplate = "Enemy health: " + CrossSceneManager.instance.defenderHealth;
             a_enemyHealthTextField.text = enemyHealthTextTemplate;
         }
+    }
+
+    [PunRPC]
+    public void MatchIsOver()
+    {
+        CrossSceneManager.instance.isMatchOver = true;
     }
 
     [PunRPC]
