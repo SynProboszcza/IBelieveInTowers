@@ -153,6 +153,7 @@ public class CrossSceneManager : MonoBehaviour
         enemyNickname = "";
         myNickName = "";
         mapMiddleNames.Clear();
+        didDefenderWin.Clear();
         // All not-set bools are implicitly false
         amIMaster = false;
         amIDefender = false;
