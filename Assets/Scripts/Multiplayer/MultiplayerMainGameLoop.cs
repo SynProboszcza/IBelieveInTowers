@@ -484,6 +484,8 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
             {
                 // i defender won match by time
                 print("i defender won match by time");
+                defenderMatchResults.SetActive(false); // disable round won/lost texts
+                attackerMatchResults.SetActive(false);
                 GameObject.Find("CanvasLeaveAndFinish").transform.Find("Win").gameObject.GetComponent<TMP_Text>().text = CrossSceneManager.instance.matchWon;
                 GameObject.Find("CanvasLeaveAndFinish").transform.Find("Win").gameObject.SetActive(true);
                 //PhotonNetwork.LeaveRoom(); // main menu leaves room on its own
@@ -493,6 +495,8 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
             {
                 // i defender died match
                 print("i defender died match");
+                defenderMatchResults.SetActive(false); // disable round won/lost texts
+                attackerMatchResults.SetActive(false);
                 GameObject.Find("CanvasLeaveAndFinish").transform.Find("Loose").gameObject.GetComponent<TMP_Text>().text = CrossSceneManager.instance.matchLost;
                 GameObject.Find("CanvasLeaveAndFinish").transform.Find("Loose").gameObject.SetActive(true);
                 //PhotonNetwork.LeaveRoom(); // main menu leaves room on its own
@@ -505,6 +509,8 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
             {
                 // i attacker lost match by time
                 print("i attacker lost match by time");
+                defenderMatchResults.SetActive(false); // disable round won/lost texts
+                attackerMatchResults.SetActive(false);
                 GameObject.Find("CanvasLeaveAndFinish").transform.Find("Loose").gameObject.GetComponent<TMP_Text>().text = CrossSceneManager.instance.matchLost;
                 GameObject.Find("CanvasLeaveAndFinish").transform.Find("Loose").gameObject.SetActive(true);
                 //PhotonNetwork.LeaveRoom(); // main menu leaves room on its own
@@ -514,6 +520,8 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
             {
                 // i attacker won match by killing defender
                 print("i attacker won match by killing defender");
+                defenderMatchResults.SetActive(false); // disable round won/lost texts
+                attackerMatchResults.SetActive(false);
                 GameObject.Find("CanvasLeaveAndFinish").transform.Find("Win").gameObject.GetComponent<TMP_Text>().text = CrossSceneManager.instance.matchWon;
                 GameObject.Find("CanvasLeaveAndFinish").transform.Find("Win").gameObject.SetActive(true);
                 //PhotonNetwork.LeaveRoom(); // main menu leaves room on its own
