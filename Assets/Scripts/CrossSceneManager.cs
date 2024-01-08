@@ -127,10 +127,15 @@ public class CrossSceneManager : MonoBehaviour
 
     public void TakeDefenderDamageAndCheckIfDied(int amount)
     {
+        if (hasDefenderDied)
+        {
+            return;
+        }
         defenderHealth -= amount;
         if (defenderHealth <= 0)
         {
             hasDefenderDied = true;
+            defenderHealth = 0;
         }
     }
 

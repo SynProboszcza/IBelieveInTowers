@@ -138,14 +138,15 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
 
     void Update()
     {
-        CrossSceneManager.instance.defenderHealth = Mathf.FloorToInt(defenderHealthToSync);
+        // Stream is writing directly to CSM
+        defenderHealthToSync = CrossSceneManager.instance.defenderHealth;
         UpdatePlayerStats();
         // Check if defending when ded
         //  checking is done when dealing damage
         if (CrossSceneManager.instance.hasDefenderDied && !matchResultsShown)
         {
             RoundEnd(amIDefender, true);
-            matchResultsShown = true;
+            matchResultsShown = true; // Flag so it gets run only once
         }
         // -----------------------------------------------------------------------
         // Timer logic
