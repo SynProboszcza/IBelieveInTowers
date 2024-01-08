@@ -228,7 +228,8 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
                 if (CrossSceneManager.instance.didDefenderWin[i])
                 {
                     defenderWins += "t";
-                } else
+                }
+                else
                 {
                     defenderWins += "f";
                 }
@@ -245,7 +246,7 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
         {
             // We are joined and just ended the first round, sync data did not come yet
             NextRound(amIDefending, didDefenderDie);
-        } 
+        }
         else if (CrossSceneManager.instance.didDefenderWin.Count == 1)
         {
             NextRound(amIDefending, didDefenderDie);
@@ -447,8 +448,8 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
         // finish match: 
         //  show text won/lost match
         //  leave room
-        //  CSM full reset
         //  change scene to main menu
+        //      CSM full reset in main menu
 
         string sceneName = "MainMenu";
         bool didDefenderWin = CrossSceneManager.instance.didDefenderWin[0];
@@ -623,17 +624,45 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
             {
                 print("added win for defender: true");
                 CrossSceneManager.instance.didDefenderWin.Add(true);
-            } else if (defenderWins[i].Equals('f'))
+            }
+            else if (defenderWins[i].Equals('f'))
             {
                 print("added loose for defender: false");
                 CrossSceneManager.instance.didDefenderWin.Add(false);
-            } else
+            }
+            else
             {
                 Debug.LogError("what have you passed on this cursed land: \"" + defenderWins[i] + "\" of length: " + defenderWins.Length, gameObject);
             }
         }
         // TODO: check if somebody already won
-
+        if (CrossSceneManager.instance.didDefenderWin[0] == CrossSceneManager.instance.didDefenderWin[1])
+        {
+            FinishMatch(amIDefender);
+            // if (CrossSceneManager.instance.didDefenderWin[0])
+            // {
+            //     if (amIDefender)
+            //     {
+            //         // i defender won
+            //         FinishMatch(amIDefender);
+            //     }
+            //     else
+            //     {
+            //         // i attacker lost
+            //     }
+            // }
+            // else
+            // {
+            //     if (amIDefender)
+            //     {
+            //         // i defender lost
+            //     }
+            //     else
+            //     {
+            //         // i attacker won
+            //     }
+            // }
+        }
     }
 
     [PunRPC]
