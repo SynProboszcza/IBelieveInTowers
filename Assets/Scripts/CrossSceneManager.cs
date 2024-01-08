@@ -104,6 +104,23 @@ public class CrossSceneManager : MonoBehaviour
 
     }
 
+    public string MatchHistory()
+    {
+        string tmp = "";
+        for (int i = 0; i < didMasterWin.Count; i++)
+        {
+            if (didMasterWin[i])
+            {
+                tmp += "t";
+            }
+            else
+            {
+                tmp += "f";
+            }
+        }
+        return tmp;
+    }
+
     public void RandomizeMapSelection()
     {
         List<int> possible = Enumerable.Range(1, amountOfMaps).ToList();
