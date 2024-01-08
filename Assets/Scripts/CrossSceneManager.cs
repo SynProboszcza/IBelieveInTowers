@@ -38,6 +38,7 @@ public class CrossSceneManager : MonoBehaviour
     [HideInInspector]
     public int slimerPrice = 554;
     public int defenderHealth;
+    public int defaultDefenderHealth = 1;
     public int currentMatchMaxTime = 180;
     public int delayFirstSpawn = 3;
     public string enemyNickname = "";
@@ -73,7 +74,7 @@ public class CrossSceneManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
         playerMoney = 2000;
         playerMana = 500;
-        defenderHealth = 275;
+        defenderHealth = defaultDefenderHealth;
         myNickName = PlayerPrefs.GetString("LocalNickName");
         GameObject parentForEnemies =  Instantiate(new GameObject("EnemiesFromPreMainGame"));
         parentForEnemies.name = "EnemiesFromPreMainGame"; // Default instantiation adds "(Clone)" to the name
@@ -183,7 +184,7 @@ public class CrossSceneManager : MonoBehaviour
         print("CSM Soft Reset In-Between Rounds");
         playerMoney = 2000;
         playerMana = 500;
-        defenderHealth = 275;
+        defenderHealth = defaultDefenderHealth;
         //currentMatchMaxTime = 180;
         //delayFirstSpawn = 3;
         spawnDelayPassed = false;
@@ -196,7 +197,7 @@ public class CrossSceneManager : MonoBehaviour
         print("CSM Full Reset");
         playerMoney = 2000;
         playerMana = 500;
-        defenderHealth = 275;
+        defenderHealth = defaultDefenderHealth;
         currentMatchMaxTime = 180;
         delayFirstSpawn = 3;
         enemyNickname = "";
