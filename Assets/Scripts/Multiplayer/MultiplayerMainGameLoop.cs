@@ -520,7 +520,7 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
             if (didDefenderWin)
             {
                 // i defender won match by time
-                print("i defender won match");
+                print("i defender won match: " + CrossSceneManager.instance.didMasterWin);
                 defenderMatchResults.SetActive(false); // disable round won/lost texts
                 attackerMatchResults.SetActive(false);
                 GameObject.Find("CanvasLeaveAndFinish").transform.Find("Win").gameObject.GetComponent<TMP_Text>().text = CrossSceneManager.instance.matchWon;
@@ -531,7 +531,7 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
             else
             {
                 // i defender died match
-                print("i defender lost match");
+                print("i defender lost match: " + CrossSceneManager.instance.didMasterWin);
                 defenderMatchResults.SetActive(false); // disable round won/lost texts
                 attackerMatchResults.SetActive(false);
                 GameObject.Find("CanvasLeaveAndFinish").transform.Find("Loose").gameObject.GetComponent<TMP_Text>().text = CrossSceneManager.instance.matchLost;
@@ -545,7 +545,7 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
             if (didDefenderWin)
             {
                 // i attacker lost match by time
-                print("i attacker lost match");
+                print("i attacker lost match: " + CrossSceneManager.instance.didMasterWin);
                 defenderMatchResults.SetActive(false); // disable round won/lost texts
                 attackerMatchResults.SetActive(false);
                 GameObject.Find("CanvasLeaveAndFinish").transform.Find("Loose").gameObject.GetComponent<TMP_Text>().text = CrossSceneManager.instance.matchLost;
@@ -556,7 +556,7 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
             else
             {
                 // i attacker won match by killing defender
-                print("i attacker won match");
+                print("i attacker won match: " + CrossSceneManager.instance.didMasterWin);
                 defenderMatchResults.SetActive(false); // disable round won/lost texts
                 attackerMatchResults.SetActive(false);
                 GameObject.Find("CanvasLeaveAndFinish").transform.Find("Win").gameObject.GetComponent<TMP_Text>().text = CrossSceneManager.instance.matchWon;
