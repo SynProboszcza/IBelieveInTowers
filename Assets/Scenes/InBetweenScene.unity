@@ -8738,6 +8738,10 @@ MonoBehaviour:
   mapMiddleNames: []
   amountOfMaps: 4
   didDefenderWin: 
+  roundWon: You won the round, nice!
+  roundLost: You lost the round, prepare for next one
+  matchWon: You won the match, congratulations!
+  matchLost: You lost the match, keep trying :)
 --- !u!4 &1210959662
 Transform:
   m_ObjectHideFlags: 0
