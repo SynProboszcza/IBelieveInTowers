@@ -688,8 +688,8 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
             ChangeSceneAfterNSeconds(5, "HostGame", false);
         }
         //CrossSceneManager.instance.didDefenderWin.Clear();
-        //print("cleared list of wins");
         CrossSceneManager.instance.MatchHistoryFromString(defenderWins); // overwrite local win history
+        print("cleared list of wins, now its: " + CrossSceneManager.instance.MatchHistoryToString());
         for (int i = 0; i < defenderWins.Length; i++)
         {
             if (defenderWins[i].Equals('t')) // needs to be '' not "" because its char, not string
