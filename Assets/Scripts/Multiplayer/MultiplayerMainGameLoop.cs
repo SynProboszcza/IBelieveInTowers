@@ -93,7 +93,7 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
         }
     }
 
-    // Parts de- and activating, setting match dur.
+    // Parts de/activating, setting match duration, amIMaster/amIDefender from CSM
     void Start()
     {
         // Check if defending, then activate proper part
@@ -105,6 +105,7 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
         defenderMatchResults.gameObject.SetActive(false);
         defenderMatchResults.transform.Find("Win").gameObject.SetActive(false);
         defenderMatchResults.transform.Find("Loose").gameObject.SetActive(false);
+        // TODO: setactive false for leftmatch and won/lost text
         amIMaster = CrossSceneManager.instance.amIMaster;
         amIDefender = CrossSceneManager.instance.amIDefender;
         defenderHealthToSync = CrossSceneManager.instance.defenderHealth;
@@ -214,24 +215,27 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
         {
             StopCoroutine(moneyPerSecond);
         }
-        print("adding result");
-        CrossSceneManager.instance.didDefenderWin.Add(!didDefenderDie);
-        print("added result");
         // TODO: send rpc to sync
         // Code <bools> into string like "tft"
-        string defenderWins = "";
-        for (int i = 0; i < CrossSceneManager.instance.didDefenderWin.Count; i++)
+        if (amIMaster)
         {
-            if (CrossSceneManager.instance.didDefenderWin[i])
+            print("adding result");
+            CrossSceneManager.instance.didDefenderWin.Add(!didDefenderDie);
+            print("added result");
+            string defenderWins = "";
+            for (int i = 0; i < CrossSceneManager.instance.didDefenderWin.Count; i++)
             {
-                defenderWins += "t";
-            } else
-            {
-                defenderWins += "f";
+                if (CrossSceneManager.instance.didDefenderWin[i])
+                {
+                    defenderWins += "t";
+                } else
+                {
+                    defenderWins += "f";
+                }
             }
+            print("Sending defender wins to sync: " + defenderWins);
+            gameObject.GetComponent<PhotonView>().RPC("SyncRoundResults", RpcTarget.Others, defenderWins);
         }
-        print("Sending defender wins to sync: " + defenderWins);
-        gameObject.GetComponent<PhotonView>().RPC("SyncRoundResults", RpcTarget.Others, defenderWins);
 
 
         // -----------------------------------------------------------------------
@@ -623,8 +627,8 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
                 Debug.LogError("what have you passed on this cursed land: \"" + defenderWins[i] + "\" of length: " + defenderWins.Length, gameObject);
             }
         }
+        // TODO: check if somebody already won
 
-        //CrossSceneManager.instance.didDefenderWin.Add(firstMatchResult);
     }
 
     [PunRPC]

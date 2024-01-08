@@ -10,7 +10,7 @@ public class debugworkinprogress : MonoBehaviourPunCallbacks
     public TMP_Text showState;
     void Start()
     {
-        print("State: " + PhotonNetwork.NetworkClientState);
+        //print("State: " + PhotonNetwork.NetworkClientState);
     }
 
     // Update is called once per frame
