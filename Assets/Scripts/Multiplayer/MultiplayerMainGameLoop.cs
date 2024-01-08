@@ -240,6 +240,7 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
         // att dnd = false false => - 
         // 
         // amimaster == (amidefending != diddefenderdie)
+        print("added to my local win history: " + (amIMaster == (amIDefending != didDefenderDie)).ToString());
         CrossSceneManager.instance.didMasterWin.Add(amIMaster == (amIDefending != didDefenderDie));
         if (amIMaster)
         {
