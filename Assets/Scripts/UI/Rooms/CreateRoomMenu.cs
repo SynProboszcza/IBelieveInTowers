@@ -224,7 +224,7 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
     {
         PhotonNetwork.GameVersion = gameVersion;
         gameObject.GetComponent<Button>().interactable = false;
-        print("Connecting to server...");
+        //print("Connecting to server...");
         PhotonNetwork.ConnectUsingSettings();
     }
 
