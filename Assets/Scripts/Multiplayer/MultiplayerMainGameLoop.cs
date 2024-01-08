@@ -74,6 +74,7 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
     [HideInInspector]
     private bool matchResultsShown = false; // Flag so it gets run only once
     private bool addingMoneySet = false;
+    private bool gotRoundListUpdate = false;
     private Coroutine moneyPerSecond;
 
     // FPS limit and SIMPLEConnect
@@ -241,7 +242,16 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
         // -----------------------------------------------------------------------
         // Check if we finish match or go into next round and do it
         // -----------------------------------------------------------------------
-        if (CrossSceneManager.instance.didDefenderWin.Count == 1)
+        if (!amIMaster && CrossSceneManager.instance.didDefenderWin.Count == 0)
+        {
+            // We are joined and just ended the first round, sync data did not come yet
+            while (!gotRoundListUpdate)
+            {
+                
+            }
+            NextRound(amIDefending, didDefenderDie);
+        } 
+        else if (CrossSceneManager.instance.didDefenderWin.Count == 1)
         {
             NextRound(amIDefending, didDefenderDie);
         }
@@ -628,7 +638,7 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
             }
         }
         // TODO: check if somebody already won
-
+        gotRoundListUpdate = true;
     }
 
     [PunRPC]
