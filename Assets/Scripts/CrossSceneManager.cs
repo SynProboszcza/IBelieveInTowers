@@ -38,7 +38,7 @@ public class CrossSceneManager : MonoBehaviour
     [HideInInspector]
     public int slimerPrice = 554;
     public int defenderHealth;
-    public int defaultDefenderHealth = 1;
+    public int defaultDefenderHealth = 1; // SET THIS TO SET DEFENDER HEALTH
     public int currentMatchMaxTime = 180;
     public int delayFirstSpawn = 3;
     public string enemyNickname = "";
