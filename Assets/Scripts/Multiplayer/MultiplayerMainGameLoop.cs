@@ -245,10 +245,12 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
         if (!amIMaster && CrossSceneManager.instance.didDefenderWin.Count == 0)
         {
             // We are joined and just ended the first round, sync data did not come yet
+            print("next round because count is zero");
             NextRound(amIDefending, didDefenderDie);
         }
         else if (CrossSceneManager.instance.didDefenderWin.Count == 1)
         {
+            print("next round because count is one");
             NextRound(amIDefending, didDefenderDie);
         }
         else if (CrossSceneManager.instance.didDefenderWin.Count == 2)
@@ -258,16 +260,19 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
             //  false: next round
             if (CrossSceneManager.instance.didDefenderWin[0] == CrossSceneManager.instance.didDefenderWin[1])
             {
+                print("finishing match [0] == [1]");
                 FinishMatch(amIDefending);
             }
             else
             {
+                print("next round because count is two, but different");
                 NextRound(amIDefending, didDefenderDie);
             }
         }
         else if (CrossSceneManager.instance.didDefenderWin.Count == 3)
         {
             // finish match
+            print("finishing match because count is 3");
             FinishMatch(amIDefending);
         }
         else
