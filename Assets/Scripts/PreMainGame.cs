@@ -218,7 +218,7 @@ public class PreMainGame : MonoBehaviourPunCallbacks, IPunObservable
                 {
                     CrossSceneManager.instance.RandomizeMapSelection();
                 }
-                string _middleName = CrossSceneManager.instance.mapMiddleNames[CrossSceneManager.instance.didDefenderWin.Count];
+                string _middleName = CrossSceneManager.instance.mapMiddleNames[CrossSceneManager.instance.didMasterWin.Count];
                 print("Sending RPC to change scene!");
                 gameObject.GetComponent<PhotonView>().RPC("SetUpPlayArena", RpcTarget.All, _middleName);
             }

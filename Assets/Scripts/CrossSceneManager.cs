@@ -62,7 +62,7 @@ public class CrossSceneManager : MonoBehaviour
     [Tooltip("ONLY change if you added FULLY FUNCTIONAL map that is correctly named (Map<next number>Multiplayer)")]
     public int amountOfMaps = 4;
     [Tooltip("List that stores results - amount of <bool>s is the amount of matches played (shold be max 3)")]
-    public List<bool> didDefenderWin = new List<bool>();
+    public List<bool> didMasterWin = new List<bool>();
     public string roundWon = "You won the round, nice!";
     public string roundLost = "You lost the round, prepare for next one";
     public string matchWon = "You won the match, congratulations!";
@@ -150,6 +150,7 @@ public class CrossSceneManager : MonoBehaviour
         //delayFirstSpawn = 3;
         spawnDelayPassed = false;
         hasDefenderDied = false;
+        amIDefender = false;
     }
 
     public void ResetAfterPlaying()
@@ -163,7 +164,7 @@ public class CrossSceneManager : MonoBehaviour
         enemyNickname = "";
         myNickName = "";
         mapMiddleNames.Clear();
-        didDefenderWin.Clear();
+        didMasterWin.Clear();
         // All not-set bools are implicitly false
         amIMaster = false;
         amIDefender = false;

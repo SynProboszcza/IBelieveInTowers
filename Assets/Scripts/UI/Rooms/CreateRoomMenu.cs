@@ -128,6 +128,7 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
         // Set default custom room properties:
         //  prepare keys to fill in nicknames
         //  set player time to live to 5 seconds
+        // HACK: first hashtable;; custom room properties
         // -----------------------------------------------------------
         ExitGames.Client.Photon.Hashtable _customProperties = new ExitGames.Client.Photon.Hashtable();
         _customProperties.Add("roomCreatorNickname", _nickName.text);
