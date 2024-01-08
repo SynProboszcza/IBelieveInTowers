@@ -609,10 +609,10 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
         CrossSceneManager.instance.didDefenderWin.Clear();
         for (int i = 0; i < defenderWins.Length; i++)
         {
-            if (defenderWins[i].Equals("t"))
+            if (defenderWins[i].Equals('t'))
             {
                 CrossSceneManager.instance.didDefenderWin.Add(true);
-            } else if (defenderWins[i].Equals("f"))
+            } else if (defenderWins[i].Equals('f'))
             {
                 CrossSceneManager.instance.didDefenderWin.Add(false);
             } else
