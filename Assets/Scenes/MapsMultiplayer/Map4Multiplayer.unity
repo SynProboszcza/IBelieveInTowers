@@ -1674,6 +1674,7 @@ MonoBehaviour:
   - {fileID: 1861441612}
   roundTimeSeconds: 125
   currentTime: 15
+  defenderHealthToSync: 0
   a_timer: {fileID: 339148621}
   a_enemyHealthTextField: {fileID: 1813382342}
   a_playerMoneyTextField: {fileID: 920058155}
@@ -1694,7 +1695,6 @@ MonoBehaviour:
   isShopOpen: 0
   amIMaster: 0
   amIDefender: 0
-  defenderHealthToSync: 0
 --- !u!4 &239573655
 Transform:
   m_ObjectHideFlags: 0
@@ -13161,7 +13161,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 239573653}
         m_TargetAssemblyTypeName: MultiplayerMainGameLoop, Assembly-CSharp
         m_MethodName: LeaveMatchButton
         m_Mode: 1
@@ -14373,6 +14373,10 @@ MonoBehaviour:
   mapMiddleNames: []
   amountOfMaps: 4
   didDefenderWin: 
+  roundWon: You won the round, nice!
+  roundLost: You lost the round, prepare for next one
+  matchWon: You won the match, congratulations!
+  matchLost: You lost the match, keep trying :)
 --- !u!4 &1634076229
 Transform:
   m_ObjectHideFlags: 0
