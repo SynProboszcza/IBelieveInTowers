@@ -1040,6 +1040,13 @@ MonoBehaviour:
   invincibleTurrets: 0
   showPriceCostPrefab: {fileID: 8992059104996785522, guid: 3d4c5d5dd235a1849bc9407173f3d9d5, type: 3}
   spawnDelayPassed: 0
+  mapMiddleNames: []
+  amountOfMaps: 4
+  didDefenderWin: 
+  roundWon: You won the round, nice!
+  roundLost: You lost the round, prepare for next one
+  matchWon: You won the match, congratulations!
+  matchLost: You lost the match, keep trying :)
 --- !u!4 &256259780
 Transform:
   m_ObjectHideFlags: 0
@@ -1874,7 +1881,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &541830363
 RectTransform:
   m_ObjectHideFlags: 0
