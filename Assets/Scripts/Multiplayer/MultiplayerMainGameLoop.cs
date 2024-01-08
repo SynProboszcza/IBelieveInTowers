@@ -241,7 +241,7 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
         // 
         // amimaster == (amidefending != diddefenderdie)
         print("added to my local win history: " + (amIMaster == (amIDefending != didDefenderDie)).ToString());
-        CrossSceneManager.instance.didMasterWin.Add(!(amIMaster == (amIDefending != didDefenderDie)));
+        CrossSceneManager.instance.didMasterWin.Add(amIMaster == (amIDefending != didDefenderDie));
         if (amIMaster)
         {
             print("Sending defender wins to sync: " + CrossSceneManager.instance.MatchHistoryToString());
@@ -475,28 +475,28 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
         CrossSceneManager.instance.isMatchOver = true;
         gameObject.GetComponent<PhotonView>().RPC("MatchIsOver", RpcTarget.All);
         string sceneName = "MainMenu";
-        bool didDefenderWin = false;
+        bool didMasterWin = false;
         if (CrossSceneManager.instance.didMasterWin.Count == 2 && (CrossSceneManager.instance.didMasterWin[0] == CrossSceneManager.instance.didMasterWin[1]))
         {
-            didDefenderWin = CrossSceneManager.instance.didMasterWin[0];
+            didMasterWin = CrossSceneManager.instance.didMasterWin[0];
         }
         else if (CrossSceneManager.instance.didMasterWin.Count == 3)
         {
-            int defenderWinsAmonut = 0;
+            int masterWinsAmonut = 0;
             for (int i = 0; i < 3; i++)
             {
                 if (CrossSceneManager.instance.didMasterWin[i])
                 {
-                    defenderWinsAmonut++;
+                    masterWinsAmonut++;
                 }
             }
-            if (defenderWinsAmonut >= 2)
+            if (masterWinsAmonut >= 2)
             {
-                didDefenderWin = true;
+                didMasterWin = true;
             }
             else
             {
-                didDefenderWin = false;
+                didMasterWin = false;
             }
         }
         else
@@ -504,9 +504,9 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
             Debug.LogError("Something called finish match when there is not enough rounds played: " + CrossSceneManager.instance.didMasterWin.Count);
             return;
         }
-        if (amIDefending)
+        if (amIMaster)
         {
-            if (didDefenderWin)
+            if (didMasterWin)
             {
                 // i defender won match by time
                 print("i defender won match: " + CrossSceneManager.instance.MatchHistoryToString());
@@ -531,7 +531,7 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
         }
         else
         {
-            if (didDefenderWin)
+            if (didMasterWin)
             {
                 // i attacker lost match by time
                 print("i attacker lost match: " + CrossSceneManager.instance.MatchHistoryToString());
