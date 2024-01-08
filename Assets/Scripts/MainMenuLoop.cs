@@ -14,4 +14,8 @@ public class MainMenuLoop : MonoBehaviour
         QualitySettings.vSyncCount = 0;  // VSync must be disabled
         Application.targetFrameRate = 60;
     }
+    private void Start()
+    {
+        CrossSceneManager.instance.ResetAfterPlaying();
+    }
 }
