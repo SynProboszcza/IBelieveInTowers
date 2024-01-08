@@ -206,7 +206,7 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
     public void RoundEnd(bool amIDefending, bool didDefenderDie)
     {
         // Called only when time ends or defender died
-
+        print("Starting to RoundEnd");
         // -----------------------------------------------------------------------
         // Stop current round and add result
         // -----------------------------------------------------------------------
@@ -293,7 +293,7 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
             Debug.LogError("SOMETHING WENT CRAZY WRONG");
             print("CrossSceneManager.instance.didDefenderWin.Count == " + CrossSceneManager.instance.didMasterWin.Count);
         }
-
+        print("Ending to RoundEnd");
         /*
         // // // =====================================================================================
         // // // =====================================================================================
@@ -399,6 +399,7 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
 
     private void NextRound(bool amIDefending, bool didDefenderDie)
     {
+        print("Starting to NextRound");
         // next:
         //  show text won/lost
         //  change scene to InBetweenScene
@@ -462,11 +463,12 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
             }
         }
         RoundEndCleaning();
-
+        print("Ending to RoundEnd");
     }
 
     private void FinishMatch(bool amIDefending)
     {
+        print("Starting to FinishMatch");
         // finish match: 
         //  show text won/lost match
         //  leave room
@@ -554,6 +556,7 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
                 ChangeSceneAfterNSeconds(secondsToWaitAfterGameEnd, sceneName, true);
             }
         }
+        print("Ending to FinishMatch");
     }
 
     private void RoundEndCleaning()
