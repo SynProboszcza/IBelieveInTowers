@@ -199,115 +199,278 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
 
     public void RoundEnd(bool amIDefending, bool didDefenderDie)
     {
+        // Called only when time ends or defender died
+
+        // -----------------------------------------------------------------------
+        // Stop current round and add result
+        // -----------------------------------------------------------------------
         isTimerRunning = false;
-        ExitGames.Client.Photon.Hashtable roundEndCleaning = new ExitGames.Client.Photon.Hashtable();
         if (moneyPerSecond != null)
         {
             StopCoroutine(moneyPerSecond);
         }
-        // TODO: Decide if load next map, or main menu on finish
         CrossSceneManager.instance.didDefenderWin.Add(!didDefenderDie);
-        string sceneName = "HostGame";
-        if (CrossSceneManager.instance.didDefenderWin.Count < 3)
+
+        // -----------------------------------------------------------------------
+        // Check if we finish match or go into next round and do it
+        // -----------------------------------------------------------------------
+        if (CrossSceneManager.instance.didDefenderWin.Count == 1)
         {
-            if (CrossSceneManager.instance.didDefenderWin.Count == 2 && (CrossSceneManager.instance.didDefenderWin[0] == CrossSceneManager.instance.didDefenderWin[1]))
-            {
-                // somebody won by 2:0
-                if (amIDefending)
-                {
-                    if (didDefenderDie)
-                    {
-                        // i defender died
-                        GameObject.Find("CanvasLeaveAndFinish").transform.Find("Loose").gameObject.SetActive(true);
-                        PhotonNetwork.LeaveRoom();
-                        ChangeSceneAfterNSeconds(secondsToWaitAfterGameEnd, "MainMenu");
-                        return;
-                    }
-                    else
-                    {
-                        // i defender won by time
-                        GameObject.Find("CanvasLeaveAndFinish").transform.Find("Win").gameObject.SetActive(true);
-                        PhotonNetwork.LeaveRoom();
-                        ChangeSceneAfterNSeconds(secondsToWaitAfterGameEnd, "MainMenu");
-                        return;
-                    }
-                } else
-                {
-                    if (didDefenderDie)
-                    { 
-                        // i attacker won by killing defender
-                        GameObject.Find("CanvasLeaveAndFinish").transform.Find("Win").gameObject.SetActive(true);
-                        PhotonNetwork.LeaveRoom();
-                        ChangeSceneAfterNSeconds(secondsToWaitAfterGameEnd, "MainMenu");
-                        return;
-                    } else
-                    {
-                        // i attacker lost by time
-                        GameObject.Find("CanvasLeaveAndFinish").transform.Find("Loose").gameObject.SetActive(true);
-                        PhotonNetwork.LeaveRoom();
-                        ChangeSceneAfterNSeconds(secondsToWaitAfterGameEnd, "MainMenu");
-                        return;
-                    }
-                }
-            }
-            sceneName = "InBetweenScene";
-        } else if (CrossSceneManager.instance.didDefenderWin.Count >= 3)
-        {
-            sceneName = "MainMenu";
+            NextRound(amIDefending, didDefenderDie);
         }
-        roundEndCleaning.Add("isMasterReady", false);
-        roundEndCleaning.Add("isJoinedReady", false);
-        PhotonNetwork.CurrentRoom.SetCustomProperties(roundEndCleaning);
-        CrossSceneManager.instance.ResetInBetweenRounds();
+        else if (CrossSceneManager.instance.didDefenderWin.Count == 2)
+        {
+            // check if somebody won
+            //  true: finish match 
+            //  false: next round
+            if (CrossSceneManager.instance.didDefenderWin[0] == CrossSceneManager.instance.didDefenderWin[1])
+            {
+                FinishMatch(amIDefending);
+            }
+            else
+            {
+                NextRound(amIDefending, didDefenderDie);
+            }
+        }
+        else if (CrossSceneManager.instance.didDefenderWin.Count == 3)
+        {
+            // finish match
+            FinishMatch(amIDefending);
+        }
+        else
+        {
+            // never should be
+            print("QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ");
+        }
+
+
+        // // // =====================================================================================
+        // // // =====================================================================================
+        // // string sceneName = "HostGame";
+        // // if (CrossSceneManager.instance.didDefenderWin.Count < 3)
+        // // {
+        // //     if (CrossSceneManager.instance.didDefenderWin.Count == 2 && (CrossSceneManager.instance.didDefenderWin[0] == CrossSceneManager.instance.didDefenderWin[1]))
+        // //     {
+        // //         // somebody won by 2:0
+        // //         if (amIDefending)
+        // //         {
+        // //             if (didDefenderDie)
+        // //             {
+        // //                 // i defender died
+        // //                 GameObject.Find("CanvasLeaveAndFinish").transform.Find("Loose").gameObject.SetActive(true);
+        // //                 PhotonNetwork.LeaveRoom();
+        // //                 ChangeSceneAfterNSeconds(secondsToWaitAfterGameEnd, "MainMenu");
+        // //                 return;
+        // //             }
+        // //             else
+        // //             {
+        // //                 // i defender won by time
+        // //                 GameObject.Find("CanvasLeaveAndFinish").transform.Find("Win").gameObject.SetActive(true);
+        // //                 PhotonNetwork.LeaveRoom();
+        // //                 ChangeSceneAfterNSeconds(secondsToWaitAfterGameEnd, "MainMenu");
+        // //                 return;
+        // //             }
+        // //         }
+        // //         else
+        // //         {
+        // //             if (didDefenderDie)
+        // //             {
+        // //                 // i attacker won by killing defender
+        // //                 GameObject.Find("CanvasLeaveAndFinish").transform.Find("Win").gameObject.SetActive(true);
+        // //                 PhotonNetwork.LeaveRoom();
+        // //                 ChangeSceneAfterNSeconds(secondsToWaitAfterGameEnd, "MainMenu");
+        // //                 return;
+        // //             }
+        // //             else
+        // //             {
+        // //                 // i attacker lost by time
+        // //                 GameObject.Find("CanvasLeaveAndFinish").transform.Find("Loose").gameObject.SetActive(true);
+        // //                 PhotonNetwork.LeaveRoom();
+        // //                 ChangeSceneAfterNSeconds(secondsToWaitAfterGameEnd, "MainMenu");
+        // //                 return;
+        // //             }
+        // //         }
+        // //     }
+        // //     sceneName = "InBetweenScene";
+        // // }
+        // // else if (CrossSceneManager.instance.didDefenderWin.Count >= 3)
+        // // {
+        // //     sceneName = "MainMenu";
+        // // }
+        // // if (amIDefending)
+        // // {
+        // //     if (didDefenderDie)
+        // //     {
+        // //         // i defender died
+        // //         // We don't activate attacker/defender parts, we expect the proper one to be active
+        // //         defenderMatchResults.SetActive(true);
+        // //         defenderMatchResults.transform.Find("Win").gameObject.SetActive(false); // fallback
+        // //         defenderMatchResults.transform.Find("Loose").gameObject.SetActive(true);
+        // //         print("I lost by deadly death, going back to host game after " + secondsToWaitAfterGameEnd + " seconds");
+        // //         ChangeSceneAfterNSeconds(secondsToWaitAfterGameEnd, sceneName);
+        // //     }
+        // //     else
+        // //     {
+        // //         // i defender won by time
+        // //         // We don't activate attacker/defender parts, we expect the proper one to be active
+        // //         defenderMatchResults.SetActive(true);
+        // //         defenderMatchResults.transform.Find("Win").gameObject.SetActive(true); // fallback
+        // //         defenderMatchResults.transform.Find("Loose").gameObject.SetActive(false);
+        // //         print("I won by surviving, going back to host game after " + secondsToWaitAfterGameEnd + " seconds");
+        // //         ChangeSceneAfterNSeconds(secondsToWaitAfterGameEnd, sceneName);
+        // //     }
+        // // }
+        // // else
+        // // {
+        // //     if (didDefenderDie)
+        // //     {
+        // //         // i attacker won by killing defender
+        // //         attackerMatchResults.SetActive(true);
+        // //         attackerMatchResults.transform.Find("Loose").gameObject.SetActive(false); // fallback
+        // //         attackerMatchResults.transform.Find("Win").gameObject.SetActive(true);
+        // //         print("I won by killing defender, going back to host game after " + secondsToWaitAfterGameEnd + " seconds");
+        // //         ChangeSceneAfterNSeconds(secondsToWaitAfterGameEnd, sceneName);
+        // //     }
+        // //     else
+        // //     {
+        // //         // i attacker lost by time passing
+        // //         attackerMatchResults.SetActive(true);
+        // //         attackerMatchResults.transform.Find("Loose").gameObject.SetActive(true); // fallback
+        // //         attackerMatchResults.transform.Find("Win").gameObject.SetActive(false);
+        // //         print("I lost by time, going back to host game after " + secondsToWaitAfterGameEnd + " seconds");
+        // //         ChangeSceneAfterNSeconds(secondsToWaitAfterGameEnd, sceneName);
+        // //     }
+        // // }
+        // // // =====================================================================================
+        // // // =====================================================================================
+    }
+
+    private void NextRound(bool amIDefending, bool didDefenderDie)
+    {
+        // next:
+        //  show text won/lost
+        //  change scene to InBetweenScene
+        //  roundEndCleaning()
+        // 
+        // This does not add anything to CSM, only soft reset
+        string sceneName = "InBetweenScene";
         if (amIDefending)
         {
+            // i defender died
             if (didDefenderDie)
             {
-                // i defender died
                 // We don't activate attacker/defender parts, we expect the proper one to be active
                 defenderMatchResults.SetActive(true);
                 defenderMatchResults.transform.Find("Win").gameObject.SetActive(false); // fallback
                 defenderMatchResults.transform.Find("Loose").gameObject.SetActive(true);
                 print("I lost by deadly death, going back to host game after " + secondsToWaitAfterGameEnd + " seconds");
-                ChangeSceneAfterNSeconds(secondsToWaitAfterGameEnd, sceneName);
+                ChangeSceneAfterNSeconds(secondsToWaitAfterGameEnd, sceneName, false);
             }
+            // i defender won by time
             else
             {
-                // i defender won by time
                 // We don't activate attacker/defender parts, we expect the proper one to be active
                 defenderMatchResults.SetActive(true);
-                defenderMatchResults.transform.Find("Win").gameObject.SetActive(true); // fallback
-                defenderMatchResults.transform.Find("Loose").gameObject.SetActive(false);
+                defenderMatchResults.transform.Find("Win").gameObject.SetActive(true);
+                defenderMatchResults.transform.Find("Loose").gameObject.SetActive(false); // fallback
                 print("I won by surviving, going back to host game after " + secondsToWaitAfterGameEnd + " seconds");
-                ChangeSceneAfterNSeconds(secondsToWaitAfterGameEnd, sceneName);
+                ChangeSceneAfterNSeconds(secondsToWaitAfterGameEnd, sceneName, false);
             }
         }
         else
         {
+            // i attacker won by killing defender
             if (didDefenderDie)
             {
-                // i attacker won by killing defender
                 attackerMatchResults.SetActive(true);
                 attackerMatchResults.transform.Find("Loose").gameObject.SetActive(false); // fallback
                 attackerMatchResults.transform.Find("Win").gameObject.SetActive(true);
                 print("I won by killing defender, going back to host game after " + secondsToWaitAfterGameEnd + " seconds");
-                ChangeSceneAfterNSeconds(secondsToWaitAfterGameEnd, sceneName);
+                ChangeSceneAfterNSeconds(secondsToWaitAfterGameEnd, sceneName, false);
+            }
+            // i attacker lost by time passing
+            else
+            {
+                attackerMatchResults.SetActive(true);
+                attackerMatchResults.transform.Find("Loose").gameObject.SetActive(true);
+                attackerMatchResults.transform.Find("Win").gameObject.SetActive(false); // fallback
+                print("I lost by time, going back to host game after " + secondsToWaitAfterGameEnd + " seconds");
+                ChangeSceneAfterNSeconds(secondsToWaitAfterGameEnd, sceneName, false);
+            }
+        }
+        RoundEndCleaning();
+
+    }
+
+    private void FinishMatch(bool amIDefending)
+    {
+        // finish match: 
+        //  show text won/lost match
+        //  leave room
+        //  CSM full reset
+        //  change scene to main menu
+
+        string sceneName = "MainMenu";
+        bool didDefenderWin = CrossSceneManager.instance.didDefenderWin[0];
+        if (amIDefending)
+        {
+            if (didDefenderWin)
+            {
+                // i defender won by time
+                GameObject.Find("CanvasLeaveAndFinish").transform.Find("Win").gameObject.SetActive(true);
+                PhotonNetwork.LeaveRoom();
+                ChangeSceneAfterNSeconds(secondsToWaitAfterGameEnd, sceneName, true);
             }
             else
             {
-                // i attacker lost by time passing
-                attackerMatchResults.SetActive(true);
-                attackerMatchResults.transform.Find("Loose").gameObject.SetActive(true); // fallback
-                attackerMatchResults.transform.Find("Win").gameObject.SetActive(false);
-                print("I lost by time, going back to host game after " + secondsToWaitAfterGameEnd + " seconds");
-                ChangeSceneAfterNSeconds(secondsToWaitAfterGameEnd, sceneName);
+                // i defender died
+                GameObject.Find("CanvasLeaveAndFinish").transform.Find("Loose").gameObject.SetActive(true);
+                PhotonNetwork.LeaveRoom();
+                ChangeSceneAfterNSeconds(secondsToWaitAfterGameEnd, sceneName, true);
+            }
+        }
+        else
+        {
+            if (didDefenderWin)
+            {
+                // i attacker lost by time
+                GameObject.Find("CanvasLeaveAndFinish").transform.Find("Loose").gameObject.SetActive(true);
+                PhotonNetwork.LeaveRoom();
+                ChangeSceneAfterNSeconds(secondsToWaitAfterGameEnd, sceneName, true);
+            }
+            else
+            {
+                // i attacker won by killing defender
+                GameObject.Find("CanvasLeaveAndFinish").transform.Find("Win").gameObject.SetActive(true);
+                PhotonNetwork.LeaveRoom();
+                ChangeSceneAfterNSeconds(secondsToWaitAfterGameEnd, sceneName, true);
             }
         }
     }
 
-    private void ChangeSceneAfterNSeconds(int seconds, string sceneName)
+    private void RoundEndCleaning()
     {
-        StartCoroutine(ChangeSceneDelayed(seconds, sceneName));
+        // roundEndCleaning():
+        //  setCustomProps both not ready
+        //  CSM soft reset
+        ExitGames.Client.Photon.Hashtable roundEndCleaning = new ExitGames.Client.Photon.Hashtable();
+        roundEndCleaning.Add("isMasterReady", false);
+        roundEndCleaning.Add("isJoinedReady", false);
+        PhotonNetwork.CurrentRoom.SetCustomProperties(roundEndCleaning);
+        CrossSceneManager.instance.ResetInBetweenRounds();
+
+    }
+
+    private void ChangeSceneAfterNSeconds(int seconds, string sceneName, bool alsoLeaveRoom)
+    {
+        if (alsoLeaveRoom)
+        {
+            StartCoroutine(ChangeSceneDelayedAndLeaveRoom(seconds, sceneName));
+        }
+        else
+        {
+            StartCoroutine(ChangeSceneDelayed(seconds, sceneName));
+        }
     }
 
     private IEnumerator AddMoneyPerSecond(int amount)
@@ -322,7 +485,13 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
     private IEnumerator ChangeSceneDelayed(int seconds, string sceneName)
     {
         yield return new WaitForSeconds(seconds);
-        //PhotonNetwork.LeaveRoom();
+        PhotonNetwork.LoadLevel(sceneName);
+    }
+
+    private IEnumerator ChangeSceneDelayedAndLeaveRoom(int seconds, string sceneName)
+    {
+        yield return new WaitForSeconds(seconds);
+        PhotonNetwork.LeaveRoom();
         PhotonNetwork.LoadLevel(sceneName);
     }
 
