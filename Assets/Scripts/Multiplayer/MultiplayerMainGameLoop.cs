@@ -44,9 +44,13 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
     public TMP_Text d_enemyHealthTextField;
     public TMP_Text d_playerMoneyTextField;
     public TMP_Text d_playerManaTextField;
+    [HideInInspector]
     public Vector2 topLeft;
+    [HideInInspector]
     public Vector2 topRight;   // Despite what VS says, they are used in
+    [HideInInspector]
     public Vector2 bottomLeft; // GetPlayArenaCorners() 
+    [HideInInspector]
     public Vector2 bottomRight;
     [HideInInspector]
     public int nodesInstantiated = 0;
@@ -418,14 +422,14 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
             {
                 // i defender won by time
                 GameObject.Find("CanvasLeaveAndFinish").transform.Find("Win").gameObject.SetActive(true);
-                PhotonNetwork.LeaveRoom();
+                //PhotonNetwork.LeaveRoom(); // main menu leaves room on its own
                 ChangeSceneAfterNSeconds(secondsToWaitAfterGameEnd, sceneName, true);
             }
             else
             {
                 // i defender died
                 GameObject.Find("CanvasLeaveAndFinish").transform.Find("Loose").gameObject.SetActive(true);
-                PhotonNetwork.LeaveRoom();
+                //PhotonNetwork.LeaveRoom(); // main menu leaves room on its own
                 ChangeSceneAfterNSeconds(secondsToWaitAfterGameEnd, sceneName, true);
             }
         }
@@ -435,14 +439,14 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
             {
                 // i attacker lost by time
                 GameObject.Find("CanvasLeaveAndFinish").transform.Find("Loose").gameObject.SetActive(true);
-                PhotonNetwork.LeaveRoom();
+                //PhotonNetwork.LeaveRoom(); // main menu leaves room on its own
                 ChangeSceneAfterNSeconds(secondsToWaitAfterGameEnd, sceneName, true);
             }
             else
             {
                 // i attacker won by killing defender
                 GameObject.Find("CanvasLeaveAndFinish").transform.Find("Win").gameObject.SetActive(true);
-                PhotonNetwork.LeaveRoom();
+                //PhotonNetwork.LeaveRoom(); // main menu leaves room on its own
                 ChangeSceneAfterNSeconds(secondsToWaitAfterGameEnd, sceneName, true);
             }
         }
@@ -597,6 +601,7 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
 
     public override void OnPlayerLeftRoom(Player otherPlayer)
     {
+        print("SOMEBODY LEFTT");
         isTimerRunning = false;
         msgToPlayerCanvas.gameObject.SetActive(true);
         msgToPlayerCanvas.transform.Find("EnemyLeft").gameObject.SetActive(true);

@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,5 +18,6 @@ public class MainMenuLoop : MonoBehaviour
     private void Start()
     {
         CrossSceneManager.instance.ResetAfterPlaying();
+        PhotonNetwork.LeaveRoom();
     }
 }
