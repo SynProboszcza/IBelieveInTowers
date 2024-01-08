@@ -607,13 +607,16 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
             ChangeSceneAfterNSeconds(5, "HostGame", false);
         }
         CrossSceneManager.instance.didDefenderWin.Clear();
+        print("cleared list of wins");
         for (int i = 0; i < defenderWins.Length; i++)
         {
-            if (defenderWins[i].Equals('t'))
+            if (defenderWins[i].Equals('t')) // needs to be '' because its char, not string
             {
+                print("added win for defender: true");
                 CrossSceneManager.instance.didDefenderWin.Add(true);
             } else if (defenderWins[i].Equals('f'))
             {
+                print("added loose for defender: false");
                 CrossSceneManager.instance.didDefenderWin.Add(false);
             } else
             {
