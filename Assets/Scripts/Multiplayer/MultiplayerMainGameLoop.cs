@@ -214,7 +214,9 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
         {
             StopCoroutine(moneyPerSecond);
         }
+        print("adding result");
         CrossSceneManager.instance.didDefenderWin.Add(!didDefenderDie);
+        print("added result");
         // TODO: send rpc to sync
         // Code <bools> into string like "tft"
         string defenderWins = "";
@@ -229,7 +231,7 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
             }
         }
         print("Sending defender wins to sync: " + defenderWins);
-        gameObject.GetComponent<PhotonView>().RPC("SyncRoundResults", RpcTarget.All, defenderWins);
+        gameObject.GetComponent<PhotonView>().RPC("SyncRoundResults", RpcTarget.Others, defenderWins);
 
 
         // -----------------------------------------------------------------------
