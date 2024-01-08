@@ -32,6 +32,7 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
     public Transform[] obstacles;
     public float roundTimeSeconds = 180;
     public float currentTime;
+    public float defenderHealthToSync;
     private bool isTimerRunning = false;
     [Header("Attacker parts")]
     public TMP_Text a_timer;
@@ -72,7 +73,6 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
     public bool amIDefender;
     [HideInInspector]
     private bool matchResultsShown = false; // Flag so it gets run only once
-    public float defenderHealthToSync;
     private bool addingMoneySet = false;
     private Coroutine moneyPerSecond;
 
@@ -138,7 +138,7 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
 
     void Update()
     {
-        defenderHealthToSync = CrossSceneManager.instance.defenderHealth;
+        CrossSceneManager.instance.defenderHealth = Mathf.FloorToInt(defenderHealthToSync);
         UpdatePlayerStats();
         // Check if defending when ded
         //  checking is done when dealing damage
@@ -214,6 +214,22 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
             StopCoroutine(moneyPerSecond);
         }
         CrossSceneManager.instance.didDefenderWin.Add(!didDefenderDie);
+        // TODO: send rpc to sync
+        // Code <bools> into string like "tft"
+        string defenderWins = "";
+        for (int i = 0; i < CrossSceneManager.instance.didDefenderWin.Count; i++)
+        {
+            if (CrossSceneManager.instance.didDefenderWin[i])
+            {
+                defenderWins += "t";
+            } else
+            {
+                defenderWins += "f";
+            }
+        }
+        print("Sending defender wins to sync: " + defenderWins);
+        gameObject.GetComponent<PhotonView>().RPC("SyncRoundResults", RpcTarget.All, defenderWins);
+
 
         // -----------------------------------------------------------------------
         // Check if we finish match or go into next round and do it
@@ -372,7 +388,7 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
                 defenderMatchResults.transform.Find("Win").gameObject.SetActive(false); // fallback
                 defenderMatchResults.transform.Find("Loose").gameObject.GetComponent<TMP_Text>().text = CrossSceneManager.instance.roundLost;
                 defenderMatchResults.transform.Find("Loose").gameObject.SetActive(true);
-                print("I lost by deadly death, going back to host game after " + secondsToWaitAfterGameEnd + " seconds");
+                print("I defender died, next round in: " + secondsToWaitAfterGameEnd + " seconds");
                 ChangeSceneAfterNSeconds(secondsToWaitAfterGameEnd, sceneName, false);
             }
             // i defender won by time
@@ -383,7 +399,7 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
                 defenderMatchResults.transform.Find("Win").gameObject.GetComponent<TMP_Text>().text = CrossSceneManager.instance.roundWon;
                 defenderMatchResults.transform.Find("Win").gameObject.SetActive(true);
                 defenderMatchResults.transform.Find("Loose").gameObject.SetActive(false); // fallback
-                print("I won by surviving, going back to host game after " + secondsToWaitAfterGameEnd + " seconds");
+                print("I defender won by surviving, next round in: " + secondsToWaitAfterGameEnd + " seconds");
                 ChangeSceneAfterNSeconds(secondsToWaitAfterGameEnd, sceneName, false);
             }
         }
@@ -396,7 +412,7 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
                 attackerMatchResults.transform.Find("Loose").gameObject.SetActive(false); // fallback
                 attackerMatchResults.transform.Find("Win").gameObject.GetComponent<TMP_Text>().text = CrossSceneManager.instance.roundWon;
                 attackerMatchResults.transform.Find("Win").gameObject.SetActive(true);
-                print("I won by killing defender, going back to host game after " + secondsToWaitAfterGameEnd + " seconds");
+                print("I attacker won by killing defender, next round in: " + secondsToWaitAfterGameEnd + " seconds");
                 ChangeSceneAfterNSeconds(secondsToWaitAfterGameEnd, sceneName, false);
             }
             // i attacker lost by time passing
@@ -406,7 +422,7 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
                 attackerMatchResults.transform.Find("Loose").gameObject.GetComponent<TMP_Text>().text = CrossSceneManager.instance.roundLost;
                 attackerMatchResults.transform.Find("Loose").gameObject.SetActive(true);
                 attackerMatchResults.transform.Find("Win").gameObject.SetActive(false); // fallback
-                print("I lost by time, going back to host game after " + secondsToWaitAfterGameEnd + " seconds");
+                print("I attacker lost by time, next round in: " + secondsToWaitAfterGameEnd + " seconds");
                 ChangeSceneAfterNSeconds(secondsToWaitAfterGameEnd, sceneName, false);
             }
         }
@@ -569,6 +585,40 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
             string enemyHealthTextTemplate = "Enemy health: " + CrossSceneManager.instance.defenderHealth;
             a_enemyHealthTextField.text = enemyHealthTextTemplate;
         }
+    }
+
+    [PunRPC]
+    public void SyncRoundResults(string defenderWins)
+    {
+        // We expect something like "ttf" "f" "ft"
+        // amount of letters show how many rounds were played
+        // t = true; defender won that round;; f = false; defender lost that round
+        // letters need to be in correct order
+        print("Got round results for syncing: " + defenderWins);
+        if (defenderWins.Length < 1 || defenderWins.Length > 3)
+        {
+            //early return
+            Debug.LogError("Received incorrect wins list: " + defenderWins, gameObject);
+            Debug.LogError("leaving");
+            PhotonNetwork.Disconnect();
+            ChangeSceneAfterNSeconds(5, "HostGame", false);
+        }
+        CrossSceneManager.instance.didDefenderWin.Clear();
+        for (int i = 0; i < defenderWins.Length; i++)
+        {
+            if (defenderWins[i].Equals("t"))
+            {
+                CrossSceneManager.instance.didDefenderWin.Add(true);
+            } else if (defenderWins[i].Equals("f"))
+            {
+                CrossSceneManager.instance.didDefenderWin.Add(false);
+            } else
+            {
+                Debug.LogError("what have you passed on this cursed land", gameObject);
+            }
+        }
+
+        //CrossSceneManager.instance.didDefenderWin.Add(firstMatchResult);
     }
 
     [PunRPC]
