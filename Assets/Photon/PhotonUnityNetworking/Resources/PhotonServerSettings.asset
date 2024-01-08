@@ -47,6 +47,8 @@ MonoBehaviour:
   - AddResourcesShowAtSpecifiedPoint
   - DestroyMe
   - SyncRoundResults
+  - MatchIsOver
+  - SetNextRoundInfo
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

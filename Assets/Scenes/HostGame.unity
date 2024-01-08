@@ -1038,6 +1038,7 @@ MonoBehaviour:
   isMoneyInfinite: 0
   isManaInfinite: 0
   invincibleTurrets: 0
+  isMatchOver: 0
   showPriceCostPrefab: {fileID: 8992059104996785522, guid: 3d4c5d5dd235a1849bc9407173f3d9d5, type: 3}
   spawnDelayPassed: 0
   mapMiddleNames: []
