@@ -285,8 +285,11 @@ public class MainTurret : MonoBehaviour, IPunObservable
 
     private void UpdateAndShowTurretRange()
     {
-        gameObject.GetComponent<CircleCollider2D>().radius = turretRange * turretRangeMultipliers[upgradeLevel];
-        transform.Find("Range").GetComponent<SetAndShowTurretRange>().UpdateRange();
+        if (transform.Find("Range") != null) // nullcheck for main menu
+        {
+            gameObject.GetComponent<CircleCollider2D>().radius = turretRange * turretRangeMultipliers[upgradeLevel];
+            transform.Find("Range").GetComponent<SetAndShowTurretRange>().UpdateRange();
+        }
     }
 
     private void DestroyBullet(GameObject bullet)
