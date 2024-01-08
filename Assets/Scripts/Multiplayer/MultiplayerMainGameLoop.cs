@@ -241,7 +241,7 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
         // 
         // amimaster == (amidefending != diddefenderdie)
         print("added to my local win history: " + (amIMaster == (amIDefending != didDefenderDie)).ToString());
-        CrossSceneManager.instance.didMasterWin.Add(amIMaster == (amIDefending != didDefenderDie));
+        CrossSceneManager.instance.didMasterWin.Add(!(amIMaster == (amIDefending != didDefenderDie)));
         if (amIMaster)
         {
             print("Sending defender wins to sync: " + CrossSceneManager.instance.MatchHistoryToString());
