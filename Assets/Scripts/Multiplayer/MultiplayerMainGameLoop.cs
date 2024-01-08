@@ -452,12 +452,38 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
         //      CSM full reset in main menu
 
         string sceneName = "MainMenu";
-        bool didDefenderWin = CrossSceneManager.instance.didDefenderWin[0];
+        bool didDefenderWin = false;
+        if (CrossSceneManager.instance.didDefenderWin.Count == 2 && (CrossSceneManager.instance.didDefenderWin[0] == CrossSceneManager.instance.didDefenderWin[1]))
+        {
+            didDefenderWin = CrossSceneManager.instance.didDefenderWin[0];
+        } else if (CrossSceneManager.instance.didDefenderWin.Count == 3)
+        {
+            int defenderWinsAmonut = 0;
+            for (int i = 0; i < 3; i++)
+            {
+                if (CrossSceneManager.instance.didDefenderWin[i])
+                {
+                    defenderWinsAmonut++;
+                }
+            }
+            if (defenderWinsAmonut >= 2)
+            {
+                didDefenderWin = true;
+            } else
+            {
+                didDefenderWin = false;
+            }
+        } else
+        {
+            Debug.LogError("Something called finish match when there is not enough rounds played: " + CrossSceneManager.instance.didDefenderWin.Count);
+            return;
+        }
         if (amIDefending)
         {
             if (didDefenderWin)
             {
-                // i defender won by time
+                // i defender won match by time
+                print("i defender won match by time");
                 GameObject.Find("CanvasLeaveAndFinish").transform.Find("Win").gameObject.GetComponent<TMP_Text>().text = CrossSceneManager.instance.matchWon;
                 GameObject.Find("CanvasLeaveAndFinish").transform.Find("Win").gameObject.SetActive(true);
                 //PhotonNetwork.LeaveRoom(); // main menu leaves room on its own
@@ -465,7 +491,8 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
             }
             else
             {
-                // i defender died
+                // i defender died match
+                print("i defender died match");
                 GameObject.Find("CanvasLeaveAndFinish").transform.Find("Loose").gameObject.GetComponent<TMP_Text>().text = CrossSceneManager.instance.matchLost;
                 GameObject.Find("CanvasLeaveAndFinish").transform.Find("Loose").gameObject.SetActive(true);
                 //PhotonNetwork.LeaveRoom(); // main menu leaves room on its own
@@ -476,7 +503,8 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
         {
             if (didDefenderWin)
             {
-                // i attacker lost by time
+                // i attacker lost match by time
+                print("i attacker lost match by time");
                 GameObject.Find("CanvasLeaveAndFinish").transform.Find("Loose").gameObject.GetComponent<TMP_Text>().text = CrossSceneManager.instance.matchLost;
                 GameObject.Find("CanvasLeaveAndFinish").transform.Find("Loose").gameObject.SetActive(true);
                 //PhotonNetwork.LeaveRoom(); // main menu leaves room on its own
@@ -484,7 +512,8 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
             }
             else
             {
-                // i attacker won by killing defender
+                // i attacker won match by killing defender
+                print("i attacker won match by killing defender");
                 GameObject.Find("CanvasLeaveAndFinish").transform.Find("Win").gameObject.GetComponent<TMP_Text>().text = CrossSceneManager.instance.matchWon;
                 GameObject.Find("CanvasLeaveAndFinish").transform.Find("Win").gameObject.SetActive(true);
                 //PhotonNetwork.LeaveRoom(); // main menu leaves room on its own
@@ -636,7 +665,7 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
             }
         }
         // TODO: check if somebody already won
-        if (CrossSceneManager.instance.didDefenderWin[0] == CrossSceneManager.instance.didDefenderWin[1])
+        if (CrossSceneManager.instance.didDefenderWin.Count > 1 && (CrossSceneManager.instance.didDefenderWin[0] == CrossSceneManager.instance.didDefenderWin[1]))
         {
             FinishMatch(amIDefender);
             // if (CrossSceneManager.instance.didDefenderWin[0])

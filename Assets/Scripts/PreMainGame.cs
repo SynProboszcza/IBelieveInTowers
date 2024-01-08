@@ -182,7 +182,7 @@ public class PreMainGame : MonoBehaviourPunCallbacks, IPunObservable
         // Debug section
         // -------------------------------------------------------------
         //print("some properties changed!");
-        print("amount:"+ propertiesThatChanged.Count + "props:" + propertiesThatChanged.ToString());
+        //print("amount:"+ propertiesThatChanged.Count + "props:" + propertiesThatChanged.ToString());
 
 
 
