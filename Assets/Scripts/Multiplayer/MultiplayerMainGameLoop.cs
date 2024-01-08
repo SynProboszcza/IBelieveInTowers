@@ -615,7 +615,7 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
                 CrossSceneManager.instance.didDefenderWin.Add(false);
             } else
             {
-                Debug.LogError("what have you passed on this cursed land", gameObject);
+                Debug.LogError("what have you passed on this cursed land: " + defenderWins[i], gameObject);
             }
         }
 
