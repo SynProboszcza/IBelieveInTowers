@@ -104,7 +104,7 @@ public class CrossSceneManager : MonoBehaviour
 
     }
 
-    public string MatchHistory()
+    public string MatchHistoryToString()
     {
         string tmp = "";
         for (int i = 0; i < didMasterWin.Count; i++)
@@ -119,6 +119,27 @@ public class CrossSceneManager : MonoBehaviour
             }
         }
         return tmp;
+    }
+
+    public void MatchHistoryFromString(string hist)
+    {
+        List<bool> tmp = didMasterWin;
+        didMasterWin.Clear();
+        for (int i = 0; i < hist.Length; i++)
+        {
+            if (hist[i].Equals('t'))
+            {
+                didMasterWin.Add(true);
+            }
+            else if (hist[i].Equals('f'))
+            {
+                didMasterWin.Add(false);
+            } else
+            {
+                Debug.LogError("Got bad data to read match history from provided string: " + hist + "\nrestored old one");
+                didMasterWin = tmp;
+            }
+        }
     }
 
     public void RandomizeMapSelection()

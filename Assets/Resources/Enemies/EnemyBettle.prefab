@@ -235,7 +235,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mainGame: {fileID: 0}
   waypoints: []
-  speed: 3.5
+  speed: 20
   currentHealth: 0
   maxHealth: 100
   damage: 15
