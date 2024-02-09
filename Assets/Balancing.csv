@@ -1,0 +1,39 @@
+﻿;;;;;;
+;SMG;Shotgun;Boltgun;Rocket Launcher;Gatling;Super shotgun
+Bullet speed;300;175;350;75;200;200
+Bullet damage;6;7;75;100;3;1
+Fire rate;0,1;1,2;1,5;2;0,08;0,3
+Bullet range;2;5;5;5;3;2
+Turret range;3;2,5;4;3;3;2
+Distance to ;0,2;0,5;4;0,4;0,2;0,5
+Upgrade cost;;;;;;
+Money reward;;;;;;
+Turret health;;;;;;
+Turret max health;;;;;;
+Shotgun spread;;5;;;;7
+Shotgun Pellets;;3;;;;5
+Shotgun rand spread;;;;;;
+Damage mult;;;;;1;
+;;;;;1,1;
+;;;;;1,2;
+;;;;;1,3;
+Speed Mult;;;;;;
+;;;;;;
+;;;;;;
+;;;;;;
+Fire rate mult;;;;;;
+;;;;;;
+;;;;;;
+;;;;;;
+Bullet range mult;;;;;;
+;;;;;;
+;;;;;;
+;;;;;;
+Turret range mult;;;;;;
+;;;;;;
+;;;;;;
+;;;;;;
+Turret money reward mult;;;;;;
+;;;;;;
+;;;;;;
+;;;;;;

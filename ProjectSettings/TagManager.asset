@@ -1,0 +1,101 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 2
+  tags:
+  - Enemy
+  - Bullet
+  - GunBarrel
+  - GunBody
+  - GunMuzzle
+  - GunClip
+  - Weapon
+  - GunProjectile
+  - Wall
+  - GunSight
+  - SmokeTrail
+  - SingleTagForMainGameLoop
+  - Turret
+  - Spawner
+  - ShopNode
+  - Despawner
+  - NickName
+  - MainCanvas
+  - SingleTagForEnemiesCollection
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - 
+  - Water
+  - UI
+  - Enemies
+  - ShopNode
+  - ShopBackground
+  - ShopOffers
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Default
+    uniqueID: 0
+    locked: 0
+  - name: Background
+    uniqueID: 3986135849
+    locked: 0
+  - name: BackgroundAddons
+    uniqueID: 3593719733
+    locked: 0
+  - name: SpawnersAndDespawners
+    uniqueID: 4008344169
+    locked: 0
+  - name: Sentries
+    uniqueID: 3625459661
+    locked: 0
+  - name: SentryWeapons
+    uniqueID: 1321510771
+    locked: 0
+  - name: SentryWeaponsMuzzleEffects
+    uniqueID: 209213079
+    locked: 0
+  - name: TurretRange
+    uniqueID: 2720108125
+    locked: 0
+  - name: Bullets
+    uniqueID: 2890818497
+    locked: 0
+  - name: Enemies
+    uniqueID: 671726197
+    locked: 0
+  - name: Healthbar
+    uniqueID: 732742781
+    locked: 0
+  - name: ShopNode
+    uniqueID: 2065941807
+    locked: 0
+  - name: ShopBackground
+    uniqueID: 3878366489
+    locked: 0
+  - name: ShopOffers
+    uniqueID: 4222315497
+    locked: 0

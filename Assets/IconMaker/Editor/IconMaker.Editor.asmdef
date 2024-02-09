@@ -1,0 +1,18 @@
+{
+    "name": "IconMaker.Editor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:b8efad8fdf9421a4c8c13b1fe3679974"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

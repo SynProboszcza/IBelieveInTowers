@@ -1,0 +1,53 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1045 &1
+EditorBuildSettings:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/MainMenu.unity
+    guid: 833654553058c13418d315cd1a8beaa3
+  - enabled: 1
+    path: Assets/Scenes/HostGame.unity
+    guid: 66483c111a76a524fa35def4ce978c3b
+  - enabled: 1
+    path: Assets/Scenes/JoinGame.unity
+    guid: e2dc544daad5abb4698665c53d42a9b7
+  - enabled: 1
+    path: Assets/Scenes/Settings.unity
+    guid: 888b2d9b058f6f046a40b9d2ac556638
+  - enabled: 1
+    path: Assets/Scenes/Credits.unity
+    guid: a96bd90983352b44babafe2469c6afcb
+  - enabled: 1
+    path: Assets/Scenes/pierwszaTestowaPlansza.unity
+    guid: 87c7095f1b4be984b98d7d717635e3f3
+  - enabled: 0
+    path: 
+    guid: 00000000000000000000000000000000
+  - enabled: 0
+    path: 
+    guid: 00000000000000000000000000000000
+  - enabled: 1
+    path: Assets/Scenes/MapsMultiplayer/Map1Multiplayer.unity
+    guid: aa3f6ef3bd669234e8e070eefc937ce8
+  - enabled: 0
+    path: 
+    guid: 00000000000000000000000000000000
+  - enabled: 1
+    path: Assets/Scenes/MapsMultiplayer/Map2Multiplayer.unity
+    guid: fd747df3d0c875c4990ae2ea896ee1e5
+  - enabled: 1
+    path: Assets/Scenes/MapsMultiplayer/Map3Multiplayer.unity
+    guid: 3d16211311bda354aa52a85f37580ae2
+  - enabled: 1
+    path: Assets/Scenes/MapsMultiplayer/Map4Multiplayer.unity
+    guid: bf2af5bece98cc645afd12ec71daf8a9
+  - enabled: 1
+    path: Assets/Scenes/InBetweenScene.unity
+    guid: a65a787f7880e2e4fb0cbdd5b8c9013f
+  - enabled: 1
+    path: Assets/Scenes/MapsMultiplayer/Map5Multiplayer.unity
+    guid: 6e4cb642ae8c5264b841113129541be8
+  m_configObjects: {}
