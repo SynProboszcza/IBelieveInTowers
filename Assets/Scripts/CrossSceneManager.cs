@@ -37,15 +37,15 @@ public class CrossSceneManager : MonoBehaviour
     public List<GameObject> enemyListFromPreMainGame;
     // Default prices fallback just in case, they are to be
     // set from prefabs in Resources
-    [HideInInspector]
+    //[HideInInspector]
     public int bearPrice = 554; // ++ 
-    [HideInInspector]
+    //[HideInInspector]
     public int bettlePrice = 554; // ++
-    [HideInInspector]
+    //[HideInInspector]
     public int opossumPrice = 554; // ++
-    [HideInInspector]
+    //[HideInInspector]
     public int dinoPrice = 554; // ++ 
-    [HideInInspector]
+    //[HideInInspector]
     public int slimerPrice = 554;// ++ 
     // default... are for reset, actual are just names without default prefix
     // ----------------------------------------------------------------------------
