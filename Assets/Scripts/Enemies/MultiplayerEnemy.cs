@@ -76,6 +76,10 @@ public class MultiplayerEnemy : MonoBehaviour, IPunObservable
         }
     }
 
+    /// <summary>
+    /// Make enemy move in multiplayer, also handling looking left/right.
+    /// It is using waypoints as they're ordered.
+    /// </summary>
     private void Move()
     {
         if (waypointIndex <= waypoints.Length - 1)
@@ -85,8 +89,13 @@ public class MultiplayerEnemy : MonoBehaviour, IPunObservable
                speed * Time.deltaTime);
             if (waypoints.Length > waypointIndex) // So it does not result in outOfArrayIndex sth
             {
-                // - ..... +
-                if (waypoints[waypointIndex].transform.position.x < transform.position.x)
+                // a bit of rounding, joined player has different floats for some reason
+                float targetX = waypoints[waypointIndex].transform.position.x;
+                targetX = Mathf.Round(targetX * 10.0f) * 0.1f; // basically truncate everything after first decimal place
+                float currentX = transform.position.x;
+                currentX = Mathf.Round(currentX * 10.0f) * 0.1f; 
+
+                if (targetX < currentX)
                 {
                     // looking left
                     if (spriteFlip)
@@ -100,7 +109,7 @@ public class MultiplayerEnemy : MonoBehaviour, IPunObservable
                         gameObject.GetComponent<SpriteRenderer>().flipX = false;
                     }
                 }
-                else if (waypoints[waypointIndex].transform.position.x > transform.position.x)
+                else if (targetX > currentX)
                 {
                     // looking right
                     if (spriteFlip)
