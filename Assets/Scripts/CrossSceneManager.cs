@@ -118,15 +118,21 @@ public class CrossSceneManager : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// Calls <see cref="MatchHistoryToString()">MatchHistoryToString()</see> and changes returned value to pretty string, ready to display to the user
+    /// </summary>
+    /// <returns>
+    /// Depending on match history:
+    /// [..., ...]
+    /// [W, ...] 
+    /// [L, ...] 
+    /// [L, W, ...]
+    /// [W, L, ...] 
+    /// [L, L]
+    /// [W, W]
+    /// </returns>
     public string PlayerFriendlyMatchHistory()
     {
-        /* Example strings we want to return  
-        // [..., ...]
-        // [L, ...] [L, W, ...]
-        // [W, ...] [W, L, ...] 
-        // [L, L]
-        // [W, W]
-        */
         string matchHist = MatchHistoryToString();
         string result = "";
         if (matchHist.Length == 0)
@@ -276,6 +282,12 @@ public class CrossSceneManager : MonoBehaviour
         return result;
     }
 
+    /// <summary>
+    /// Takes stored list of bools of who won, and returns it in string format
+    /// </summary>
+    /// <returns>
+    /// Ordered string in "XXX" format, where X is either "t" or "f". "t" means master won that round.
+    /// </returns>
     public string MatchHistoryToString()
     {
         string tmp = "";
@@ -293,6 +305,12 @@ public class CrossSceneManager : MonoBehaviour
         return tmp;
     }
 
+    /// <summary>
+    /// Takes match history in string format and sets it as the correct one. 
+    /// See <see cref="MatchHistoryToString()">MatchHistoryToString()</see>.
+    /// Used to synchronize win history between master and joined.
+    /// </summary>
+    /// <param name="hist">String in "XXX" format, where X is either "t" or "f". "t" means master won that round.</param>
     public void MatchHistoryFromString(string hist)
     {
         string debugString = "CSM:Received match history from string: " + hist + "\n";
@@ -317,6 +335,11 @@ public class CrossSceneManager : MonoBehaviour
         print(debugString);
     }
 
+    /// <summary>
+    /// Randomizes without repeating which maps are going to be played. Modifies 
+    /// <see cref="mapMiddleNames">mapMiddleNames</see>
+    /// list. Implementation has debugging tools commented out.
+    /// </summary>
     public void RandomizeMapSelection()
     {
         List<int> possible = Enumerable.Range(1, amountOfMaps).ToList();
@@ -341,6 +364,14 @@ public class CrossSceneManager : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// Processess any damage that is to be dealt to defender and 
+    /// adds money to the attacker for every dmg point dealt.
+    /// If defender health reaches zero, sets the 
+    /// <see cref="hasDefenderDied">hasDefenderDied</see>
+    /// flag and sets defender health to zero, as to prettify looks.
+    /// </summary>
+    /// <param name="amount">Amount of damage to deal</param>
     public void TakeDefenderDamageAndCheckIfDied(int amount)
     {
         if (hasDefenderDied)
@@ -362,6 +393,10 @@ public class CrossSceneManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Resets money, mana, defender health, did spawn delay passed, has defender died.
+    /// Designed to be called in-between rounds.
+    /// </summary>
     public void SoftReset()
     {
         print("CSM Soft Reset: \nmoney mana defHealth spawnDelayPassed hasDefenderDied");
@@ -375,6 +410,12 @@ public class CrossSceneManager : MonoBehaviour
         //amIDefender = false;
     }
 
+    /// <summary>
+    /// Resets money, mana, defender health, match time, delay first spawn, 
+    /// enemy nickname, local nickname, selected list of maps, 
+    /// history of matches, and all possible bools.
+    /// Designed to be called in-between matches.
+    /// </summary>
     public void FullReset()
     {
         print("CSM Full Reset");
@@ -393,14 +434,23 @@ public class CrossSceneManager : MonoBehaviour
         hasDefenderDied = false;
         isMoneyInfinite = false;
         isManaInfinite = false;
-        spawnDelayPassed = false;
         invincibleTurrets = false;
         isMatchOver = false;
+        spawnDelayPassed = false;
     }
 
+    /// <summary>
+    /// Shows short animation of getting or loosing money at current mouse location. 
+    /// This method does not add or remove money - use
+    /// <see cref="PayWithMoney(int)">PayWithMoney()</see> or 
+    /// <see cref="AddMoney(int)">AddMoney()</see>.
+    /// Is overloaded with 
+    /// <see cref="ShowMoneyChange(int, bool, Vector2)">3-param version</see>.
+    /// </summary>
+    /// <param name="cost">Amount to show</param>
+    /// <param name="isPaying">True shows "+" sign, false shows "-" sign</param>
     private void ShowMoneyChange(int cost, bool isPaying)
     {
-        // 2 params to use current mouse position
         mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         GameObject go = Instantiate(showPriceCostPrefab, new Vector3(mouseWorldPos.x + 1, mouseWorldPos.y, 0), Quaternion.identity);
         if (isPaying)
@@ -413,9 +463,18 @@ public class CrossSceneManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Shows short animation of getting or loosing money at specified location on the screen.
+    /// This method does not add or remove money - use
+    /// <see cref="PayWithMoney(int)">PayWithMoney()</see>.
+    /// Is overloaded with 
+    /// <see cref="ShowMoneyChange(int, bool)">2-param version</see>.
+    /// </summary>
+    /// <param name="cost">Amount to show</param>
+    /// <param name="isPaying">True shows "+" sign, false shows "-" sign</param>
+    /// <param name="position">Position at the screen</param>
     private void ShowMoneyChange(int cost, bool isPaying, Vector2 position)
     {
-        // 3 params to use position thats passed
         GameObject go = Instantiate(showPriceCostPrefab, new Vector3(position.x, position.y, 0), Quaternion.identity);
         if (isPaying)
         {
@@ -427,6 +486,13 @@ public class CrossSceneManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Tries to pay, and if succesfull, calls
+    /// <see cref="ShowMoneyChange(int, bool)">ShowMoneyChange(int, bool)</see>.
+    /// Infinite money will always return true.
+    /// </summary>
+    /// <param name="cost"></param>
+    /// <returns>true if bought, false otherwise</returns>
     public bool PayWithMoney(int cost)
     {
         if (isMoneyInfinite)
@@ -468,18 +534,36 @@ public class CrossSceneManager : MonoBehaviour
         playerMana += amount;
     }
 
+    /// <summary>
+    /// Adds the amount of money specified, and shows it at current mouse location. 
+    /// Is overloaded with 
+    /// <see cref="AddMoney(int, Vector2)">2-param version</see>.
+    /// </summary>
+    /// <param name="amount">Amount of money to add</param>
     public void AddMoney(int amount)
     {
         ShowMoneyChange(amount, false);
         playerMoney += amount;
     }
 
+    /// <summary>
+    /// Adds the amount of money specified, and shows it at specified location.
+    /// Is overloaded with 
+    /// <see cref="AddMoney(int, Vector2)">2-param version</see>.
+    /// </summary>
+    /// <param name="amount">Amount of money to add</param>
+    /// <param name="fromWhere">Location to show the animation</param>
     public void AddMoney(int amount, Vector2 fromWhere)
     {
         ShowMoneyChange(amount, false, fromWhere);
         playerMoney += amount;
     }
 
+    /// <summary>
+    /// Checks if player can afford cost specified.
+    /// </summary>
+    /// <param name="cost">cost to check</param>
+    /// <returns>true if can afford or money is infinite; false otherwise</returns>
     public bool CanPlayerAffordWithMoney(int cost)
     {
         if (isMoneyInfinite)

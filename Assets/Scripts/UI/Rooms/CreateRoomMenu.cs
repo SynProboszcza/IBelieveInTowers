@@ -34,37 +34,40 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
     public string gameVersion = "0.1";
     private bool restartConnectionFlag = false;
 
-
-    // Check for connection and connect if not
+    /// <summary>
+    /// Starts with
+    /// <see cref="CrossSceneManager.FullReset()">CSM full reset</see>,
+    /// then checks if player set its nickname before, and populates the nickname field.
+    /// Then connects with PUN if not already connected.
+    /// </summary>
     void Start()
     {
         CrossSceneManager.instance.FullReset();
+
+        // Check if player set its nickname before, and populate nickname field
         if (PlayerPrefs.GetString("LocalNickName").Length >= 3)
         {
             _nickName.text = PlayerPrefs.GetString("LocalNickName");
             CrossSceneManager.instance.myNickName = _nickName.text;
         }
+
         // We need to check for readiness, because user can go back to main menu
         // and this will be called twice, and we cant connect twice because connection
         // persists between scene changes
         if (PhotonNetwork.IsConnectedAndReady)
         {
             gameObject.GetComponent<Button>().interactable = true;
-            //showConnection.GetComponent<TMP_Text>().text = "Connected to ";
             showConnection.GetComponent<ShowConnectionChange>().ShowConnected();
 
             // Checking if connected to a particular room
             if (PhotonNetwork.CurrentRoom != null)
             {
-                showConnection.GetComponent<TMP_Text>().text += "room: " + PhotonNetwork.CurrentRoom.Name;
                 gameObject.GetComponent<Button>().interactable = false;
                 // Code theoretically should not get here, but in case 
-                // Change scene to PrePlay or Play
+                // TODO: Change scene to PrePlay or Play
             }
             else
             {
-                showConnection.GetComponent<TMP_Text>().text += "master";
-                //ShowCachedRooms();
                 RestartConnection(); // Doing this to get OnRoomListUpdate callback
             }
         }
@@ -76,10 +79,13 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
         }
     }
 
-    // Called when player clicks Host Game button
-    // If connectedAndReady check/set nickname and room name
-    // and create room with these; also max players is set 2 2
-    // If room is created Photon joins it automatically
+    /// <summary>
+    /// Called when player clicks Create Game button. Tries to create a room using 
+    /// user-filled data. Corrects what it deems to be entered wrongfully.
+    /// Sets used nickname in PlayerPrefs. If successfull, we get a 
+    /// <see cref="OnJoinedRoom()">OnJoinedRoom</see>
+    /// callback.
+    /// </summary>
     public void OnClickCreateRoom()
     {
         if (!PhotonNetwork.IsConnectedAndReady)
@@ -183,6 +189,10 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
         _playerPreferences.Clear();
     }
 
+    /// <summary>
+    /// Tries to join room specified. Sets nickname if not set.
+    /// </summary>
+    /// <param name="roomName"></param>
     public static void JoinRoomFromList(string roomName)
     {
         // Searching with tag because its static method, called by room prefab
@@ -203,6 +213,9 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
         RestartConnection();
     }
 
+    /// <summary>
+    /// Clears room list - visible and cached.
+    /// </summary>
     public void ClearVisibleAndCachedRoomList()
     {
         for (int i = 0; i < roomList.transform.childCount; i++)
@@ -212,12 +225,24 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
         displayedRoomsCache.Clear();
     }
 
+    /// <summary>
+    /// Sets the restart connection flag and disconnects from Photon.
+    /// Flag is set as to reconnect only once, as Photon uses 
+    /// <see cref="OnDisconnected(DisconnectCause)">OnDisconnected</see>
+    /// callback. If this flag is set to true then it will try to connect again.
+    /// </summary>
     public void RestartConnection()
     {
         restartConnectionFlag = true;
         PhotonNetwork.Disconnect();
     }
 
+    /// <summary>
+    /// Shows ready to join rooms and stores them in 
+    /// <see cref="displayedRoomsCache">cache</see>.
+    /// TODO: idk what openroomsfrommastercache is supposed to do
+    /// </summary>
+    /// <param name="_list"></param>
     private void ShowRooms(List<RoomInfo> _list)
     {
         foreach (RoomInfo _room in _list)
@@ -245,6 +270,9 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
         }
     }
 
+    /// <summary>
+    /// Tries to connect with Photon server. Callbacks OnConnectedToMaster.
+    /// </summary>
     private void SetUpConnection()
     {
         PhotonNetwork.GameVersion = gameVersion;
@@ -286,13 +314,13 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
 
     public override void OnCreatedRoom()
     {
-        showConnection.GetComponent<TMP_Text>().text = "Created room: " + _roomName.text;
+        //showConnection.GetComponent<TMP_Text>().text = "Created room: " + _roomName.text;
         base.OnCreatedRoom();
     }
 
     public override void OnJoinedRoom()
     {
-        showConnection.GetComponent<TMP_Text>().text = "Joined room: " + PhotonNetwork.CurrentRoom.Name;
+        //showConnection.GetComponent<TMP_Text>().text = "Joined room: " + PhotonNetwork.CurrentRoom.Name;
         gameObject.GetComponent<Button>().interactable = false;
         // Show big text "Found player" or smth
         // -----------------------------------------------------------
