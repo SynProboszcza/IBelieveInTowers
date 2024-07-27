@@ -50,7 +50,8 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
         if (PhotonNetwork.IsConnectedAndReady)
         {
             gameObject.GetComponent<Button>().interactable = true;
-            showConnection.GetComponent<TMP_Text>().text = "Connected to ";
+            //showConnection.GetComponent<TMP_Text>().text = "Connected to ";
+            showConnection.GetComponent<ShowConnectionChange>().ShowConnected();
 
             // Checking if connected to a particular room
             if (PhotonNetwork.CurrentRoom != null)
@@ -70,6 +71,7 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
         // We're not ready, so we need to set up and connect
         else
         {
+            showConnection.GetComponent<ShowConnectionChange>().ShowConnectionError();
             SetUpConnection();
         }
     }
@@ -83,7 +85,8 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
         if (!PhotonNetwork.IsConnectedAndReady)
         {
             Debug.Log("Not Connected, aborting creating room");
-            showConnection.GetComponent<TMP_Text>().text = "Can't connect or not ready yet!";
+            //showConnection.GetComponent<TMP_Text>().text = "Can't connect or not ready yet!";
+            showConnection.GetComponent<ShowConnectionChange>().ShowConnectionError();
             return;
         }
         // -----------------------------------------------------------
@@ -233,8 +236,8 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
             int _time = (int)_room.CustomProperties["MatchTime"];
             int seconds = Mathf.FloorToInt(_time % 60);
             int minutes = Mathf.FloorToInt(_time / 60);
-            _roomPrefab.transform.Find("RoomProps").transform.Find("MatchTime").transform.Find("Minutes").GetComponent<TMP_Text>().text = minutes.ToString();
-            _roomPrefab.transform.Find("RoomProps").transform.Find("MatchTime").transform.Find("Seconds").GetComponent<TMP_Text>().text = string.Format("{0:00}", seconds);
+            _roomPrefab.transform.Find("MatchTime").transform.Find("Minutes").GetComponent<TMP_Text>().text = minutes.ToString();
+            _roomPrefab.transform.Find("MatchTime").transform.Find("Seconds").GetComponent<TMP_Text>().text = string.Format("{0:00}", seconds);
             _roomPrefab.SetActive(true);
             // Keeping active and shown rooms in cache 
             displayedRoomsCache.Add(_roomPrefab);
@@ -247,6 +250,7 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
         PhotonNetwork.GameVersion = gameVersion;
         gameObject.GetComponent<Button>().interactable = false;
         //print("Connecting to server...");
+        showConnection.GetComponent<ShowConnectionChange>().ShowConnecting();
         PhotonNetwork.ConnectUsingSettings();
     }
 
@@ -272,7 +276,7 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
 
     public override void OnConnectedToMaster()
     {
-        showConnection.GetComponent<TMP_Text>().text = "Connected to master";
+        showConnection.GetComponent<ShowConnectionChange>().ShowConnected();
         gameObject.GetComponent<Button>().interactable = true;
         refreshListButton.GetComponent<Button>().interactable = true;
         //CrossSceneManager.instance.ResetAfterPlaying();
@@ -356,7 +360,8 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
 
     public override void OnCreateRoomFailed(short returnCode, string message)
     {
-        showConnection.GetComponent<TMP_Text>().text = "Failed to create room!";
+        //showConnection.GetComponent<TMP_Text>().text = "Failed to create room!";
+        showConnection.GetComponent<ShowConnectionChange>().ShowConnectionError();
         base.OnCreateRoomFailed(returnCode, message);
     }
 
@@ -368,12 +373,14 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
             restartConnectionFlag = false;
             SetUpConnection();
         }
+        showConnection.GetComponent<ShowConnectionChange>().ShowConnectionError();
         base.OnDisconnected(cause);
     }
 
     public override void OnJoinRoomFailed(short returnCode, string message)
     {
         print("Failed joining room! mess: " + message);
+        showConnection.GetComponent<ShowConnectionChange>().ShowConnectionError();
         base.OnJoinRoomFailed(returnCode, message);
     }
 
