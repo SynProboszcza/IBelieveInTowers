@@ -89,8 +89,8 @@ public class MultiplayerMainGameLoop : MonoBehaviourPunCallbacks, IPunObservable
         //
         // This should be copied inside MainMenuLoop and MainGameLoop
         // (i think(?)(and maybe every scene?))
-        QualitySettings.vSyncCount = 0;  // VSync must be disabled
-        Application.targetFrameRate = 60;
+        //QualitySettings.vSyncCount = 0;  // VSync must be disabled
+        //Application.targetFrameRate = 60;
         if (GameObject.Find("SIMPLEConnect") != null && GameObject.Find("SIMPLEConnect").activeSelf)
         {
             print("Disabling MainGame for SIMPLEConnect to be enabled when connection is established");

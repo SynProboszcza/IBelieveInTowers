@@ -74,12 +74,14 @@ public class CrossSceneManager : MonoBehaviour
     public string matchWon = "You won the match, congratulations!"; // ++
     public string matchLost = "You lost the match, keep trying :)"; // ++
     public GameObject showPriceCostPrefab;
+    public GameObject showHealthChangePrefab;
     public GameObject bearPrefab;
     public GameObject bettlePrefab;
     public GameObject opossumPrefab;
     public GameObject dinoPrefab;
     public GameObject slimerPrefab;
     private Vector2 mouseWorldPos;
+
 
     void Start()
     {
@@ -484,6 +486,67 @@ public class CrossSceneManager : MonoBehaviour
         {
             go.transform.Find("Price").GetComponent<TMP_Text>().text = "+" + cost.ToString() + " G";
         }
+    }
+
+    /*
+    public void ShowHealthChange(float amount, bool isDamaging)
+    {
+        mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        GameObject go = Instantiate(showHealthChangePrefab, new Vector3(mouseWorldPos.x + 1, mouseWorldPos.y, 0), Quaternion.identity);
+        if (isDamaging)
+        {
+            go.transform.Find("Health").GetComponent<TMP_Text>().text = "-" + amount.ToString();
+        }
+        else
+        {
+            go.transform.Find("Health").GetComponent<TMP_Text>().color = Color.green;
+            go.transform.Find("Health").GetComponent<ShowPrice>().durationSeconds = 2f;
+            go.transform.Find("Health").GetComponent<TMP_Text>().text = "+" + amount.ToString();
+        }
+    }
+
+    public void ShowHealthChange(float amount, bool isDamaging, Vector2 position)
+    {
+        GameObject go = Instantiate(showHealthChangePrefab, new Vector3(position.x + 1, position.y, 0), Quaternion.identity);
+        if (isDamaging)
+        {
+            go.transform.Find("Health").GetComponent<TMP_Text>().text = "-" + amount.ToString();
+        }
+        else
+        {
+            go.transform.Find("Health").GetComponent<TMP_Text>().color = Color.green;
+            go.transform.Find("Health").GetComponent<ShowPrice>().durationSeconds = 2f;
+            go.transform.Find("Health").GetComponent<TMP_Text>().text = "+" + amount.ToString();
+        }
+    }
+    */
+
+    public void ShowHealthChange(float amount, bool isDamaging, Vector2 position, Color? color, float duration = 1, int fontSize = 36)
+    {
+        GameObject go = Instantiate(showHealthChangePrefab, new Vector3(position.x, position.y, 0), Quaternion.identity);
+        if (isDamaging)
+        {
+            if (!color.HasValue)
+            {
+                color = Color.red;
+            }
+            go.transform.Find("Health").GetComponent<ShowPrice>().durationSeconds = duration;
+            go.transform.Find("Health").GetComponent<TMP_Text>().color = (Color)color;
+            go.transform.Find("Health").GetComponent<TMP_Text>().fontSize = fontSize;
+            go.transform.Find("Health").GetComponent<TMP_Text>().text = "-" + amount.ToString();
+        }
+        else
+        {
+            if (!color.HasValue)
+            {
+                color = Color.green;
+            }
+            go.transform.Find("Health").GetComponent<ShowPrice>().durationSeconds = duration;
+            go.transform.Find("Health").GetComponent<TMP_Text>().color = (Color)color;
+            go.transform.Find("Health").GetComponent<TMP_Text>().fontSize = fontSize;
+            go.transform.Find("Health").GetComponent<TMP_Text>().text = "+" + amount.ToString();
+        }
+
     }
 
     /// <summary>

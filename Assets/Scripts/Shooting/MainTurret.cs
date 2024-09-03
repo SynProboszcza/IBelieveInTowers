@@ -1,6 +1,7 @@
 using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class MainTurret : MonoBehaviour, IPunObservable
@@ -20,6 +21,8 @@ public class MainTurret : MonoBehaviour, IPunObservable
     public int moneyReward = 300;
     [Tooltip("Amount of money that's needed for every upgrade")]
     public int upgradeCost = 100;
+    [Tooltip("Current mode of shooting, homing or not")]
+    public bool isFollowing = false;
     // Calculated bullet attributes
     // ----------------------------------------------------------------------
     [Header("Calculated attributes")]
@@ -120,7 +123,7 @@ public class MainTurret : MonoBehaviour, IPunObservable
     //public SpriteRenderer srGun; // For now gun does not need changing with upgrades
     public SpriteRenderer srMuzzleEffects;
     public string niceName = "nice name not set in Editor";
-
+    // jkjk
     void Start()
     {
         srBase = GetComponent<SpriteRenderer>();
@@ -230,19 +233,30 @@ public class MainTurret : MonoBehaviour, IPunObservable
                     for (int i = 1; i <= shotgunPelletsToTheSides; i++)
                     {
                         // Bullet to the side
-                        Quaternion _rotation = Quaternion.Euler(0, 0, Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg + 180f - shotgunSpreadInDegrees * i);
+                        Quaternion _rotation = Quaternion.Euler(0, 0, Mathf.Atan2(direction.y, direction.x) * 
+                            Mathf.Rad2Deg + 180f - shotgunSpreadInDegrees * i);
                         float _speedMod = Random.value * shotgunRandomSpeed - Random.value * shotgunRandomSpeed; // Creates a range from -value to + value
+                        targetPosition = 
+                            //new Vector3(targetPosition.x, targetPosition.y, 0) + 
+                            // TODO: fix this shite
+                            shootSpawnPoint.transform.position + 
+                            new Vector3(targetPosition.x, targetPosition.y, 0) * 15; 
+                            //////////////////////////
                         bulletInstance = ShootAtTarget(bullets[upgradeLevel], shootSpawnPoint.transform.position,
-                            _rotation, bulletSpeed + _speedMod, bulletDamage, bulletRange, ohk, isExplosive, timeToShowExplosion);
+                            _rotation, targetPosition, target, bulletSpeed + _speedMod, bulletDamage, bulletRange,
+                            ohk, isExplosive, timeToShowExplosion, isFollowing);
                         // Bullet centered
                         _speedMod = Random.value * shotgunRandomSpeed - Random.value * shotgunRandomSpeed;
                         bulletInstance = ShootAtTarget(bullets[upgradeLevel], shootSpawnPoint.transform.position,
-                            rotation, bulletSpeed + _speedMod, bulletDamage, bulletRange, ohk, isExplosive, timeToShowExplosion);
+                            rotation, targetPosition, target, bulletSpeed + _speedMod, bulletDamage, bulletRange, ohk,
+                            isExplosive, timeToShowExplosion, isFollowing);
                         // Bullet to the other side
                         _speedMod = Random.value * shotgunRandomSpeed - Random.value * shotgunRandomSpeed;
-                        _rotation = Quaternion.Euler(0, 0, Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg + 180f + shotgunSpreadInDegrees * i);
+                        _rotation = Quaternion.Euler(0, 0, Mathf.Atan2(direction.y, direction.x) * 
+                            Mathf.Rad2Deg + 180f + shotgunSpreadInDegrees * i);
                         bulletInstance = ShootAtTarget(bullets[upgradeLevel], shootSpawnPoint.transform.position,
-                            _rotation, bulletSpeed + _speedMod, bulletDamage, bulletRange, ohk, isExplosive, timeToShowExplosion);
+                            _rotation, targetPosition, target, bulletSpeed + _speedMod, bulletDamage, bulletRange, ohk,
+                            isExplosive, timeToShowExplosion, isFollowing);
                         
                         timeSinceLastShot = Time.time;
                     }
@@ -250,7 +264,8 @@ public class MainTurret : MonoBehaviour, IPunObservable
                 {
                     // This is main shooting
                     bulletInstance = ShootAtTarget(bullets[upgradeLevel], shootSpawnPoint.transform.position,
-                        rotation, bulletSpeed, bulletDamage, bulletRange, ohk, isExplosive, timeToShowExplosion);
+                        rotation, targetPosition, target, bulletSpeed, bulletDamage, bulletRange,
+                        ohk, isExplosive, timeToShowExplosion, isFollowing);
                     timeSinceLastShot = Time.time;
                 }
             } 
@@ -297,11 +312,20 @@ public class MainTurret : MonoBehaviour, IPunObservable
         return this.turretMaxHealth;
     }
 
+    /// <summary>
+    /// Handles taking damage by the turrets. Does not show animation for
+    /// self damage and damage equal or less than that.
+    /// </summary>
+    /// <param name="_damage"></param>
     public void TakeDamage(float _damage)
     {
         if (CrossSceneManager.instance.invincibleTurrets)
         {
             return;
+        }
+        if(_damage > turretSelfDamage)
+        {
+            CrossSceneManager.instance.ShowHealthChange(_damage, true, transform.position, new Color(1, 0, 0, 1f), 1f, 50);
         }
         this.turretHealth -= _damage;
     }
@@ -386,16 +410,21 @@ public class MainTurret : MonoBehaviour, IPunObservable
         }
     }
 
-    private GameObject ShootAtTarget(GameObject bullet, Vector3 position, Quaternion rotation,
-        float baseBulletSpeed, float baseBulletDamage, float baseBulletRange, bool oneHitKill, bool isExplosive, float timeToShowExplosion)
+    private GameObject ShootAtTarget(GameObject bullet, Vector3 position,
+        Quaternion rotation, Vector3 staticTargetPosition, GameObject dynamicTargetPosition,
+        float baseBulletSpeed, float baseBulletDamage, float baseBulletRange,
+        bool oneHitKill, bool isExplosive, float timeToShowExplosion, bool isFollowing)
     {
         GameObject _bullet = (GameObject)Instantiate(bullet, position, rotation);
         //GameObject _bullet = BulletPool.instance.GetBulletFromPool("smgBullets", 4);
         //_bullet.transform.position = position;
         //_bullet.transform.rotation = rotation;
         _bullet.GetComponent<Bullet>().SetSpeed(baseBulletSpeed * speedMultipliers[upgradeLevel]);
+        _bullet.GetComponent<Bullet>().SetStaticTargetPosition(staticTargetPosition);
+        _bullet.GetComponent<Bullet>().SetDynamicTargetPosition(dynamicTargetPosition);
         _bullet.GetComponent<Bullet>().SetDamage(baseBulletDamage * damageMultipliers[upgradeLevel]);
         _bullet.GetComponent<Bullet>().SetDistanceToLive(baseBulletRange * bulletRangeMultipliers[upgradeLevel]);
+        _bullet.GetComponent<Bullet>().SetIsFollowing(isFollowing);
         _bullet.GetComponent<Bullet>().Setohk(oneHitKill);
         _bullet.GetComponent<Bullet>().SetIsExplosive(isExplosive);
         _bullet.GetComponent<Bullet>().SetTimeToShowExplosion(timeToShowExplosion);
@@ -453,6 +482,7 @@ public class MainTurret : MonoBehaviour, IPunObservable
             turretHealth *= 1.1f;
             float _toAdd = (turretMaxHealth - turretHealth)/2;
             turretHealth += _toAdd;
+            CrossSceneManager.instance.ShowHealthChange(_toAdd, false, transform.position, new Color(0, 1, 0, 1), 2f, 50);
             UpdateAndShowTurretRange();
             return true;
         }

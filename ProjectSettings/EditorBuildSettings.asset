@@ -11,9 +11,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/HostGame.unity
     guid: 66483c111a76a524fa35def4ce978c3b
-  - enabled: 1
-    path: Assets/Scenes/JoinGame.unity
-    guid: e2dc544daad5abb4698665c53d42a9b7
+  - enabled: 0
+    path: 
+    guid: 00000000000000000000000000000000
   - enabled: 1
     path: Assets/Scenes/Settings.unity
     guid: 888b2d9b058f6f046a40b9d2ac556638

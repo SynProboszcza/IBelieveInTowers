@@ -149,6 +149,7 @@ MonoBehaviour:
   turretRange: 3
   moneyReward: 250
   upgradeCost: 30
+  isFollowing: 0
   calculatedBulletSpeed: 0
   calculatedBulletDamage: 0
   calculatedFireRate: 0

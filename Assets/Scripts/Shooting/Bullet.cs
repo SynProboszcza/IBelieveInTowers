@@ -10,16 +10,23 @@ public class Bullet : MonoBehaviour
     public float distanceToLive;
     public float distanceFromShot;
     public Vector2 originalPosition;
+    public Vector3 staticTargetPosition;
+    public GameObject dynamicTargetPosition;
     [Tooltip("One Hit Kill - deletes whatever it collides with")]
     public bool ohk = false;
     public bool isExplosive;
+    public bool isFollowing = false;
     public float explosionRadious = 2f;
     public float timeToShowExplosion = 0.2f;
     public GameObject explosionEffect;
+    public Rigidbody2D rb;
 
     void Start()
     {
         originalPosition = transform.position;
+        rb = gameObject.GetComponent<Rigidbody2D>();
+        speed *= 0.05f;
+        //rb.AddRelativeForce(transform.forward*speed);
     }
 
     void Update()
@@ -33,7 +40,21 @@ public class Bullet : MonoBehaviour
         {
             distanceFromShot = Vector3.Distance(originalPosition, gameObject.transform.position);
         }
-        transform.Translate(new Vector3(speed*0.001f, 0f));
+        //transform.Translate(new Vector3(speed*0.001f, 0f));
+    }
+
+    private void FixedUpdate()
+    {
+        Vector3 pathToTake;
+        if (isFollowing)
+        {
+            pathToTake = Vector3.MoveTowards(transform.position, dynamicTargetPosition.transform.position, Time.fixedDeltaTime * speed);
+        }
+        else
+        {
+            pathToTake = Vector3.MoveTowards(transform.position, staticTargetPosition, Time.fixedDeltaTime * speed);
+        }
+        rb.MovePosition(pathToTake);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -86,6 +107,21 @@ public class Bullet : MonoBehaviour
             // Do nothing because it can destroy other objects
             //Destroy(collision.gameObject);
         }
+    }
+
+    public void SetIsFollowing(bool isFollowing)
+    {
+        this.isFollowing = isFollowing;
+    }
+
+    public void SetDynamicTargetPosition(GameObject dynamicTargetPosition)
+    {
+        this.dynamicTargetPosition = dynamicTargetPosition;
+    }
+
+    public void SetStaticTargetPosition(Vector3 targetPosition)
+    {
+        this.staticTargetPosition = targetPosition;
     }
 
     public void SetSpeed(float speed)

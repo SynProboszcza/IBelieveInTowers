@@ -12,8 +12,8 @@ public class MainMenuLoop : MonoBehaviour
         //
         // This should be copied inside MainMenuLoop and MainGameLoop
         // (i think(?)(and maybe every scene?))
-        QualitySettings.vSyncCount = 0;  // VSync must be disabled
-        Application.targetFrameRate = 60;
+        //QualitySettings.vSyncCount = 0;  // VSync must be disabled
+        //Application.targetFrameRate = 60;
     }
     private void Start()
     {

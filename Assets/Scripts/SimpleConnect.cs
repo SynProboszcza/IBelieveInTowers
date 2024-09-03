@@ -1,10 +1,12 @@
 using ExitGames.Client.Photon;
 using Photon.Pun;
 using Photon.Realtime;
+using System;
 //using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 // Simple script to add to a random object and set up 
 // connection to a room, so everything about PhotonNetwork works
@@ -66,6 +68,14 @@ public class SimpleConnect : MonoBehaviourPunCallbacks
         CrossSceneManager.instance.isManaInfinite = isManaInfinite;
         CrossSceneManager.instance.invincibleTurrets = invincibleTurrets;
         mainGameScript.SetActive(true);
+        try
+        {
+            StartCoroutine(WaitAndActivate(3));
+        }
+        catch(Exception e)
+        {
+            Debug.LogError(e.ToString());
+        }
         base.OnJoinedRoom();
     }
 
@@ -79,6 +89,12 @@ public class SimpleConnect : MonoBehaviourPunCallbacks
     {
         print("Disconnected because: " + cause.ToString());
         base.OnDisconnected(cause);
+    }
+
+    System.Collections.IEnumerator WaitAndActivate(int seconds)
+    {
+        yield return new WaitForSeconds(seconds);
+        GameObject.Find("DefenderPart").transform.Find("Canvas").transform.Find("debugButtons").gameObject.SetActive(true);
     }
 
 

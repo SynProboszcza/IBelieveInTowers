@@ -7,8 +7,8 @@ public class MultiplayerEnemy : MonoBehaviour, IPunObservable
     [HideInInspector]
     public Transform[] waypoints;
     public float spawnTime = 3f;
-    [HideInInspector]
-    public float spawnTimeWhenAddedToList;
+    //[HideInInspector]
+    //public float spawnTimeWhenAddedToList;
     public float speed = 2f;
     [Tooltip("Remember speed at which this unit was spawned with")]
     public float defaultSpeed;
@@ -246,6 +246,7 @@ public class MultiplayerEnemy : MonoBehaviour, IPunObservable
     public void TakeDamage(float damage)
     {
         this.currentHealth -= damage;
+        CrossSceneManager.instance.ShowHealthChange(damage, true, transform.position, new Color(1, 0, 0, 0.65f), 0.2f);
     }
 
     public void ExplodeTimed()

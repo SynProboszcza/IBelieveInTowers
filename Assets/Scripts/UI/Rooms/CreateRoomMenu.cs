@@ -24,7 +24,8 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
     [SerializeField]
     private GameObject roomList;
     [SerializeField]
-    private TMP_Text showRoomsFound;
+    [Tooltip("GameObject to be set active when no rooms are available")]
+    private GameObject showNoRoomsFound;
     private Dictionary<string, bool> _playerPreferences = new Dictionary<string, bool>();
     public List<RoomInfo> openRoomsFromMaster = new List<RoomInfo>();
     public List<RoomInfo> openRoomsFromMasterCache = new List<RoomInfo>();
@@ -190,11 +191,13 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
     }
 
     /// <summary>
-    /// Tries to join room specified. Sets nickname if not set.
+    /// Tries to join room specified. Sets nickname if not set. Called from script inside room prefab.
     /// </summary>
     /// <param name="roomName"></param>
     public static void JoinRoomFromList(string roomName)
     {
+        // i know i know
+        GameObject.Find("HostGame").GetComponent<Button>().interactable = false;
         // Searching with tag because its static method, called by room prefab
         TMP_InputField _nickName = GameObject.FindWithTag("NickName").GetComponent<TMP_InputField>();
         if (_nickName.text.ToString().Length <= 3)
@@ -204,8 +207,12 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
         PhotonNetwork.NickName = _nickName.text;
         PlayerPrefs.SetString("LocalNickName", _nickName.text.ToString());
         PhotonNetwork.JoinRoom(roomName);
+        // its only static because it needs to bee seen in global context, from room prefab
     }
 
+    /// <summary>
+    /// Called by user. Clears shown rooms, cached rooms and restarts connection, to get a OnRoomListUpdate callback.
+    /// </summary>
     public void RefreshListOfRooms()
     {
         refreshListButton.GetComponent<Button>().interactable = false;
@@ -239,12 +246,13 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
 
     /// <summary>
     /// Shows ready to join rooms and stores them in 
-    /// <see cref="displayedRoomsCache">cache</see>.
+    /// <see cref="displayedRoomsCache">cache</see>. Disables showNoRoomsFound.
     /// TODO: idk what openroomsfrommastercache is supposed to do
     /// </summary>
     /// <param name="_list"></param>
     private void ShowRooms(List<RoomInfo> _list)
     {
+        showNoRoomsFound.SetActive(false);
         foreach (RoomInfo _room in _list)
         {
             GameObject _roomPrefab = (GameObject)Instantiate(this.roomPrefab, roomList.transform);
@@ -266,7 +274,7 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
             _roomPrefab.SetActive(true);
             // Keeping active and shown rooms in cache 
             displayedRoomsCache.Add(_roomPrefab);
-            openRoomsFromMasterCache.Add(_room);
+            //openRoomsFromMasterCache.Add(_room);
         }
     }
 
@@ -282,19 +290,24 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
         PhotonNetwork.ConnectUsingSettings();
     }
 
+    /// <summary>
+    /// Currently unused, introduced bugs. Instead of hiding we dont show 
+    /// rooms that are not good to join.
+    /// </summary>
     private void HideUnavailableRooms()
     {
         for (int k = 0; k < Mathf.Abs(displayedRoomsCache.Count - openRoomsFromMaster.Count); k++)
         {
+            print(k);
             foreach (GameObject _room in displayedRoomsCache)
             {
                 if (!openRoomsFromMaster.Contains(
                     new Room(_room.transform.Find("RoomName").GetComponent<TMP_Text>().text,
                     new RoomOptions())))
                 {
+                    print("Removed and destroyed a room named: " + _room.transform.Find("RoomName").GetComponent<TMP_Text>().text);
                     displayedRoomsCache.Remove(_room);
                     Destroy(_room);
-                    print("Removed and destroyed: " + _room);
                     break;
                 }
             }
@@ -320,64 +333,67 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
 
     public override void OnJoinedRoom()
     {
-        //showConnection.GetComponent<TMP_Text>().text = "Joined room: " + PhotonNetwork.CurrentRoom.Name;
         gameObject.GetComponent<Button>().interactable = false;
-        // Show big text "Found player" or smth
-        // -----------------------------------------------------------
-        // && IS NOT LOGICAL AND
-        // && RETURNS FALSE WHEN BOTH ARGUMENTS ARE FALSE!!!!
-        if (PhotonNetwork.IsMasterClient == (bool)PhotonNetwork.CurrentRoom.CustomProperties["isMasterDefending"])
-        {
-            SceneManager.LoadScene("InBetweenScene");
-        }
-        else
-        {
-            SceneManager.LoadScene("InBetweenScene");
-        }
+        // Show big text "Joining room" or smth
+        SceneManager.LoadScene("InBetweenScene");
     }
 
+    /// <summary>
+    /// Called for any updates from master server. 
+    /// Checks if rooms we got from server are available and calls
+    /// <see cref="ShowRooms(List{RoomInfo})">ShowRooms</see> to display them. Also handles removing
+    /// unavailable rooms, like full rooms. 
+    /// When no rooms are available, turnes on "no rooms available" message.
+    /// </summary>
+    /// <param name="_roomList">List of RoomInfo object from master server</param>
     public override void OnRoomListUpdate(List<RoomInfo> _roomList)
     {
-        //print("Got update List:");
-        openRoomsFromMaster.Clear();
+        print("Got update List:");
+        openRoomsFromMaster.Clear(); 
         foreach (RoomInfo _room in _roomList)
         {
-            //print("Got room: " + _room.ToStringFull() + ":::");
+            print("Processing room: " + _room.ToStringFull() + ":::");
             if (_room.IsVisible
                && _room.IsOpen
                && _room.PlayerCount != 0
                && _room.PlayerCount != _room.MaxPlayers)
             {
-                //print("Added room: " + _room.Name);
+                print("Adding room: " + _room.Name);
                 openRoomsFromMaster.Add(_room);
+            } else
+            {
+                print("NOT adding: " + _room.ToStringFull() + ".\n");
+                // _room determined to be defective
+                // check if it is not listed already
+                foreach(GameObject room in displayedRoomsCache)
+                {
+                    // Prefab has a child go named RoomName,
+                    // TMP_Text.text is then processed, bc its full gameobject name, like <roomname>\nby: <nickname>
+                    // and then compared to defective roomname from _room
+                    // You cant put \n in roomnames, and if you find a way you break this by putting "\nby: " in the name
+                    if (room.transform.Find("RoomName").GetComponent<TMP_Text>().text.Split("\nby: ")[0].Equals(_room.Name))
+                    {
+                        print("Destroying: " + _room.Name);
+                        displayedRoomsCache.Remove(room);
+                        Destroy(room);
+                        break;
+                    }
+                }
             }
+        } 
+        // Check to see if there are still any rooms
+        if(displayedRoomsCache.Count < 1)
+        {
+            showNoRoomsFound.SetActive(true);
+        } else
+        {
+            showNoRoomsFound.SetActive(false);
         }
 
-        HideUnavailableRooms();
-
-        // Here we have 3 options: 
-        //  Less than one - nothing
-        //  One - special case
-        //  More than one - general case
-        // We update list only when rooms.count >= 1
-        if (openRoomsFromMaster.Count < 1)
+        if (openRoomsFromMaster.Count >= 1)
         {
-            showRoomsFound.GetComponent<TMP_Text>().text = "No new rooms found!";
-        }
-        else if (openRoomsFromMaster.Count >= 1)
-        {
-            if (openRoomsFromMaster.Count == 1)
-            {
-                showRoomsFound.GetComponent<TMP_Text>().text = "Found one new room.";
-            }
-            else
-            {
-                showRoomsFound.GetComponent<TMP_Text>().text = "Found " + openRoomsFromMaster.Count.ToString() + " new rooms.";
-            }
-
             ShowRooms(openRoomsFromMaster);
         }
-        base.OnRoomListUpdate(_roomList);
     }
 
     public override void OnJoinedLobby()

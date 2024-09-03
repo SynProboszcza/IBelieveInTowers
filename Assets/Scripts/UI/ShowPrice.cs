@@ -9,7 +9,7 @@ public class ShowPrice : MonoBehaviour
     public Vector2 leftToRight = new Vector2(-1,1);
     public Vector2 topToBottom = new Vector2(0.5f,1.5f);
 
-
+    // Used to show health changes too, since its the same logic
     private void Start()
     {
         Vector2 force = new Vector2(Random.Range(leftToRight.x, leftToRight.y), Random.Range(topToBottom.x * forceY, topToBottom.y * forceY));
