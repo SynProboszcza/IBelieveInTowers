@@ -123,7 +123,7 @@ public class MainTurret : MonoBehaviour, IPunObservable
     //public SpriteRenderer srGun; // For now gun does not need changing with upgrades
     public SpriteRenderer srMuzzleEffects;
     public string niceName = "nice name not set in Editor";
-    // jkjk
+
     void Start()
     {
         srBase = GetComponent<SpriteRenderer>();
@@ -236,12 +236,13 @@ public class MainTurret : MonoBehaviour, IPunObservable
                         Quaternion _rotation = Quaternion.Euler(0, 0, Mathf.Atan2(direction.y, direction.x) * 
                             Mathf.Rad2Deg + 180f - shotgunSpreadInDegrees * i);
                         float _speedMod = Random.value * shotgunRandomSpeed - Random.value * shotgunRandomSpeed; // Creates a range from -value to + value
-                        targetPosition = 
+                        /*targetPosition = 
                             //new Vector3(targetPosition.x, targetPosition.y, 0) + 
                             // TODO: fix this shite
                             shootSpawnPoint.transform.position + 
                             new Vector3(targetPosition.x, targetPosition.y, 0) * 15; 
                             //////////////////////////
+                        */
                         bulletInstance = ShootAtTarget(bullets[upgradeLevel], shootSpawnPoint.transform.position,
                             _rotation, targetPosition, target, bulletSpeed + _speedMod, bulletDamage, bulletRange,
                             ohk, isExplosive, timeToShowExplosion, isFollowing);

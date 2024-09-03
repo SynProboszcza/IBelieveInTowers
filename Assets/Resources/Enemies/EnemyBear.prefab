@@ -234,7 +234,6 @@ MonoBehaviour:
   mainGame: {fileID: 0}
   waypoints: []
   spawnTime: 3
-  spawnTimeWhenAddedToList: 0
   speed: 1.5
   defaultSpeed: 0
   currentHealth: 0

@@ -533,7 +533,7 @@ public class CrossSceneManager : MonoBehaviour
             go.transform.Find("Health").GetComponent<ShowPrice>().durationSeconds = duration;
             go.transform.Find("Health").GetComponent<TMP_Text>().color = (Color)color;
             go.transform.Find("Health").GetComponent<TMP_Text>().fontSize = fontSize;
-            go.transform.Find("Health").GetComponent<TMP_Text>().text = "-" + amount.ToString();
+            go.transform.Find("Health").GetComponent<TMP_Text>().text = "-" + amount.ToString("0.0");
         }
         else
         {
@@ -544,7 +544,7 @@ public class CrossSceneManager : MonoBehaviour
             go.transform.Find("Health").GetComponent<ShowPrice>().durationSeconds = duration;
             go.transform.Find("Health").GetComponent<TMP_Text>().color = (Color)color;
             go.transform.Find("Health").GetComponent<TMP_Text>().fontSize = fontSize;
-            go.transform.Find("Health").GetComponent<TMP_Text>().text = "+" + amount.ToString();
+            go.transform.Find("Health").GetComponent<TMP_Text>().text = "+" + amount.ToString("0.0");
         }
 
     }

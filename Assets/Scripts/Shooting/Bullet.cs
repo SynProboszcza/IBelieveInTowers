@@ -25,7 +25,7 @@ public class Bullet : MonoBehaviour
     {
         originalPosition = transform.position;
         rb = gameObject.GetComponent<Rigidbody2D>();
-        speed *= 0.05f;
+        //speed *= 0.05f;
         //rb.AddRelativeForce(transform.forward*speed);
     }
 
@@ -40,9 +40,10 @@ public class Bullet : MonoBehaviour
         {
             distanceFromShot = Vector3.Distance(originalPosition, gameObject.transform.position);
         }
-        //transform.Translate(new Vector3(speed*0.001f, 0f));
+        transform.Translate(new Vector3(speed, 0f));
     }
 
+    /*
     private void FixedUpdate()
     {
         Vector3 pathToTake;
@@ -56,6 +57,7 @@ public class Bullet : MonoBehaviour
         }
         rb.MovePosition(pathToTake);
     }
+    */
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -126,7 +128,7 @@ public class Bullet : MonoBehaviour
 
     public void SetSpeed(float speed)
     {
-        this.speed = speed;
+        this.speed = speed * 0.001f;
     }
 
     public void SetDamage(float damage)

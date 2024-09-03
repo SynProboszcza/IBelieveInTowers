@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using static UnityEngine.GraphicsBuffer;
 
 // Simple script to add to a random object and set up 
 // connection to a room, so everything about PhotonNetwork works
@@ -26,11 +27,22 @@ public class SimpleConnect : MonoBehaviourPunCallbacks
     public bool isMoneyInfinite = false;
     public bool isManaInfinite = false;
     public bool invincibleTurrets = false;
+    [Header("Which turrets to spawn")]
+    public bool spawnBoltgun = false;
+    public bool spawnGatling = false;
+    public bool spawnRocketLauncher = false;
+    public bool spawnShotgun = false;
+    public bool spawnSMG = false;
+    public bool spawnSuperShotgun = false;
+    public Transform[] turretLocations;
+    public GameObject spawnerMultiplayer;
+    public bool spawnEnemies = false;
     //private bool specialRules = false;
     public GameObject mainGameScript;
 
     private void Start()
     {
+        // TODO: Add UI text to show its active, bc its only a debug tool
         mainGameScript.SetActive(false);
         CrossSceneManager.instance.FullReset();
         CrossSceneManager.instance.currentMatchMaxTime = matchDurationSeconds;
@@ -76,6 +88,19 @@ public class SimpleConnect : MonoBehaviourPunCallbacks
         {
             Debug.LogError(e.ToString());
         }
+        // loop has been unrolled ;p
+        if (spawnBoltgun)       {PhotonNetwork.Instantiate("Turrets/Boltgun",       new Vector3(turretLocations[0].position.x, turretLocations[0].position.y, 0), Quaternion.identity); }
+        if (spawnGatling)       {PhotonNetwork.Instantiate("Turrets/Gatling",       new Vector3(turretLocations[1].position.x, turretLocations[1].position.y, 0), Quaternion.identity);}
+        if (spawnRocketLauncher){PhotonNetwork.Instantiate("Turrets/RocketLauncher",new Vector3(turretLocations[2].position.x, turretLocations[2].position.y, 0), Quaternion.identity);}
+        if (spawnShotgun)       {PhotonNetwork.Instantiate("Turrets/Shotgun",       new Vector3(turretLocations[3].position.x, turretLocations[3].position.y, 0), Quaternion.identity);}
+        if (spawnSMG)           {PhotonNetwork.Instantiate("Turrets/SMG",           new Vector3(turretLocations[4].position.x, turretLocations[4].position.y, 0), Quaternion.identity);}
+        if (spawnSuperShotgun)  {PhotonNetwork.Instantiate("Turrets/SuperShotgun",  new Vector3(turretLocations[5].position.x, turretLocations[5].position.y, 0), Quaternion.identity);}
+        //////////////////////////
+        if (spawnEnemies)
+        {
+            Debug.Log("spawning one enemy");
+            StartCoroutine(SpawnAfterSeconds(1));
+        }
         base.OnJoinedRoom();
     }
 
@@ -96,6 +121,14 @@ public class SimpleConnect : MonoBehaviourPunCallbacks
         yield return new WaitForSeconds(seconds);
         GameObject.Find("DefenderPart").transform.Find("Canvas").transform.Find("debugButtons").gameObject.SetActive(true);
     }
+
+    
+    System.Collections.IEnumerator SpawnAfterSeconds(int seconds)
+    {
+        yield return new WaitForSeconds(seconds);
+        spawnerMultiplayer.GetComponent<SpawnerMultiplayer>().SpawnBearDebug();
+    }
+
 
 
 
