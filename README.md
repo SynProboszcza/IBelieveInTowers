@@ -1,6 +1,6 @@
 # I Believe In Towers
 Tower Defense Multiplayer game by Dawid Sójka<br>
-Game is still in developement, but there is a stable version. To run it, download the newest version from [Releases](master/releases/latest) tab.<br>
+Game is still in developement, but there is a stable version. To run it, download the newest version from [Releases](releases) tab.<br>
 Game features:<br>
 - Economy-and-Strategic-based online 1v1 multiplayer gameplay
 - Best of 3 rounds matching system with changing sides each round
