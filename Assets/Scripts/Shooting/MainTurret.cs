@@ -326,7 +326,7 @@ public class MainTurret : MonoBehaviour, IPunObservable
         }
         if(_damage > turretSelfDamage)
         {
-            CrossSceneManager.instance.ShowHealthChange(_damage, true, transform.position, new Color(1, 0, 0, 1f), 1f, 50);
+            CrossSceneManager.instance.ShowHealthChange(_damage, true, transform.position, transform, new Color(1, 0, 0, 1f), 1f, 50);
         }
         this.turretHealth -= _damage;
     }
@@ -483,7 +483,7 @@ public class MainTurret : MonoBehaviour, IPunObservable
             turretHealth *= 1.1f;
             float _toAdd = (turretMaxHealth - turretHealth)/2;
             turretHealth += _toAdd;
-            CrossSceneManager.instance.ShowHealthChange(_toAdd, false, transform.position, new Color(0, 1, 0, 1), 2f, 50);
+            CrossSceneManager.instance.ShowHealthChange(_toAdd, false, transform.position, transform, new Color(0, 1, 0, 1), 2f, 50);
             UpdateAndShowTurretRange();
             return true;
         }

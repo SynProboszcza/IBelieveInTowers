@@ -521,9 +521,10 @@ public class CrossSceneManager : MonoBehaviour
     }
     */
 
-    public void ShowHealthChange(float amount, bool isDamaging, Vector2 position, Color? color, float duration = 1, int fontSize = 36)
+    public void ShowHealthChange(float amount, bool isDamaging, Vector2 position, Transform parentObject, Color? color, float duration = 1, int fontSize = 36)
     {
         GameObject go = Instantiate(showHealthChangePrefab, new Vector3(position.x, position.y, 0), Quaternion.identity);
+        go.transform.SetParent(parentObject, true);
         if (isDamaging)
         {
             if (!color.HasValue)

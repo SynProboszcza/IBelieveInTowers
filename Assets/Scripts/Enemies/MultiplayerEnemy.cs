@@ -246,7 +246,7 @@ public class MultiplayerEnemy : MonoBehaviour, IPunObservable
     public void TakeDamage(float damage)
     {
         this.currentHealth -= damage;
-        CrossSceneManager.instance.ShowHealthChange(damage, true, transform.position, new Color(1, 0, 0, 0.65f), 0.2f);
+        CrossSceneManager.instance.ShowHealthChange(damage, true, transform.position, transform, new Color(1, 0, 0, 0.65f), 0.2f);
     }
 
     public void ExplodeTimed()
