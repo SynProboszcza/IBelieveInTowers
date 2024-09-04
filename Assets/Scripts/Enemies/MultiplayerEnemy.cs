@@ -41,6 +41,10 @@ public class MultiplayerEnemy : MonoBehaviour, IPunObservable
         currentHealth = maxHealth;
         defaultSpeed = speed;
         mainGame = GameObject.FindWithTag("SingleTagForMainGameLoop");
+        if(mainGame == null)
+        {
+            Debug.LogError("could not find mainGame", this);
+        }
         if (waypoints == null || waypoints.Length == 0)
         {
             waypoints = mainGame.GetComponent<MultiplayerMainGameLoop>().waypoints;

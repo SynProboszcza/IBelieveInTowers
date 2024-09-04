@@ -25,7 +25,7 @@ public class CrossSceneManager : MonoBehaviour
     public int currentMatchMaxTime = 180;
     [Tooltip("Additional gold for attacker; dmg dealt * this = add. gold")]
     public int goldForDamageMultiplier = 10; // ++
-    public int delayFirstSpawn = 3; // ++
+    public float delayFirstSpawn = 3; // ++
     public string enemyNickname = ""; 
     public string myNickName = "";
     public Queue<string> unitList { get; private set; }
@@ -48,12 +48,13 @@ public class CrossSceneManager : MonoBehaviour
     //[HideInInspector]
     public int slimerPrice = 554;// ++ 
     // default... are for reset, actual are just names without default prefix
+    // These values are overridden in Start() by gameInfo
     // ----------------------------------------------------------------------------
     [Header("Default values to set")]
     public int defaultDefenderHealth = 300; // ++
     public int defaultMoneyAmount = 2000; // ++
     public int defaultManaAmount = 500; // ++
-    public int defaultDelayFirstSpawn = 3; // ++
+    public float defaultDelayFirstSpawn = 3; // ++
     public int defaultCurrentMatchMaxTime = 180; // ++
     // ----------------------------------------------------------------------------
     [Header("Informational flags")]
@@ -65,6 +66,10 @@ public class CrossSceneManager : MonoBehaviour
     public bool invincibleTurrets = false;
     public bool isMatchOver = false;
     public bool spawnDelayPassed = false;
+    public bool mapsPreselectionActive = false;
+    public string mapOneToSet = "";
+    public string mapTwoToSet = "";
+    public string mapThreeToSet = "";
     [Tooltip("For now these are integers as <string>, like \"1\", \"3\" etc. It can be more complex in future if need be")]
     public List<string> mapMiddleNames;
     [Tooltip("ONLY change if you added FULLY FUNCTIONAL map that is correctly named (Map<next number>Multiplayer)")]
@@ -86,16 +91,62 @@ public class CrossSceneManager : MonoBehaviour
     void Start()
     {
         DontDestroyOnLoad(gameObject);
-        playerMoney = defaultMoneyAmount;
-        playerMana = defaultManaAmount;
-        defenderHealth = defaultDefenderHealth;
+        //playerMoney = defaultMoneyAmount;
+        //playerMana = defaultManaAmount;
+        //defenderHealth = defaultDefenderHealth;
         myNickName = PlayerPrefs.GetString("LocalNickName");
         GameObject parentForEnemies = Instantiate(new GameObject("EnemiesFromPreMainGame"));
         parentForEnemies.name = "EnemiesFromPreMainGame"; // Default instantiation adds "(Clone)" to the name
         parentForEnemies.transform.parent = transform;
+        // Set general settings
+        amountOfMaps                = gameInfo.amountOfMaps;
+        defaultDefenderHealth       = gameInfo.defaultDefenderHealth;
+        defaultMoneyAmount          = gameInfo.defaultMoneyAmount;
+        defaultManaAmount           = gameInfo.defaultManaAmount;
+        defaultCurrentMatchMaxTime  = gameInfo.defaultMatchDurationSeconds;
+        goldForDamageMultiplier     = gameInfo.goldForDamageMultiplier;
+        defaultDelayFirstSpawn      = gameInfo.delayFirstSpawnSeconds;
+        // Set prefabs
+        showPriceCostPrefab         = gameInfo.showPriceCostPrefab;
+        showHealthChangePrefab      = gameInfo.showHealthChangePrefab;
+        bearPrefab                  = gameInfo.bearPrefab;
+        bettlePrefab                = gameInfo.bettlePrefab;
+        opossumPrefab               = gameInfo.opossumPrefab;
+        dinoPrefab                  = gameInfo.dinoPrefab;
+        slimerPrefab                = gameInfo.slimerPrefab;
+        // Set prices
+        bearPrice                   = gameInfo.bearPrice;
+        bettlePrice                 = gameInfo.bettlePrice;
+        opossumPrice                = gameInfo.opossumPrice;
+        dinoPrice                   = gameInfo.dinoPrice;
+        slimerPrice                 = gameInfo.slimerPrice;
+        // Set win/loss messages
+        roundWon                    = gameInfo.roundWon;
+        roundLost                   = gameInfo.roundLost;
+        matchWon                    = gameInfo.matchWon;
+        matchLost                   = gameInfo.matchLost;
+        // Set debug maps selection
+        mapsPreselectionActive      = gameInfo.areMapsPredetermined;
+        mapOneToSet = gameInfo.firstMiddleName;
+        mapTwoToSet = gameInfo.secondMiddleName;
+        mapThreeToSet = gameInfo.thirdMiddleName;
+
+        // Set prices as a workaround for BuyUnit.cs
+        enemyPrices = new Dictionary<string, int>
+        {
+            { "Bear", gameInfo.bearPrice},
+            { "Bettle", gameInfo.bettlePrice},
+            { "Opossum", gameInfo.opossumPrice},
+            { "Dino", gameInfo.dinoPrice},
+            { "Slimer", gameInfo.slimerPrice}
+        };
+
+        // Not needed as MainMenuLoop already calls FullReset()
+        //SoftReset(); // To set current playing values, defaults are set just above
+
     }
 
-    // Make sure there is only one instance and set prices
+    // Make sure there is only one instance
     private void Awake()
     {
         if (instance != null && instance != this)
@@ -106,18 +157,6 @@ public class CrossSceneManager : MonoBehaviour
         {
             instance = this;
         }
-        // We got a race condition and this needs to be set fast
-        // BuyUnit is accessing this dict and it accessed it before it was initialized
-        // so i moved it to Awake instead of Start
-        enemyPrices = new Dictionary<string, int>
-        {
-            { "Bear", bearPrefab.GetComponent<MultiplayerEnemy>().costToSpawn },
-            { "Bettle", bettlePrefab.GetComponent<MultiplayerEnemy>().costToSpawn },
-            { "Opossum", opossumPrefab.GetComponent<MultiplayerEnemy>().costToSpawn },
-            { "Dino", dinoPrefab.GetComponent<MultiplayerEnemy>().costToSpawn },
-            { "Slimer", slimerPrefab.GetComponent<MultiplayerEnemy>().costToSpawn }
-        };
-
     }
 
     /// <summary>
@@ -363,6 +402,14 @@ public class CrossSceneManager : MonoBehaviour
         // mapMiddleNames.Add("5");
         // mapMiddleNames.Add("5");
         // mapMiddleNames.Add("5");
+        if (mapsPreselectionActive)
+        {
+            Debug.Log("Setting Predetermined maps: "+mapOneToSet+", "+mapTwoToSet+", "+mapThreeToSet+".");
+            mapMiddleNames.Clear();
+            mapMiddleNames.Add(mapOneToSet);
+            mapMiddleNames.Add(mapTwoToSet);
+            mapMiddleNames.Add(mapThreeToSet);
+        }
 
     }
 

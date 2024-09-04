@@ -12,4 +12,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf415cf04a3d0a74eb89d1ff4d957fd9, type: 3}
   m_Name: GameInformation
   m_EditorClassIdentifier: 
+  Notes: To modify enemies or turrets change individual prefabs in Assets/Resources
   amountOfMaps: 5
+  defaultDefenderHealth: 300
+  defaultMoneyAmount: 2000
+  defaultManaAmount: 2001
+  defaultMatchDurationSeconds: 180
+  goldForDamageMultiplier: 20
+  delayFirstSpawnSeconds: 3
+  roundWon: You won the round, nice!
+  roundLost: You lost the round, prepare for next one
+  matchWon: You won the match, congratulations!
+  matchLost: You lost the match, keep trying :)
+  showPriceCostPrefab: {fileID: 8992059104996785522, guid: 3d4c5d5dd235a1849bc9407173f3d9d5, type: 3}
+  showHealthChangePrefab: {fileID: 8992059104996785522, guid: e4e848d02e3334148a19171496a16b0c, type: 3}
+  bearPrefab: {fileID: 1800778710029251882, guid: 87ea0512c20c1c140b994ef3df70d698, type: 3}
+  bettlePrefab: {fileID: 1800778710029251882, guid: cbd5016e237baf947b57c88b38399295, type: 3}
+  opossumPrefab: {fileID: 1800778710029251882, guid: 4a9dbed49699e384a928472244668e41, type: 3}
+  dinoPrefab: {fileID: 1800778710029251882, guid: 22bfcd9538747664b96db9175264daf0, type: 3}
+  slimerPrefab: {fileID: 1800778710029251882, guid: baa432b55623a7d49b084e4b478d9367, type: 3}
+  bearPrice: 500
+  bettlePrice: 100
+  opossumPrice: 350
+  dinoPrice: 250
+  slimerPrice: 200

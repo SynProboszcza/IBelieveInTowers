@@ -238,7 +238,7 @@ public class SpawnerMultiplayer : MonoBehaviour
     }
 
 
-    System.Collections.IEnumerator WaitForNSeconds(int seconds)
+    System.Collections.IEnumerator WaitForNSeconds(float seconds)
     {
         yield return new WaitForSeconds(seconds);
         isSpawnAllowed = true;
