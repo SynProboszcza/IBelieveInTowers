@@ -98,6 +98,10 @@ public class CrossSceneManager : MonoBehaviour
         GameObject parentForEnemies = Instantiate(new GameObject("EnemiesFromPreMainGame"));
         parentForEnemies.name = "EnemiesFromPreMainGame"; // Default instantiation adds "(Clone)" to the name
         parentForEnemies.transform.parent = transform;
+        if(gameInfo == null)
+        {
+            Debug.LogError("GameInfo ScriptableObject is not set!", this);
+        }
         // Set general settings
         amountOfMaps                = gameInfo.amountOfMaps;
         defaultDefenderHealth       = gameInfo.defaultDefenderHealth;

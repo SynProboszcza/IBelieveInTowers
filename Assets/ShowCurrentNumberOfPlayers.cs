@@ -21,7 +21,7 @@ public class ShowCurrentNumberOfPlayers : MonoBehaviour
         Debug.Log("current players: " + PhotonNetwork.CountOfPlayers);
         while (PhotonNetwork.IsConnectedAndReady)
         {
-            yield return new WaitForSeconds(1); // Event is sent every 5 seconds
+            yield return new WaitForSeconds(2); // Event is sent every 5 seconds
             gameObject.GetComponent<TMP_Text>().text = "Current players: " + PhotonNetwork.CountOfPlayers;
             Debug.Log("current players update: " + PhotonNetwork.CountOfPlayers);
         }

@@ -1871,7 +1871,7 @@ TilemapRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -701247563
-  m_SortingLayer: 2
+  m_SortingLayer: 4
   m_SortingOrder: 0
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
@@ -3814,11 +3814,11 @@ MonoBehaviour:
   isMoneyInfinite: 1
   isManaInfinite: 1
   invincibleTurrets: 0
-  spawnBoltgun: 1
-  spawnGatling: 1
-  spawnRocketLauncher: 1
+  spawnBoltgun: 0
+  spawnGatling: 0
+  spawnRocketLauncher: 0
   spawnShotgun: 1
-  spawnSMG: 1
+  spawnSMG: 0
   spawnSuperShotgun: 1
   turretLocations:
   - {fileID: 1952562850}
@@ -7154,7 +7154,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d59d116d5b44bc140bf768c96fb12ee1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameInfo: {fileID: 0}
+  gameInfo: {fileID: 11400000, guid: d1fe6cee4767de145903601786d3ea55, type: 2}
   defenderHealth: 0
   playerMoney: 0
   playerMana: 0
@@ -7183,6 +7183,10 @@ MonoBehaviour:
   invincibleTurrets: 0
   isMatchOver: 0
   spawnDelayPassed: 0
+  mapsPreselectionActive: 0
+  mapOneToSet: 
+  mapTwoToSet: 
+  mapThreeToSet: 
   mapMiddleNames: []
   amountOfMaps: 4
   roundWon: You won the round, nice!
