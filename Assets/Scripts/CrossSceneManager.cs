@@ -90,17 +90,24 @@ public class CrossSceneManager : MonoBehaviour
 
     void Start()
     {
-        DontDestroyOnLoad(gameObject);
-        //playerMoney = defaultMoneyAmount;
-        //playerMana = defaultManaAmount;
-        //defenderHealth = defaultDefenderHealth;
+        DontDestroyOnLoad(gameObject); // So it is cross-scene
         myNickName = PlayerPrefs.GetString("LocalNickName");
+        // Set up parent gameobject for enemies instantiating, so hierarchy does not jitter
         GameObject parentForEnemies = Instantiate(new GameObject("EnemiesFromPreMainGame"));
         parentForEnemies.name = "EnemiesFromPreMainGame"; // Default instantiation adds "(Clone)" to the name
         parentForEnemies.transform.parent = transform;
+        // Check if GameInfo is set, so we can get the newest config
         if(gameInfo == null)
         {
-            Debug.LogError("GameInfo ScriptableObject is not set!", this);
+            Debug.LogWarning("GameInfo ScriptableObject is not set! trying it myself", this);
+            gameInfo = Resources.Load<GameInfo>("GameInformation");
+            if(gameInfo == null)
+            {
+                Debug.LogError("Could not set GameInfo ScriptableObject!", this);
+            } else
+            {
+                Debug.LogWarning("Successfully set GameInfo using this: " + gameInfo, this);
+            }
         }
         // Set general settings
         amountOfMaps                = gameInfo.amountOfMaps;
@@ -131,23 +138,19 @@ public class CrossSceneManager : MonoBehaviour
         matchLost                   = gameInfo.matchLost;
         // Set debug maps selection
         mapsPreselectionActive      = gameInfo.areMapsPredetermined;
-        mapOneToSet = gameInfo.firstMiddleName;
-        mapTwoToSet = gameInfo.secondMiddleName;
-        mapThreeToSet = gameInfo.thirdMiddleName;
+        mapOneToSet                 = gameInfo.firstMiddleName;
+        mapTwoToSet                 = gameInfo.secondMiddleName;
+        mapThreeToSet               = gameInfo.thirdMiddleName;
 
         // Set prices as a workaround for BuyUnit.cs
         enemyPrices = new Dictionary<string, int>
         {
-            { "Bear", gameInfo.bearPrice},
-            { "Bettle", gameInfo.bettlePrice},
-            { "Opossum", gameInfo.opossumPrice},
-            { "Dino", gameInfo.dinoPrice},
-            { "Slimer", gameInfo.slimerPrice}
+            { "Bear",       gameInfo.bearPrice},
+            { "Bettle",     gameInfo.bettlePrice},
+            { "Opossum",    gameInfo.opossumPrice},
+            { "Dino",       gameInfo.dinoPrice},
+            { "Slimer",     gameInfo.slimerPrice}
         };
-
-        // Not needed as MainMenuLoop already calls FullReset()
-        //SoftReset(); // To set current playing values, defaults are set just above
-
     }
 
     // Make sure there is only one instance
@@ -465,7 +468,7 @@ public class CrossSceneManager : MonoBehaviour
 
     /// <summary>
     /// Resets money, mana, defender health, match time, delay first spawn, 
-    /// enemy nickname, local nickname, selected list of maps, 
+    /// enemy nickname, local nickname(not the one saved on disk), selected list of maps, 
     /// history of matches, and all possible bools.
     /// Designed to be called in-between matches.
     /// </summary>
