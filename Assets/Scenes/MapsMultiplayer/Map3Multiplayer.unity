@@ -2878,6 +2878,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4382020389680641233, guid: be4cb7a2824880449b010a4951844558, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4382020389875430491, guid: be4cb7a2824880449b010a4951844558, type: 3}
       propertyPath: m_Name
       value: DefenderPart

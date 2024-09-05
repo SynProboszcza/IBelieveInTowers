@@ -106,7 +106,7 @@ public class CrossSceneManager : MonoBehaviour
                 Debug.LogError("Could not set GameInfo ScriptableObject!", this);
             } else
             {
-                Debug.LogWarning("Successfully set GameInfo using this: " + gameInfo, this);
+                Debug.Log("Successfully set GameInfo using this: " + gameInfo, this);
             }
         }
         // Set general settings
